@@ -1,0 +1,30 @@
+.navbar-nav li{
+	padding-right: 1rem;
+}
+
+.navbar-brand{
+	font-size: 1.8rem;
+}
+
+.nav-link{
+	font-size: 1.2rem !important;
+}
+
+
+
+/*footer*/
+
+.footer{
+	padding: 35px 40px 10px 40px;
+	margin-top: 65px;
+}
+
+.hr-light{
+	color: #fff;
+	background-color: #fff;
+}
+
+/*footer padding*/
+.footer-padding{
+	padding: 15px 50px 55px 50px;
+}

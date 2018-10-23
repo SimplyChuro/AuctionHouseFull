@@ -1,0 +1,19 @@
+@(productForm: Form[Product])
+@import helper._
+
+@layout("Product Form"){
+	<h1>Create a Product</h1>
+	@helper.form(action = helper.CSRF(routes.ProductController.save())){
+		
+		@helper.inputText(productForm("name"))
+		@helper.inputText(productForm("publishDate"))
+		@helper.inputText(productForm("expireDate"))
+		@helper.inputText(productForm("mainBid"), 'type -> "number")
+		@helper.inputText(productForm("active"))
+		@helper.inputText(productForm("mainDescription"))
+		@helper.inputText(productForm("additionalDescription"))
+		@helper.inputText(productForm("startingPrice"), 'type -> "number")
+		
+		<input type="submit" value="Create Product">
+	}
+}

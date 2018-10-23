@@ -1,0 +1,16 @@
+@(userForm: Form[WebUser])
+@import helper._
+
+@layout("User Creation"){
+	<h1>Create a User</h1>
+	@helper.form(action = routes.UserController.updateUser()){
+	
+		@helper.inputText(userForm("id"))
+		@helper.inputText(userForm("name"))
+		@helper.inputText(userForm("surname"))
+		@helper.inputText(userForm("email"))
+		@helper.inputPassword(userForm("password"))
+		
+		<input type="submit" value="Edit User">
+	}
+}
