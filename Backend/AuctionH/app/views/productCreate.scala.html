@@ -6,8 +6,8 @@
 	@helper.form(action = helper.CSRF(routes.ProductController.save())){
 		
 		@helper.inputText(productForm("name"))
-		@helper.inputText(productForm("publishDate"))
-		@helper.inputText(productForm("expireDate"))
+		@helper.inputDate(productForm("publishDate"))
+		@helper.inputDate(productForm("expireDate"))
 		@helper.inputText(productForm("mainBid"), 'type -> "number")
 		@helper.inputText(productForm("active"))
 		@helper.inputText(productForm("mainDescription"))

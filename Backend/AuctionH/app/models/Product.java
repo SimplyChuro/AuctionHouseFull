@@ -21,12 +21,10 @@ public class Product extends Model{
 	public String name;
 	
 	@Constraints.Required
-	@Formats.DateTime(pattern="dd/MM/yyyy")
-	public Date publishDate = new Date();
+	public String publishDate;
 	
 	@Constraints.Required
-	@Formats.DateTime(pattern="dd/MM/yyyy")
-	public Date expireDate = new Date();
+	public String expireDate;
 	
 	@Constraints.Required
 	public Integer mainBid;

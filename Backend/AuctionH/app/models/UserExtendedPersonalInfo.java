@@ -23,8 +23,7 @@ public class UserExtendedPersonalInfo extends Model{
 	public String gender;
 	
 	@Constraints.Required
-	@Formats.DateTime(pattern="dd/MM/yyyy")
-	public Date dateOfBirth = new Date();
+	public String dateOfBirth;
 
     @Constraints.Required
 	public String phoneNumber;
