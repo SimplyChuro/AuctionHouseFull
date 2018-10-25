@@ -21,10 +21,10 @@ public class UserWishlistItem extends Model{
     
     //Foreign Keys
     @ManyToOne @JsonManagedReference
-    public WebUser webUser;
+    public WebUser webUserWishlistReference;
     
     @ManyToOne @JsonManagedReference
-    public Product product;
+    public Product productWishlistReference;
     
 	public static final Finder<Long, UserWishlistItem> find = new Finder<>(UserWishlistItem.class);
 }

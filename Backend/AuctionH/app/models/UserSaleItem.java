@@ -33,10 +33,10 @@ public class UserSaleItem extends Model{
     
     //Foreign Keys
     @ManyToOne @JsonManagedReference
-    public WebUser webUser;
+    public WebUser webUserSaleReference;
     
     @ManyToOne @JsonManagedReference
-    public Product product;
+    public Product productSaleReference;
 	
 	public static final Finder<Long, UserSaleItem> find = new Finder<>(UserSaleItem.class);
 }

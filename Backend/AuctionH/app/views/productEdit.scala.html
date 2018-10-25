@@ -1,20 +1,56 @@
 @(productForm: Form[Product])
 @import helper._
 
-@layout("Product Edit"){
-	<h1>Create a Product</h1>
-	@helper.form(action = helper.CSRF(routes.ProductController.save())){
-		
-		@helper.inputText(productForm("id"))
-		@helper.inputText(productForm("name"))
-		@helper.inputDate(productForm("publishDate"))
-		@helper.inputDate(productForm("expireDate"))
-		@helper.inputText(productForm("mainBid"), 'type -> "number")
-		@helper.inputText(productForm("active"))
-		@helper.inputText(productForm("mainDescription"))
-		@helper.inputText(productForm("additionalDescription"))
-		@helper.inputText(productForm("startingPrice"), 'type -> "number")
-		
-		<input type="submit" value="Create Product">
-	}
+@layout("Product Form"){
+<div class="row">
+	<div class="col-3"></div>
+	<div class="col-6">
+		<div class="card mt-4">
+			<h1 class="card-header display-5 center-element">Create a Product</h1>
+		<div class="card-body">
+			@helper.form(action = helper.CSRF(routes.ProductController.updateProduct())){
+			
+			<div class="input-group">
+				@helper.inputText(productForm("id"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Id", 'size -> 100)
+			</div>
+			<div class="input-group">
+				@helper.inputText(productForm("name"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Name", 'size -> 100)
+			</div>
+			<hr>
+			<label>Auction starting date: </label>
+			<div class="input-group">	
+				@helper.inputDate(productForm("publishDate"),'_label -> "", 'class ->"form-control", 'size -> 100)
+			</div>
+			<hr>	
+			<label>End date: </label>	
+			<div class="input-group">	
+				@helper.inputDate(productForm("expireDate"), 'class ->"form-control", '_label -> "", 'size -> 100)
+			</div>
+			<hr>	
+			<div class="input-group">	
+				@helper.inputText(productForm("mainBid"), 'type -> "number", 'class ->"form-control", '_label -> "", 'placeholder -> "Product Active Main Bid", 'size -> 100)
+			</div>
+			<hr>	
+			<div class="input-group">	
+				@helper.inputText(productForm("active"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Activity state true/false", 'size -> 100)
+			</div>
+				
+			<div class="input-group">	
+				@helper.inputText(productForm("mainDescription"), 'class ->"form-control", '_label -> "", 'placeholder -> "Main Description", 'size -> 100)
+			</div>
+				
+			<div class="input-group">	
+				@helper.inputText(productForm("additionalDescription"), 'class ->"form-control", '_label -> "", 'placeholder -> "Additional Description", 'size -> 100)
+			</div>
+			<hr>	
+			<div class="input-group">	
+				@helper.inputText(productForm("startingPrice"), 'type -> "number", 'class ->"form-control", '_label -> "", 'placeholder -> "Starting price", 'size -> 100)
+			</div>	
+				
+			<input class="btn btn-primary mt-3" type="submit" value="Edit Product">
+			}
+			</div>	
+		</div>	
+	</div>
+</div>	
 }

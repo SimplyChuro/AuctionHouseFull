@@ -1,11 +1,16 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import models.Product;
+import com.fasterxml.jackson.databind.JsonNode;
 
+import models.Product;
+import models.ProductCategory;
+import models.ProductPicture;
+import models.WebUser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
@@ -17,7 +22,7 @@ public class ProductController extends Controller {
 	@Inject
 	FormFactory formFactory;
 	
-	//API
+	//API GET
 	public Result productList() {
 		try {
 			List<Product> products = Product.find.all();
@@ -26,7 +31,58 @@ public class ProductController extends Controller {
 			return notFound(views.html._404.render());
 		}
 	}
-	//
+	
+	//API POST
+	public Result productCreateFromJSON() {
+		
+		JsonNode jsonNode = request().body().asJson();
+		Product product = new Product();
+		try {
+			
+			product.name = jsonNode.findPath("name").textValue();
+			product.publishDate = jsonNode.findPath("publishDate").textValue();
+			product.expireDate = jsonNode.findPath("expireDate").textValue();
+			product.mainBid = jsonNode.findPath("mainBid").asInt();
+			product.active = jsonNode.findPath("active").asBoolean();
+			product.mainDescription = jsonNode.findPath("mainDescription").textValue();
+			product.additionalDescription = jsonNode.findPath("additionalDescription").textValue();
+			product.startingPrice = jsonNode.findPath("startingPrice").asInt();
+			product.productCategory = new ArrayList<>();
+			
+			for (JsonNode category : jsonNode.withArray("category")) {
+				ProductCategory productCategory = new ProductCategory();
+				productCategory.category =  category.get("category").asText();
+				productCategory.parentCategory = category.get("parentcategory").asText();
+				productCategory.productCategoryReference = product;
+				product.productCategory.add(productCategory);
+			}
+			
+			product.productPictures = new ArrayList<>();
+			for (JsonNode picture : jsonNode.withArray("pictures")) {
+				ProductPicture productPicture = new ProductPicture();
+				productPicture.pictureName =  picture.get("category").asText();
+				productPicture.pictureDirectory = picture.get("parentcategory").asText();
+				productPicture.productPictureReference = product;
+				product.productPictures.add(productPicture);
+			}
+			
+			product.save();
+		}catch(Exception e) {
+			
+		}
+		
+		return ok();
+	}
+	
+	
+	public Result productCardList() {
+		try {
+			List<Product> products = Product.find.all();
+			return ok(views.html.productsList.render(products));
+		}catch(Exception e){
+			return notFound(views.html._404.render());
+		}
+	}
 	
 	public Result getOneProduct(Long id) {
 		try {
@@ -81,8 +137,8 @@ public class ProductController extends Controller {
 				oldProduct.additionalDescription = product.additionalDescription;
 				oldProduct.startingPrice = product.startingPrice;
 				oldProduct.update();
+				return redirect(routes.HomeController.index());
 			}
-			return redirect(routes.HomeController.index());
 		}catch(Exception e) {
 			return notFound(views.html._404.render());
 		}
@@ -95,10 +151,26 @@ public class ProductController extends Controller {
 	            flash("danger", "Input validation failed.");
 	            return badRequest(views.html.productCreate.render(productForm));
 	        }
+			
 			Product product = productForm.get();
 			product.save();
+			
 			flash("success", "Product Successfully Created/Updated");
 			return redirect(routes.HomeController.index());
+		}catch(Exception e) {
+			return notFound(views.html._404.render());
+		}
+	}
+	
+	public Result deleteProduct(Long id) {
+		try {
+			Product product = Product.find.byId(id);
+			if(product == null) {
+				return notFound(views.html._404.render());
+			}else {
+				product.delete();
+				return redirect(routes.ProductController.productCardList());
+			}
 		}catch(Exception e) {
 			return notFound(views.html._404.render());
 		}

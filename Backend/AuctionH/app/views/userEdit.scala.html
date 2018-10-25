@@ -1,16 +1,37 @@
 @(userForm: Form[WebUser])
 @import helper._
 
-@layout("User Creation"){
-	<h1>Create a User</h1>
-	@helper.form(action = routes.UserController.updateUser()){
-	
-		@helper.inputText(userForm("id"))
-		@helper.inputText(userForm("name"))
-		@helper.inputText(userForm("surname"))
-		@helper.inputText(userForm("email"))
-		@helper.inputPassword(userForm("password"))
-		
-		<input type="submit" value="Edit User">
-	}
+@layout("User Form"){
+<div class="row">
+	<div class="col-3"></div>
+	<div class="col-6">
+		<div class="card mt-4">
+			<h1 class="card-header display-5 center-element">Edit a user</h1>
+		<div class="card-body">
+			@helper.form(action = helper.CSRF(routes.UserController.updateUser())){
+			
+			<div class="input-group">
+				@helper.inputText(userForm("name"), 'class ->"form-control", '_label -> "", 'placeholder -> "Name", 'size -> 100)
+			</div>
+			
+			<div class="input-group">
+				@helper.inputText(userForm("surname"), 'class ->"form-control", '_label -> "", 'placeholder -> "Surname", 'size -> 100)
+			</div>
+			
+			<div class="input-group">
+				@helper.inputText(userForm("email"), 'class ->"form-control", '_label -> "", 'placeholder -> "E-mail", 'type -> "email", 'size -> 100)
+			</div>
+			
+			<div class="input-group">
+				@helper.inputPassword(userForm("password"), 'class ->"form-control", '_label -> "", 'placeholder -> "Password", 'size -> 100)
+			</div>
+			
+			<input class="btn btn-primary mt-3" type="submit" value="Edit User">
+			
+			
+			}
+			</div>
+		</div>	
+	</div>
+</div>
 }

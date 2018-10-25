@@ -21,10 +21,10 @@ public class UserBid extends Model{
     
     //Foreign Keys
     @ManyToOne @JsonManagedReference
-    public WebUser webUser;
+    public WebUser webUserBidReference;
     
     @ManyToOne @JsonManagedReference
-    public Product product;
+    public Product productBidReference;
     
 	public static final Finder<Long, UserBid> find = new Finder<>(UserBid.class);
 }

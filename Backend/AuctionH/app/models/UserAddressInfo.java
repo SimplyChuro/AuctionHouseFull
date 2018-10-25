@@ -33,7 +33,7 @@ public class UserAddressInfo extends Model{
     
     //Foreign Keys
     @OneToOne @JsonManagedReference
-    public WebUser webUser;
+    public WebUser webUserAddressReference;
 	
 	public static final Finder<Long, UserAddressInfo> find = new Finder<>(UserAddressInfo.class);
 }

@@ -30,7 +30,7 @@ public class UserExtendedPersonalInfo extends Model{
     
     //Foreign Keys
     @OneToOne @JsonManagedReference
-    public WebUser webUser;
+    public WebUser webUserExtInfoReference;
     
 	public static final Finder<Long, UserExtendedPersonalInfo> find = new Finder<>(UserExtendedPersonalInfo.class);
 }

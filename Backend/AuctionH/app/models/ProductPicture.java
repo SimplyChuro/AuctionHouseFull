@@ -19,9 +19,12 @@ public class ProductPicture extends Model{
     @Constraints.Required
 	public String pictureName;
     
+    @Constraints.Required
+  	public String pictureDirectory;
+    
     //Foreign Keys
     @ManyToOne @JsonManagedReference
-    public Product product;
+    public Product productPictureReference;
     
 	public static final Finder<Long, ProductPicture> find = new Finder<>(ProductPicture.class);
 	

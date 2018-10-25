@@ -24,7 +24,7 @@ public class ProductCategory extends Model{
 	
     //Foreign Keys
     @ManyToOne @JsonManagedReference
-    public Product product;
+    public Product productCategoryReference;
     
 	public static final Finder<Long, ProductCategory> find = new Finder<>(ProductCategory.class);
 }
