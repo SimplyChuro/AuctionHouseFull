@@ -6,6 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Product;
 import models.ProductCategory;
@@ -26,7 +28,11 @@ public class ProductController extends Controller {
 	public Result productList() {
 		try {
 			List<Product> products = Product.find.all();
-			return ok(Json.toJson(products));
+			ArrayNode allProducts = Json.newArray();
+			for(Product product: products) {
+				allProducts.add(product.toJson()) ;
+			}
+			return ok(allProducts);
 		}catch(Exception e){
 			return notFound(views.html._404.render());
 		}
@@ -47,26 +53,28 @@ public class ProductController extends Controller {
 			product.mainDescription = jsonNode.findPath("mainDescription").textValue();
 			product.additionalDescription = jsonNode.findPath("additionalDescription").textValue();
 			product.startingPrice = jsonNode.findPath("startingPrice").asInt();
-			product.productCategory = new ArrayList<>();
+			product.save();
 			
+//			product.productCategory = new ArrayList<>();
 			for (JsonNode category : jsonNode.withArray("category")) {
 				ProductCategory productCategory = new ProductCategory();
 				productCategory.category =  category.get("category").asText();
 				productCategory.parentCategory = category.get("parentcategory").asText();
 				productCategory.productCategoryReference = product;
-				product.productCategory.add(productCategory);
+				productCategory.save();
+				//product.productCategory.add(productCategory);
 			}
 			
-			product.productPictures = new ArrayList<>();
+//			product.productPictures = new ArrayList<>();
 			for (JsonNode picture : jsonNode.withArray("pictures")) {
 				ProductPicture productPicture = new ProductPicture();
-				productPicture.pictureName =  picture.get("category").asText();
-				productPicture.pictureDirectory = picture.get("parentcategory").asText();
+				productPicture.pictureName =  picture.get("pictureName").asText();
+				productPicture.pictureDirectory = picture.get("pictureDirectory").asText();
 				productPicture.productPictureReference = product;
-				product.productPictures.add(productPicture);
+				productPicture.save();
+//				product.productPictures.add(productPicture);
 			}
 			
-			product.save();
 		}catch(Exception e) {
 			
 		}

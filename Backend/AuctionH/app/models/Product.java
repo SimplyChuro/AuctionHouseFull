@@ -5,10 +5,14 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.libs.Json;
 
 
 @Entity
@@ -62,5 +66,32 @@ public class Product extends Model{
     public List<UserSaleItem> userSaleItemProducts;
 
 	public static final Finder<Long, Product> find = new Finder<>(Product.class);
+	
+	public ObjectNode toJson() {
+	    ObjectNode node = Json.newObject();
+	    ObjectMapper mapper = new ObjectMapper();
+	    ArrayNode categoryArray = Json.newArray();
+	    for(ProductCategory category : productCategory) {
+	    	categoryArray.add(category.toJson());
+	    }
+	    
+	    ArrayNode pictureArray = Json.newArray();
+	    for(ProductPicture picture : productPictures) {
+	    	pictureArray.add(picture.toJson());
+	    }
+	    
+	    node.put("id", id);
+	    node.put("name", name);
+	    node.put("publishDate", publishDate);
+	    node.put("expireDate", expireDate);
+	    node.put("mainBid", mainBid);
+	    node.put("active", active);
+	    node.put("mainDescription", mainDescription);
+	    node.put("additionalDescription", additionalDescription);
+	    node.put("startingPrice", startingPrice);
+	    node.putArray("category").addAll(categoryArray);
+	    node.putArray("pictures").addAll(pictureArray);
+	    return node;
+	}
 	
 }

@@ -4,8 +4,10 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.ebean.*;
+import play.libs.Json;
 import play.data.format.*;
 import play.data.validation.*;
 
@@ -48,5 +50,15 @@ public class WebUser extends Model{
     public List<UserSaleItem> userSaleItem; 
 	
 	public static final Finder<Long, WebUser> find = new Finder<>(WebUser.class);
+	
+	public ObjectNode toJson() {
+	    ObjectNode node = Json.newObject();
+	    node.put("id", id);
+	    node.put("name", name);
+	    node.put("surname", surname);
+	    node.put("email", email);
+	    node.put("password", password);
+	    return node;
+	}
 	
 }
