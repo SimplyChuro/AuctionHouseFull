@@ -28,16 +28,9 @@ public class ProductCategory extends Model{
 	public String parentCategory;
 	
     //Foreign Keys
-    @ManyToOne @JsonManagedReference
+    @ManyToOne @JsonIgnore
     public Product productCategoryReference;
     
 	public static final Finder<Long, ProductCategory> find = new Finder<>(ProductCategory.class);
 	
-	public ObjectNode toJson() {
-	    ObjectNode node = Json.newObject();
-	    node.put("id", id);
-	    node.put("category", category);
-	    node.put("parentCategory", parentCategory);
-	    return node;
-	}
 }

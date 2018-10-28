@@ -9,7 +9,9 @@ create table product (
   publish_date                  varchar(255),
   expire_date                   varchar(255),
   main_bid                      integer,
-  active                        boolean default false not null,
+  status                        varchar(255),
+  color                         varchar(255),
+  size                          varchar(255),
   main_description              varchar(1500),
   additional_description        varchar(1500),
   starting_price                integer,
@@ -28,6 +30,7 @@ create table product_picture (
   id                            bigserial not null,
   picture_name                  varchar(255),
   picture_directory             varchar(255),
+  type                          varchar(255),
   product_picture_reference_id  bigint,
   constraint pk_product_picture primary key (id)
 );
@@ -47,6 +50,8 @@ create table user_address_info (
 create table user_bid (
   id                            bigserial not null,
   user_bid_amount               integer,
+  user_bid_date                 varchar(255),
+  status                        varchar(255),
   web_user_bid_reference_id     bigint,
   product_bid_reference_id      bigint,
   constraint pk_user_bid primary key (id)
@@ -58,6 +63,7 @@ create table user_extended_personal_info (
   gender                        varchar(255),
   date_of_birth                 varchar(255),
   phone_number                  varchar(255),
+  phone_verified                boolean,
   web_user_ext_info_reference_id bigint,
   constraint uq_user_extended_personal_info_web_user_ext_info_referenc_1 unique (web_user_ext_info_reference_id),
   constraint pk_user_extended_personal_info primary key (id)
@@ -70,6 +76,7 @@ create table user_sale_item (
   zip_code                      varchar(255),
   phone                         varchar(255),
   country                       varchar(255),
+  status                        varchar(255),
   web_user_sale_reference_id    bigint,
   product_sale_reference_id     bigint,
   constraint pk_user_sale_item primary key (id)
@@ -89,6 +96,7 @@ create table web_user (
   surname                       varchar(255),
   email                         varchar(255),
   password                      varchar(255),
+  email_verified                boolean,
   constraint uq_web_user_email unique (email),
   constraint pk_web_user primary key (id)
 );

@@ -26,6 +26,11 @@
 				@helper.inputPassword(userForm("password"), 'class ->"form-control", '_label -> "", 'placeholder -> "Password", 'size -> 100)
 			</div>
 			
+			<div class="input-group">
+				@helper.inputText(userForm("emailVerified"), 'class ->"form-control", '_label -> "", 'placeholder -> "Mail Verified True/false", 'size -> 100)
+			</div>
+			
+			
 			<input class="btn btn-secondary mt-3" type="submit" value="Create User">
 			
 			

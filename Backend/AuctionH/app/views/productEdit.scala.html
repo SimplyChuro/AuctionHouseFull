@@ -32,7 +32,15 @@
 			</div>
 			<hr>	
 			<div class="input-group">	
-				@helper.inputText(productForm("active"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Activity state true/false", 'size -> 100)
+				@helper.inputText(productForm("status"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Status", 'size -> 100)
+			</div>
+				
+			<div class="input-group">	
+				@helper.inputText(productForm("color"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Color", 'size -> 100)
+			</div>
+			
+			<div class="input-group">	
+				@helper.inputText(productForm("size"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Size", 'size -> 100)
 			</div>
 				
 			<div class="input-group">	

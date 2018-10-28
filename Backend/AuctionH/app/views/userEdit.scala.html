@@ -13,6 +13,7 @@
 			<div class="input-group">
 				@helper.inputText(userForm("id"), 'class ->"form-control", '_label -> "", 'placeholder -> "Id", 'size -> 100)
 			</div>	
+			
 			<div class="input-group">
 				@helper.inputText(userForm("name"), 'class ->"form-control", '_label -> "", 'placeholder -> "Name", 'size -> 100)
 			</div>
@@ -27,6 +28,10 @@
 			
 			<div class="input-group">
 				@helper.inputPassword(userForm("password"), 'class ->"form-control", '_label -> "", 'placeholder -> "Password", 'size -> 100)
+			</div>
+			
+			<div class="input-group">
+				@helper.inputText(userForm("emailVerified"), 'class ->"form-control", '_label -> "", 'placeholder -> "Mail Verified True/false", 'size -> 100)
 			</div>
 			
 			<input class="btn btn-primary mt-3" type="submit" value="Edit User">

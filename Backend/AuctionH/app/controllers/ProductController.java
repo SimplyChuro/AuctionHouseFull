@@ -22,17 +22,13 @@ import play.libs.Json;
 public class ProductController extends Controller {
 	
 	@Inject
-	FormFactory formFactory;
+	public FormFactory formFactory;
 	
 	//API GET
 	public Result productList() {
 		try {
 			List<Product> products = Product.find.all();
-			ArrayNode allProducts = Json.newArray();
-			for(Product product: products) {
-				allProducts.add(product.toJson()) ;
-			}
-			return ok(allProducts);
+			return ok(Json.toJson(products));
 		}catch(Exception e){
 			return notFound(views.html._404.render());
 		}
@@ -40,40 +36,11 @@ public class ProductController extends Controller {
 	
 	//API POST
 	public Result productCreateFromJSON() {
-		
-		JsonNode jsonNode = request().body().asJson();
-		Product product = new Product();
 		try {
+			JsonNode jsonNode = request().body().asJson();
+			Product product = new Product();
 			
-			product.name = jsonNode.findPath("name").textValue();
-			product.publishDate = jsonNode.findPath("publishDate").textValue();
-			product.expireDate = jsonNode.findPath("expireDate").textValue();
-			product.mainBid = jsonNode.findPath("mainBid").asInt();
-			product.active = jsonNode.findPath("active").asBoolean();
-			product.mainDescription = jsonNode.findPath("mainDescription").textValue();
-			product.additionalDescription = jsonNode.findPath("additionalDescription").textValue();
-			product.startingPrice = jsonNode.findPath("startingPrice").asInt();
-			product.save();
-			
-//			product.productCategory = new ArrayList<>();
-			for (JsonNode category : jsonNode.withArray("category")) {
-				ProductCategory productCategory = new ProductCategory();
-				productCategory.category =  category.get("category").asText();
-				productCategory.parentCategory = category.get("parentcategory").asText();
-				productCategory.productCategoryReference = product;
-				productCategory.save();
-				//product.productCategory.add(productCategory);
-			}
-			
-//			product.productPictures = new ArrayList<>();
-			for (JsonNode picture : jsonNode.withArray("pictures")) {
-				ProductPicture productPicture = new ProductPicture();
-				productPicture.pictureName =  picture.get("pictureName").asText();
-				productPicture.pictureDirectory = picture.get("pictureDirectory").asText();
-				productPicture.productPictureReference = product;
-				productPicture.save();
-//				product.productPictures.add(productPicture);
-			}
+			product.setProductInfo(jsonNode);
 			
 		}catch(Exception e) {
 			
@@ -140,7 +107,9 @@ public class ProductController extends Controller {
 				oldProduct.publishDate = product.publishDate;
 				oldProduct.expireDate = product.expireDate;
 				oldProduct.mainBid = product.mainBid;
-				oldProduct.active = product.active;
+				oldProduct.status = product.status;;
+				oldProduct.color = product.color;;
+				oldProduct.size = product.size;;
 				oldProduct.mainDescription = product.mainDescription;
 				oldProduct.additionalDescription = product.additionalDescription;
 				oldProduct.startingPrice = product.startingPrice;
@@ -176,6 +145,14 @@ public class ProductController extends Controller {
 			if(product == null) {
 				return notFound(views.html._404.render());
 			}else {
+				for(ProductCategory category : product.productCategory) {
+					category.delete();
+				}
+				
+				for(ProductPicture pictures : product.productPictures) {
+					pictures.delete();
+				}
+				
 				product.delete();
 				return redirect(routes.ProductController.productCardList());
 			}
