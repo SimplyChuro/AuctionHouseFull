@@ -55,9 +55,16 @@ public class WebUser extends Model{
 	
 	public static final Finder<Long, WebUser> find = new Finder<>(WebUser.class);
 	
-
 	
+	//Json builder for users with the biggest bids
 	
+	public ObjectNode toJsonShort() {
+	    ObjectNode node = Json.newObject();
+	    node.put("name", name);
+	    node.put("surname", surname);
+	    node.put("avatar", userExtendedPersonalInfo.avatarName);
+	    return node;
+	}
 	
 	
 	//Json Request Returns

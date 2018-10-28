@@ -56,6 +56,21 @@ public class UserBid extends Model{
 	}
 	
 	
+	//Json builder for users with the biggest bids
+	
+	public ObjectNode toJsonProduct() {
+		ObjectNode node = Json.newObject();
+		ArrayNode user = Json.newArray();
+		user.add(webUserBidReference.toJsonShort());
+		
+		node.put("id", id);
+		node.put("userBidAmount", userBidAmount);
+		node.put("userBidDate", userBidDate);
+	    node.put("status", userBidAmount);
+	    node.putArray("user").addAll(user);
+	    
+	    return node;
+	}
 	
 	//Json Request Returns
 	
@@ -72,19 +87,6 @@ public class UserBid extends Model{
 //	    return node;
 //	}
 //	
-//	public ObjectNode toJsonProduct() {
-//		ObjectNode node = Json.newObject();
-//		ArrayNode user = Json.newArray();
-//		user.add(webUserBidReference.toJsonShort());
-//		
-//		node.put("id", id);
-//		node.put("userBidAmount", userBidAmount);
-//		node.put("userBidDate", userBidDate);
-//	    node.put("status", userBidAmount);
-//	    node.putArray("user").addAll(user);
-//	    
-//	    return node;
-//	}
 //	
 	
 }

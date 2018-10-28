@@ -11,7 +11,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 # User routes
 GET		/users							controllers.UserController.userCardList
-GET		/users/api        				controllers.UserController.userList
 GET		/users/form						controllers.UserController.createOneUser
 GET		/users/user/:id         		controllers.UserController.getOneUser(id : Long)
 GET		/users/edit/:id					controllers.UserController.editUser(id : Long)
@@ -19,13 +18,20 @@ GET		/users/editUser					controllers.UserController.updateUser
 POST	/users/form						controllers.UserController.save
 GET		/users/delete/:id				controllers.UserController.deleteUser(id: Long)
 
+
+# User API routes
+GET		/users/api        				controllers.UserAPIController.userList
 +nocsrf
-POST	/users/create					controllers.UserController.userCreateFromJSON
+POST	/users/create					controllers.UserAPIController.userCreateFromJSON
+POST	/users/cuAddress				controllers.UserAPIController.userCreateFromJSON
+POST	/users/cuExtInfo				controllers.UserAPIController.userCreateFromJSON
+POST	/users/cuBidItem				controllers.UserAPIController.userCreateFromJSON
+POST	/users/cuWishlistItem			controllers.UserAPIController.userCreateFromJSON
+POST	/users/cuSaleItem				controllers.UserAPIController.userCreateFromJSON
 
 
 # Product routes
 GET		/products						controllers.ProductController.productCardList
-GET		/products/api          			controllers.ProductController.productList
 GET		/products/form					controllers.ProductController.createOneProduct
 GET		/products/product/:id         	controllers.ProductController.getOneProduct(id : Long)
 GET		/products/edit/:id				controllers.ProductController.editProduct(id : Long)
@@ -33,5 +39,6 @@ GET		/products/edit					controllers.ProductController.updateProduct
 POST	/products/form					controllers.ProductController.save
 GET		/products/delete/:id			controllers.ProductController.deleteProduct(id: Long)
 
-+nocsrf
-POST 	/products/create				controllers.ProductController.productCreateFromJSON
+
+# Product API routes
+GET		/products/api          			controllers.ProductAPIController.productList

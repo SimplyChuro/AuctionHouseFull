@@ -24,32 +24,6 @@ public class ProductController extends Controller {
 	@Inject
 	public FormFactory formFactory;
 	
-	//API GET
-	public Result productList() {
-		try {
-			List<Product> products = Product.find.all();
-			return ok(Json.toJson(products));
-		}catch(Exception e){
-			return notFound(views.html._404.render());
-		}
-	}
-	
-	//API POST
-	public Result productCreateFromJSON() {
-		try {
-			JsonNode jsonNode = request().body().asJson();
-			Product product = new Product();
-			
-			product.setProductInfo(jsonNode);
-			
-		}catch(Exception e) {
-			
-		}
-		
-		return ok();
-	}
-	
-	
 	public Result productCardList() {
 		try {
 			List<Product> products = Product.find.all();
