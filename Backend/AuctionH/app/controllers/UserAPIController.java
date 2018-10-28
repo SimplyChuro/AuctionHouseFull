@@ -34,7 +34,7 @@ public class UserAPIController extends Controller {
 			JsonNode jsonNode = request().body().asJson();
 			WebUser user = new WebUser();
 			
-			List<WebUser> userList = WebUser.find.query().where().conjunction().eq("email", jsonNode.findPath("email").asLong()).endJunction().findList();
+			List<WebUser> userList = WebUser.find.query().where().conjunction().eq("email", jsonNode.findPath("email").textValue()).endJunction().findList();
 			
 			if(userList.isEmpty()) {
 				user.name = jsonNode.findPath("name").textValue();
@@ -55,9 +55,8 @@ public class UserAPIController extends Controller {
 	
 
 	//API verify Mail
-	public Result userVerifyEmailFromJSON(Long id) {
+	public Result userVerifyEmail(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
 			WebUser user = WebUser.find.byId(id);
 			
 			List<WebUser> userList = WebUser.find.query().where().conjunction().eq("emailVerified", false).endJunction().findList();
@@ -80,7 +79,7 @@ public class UserAPIController extends Controller {
 		public Result userVerifyLogin() {
 			try {
 				JsonNode jsonNode = request().body().asJson();
-				List<WebUser> userList = WebUser.find.query().where().conjunction().eq("email", jsonNode.findPath("email").asLong()).eq("password", jsonNode.findPath("password").asLong()).endJunction().findList();
+				List<WebUser> userList = WebUser.find.query().where().conjunction().eq("email", jsonNode.findPath("email").textValue()).eq("password", jsonNode.findPath("password").textValue()).endJunction().findList();
 				
 				if(userList.isEmpty()) {
 					return ok(Json.toJson(userList.get(0)));
@@ -92,6 +91,53 @@ public class UserAPIController extends Controller {
 			}
 		}
 
+		
+		//API CU for user and user details
+		public Result userUpdateFromJSON() {
+			try {
+				JsonNode jsonNode = request().body().asJson();
+				WebUser user = WebUser.find.byId(jsonNode.findPath("userID").asLong());
+				
+				if(user != null) {
+					user.name = jsonNode.findPath("name").textValue();
+					user.surname = jsonNode.findPath("surname").textValue();
+					user.email = jsonNode.findPath("email").textValue();
+					user.password = jsonNode.findPath("password").textValue();
+					
+					if(user.userExtendedPersonalInfo != null) {
+						UserExtendedPersonalInfo userExtInfo = new UserExtendedPersonalInfo();
+						
+						userExtInfo.setUserExtInfo(jsonNode);
+						userExtInfo.save();
+					}else {
+						UserExtendedPersonalInfo userExtInfo = user.userExtendedPersonalInfo;
+						
+						userExtInfo.setUserExtInfo(jsonNode);
+						userExtInfo.update();
+					}
+					
+					if(user.userAddressInfo != null) {
+						UserAddressInfo userAddressInfo = new UserAddressInfo();
+						
+						userAddressInfo.setUserAddressInfo(jsonNode);
+						userAddressInfo.save();
+					}else {
+						UserAddressInfo userAddressInfo = user.userAddressInfo;
+						
+						userAddressInfo.setUserAddressInfo(jsonNode);
+						userAddressInfo.update();
+					}
+					
+					user.update();
+					
+					return ok();
+				}else {
+					return notFound();
+				}
+			}catch(Exception e) {
+				return notFound(views.html._404.render());
+			}
+		}
 		
 		
 		//API POST for Adress, CU - Create or Update
