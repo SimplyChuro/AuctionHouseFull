@@ -14,7 +14,7 @@ GET		/users							controllers.UserController.userCardList
 GET		/users/form						controllers.UserController.createOneUser
 GET		/users/user/:id         		controllers.UserController.getOneUser(id : Long)
 GET		/users/edit/:id					controllers.UserController.editUser(id : Long)
-GET		/users/editUser					controllers.UserController.updateUser
+GET		/users/editUser/:id				controllers.UserController.updateUser(id : Long)
 POST	/users/form						controllers.UserController.save
 GET		/users/delete/:id				controllers.UserController.deleteUser(id: Long)
 
@@ -42,7 +42,7 @@ GET		/products						controllers.ProductController.productCardList
 GET		/products/form					controllers.ProductController.createOneProduct
 GET		/products/product/:id         	controllers.ProductController.getOneProduct(id : Long)
 GET		/products/edit/:id				controllers.ProductController.editProduct(id : Long)
-GET		/products/edit					controllers.ProductController.updateProduct
+GET		/products/editProduct/:id		controllers.ProductController.updateProduct(id : Long)
 POST	/products/form					controllers.ProductController.save
 GET		/products/delete/:id			controllers.ProductController.deleteProduct(id: Long)
 

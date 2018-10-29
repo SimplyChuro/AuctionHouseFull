@@ -89,10 +89,10 @@ public class UserController extends Controller {
 		}
     }
 	
-	public Result updateUser() {
+	public Result updateUser(Long id) {
 		try{
 			WebUser user = formFactory.form(WebUser.class).bindFromRequest().get();
-			WebUser oldUser = WebUser.find.byId(user.id);
+			WebUser oldUser = WebUser.find.byId(id);
 			
 			if(oldUser == null) {
 				return notFound(views.html._404.render());

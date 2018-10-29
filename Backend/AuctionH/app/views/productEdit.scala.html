@@ -8,11 +8,8 @@
 		<div class="card mt-4">
 			<h1 class="card-header display-5 center-element">Create a Product</h1>
 		<div class="card-body">
-			@helper.form(action = helper.CSRF(routes.ProductController.updateProduct())){
+			@helper.form(action = helper.CSRF(routes.ProductController.updateProduct(productForm.get.id))){
 			
-			<div class="input-group">
-				@helper.inputText(productForm("id"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Id", 'size -> 100)
-			</div>
 			<div class="input-group">
 				@helper.inputText(productForm("name"), 'class ->"form-control", '_label -> "", 'placeholder -> "Product Name", 'size -> 100)
 			</div>

@@ -69,10 +69,10 @@ public class ProductController extends Controller {
 		}
     }
 	
-	public Result updateProduct() {
+	public Result updateProduct(Long id) {
 		try {
 			Product product = formFactory.form(Product.class).bindFromRequest().get();
-			Product oldProduct = Product.find.byId(product.id);
+			Product oldProduct = Product.find.byId(id);
 			
 			if(oldProduct == null) {
 				return notFound(views.html._404.render());
