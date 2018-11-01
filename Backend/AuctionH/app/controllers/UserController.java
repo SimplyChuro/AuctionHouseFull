@@ -129,7 +129,7 @@ public class UserController extends Controller {
 			return badRequest();
 		}
 	}	
-	S
+	
 	//Update bid		
 	public Result updateBid() {
 		try {
@@ -235,35 +235,35 @@ public class UserController extends Controller {
 	////////////////////////////////////////////
 	public Result createSale() {
 		try {
-			
-			JsonNode jsonNode = request().body().asJson();	
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
-			saleItem.product.save();
-			
-			JsonNode arrayNode = jsonNode.get("").readTree().get("objects");
+//			
+//			JsonNode jsonNode = request().body().asJson();	
+//			
+//			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
+//			saleItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
+//			saleItem.product.save();
+//			
+//			JsonNode arrayNode = jsonNode.get("").readTree().get("objects");
 //			if (arrayNode.isArray()) {
 //			    for (final JsonNode objNode : arrNode) {
 //			        System.out.println(objNode);
 //			    }
 //			}
-			
+//			
 //			for (int i = 0; i < catIds.size(); i++) {
 //				ProductCategory categoryConnection = new ProductCategory();
 //				categoryConnection.product = saleItem.product;
 //				categoryConnection.category = Category.find.byId(jsonNode.findPath("product_category_category_id").asLong());
 //				categoryConnection.save();
 //			}
-			
-			for(Pictures picture : saleItem.product.pictures) {
-				picture.product = saleItem.product;
-				picture.save();
-			}
-			
-			saleItem.save();
-			
-			return ok(Json.toJson(saleItem.product.category));	
+//			
+//			for(Pictures picture : saleItem.product.pictures) {
+//				picture.product = saleItem.product;
+//				picture.save();
+//			}
+//			
+//			saleItem.save();
+//			
+			return ok();	
 		}catch(Exception e){
 			return badRequest();
 		}
