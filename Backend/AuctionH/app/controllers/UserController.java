@@ -129,7 +129,7 @@ public class UserController extends Controller {
 			return badRequest();
 		}
 	}	
-	
+	S
 	//Update bid		
 	public Result updateBid() {
 		try {
@@ -229,15 +229,20 @@ public class UserController extends Controller {
 		
 	
 	//Create Sale
+	////////////////////////////////////////////
+	///////////////NOT FINISHED/////////////////
+	////////////////////////////////////////////
+	////////////////////////////////////////////
 	public Result createSale() {
 		try {
+			
 			JsonNode jsonNode = request().body().asJson();	
 			
 			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
 			saleItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
 			saleItem.product.save();
 			
-//			final JsonNode arrayNode = jsonNode.get("").readTree().get("objects");
+			JsonNode arrayNode = jsonNode.get("").readTree().get("objects");
 //			if (arrayNode.isArray()) {
 //			    for (final JsonNode objNode : arrNode) {
 //			        System.out.println(objNode);
