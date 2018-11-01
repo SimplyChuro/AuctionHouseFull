@@ -15,20 +15,22 @@ import play.data.validation.*;
 import play.libs.Json;
 
 @Entity
-public class ProductCategory extends Model {
+public class Category extends Model{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 	
+    @Constraints.Required
+	public String name;
+    
+    @Constraints.Required
+ 	public Long parent_id;
+	
     //Foreign Keys
-    @ManyToOne @JsonIgnore
-    public Category category;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="category") 
+    public List<ProductCategory> products;
     
-    @ManyToOne 
-    public Products product;
-    
-
-	public static final Finder<Long, ProductCategory> find = new Finder<>(ProductCategory.class);
-
+	public static final Finder<Long, Category> find = new Finder<>(Category.class);
+	
 }
