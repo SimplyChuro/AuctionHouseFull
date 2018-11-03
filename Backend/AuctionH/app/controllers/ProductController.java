@@ -25,10 +25,24 @@ import play.libs.Json;
 public class ProductController extends Controller {
 	
 	//get products
-	public Result productList() {
+	public Result products() {
 		try {
 			List<Products> products = Products.find.all();
-			return ok(Json.toJson(products));
+			JsonNode productNode = Json.toJson(products);
+			String json ="{\"products\":"+Json.stringify(productNode)+"}";
+			return ok(Json.parse(json));
+		}catch(Exception e){
+			return notFound();
+		}
+	}
+	
+	//get products
+	public Result product(Long id) {
+		try {
+			Products product = Products.find.byId(id);
+			JsonNode productNode = Json.toJson(product);
+			String json ="{\"product\":"+Json.stringify(productNode)+"}";
+			return ok(Json.parse(json));
 		}catch(Exception e){
 			return notFound();
 		}
@@ -73,56 +87,8 @@ public class ProductController extends Controller {
 		}
 	}
 	
-	//Get main category list
-	public Result categoryList() {
-		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			List<Category> categoryList = Category.find.query().where().conjunction()
-					.eq("parent_id", null)
-					.endJunction()
-					.orderBy("name asc")
-			        .findList();
-			
-			return ok(Json.toJson(categoryList));
-		}catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
-	//Get sub category list which returns all products
-	public Result subCategoryList(Long id) {
-		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			List<Category> categoryList = Category.find.query().where().conjunction()
-					.eq("parent_id", id)
-					.endJunction()
-					.orderBy("name asc")
-			        .findList();
-			
-			return ok(Json.toJson(categoryList));
-		}catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
-	//create category
-	public Result createCategory() {
-		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Category category = Json.fromJson(jsonNode, Category.class);
-			category.save();
-	
-			return ok();
-		}catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
 	//Get top 5 bidder amounts  NOT FINISHED
-	public Result productBids(Long id) {
+	public Result bids(Long id) {
 		try {
 			List<Bids> bidList = Bids.find.query().where().conjunction()
 					.eq("product_id", id)
@@ -136,4 +102,5 @@ public class ProductController extends Controller {
 			return notFound();
 		}
 	}
+
 }

@@ -1,34 +1,38 @@
 # User API routes
-GET		/apiv1/users		      			controllers.UserController.userList
-GET		/apiv1/users/verifyMail/:id			controllers.UserController.verifyEmail(id : Long)
+GET		/api/v1/users		      			controllers.UserController.users
+GET		/api/v1/users/verifyMail/:id		controllers.UserController.verify(id : Long)
 
-POST	/apiv1/users/login					controllers.UserController.login
-POST	/apiv1/users/create					controllers.UserController.create
-PUT		/apiv1/users/update					controllers.UserController.update
+POST	/api/v1/users/login					controllers.UserController.login
+POST	/api/v1/users/create				controllers.UserController.create
+PUT		/api/v1/users/update				controllers.UserController.update
 
-POST	/apiv1/users/bid/create				controllers.UserController.createBid
-PUT		/apiv1/users/bid/update				controllers.UserController.updateBid
-DELETE	/apiv1/users/bid/delete				controllers.UserController.deleteBid
+POST	/api/v1/users/bid/create			controllers.BidController.create
+PUT		/api/v1/users/bid/update			controllers.BidController.update
+DELETE	/api/v1/users/bid/delete			controllers.BidController.delete
 
-POST	/apiv1/users/wishlist/create		controllers.UserController.createWishlist
-PUT		/apiv1/users/wishlist/update		controllers.UserController.updateWishlist
-DELETE	/apiv1/users/wishlist/delete		controllers.UserController.deleteWishlist
+POST	/api/v1/users/wishlist/create		controllers.WishlistController.create
+PUT		/api/v1/users/wishlist/update		controllers.WishlistController.update
+DELETE	/api/v1/users/wishlist/delete		controllers.WishlistController.delete
 
-POST	/apiv1/users/sale/create			controllers.UserController.createSale
-PUT		/apiv1/users/sale/update			controllers.UserController.updateSale
-DELETE	/apiv1/users/sale/delete			controllers.UserController.deleteSale
+POST	/api/v1/users/sale/create			controllers.SaleController.create
+PUT		/api/v1/users/sale/update			controllers.SaleController.update
+DELETE	/api/v1/users/sale/delete			controllers.SaleController.delete
 
 
 # Product API routes
-GET		/apiv1/products						controllers.ProductController.productList
-GET		/apiv1/products/bids/:id			controllers.ProductController.productBids(id : Long)
+GET		/api/v1/products					controllers.ProductController.products
+GET		/api/v1/products/:id				controllers.ProductController.product(id : Long)
+GET		/api/v1/products/:id/bids			controllers.ProductController.bids(id : Long)
 
-POST	/apiv1/create						controllers.ProductController.create
-PUT		/apiv1/update						controllers.ProductController.update
-DELETE	/apiv1/delete						controllers.ProductController.delete
+POST	/api/v1/products/create				controllers.ProductController.create
+PUT		/api/v1/products/update				controllers.ProductController.update
+DELETE	/api/v1/products/delete				controllers.ProductController.delete
 
-GET		/apiv1/category						controllers.ProductController.categoryList
-GET		/apiv1/category/:id					controllers.ProductController.subCategoryList(id : Long)
-POST	/apiv1/category/create				controllers.ProductController.createCategory
+POST	/api/v1/category/create				controllers.CategoryController.create
+PUT		/api/v1/category/update				controllers.CategoryController.update
+DELETE	/api/v1/category/delete				controllers.CategoryController.delete
+
+GET		/api/v1/category					controllers.CategoryController.categories
+GET		/api/v1/category/:id				controllers.CategoryController.category(id : Long)
 
 
