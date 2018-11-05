@@ -9,10 +9,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import models.Product;
+import models.Products;
+import models.Sales;
+import models.Category;
+import models.Pictures;
 import models.ProductCategory;
-import models.ProductPicture;
-import models.WebUser;
+import models.Bids;
+import models.Users;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.data.Form;
@@ -21,117 +24,83 @@ import play.libs.Json;
 
 public class ProductController extends Controller {
 	
-	@Inject
-	public FormFactory formFactory;
-	
-	public Result productCardList() {
+	//get products
+	public Result products() {
 		try {
-			List<Product> products = Product.find.all();
-			return ok(views.html.productsList.render(products));
+			List<Products> products = Products.find.all();
+			JsonNode productNode = Json.toJson(products);
+			String json ="{\"products\":"+Json.stringify(productNode)+"}";
+			return ok(Json.parse(json));
 		}catch(Exception e){
-			return notFound(views.html._404.render());
+			return notFound();
 		}
 	}
 	
-	public Result getOneProduct(Long id) {
+	//get products
+	public Result product(Long id) {
 		try {
-			Product product = Product.find.byId(id);
-	        if(product == null){
-	            return notFound(views.html._404.render());
-	        }else {
-	        	return ok(views.html.productView.render(product));
-	        }
-		}catch(Exception e) {
-			return notFound(views.html._404.render());
+			Products product = Products.find.byId(id);
+			JsonNode productNode = Json.toJson(product);
+			String json ="{\"product\":"+Json.stringify(productNode)+"}";
+			return ok(Json.parse(json));
+		}catch(Exception e){
+			return notFound();
 		}
 	}
 	
-	public Result createOneProduct() {
+	//Create product
+	public Result create() {
 		try {
-			Form<Product> productForm = formFactory.form(Product.class);
-			return ok(views.html.productCreate.render(productForm));	
-		}catch(Exception e) {
-			return notFound(views.html._404.render());
-		}
-	}
+			JsonNode jsonNode = request().body().asJson();
 	
-	public Result editProduct(Long id) {
-		try {
-			Product product = Product.find.byId(id);
-	        if(product == null){
-	            return notFound(views.html._404.render());
-	        }else {
-				Form<Product> productForm = formFactory.form(Product.class).fill(product);
-	        	return ok(views.html.productEdit.render(productForm));
-	        }
-		}catch(Exception e) {
-			return notFound(views.html._404.render());
-		}
-    }
-	
-	public Result updateProduct(Long id) {
-		try {
-			Product product = formFactory.form(Product.class).bindFromRequest().get();
-			Product oldProduct = Product.find.byId(id);
-			
-			if(oldProduct == null) {
-				return notFound(views.html._404.render());
-			}else {
-				oldProduct.name = product.name;
-				oldProduct.publishDate = product.publishDate;
-				oldProduct.expireDate = product.expireDate;
-				oldProduct.mainBid = product.mainBid;
-				oldProduct.status = product.status;;
-				oldProduct.color = product.color;;
-				oldProduct.size = product.size;;
-				oldProduct.mainDescription = product.mainDescription;
-				oldProduct.additionalDescription = product.additionalDescription;
-				oldProduct.startingPrice = product.startingPrice;
-				oldProduct.update();
-				return redirect(routes.HomeController.index());
-			}
-		}catch(Exception e) {
-			return notFound(views.html._404.render());
-		}
-    }
-	
-	public Result save() {
-		try {
-			Form<Product> productForm = formFactory.form(Product.class).bindFromRequest();
-			if(productForm.hasErrors()){
-	            flash("danger", "Input validation failed.");
-	            return badRequest(views.html.productCreate.render(productForm));
-	        }
-			
-			Product product = productForm.get();
+			Products product = Json.fromJson(jsonNode, Products.class);
 			product.save();
-			
-			flash("success", "Product Successfully Created/Updated");
-			return redirect(routes.HomeController.index());
+			return ok();
 		}catch(Exception e) {
-			return notFound(views.html._404.render());
+			return badRequest();
 		}
 	}
 	
-	public Result deleteProduct(Long id) {
+	//Update product
+	public Result update() {
 		try {
-			Product product = Product.find.byId(id);
-			if(product == null) {
-				return notFound(views.html._404.render());
-			}else {
-				for(ProductCategory category : product.productCategory) {
-					category.delete();
-				}
-				
-				for(ProductPicture pictures : product.productPictures) {
-					pictures.delete();
-				}
-				
-				product.delete();
-				return redirect(routes.ProductController.productCardList());
-			}
+			JsonNode jsonNode = request().body().asJson();
+	
+			Products product = Json.fromJson(jsonNode, Products.class);
+			product.update();
+			return ok();
 		}catch(Exception e) {
-			return notFound(views.html._404.render());
+			return badRequest();
 		}
 	}
+	
+	//Delete product
+	public Result delete() {
+		try {
+			JsonNode jsonNode = request().body().asJson();
+	
+			Products product = Json.fromJson(jsonNode, Products.class);
+			product.delete();
+			return ok();
+		}catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Get top 5 bidder amounts  NOT FINISHED
+	public Result bids(Long id) {
+		try {
+			List<Bids> bidList = Bids.find.query().where().conjunction()
+					.eq("product_id", id)
+					.endJunction()
+					.orderBy("bidAmount desc")
+			        .setMaxRows(5)
+			        .findList();
+			
+			return ok(Json.toJson(bidList));
+		}catch(Exception e){
+			return notFound();
+		}
+	}
+
 }

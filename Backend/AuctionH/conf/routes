@@ -1,52 +1,38 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-# An example controller showing a sample home page
-GET     /          					controllers.HomeController.index
-        
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-
-# User routes
-GET		/users							controllers.UserController.userCardList
-GET		/users/form						controllers.UserController.createOneUser
-GET		/users/user/:id         		controllers.UserController.getOneUser(id : Long)
-GET		/users/edit/:id					controllers.UserController.editUser(id : Long)
-GET		/users/editUser/:id				controllers.UserController.updateUser(id : Long)
-POST	/users/form						controllers.UserController.save
-GET		/users/delete/:id				controllers.UserController.deleteUser(id: Long)
-
-
-
 # User API routes
-GET		/users/api        				controllers.UserAPIController.userList
-GET		/users/verifyMail/:id			controllers.UserAPIController.userVerifyEmail(id : Long)
+GET		/api/v1/users		      			controllers.UserController.users
+GET		/api/v1/users/verifyMail/:id		controllers.UserController.verify(id : Long)
 
-+nocsrf
-POST	/users/create					controllers.UserAPIController.userCreateFromJSON
-POST	/users/cuBidItem				controllers.UserAPIController.userBidCUFromJSON
-POST	/users/cuWishlistItem			controllers.UserAPIController.userWishlistCUFromJSON
-POST	/users/cuSaleItem				controllers.UserAPIController.userSaleCUFromJSON
-POST	/users/userUpdateInfo			controllers.UserAPIController.userUpdateFromJSON
+POST	/api/v1/users/login					controllers.UserController.login
+POST	/api/v1/users/create				controllers.UserController.create
+PUT		/api/v1/users/update				controllers.UserController.update
 
-# Optional 
-POST	/users/cuAddress				controllers.UserAPIController.userAdressCUFromJSON
-POST	/users/cuExtInfo				controllers.UserAPIController.userExtInfoCUFromJSON
+POST	/api/v1/users/bid/create			controllers.BidController.create
+PUT		/api/v1/users/bid/update			controllers.BidController.update
+DELETE	/api/v1/users/bid/delete			controllers.BidController.delete
 
+POST	/api/v1/users/wishlist/create		controllers.WishlistController.create
+PUT		/api/v1/users/wishlist/update		controllers.WishlistController.update
+DELETE	/api/v1/users/wishlist/delete		controllers.WishlistController.delete
 
-
-# Product routes
-GET		/products						controllers.ProductController.productCardList
-GET		/products/form					controllers.ProductController.createOneProduct
-GET		/products/product/:id         	controllers.ProductController.getOneProduct(id : Long)
-GET		/products/edit/:id				controllers.ProductController.editProduct(id : Long)
-GET		/products/editProduct/:id		controllers.ProductController.updateProduct(id : Long)
-POST	/products/form					controllers.ProductController.save
-GET		/products/delete/:id			controllers.ProductController.deleteProduct(id: Long)
+POST	/api/v1/users/sale/create			controllers.SaleController.create
+PUT		/api/v1/users/sale/update			controllers.SaleController.update
+DELETE	/api/v1/users/sale/delete			controllers.SaleController.delete
 
 
 # Product API routes
-GET		/products/api					controllers.ProductAPIController.productList
-GET		/products/bidders/api/:id		controllers.ProductAPIController.productBidderList(id : Long)
+GET		/api/v1/products					controllers.ProductController.products
+GET		/api/v1/products/:id				controllers.ProductController.product(id : Long)
+GET		/api/v1/products/:id/bids			controllers.ProductController.bids(id : Long)
+
+POST	/api/v1/products/create				controllers.ProductController.create
+PUT		/api/v1/products/update				controllers.ProductController.update
+DELETE	/api/v1/products/delete				controllers.ProductController.delete
+
+POST	/api/v1/category/create				controllers.CategoryController.create
+PUT		/api/v1/category/update				controllers.CategoryController.update
+DELETE	/api/v1/category/delete				controllers.CategoryController.delete
+
+GET		/api/v1/category					controllers.CategoryController.categories
+GET		/api/v1/category/:id				controllers.CategoryController.category(id : Long)
+
+

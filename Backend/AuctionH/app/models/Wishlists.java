@@ -5,34 +5,32 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
-import play.data.validation.Constraints.Required;
 import play.libs.Json;
 
 @Entity
-public class ProductPicture extends Model{
+public class Wishlists extends Model{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
-		
+	
     @Constraints.Required
-	public String pictureName;
-    
-    @Constraints.Required
-  	public String pictureDirectory;
-    
-    @Constraints.Required
-	public String type;
+	public String status;
     
     //Foreign Keys
     @ManyToOne @JsonIgnore
-    public Product productPictureReference;
+    public Users user;
     
-	public static final Finder<Long, ProductPicture> find = new Finder<>(ProductPicture.class);
-	
+    @ManyToOne
+    public Products product;
+    
+	public static final Finder<Long, Wishlists> find = new Finder<>(Wishlists.class);
+
 }
