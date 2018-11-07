@@ -11,41 +11,30 @@ import play.mvc.Result;
 
 public class CategoryController extends Controller{
 	
-	//Get main category list
+	//Get categories
 	public Result categories() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
-	
-//			List<Category> categoryList = Category.find.query().where().conjunction()
-//					.eq("parent_id", null)
-//					.endJunction()
-//					.orderBy("name asc")
-//			        .findList();
-			
-			return ok(Json.toJson(Category.find.all()));
+			List<Category> categories = Category.find.all();
+			return ok(Json.toJson(categories));
 		}catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Get sub category list which returns all products
+	//Get one category	
 	public Result category(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
-	
-			List<Category> categoryList = Category.find.query().where().conjunction()
-					.eq("parent_id", id)
-					.endJunction()
-					.orderBy("name asc")
-			        .findList();
+			Category category = Category.find.byId(id);
 			
-			return ok(Json.toJson(categoryList));
+			return ok(Json.toJson(category));
 		}catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//create category  testing only
+	//create category  
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -59,7 +48,7 @@ public class CategoryController extends Controller{
 		}
 	}
 	
-	//update category  testing only
+	//update category  
 	public Result update() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -73,7 +62,7 @@ public class CategoryController extends Controller{
 		}
 	}
 	
-	//delete category  testing only
+	//delete category 
 	public Result delete() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
