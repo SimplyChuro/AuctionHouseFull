@@ -16,13 +16,13 @@ public class CategoryController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 	
-			List<Category> categoryList = Category.find.query().where().conjunction()
-					.eq("parent_id", null)
-					.endJunction()
-					.orderBy("name asc")
-			        .findList();
+//			List<Category> categoryList = Category.find.query().where().conjunction()
+//					.eq("parent_id", null)
+//					.endJunction()
+//					.orderBy("name asc")
+//			        .findList();
 			
-			return ok(Json.toJson(categoryList));
+			return ok(Json.toJson(Category.find.all()));
 		}catch(Exception e) {
 			return badRequest();
 		}

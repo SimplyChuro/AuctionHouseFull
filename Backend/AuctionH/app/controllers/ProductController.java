@@ -28,9 +28,7 @@ public class ProductController extends Controller {
 	public Result products() {
 		try {
 			List<Products> products = Products.find.all();
-			JsonNode productNode = Json.toJson(products);
-			String json ="{\"products\":"+Json.stringify(productNode)+"}";
-			return ok(Json.parse(json));
+			return ok(Json.toJson(products));
 		}catch(Exception e){
 			return notFound();
 		}
@@ -40,9 +38,7 @@ public class ProductController extends Controller {
 	public Result product(Long id) {
 		try {
 			Products product = Products.find.byId(id);
-			JsonNode productNode = Json.toJson(product);
-			String json ="{\"product\":"+Json.stringify(productNode)+"}";
-			return ok(Json.parse(json));
+			return ok(Json.toJson(product));
 		}catch(Exception e){
 			return notFound();
 		}
@@ -55,6 +51,12 @@ public class ProductController extends Controller {
 	
 			Products product = Json.fromJson(jsonNode, Products.class);
 			product.save();
+			
+			for(Pictures picture : product.pictures) {
+				picture.product = product;
+				picture.save();
+			}
+			
 			return ok();
 		}catch(Exception e) {
 			return badRequest();
@@ -68,6 +70,12 @@ public class ProductController extends Controller {
 	
 			Products product = Json.fromJson(jsonNode, Products.class);
 			product.update();
+			
+			for(Pictures picture : product.pictures) {
+				picture.product = product;
+				picture.update();
+			}
+			
 			return ok();
 		}catch(Exception e) {
 			return badRequest();
@@ -81,6 +89,12 @@ public class ProductController extends Controller {
 	
 			Products product = Json.fromJson(jsonNode, Products.class);
 			product.delete();
+			
+			for(Pictures picture : product.pictures) {
+				picture.product = product;
+				picture.delete();
+			}
+			
 			return ok();
 		}catch(Exception e) {
 			return badRequest();
