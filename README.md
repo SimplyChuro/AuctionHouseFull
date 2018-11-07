@@ -1,5 +1,5 @@
 # AuctionHouseFull
 
-# Project Development
+#Project Development
 
-# Currently the frontend is located in the backend directory and the name of the frontend directory is auction-house while the directory AuctionH is the backend which provides an api interface
+#Currently the frontend is located in the backend directory and the name of the frontend directory is auction-house while the directory AuctionH is the backend which provides an api interface
