@@ -1,0 +1,73 @@
+<div class="container-fluid current-route-background mb-5">
+	<div class="container">
+		<p class="form-title-text">SINGLE PRODUCT<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   SINGLE PRODUCT</span></p>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-100">
+	<div class="container">
+		<div class="row single-product-margin">
+			<div class="col-lg-5 col-xl-5">
+				<div class="single-product-picture-background single-product-main-picture">
+				</div>
+				<div class="row single-product-margin-small"> 
+					<div class="col-lg-3 col-xl-3 p-1">
+						<div class="single-product-picture-background single-product-side-picture">
+						</div>
+					</div>
+					<div class="col-lg-3 col-xl-3 p-1">
+						<div class="single-product-picture-background single-product-side-picture">
+						</div>
+					</div>
+					<div class="col-lg-3 col-xl-3 p-1">
+						<div class="single-product-picture-background single-product-side-picture">
+						</div>
+					</div>
+					<div class="col-lg-3 col-xl-3 p-1">
+						<div class="single-product-picture-background single-product-side-picture">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-7 col-xl-7">
+				<h1 class="title-text-links">{{model.name}}</h1>
+				<p class="single-product-price-text">Starting from - {{model.startingPriceFormated}}</p>
+				<div class="mt-4">
+					{{input type="number" value=name class="single-product-bid-input"}}
+					{{#link-to "home" class="single-product-featured-button"}}
+	  					PLACE BID
+					{{/link-to}}
+					<p class="single-product-small-text mt-1">Enter - {{model.mainBidFormated}} or more</p>
+				</div>
+				<div class="mt-5">
+					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{model.mainBidFormated}}</span></p>
+					<p class="single-product-small-text m-0 p-0">Number of Bids:</p>
+					<p class="single-product-small-text m-0 p-0">Time Remaining: {{model.duration}}</p>
+				</div>
+				<button class="single-product-watchlist-btn mt-4">Watchlist</button>
+				<p class="single-product-description-text mt-3">Placeholder</p>
+				<hr class="single-product-underline">
+				<p>{{model.description}}</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="container-fluid pt-5 bottom-margin-100">
+	<div class="container">
+		<h1 class="feature-collection-text">Feature Collection</h1>
+		<hr class="feature-line">
+		<div class="row">
+			{{#each product as |product|}}
+				<div class="col-lg-4 col-xl-4 mb-3 mt-2">
+					<div class="card">
+					 <h1 class="card-title">{{product.name}}</h1>
+						  <div class="card-body">
+						    <p class="card-text">{{product.description}}</p>
+						  </div>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div> -->

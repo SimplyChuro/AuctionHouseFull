@@ -1,0 +1,565 @@
+/*header design*/
+body{
+	padding: 0px;
+	margin: 0px;
+	font-family: Lato;
+	font-size: 16px;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.user-navigation-bar{
+	background: #252525;
+}
+
+.divider{
+	font-size: 14px;
+	color: #9B9B9B;
+	letter-spacing: 0.49px;
+	margin: 10px 10px 0px 10px;
+}
+
+.title{
+	font-size: 24px;
+	color: #8367D8;
+	letter-spacing: 0.84px;
+	margin-top: 15px;
+}
+
+.navigation-form{
+	margin-left: 10%;
+	margin-bottom: 4px;	
+	width: 50%;
+	box-shadow: 2px 2px 2px  #C0C0C0;
+}
+
+.nav-link{
+	color: #252525;
+}
+
+.nav-link:hover{
+	color: #8367D8;
+}
+/**/
+
+
+
+
+
+/*404 response website design*/
+.main-error-text{
+	font-size: 300px;
+	color: #8367D8;
+	letter-spacing: 10.5px;
+	text-shadow: 8px 10px 0 #DADADA;
+}
+
+.additional-error-text{
+	font-size: 36px;
+	color: #252525;
+	letter-spacing: 1.26px;
+	margin-bottom: 50px;
+}
+
+.error-button{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+	padding: 15px 30px;
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.11);
+
+}
+
+.error-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+/**/
+
+
+/*global margin class list*/
+.bottom-margin-100{
+	margin-bottom: 100px;
+}
+
+.bottom-margin-200{
+	margin-bottom: 200px;
+}
+
+
+.bottom-margin-300{
+	margin-bottom: 300px;
+}
+
+.top-margin-100{
+	margin-top: 100px;
+}
+
+.top-margin-200{
+	margin-top: 200px;
+}
+/**/
+
+
+
+
+/*login*/
+/*form-title is used in register as well*/
+.form-title-text{
+	padding: 15px 0px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+/*card-title is used in register as well*/
+.card-title{
+	background: #FAFAFA;
+	padding: 15px 0px;
+	font-size: 24px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.84px;
+	text-align: center;
+}
+
+.btn-purple{
+	width: 100%;
+	background: #8367D8;
+	font-weight: bold;
+	color: #FFFFFF;
+	padding: 10px 0px;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+}
+
+.btn-blue{
+	width: 45%;
+	background: #475993;
+	padding: 10px 0px;
+	border: 3px solid #415994;
+	font-weight: bold;
+	font-size: 16px;
+	color: #FFFFFF;
+	letter-spacing: 0.56px;
+	text-align: center;
+}
+
+.btn-red{
+	width: 45%;
+	padding: 10px 0px;
+	float: right;
+	background: #CD5542;
+	border: 3px solid #CD5542;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+/*margin card is also used in register*/
+.margin-card{
+	margin-top: 10px;
+	margin-bottom: 200px;
+}
+
+/**/
+
+
+
+
+/*Register*/
+.login-nav-link{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.login-nav-link:hover{
+	text-decoration: none;
+}
+
+.btn-purple-outline{
+	width: 100%;
+	padding: 10px 0px;
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+	text-align: center;
+	font-weight: bold;
+}
+
+/**/
+
+
+/*Password Reset*/
+
+.password-reset-text{
+	font-size: 18px;
+	color: #9B9B9B;
+	letter-spacing: 0.63px;
+}
+
+/**/
+
+
+/*global form background color class*/
+.form-background-color{
+	background: #FCFCFC;
+}
+
+
+/*global route classes*/
+.current-route-text{
+	float: right;
+	font-size: 16px;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.current-route-parent-text{
+	opacity: 0.5;
+	font-size: 16px;
+	color: #252525;
+	letter-spacing: 0.56px;
+
+}
+
+.current-route-background{
+	background: #FAFAFA;
+}
+
+/**/
+
+
+
+
+/*home landing page*/
+.center-margin{
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.home-featured-title{
+	font-size: 46px;
+	color: #252525;
+	letter-spacing: 1.61px;
+}
+
+.home-featured-price{
+	font-size: 24px;
+	color: #8367D8;
+	letter-spacing: 0.84px;
+}
+
+.home-featured-button{
+	font-size: 18px;
+	font-weight: bold
+	letter-spacing: 0.63px;
+	padding: 15px 30px;
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+	color: #252525;
+}
+
+.home-featured-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+/*global class*/
+.feature-collection-text{
+	font-size: 28px;
+	color: #252525;
+	letter-spacing: 0.98px
+}	
+
+.category-table{
+	background: #FFFFFF;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.11);
+}
+
+.category-table-title{
+	font-size: 16px;
+	font-weight: bold;
+	color: #8367D8;
+	letter-spacing: 0.56px;
+	margin-left: 10px;
+}
+
+.category-table-link{
+	font-size: 16px;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.category-table-link:hover{
+	text-decoration: none;
+	color: #696969;
+}
+
+.category-table-row-full{
+	width: 100%;
+	padding: 10px 0px 10px 10px;
+}
+
+.featured-list-title{
+	font-size: 28px;
+	color: #252525;
+	letter-spacing: 0.98px;
+}
+
+.feature-line{
+	background: #ECECEC;
+	height: 2px;
+}
+
+.home-product-card{
+
+}
+
+.home-product-card-image-holder{
+	height: 15vw;
+	background: #ECECEC;
+}
+
+.home-product-card-name-text{
+	font-size: 24px;
+	color: #252525;
+	letter-spacing: 0.84px;
+}
+
+.home-product-card-price-text{
+	font-size: 16px;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+/**/
+
+
+
+
+
+
+/*Single product design*/
+
+.single-product-price-text{
+	font-size: 24px;
+	color: #8367D8;
+	letter-spacing: 0.84px;
+}
+
+.single-product-bid-input{
+	width: 30%;
+	background: #ECECEC;
+	border: 1px solid #D8D8D8;
+	padding: 15px;
+	margin-right: 10px;
+}
+
+
+.single-product-featured-button{
+	font-size: 18px;
+	font-weight: bold
+	letter-spacing: 0.63px;
+	padding: 15px 30px;
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+	color: #252525;
+}
+
+.single-product-featured-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+
+.single-product-small-text{
+	font-size: 15px;
+	color: #9B9B9B;
+	letter-spacing: 0.52px;
+	line-height: 22px;
+}
+
+.single-product-watchlist-btn{
+	padding: 5px 15px;
+	font-size: 15px;
+	color: #252525;
+	letter-spacing: 0.52px;
+	line-height: 22px;
+	background: #FFFFFF;
+	border: 3px solid #ECECEC;
+	cursor: pointer;
+}
+
+.single-product-description-text{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.single-product-underline{
+	height: 2px;
+	background: #ECECEC;
+}
+
+.single-product-picture-background{
+	background: #ECECEC;
+}
+
+.single-product-main-picture{
+	width: 100%;
+	height: 25vw;
+}
+
+.single-product-side-picture{
+	padding: 5px;
+	height: 5vw;
+}
+
+.single-product-margin{
+	margin-top: 5px;
+	margin-left: 1px;
+	margin-right: 1px;
+}
+
+.single-product-margin-small{
+	margin-top: 5px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.single-product-highest-bid-amount{
+	font-size: 16px;
+	font-weight: bold;
+	color: #8367D8;
+	letter-spacing: 0.56px;
+}
+
+/**/
+
+
+
+/*Category list design*/
+.category-list-parent-text{
+	font-size: 24px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.84px;
+}
+
+.category-list-parent-text:hover{
+	color: #252525;
+	text-decoration: none;
+}
+
+.category-list-child-text{
+	font-size: 16px;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.category-list-child-text:hover{
+	color: #252525;
+	text-decoration: none;
+}
+
+
+/**/
+
+
+/*footer links design*/
+/*about us*/
+/*used in single product as well*/
+.title-text-links{
+	font-size: 46px;
+	color: #252525;
+	letter-spacing: 1.61px;
+}
+
+.small-title-text-links{
+	font-size: 24px;
+	color: #252525;
+	letter-spacing: 0.84px;
+}
+
+.paragraph-text-about{
+	font-size: 18px;
+	color: #9B9B9B;
+	letter-spacing: 0.63px;
+	line-height: 25px;
+}
+
+
+/**/
+
+
+
+
+/*footer design*/
+.footer{
+	background: #252525;
+	padding-top: 1vw;
+	padding-bottom: 5vw;
+}
+
+.footer-title-text{
+	opacity: 0.5;
+	font-size: 16px;
+	color: #FFFFFF;
+	letter-spacing: 0.56px;
+}
+
+.footer-text{
+	color: #D8D8D8;
+	letter-spacing: 0.56px;
+	margin: 4px 0px 0px 0px;
+
+}
+
+.footer-text-link-holder{
+	margin-top: 4px;
+}
+
+.footer-text-link:hover{
+	text-decoration: none;
+	color: #696969;
+}
+
+.footer-form{
+	margin-top: 25px;
+}
+
+.footer-input-form{
+	border: none;
+	width: 70%;
+	background-color: #3B3B3B;
+	padding: 15px;
+	color: #696969;
+	letter-spacing: 0.56px;
+}
+
+.footer-purple-button{
+	border: 3px solid #8367D8;
+	padding: 15px 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #D8D8D8;
+	letter-spacing: 0.63px;
+}
+
+.footer-purple-button:hover{
+	text-decoration: none;
+	color: #FFFFFF;
+}

@@ -1,0 +1,44 @@
+{{app-header}}
+
+<div class="container-fluid current-route-background">
+	<div class="container">
+		<p class="form-title-text">REGISTER</p>
+	</div>
+</div>
+<div class="container-fluid pt-4">
+	<div class="container">
+		<div class="row">
+			<div class="col-2"></div>
+			<div class="col-8">
+				<div class="card margin-card">
+					<h1 class="card-title">REGISTER</h1>
+					<div class="card-body mr-4 ml-4">
+						<div class="form-group mt-4">
+							<label>First Name</label>
+							{{input type="text" value=name class="form-control form-background-color p-4"}}
+						</div>
+						<div class="form-group mt-5">
+							<label>Last Name</label>
+							{{input type="text" value=surname  class="form-control form-background-color p-4"}}
+						</div>
+						<div class="form-group mt-5">
+							<label>Enter Email</label>
+							{{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
+						</div>
+						<div class="form-group mt-5">
+							<label>Password</label>
+							{{input type="password" value=password  class="form-control form-background-color p-4"}}
+						</div>
+						<button type="submit" class="btn btn-purple-outline mt-5">REGISTER</button>
+						<div class="text-center mt-5 mb-4">
+							<span>Already have an account?  </span>
+							{{#link-to "login" class="login-nav-link"}}
+		  						Login
+							{{/link-to}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
