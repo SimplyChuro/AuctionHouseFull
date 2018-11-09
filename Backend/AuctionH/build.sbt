@@ -16,7 +16,7 @@ libraryDependencies += "org.awaitility" % "awaitility" % "2.0.0" % Test
 
 lazy val myProject = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
-// Database configuration
+// Database
 libraryDependencies += javaJdbc
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.5"
 

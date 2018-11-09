@@ -76,9 +76,10 @@ create table sales (
 
 create table users (
   id                            bigserial not null,
-  name                          varchar(255),
-  surname                       varchar(255),
-  email                         varchar(255),
+  auth_token                    varchar(255),
+  name                          varchar(256) not null,
+  surname                       varchar(256) not null,
+  email                         varchar(256) not null,
   password                      varchar(255),
   email_verified                boolean,
   avatar                        varchar(255),

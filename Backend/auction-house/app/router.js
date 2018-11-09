@@ -20,6 +20,7 @@ Router.map(function() {
   this.route('account');
   this.route('password-reset');
   this.route('category-list', { path: 'home/category-list' });
+  this.route('register-success');
 });
 
 export default Router;

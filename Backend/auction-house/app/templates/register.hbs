@@ -29,7 +29,7 @@
 							<label>Password</label>
 							{{input type="password" value=password  class="form-control form-background-color p-4"}}
 						</div>
-						<button type="submit" class="btn btn-purple-outline mt-5">REGISTER</button>
+						<button class="btn btn-purple-outline mt-5" {{action "createUser"}}>REGISTER</button>
 						<div class="text-center mt-5 mb-4">
 							<span>Already have an account?  </span>
 							{{#link-to "login" class="login-nav-link"}}

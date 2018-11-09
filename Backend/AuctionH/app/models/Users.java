@@ -1,5 +1,8 @@
 package models;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import javax.persistence.*;
 
@@ -21,18 +24,32 @@ public class Users extends Model{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 	
-    @Constraints.Required
+    @JsonIgnore
+	private String authToken;
+	
+	@Column(length = 256, nullable = false)
+	@Constraints.Required
+	@Constraints.MinLength(2)
+	@Constraints.MaxLength(256)
 	public String name;
     
+    @Column(length = 256, nullable = false)
     @Constraints.Required
+    @Constraints.MinLength(2)
+    @Constraints.MaxLength(256)
 	public String surname;
     
-    @Column(unique = true)
+    @Column(length = 256, unique = true, nullable = false)
+    @Constraints.MaxLength(256)
     @Constraints.Required
+    @Constraints.Email
 	public String email;
     
     @Constraints.Required
-	public String password;
+    @Constraints.MinLength(6)
+    @Constraints.MaxLength(256)
+    @JsonIgnore
+	private String password;
     
     @Constraints.Required
 	public Boolean emailVerified;
@@ -55,7 +72,7 @@ public class Users extends Model{
    	public Boolean phoneVerified;
     
 	//Foreign Keys
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="user")
     public Address address; 
 	
@@ -69,5 +86,75 @@ public class Users extends Model{
     public List<Sales> sales; 
 	
 	public static final Finder<Long, Users> find = new Finder<>(Users.class);
+    
+	
+	public void setBase() {
+		emailVerified = false;
+		save();
+		address = new Address();
+		address.user = this;
+		address.save();
+	}
+	
+	public void updateUser() {
+		address.update();
+		update();
+	}
+	
+    //Token commands
+    
+    public String createToken() {
+        authToken = UUID.randomUUID().toString();
+        save();
+        return authToken;
+    }
+
+    public void deleteAuthToken() {
+        authToken = null;
+        save();
+    }
+   
+    public Boolean hasAuthToken() {
+    	if(authToken != null) {
+    		return true;
+    	}else {
+    		return false;
+    	}
+    }
+    
+    public String getAuthToken() {
+    	return authToken;
+    }
+    
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+
+	//token based getters	
+	
+    public static Users findByAuthToken(String authToken) {
+        if (authToken == null) {
+            return null;
+        }
+
+        try  {
+            return find.query().where().eq("authToken", authToken).findUnique();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }
