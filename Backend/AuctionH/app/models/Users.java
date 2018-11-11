@@ -97,8 +97,8 @@ public class Users extends Model{
 	}
 	
 	public void updateUser() {
-		address.update();
 		update();
+		address.update();
 	}
 	
     //Token commands
@@ -141,6 +141,14 @@ public class Users extends Model{
     public void setPassword(String password) {
         this.password = password;
     }
+    
+	public Boolean getEmailVerified() {
+		return emailVerified;
+	}
+
+	public void setEmailVerified(Boolean emailVerified) {
+		this.emailVerified = emailVerified;
+	}
     
 
 	//token based getters	

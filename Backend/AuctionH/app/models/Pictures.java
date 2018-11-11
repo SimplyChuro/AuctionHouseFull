@@ -31,5 +31,13 @@ public class Pictures extends Model{
     public Products product;
     
 	public static final Finder<Long, Pictures> find = new Finder<>(Pictures.class);
+
+	public Pictures() {}
+	
+	public Pictures(@Required String name, @Required String directory, Products product) {
+		this.name = name;
+		this.directory = directory;
+		this.product = product;
+	}
 	
 }

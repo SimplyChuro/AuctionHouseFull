@@ -9,7 +9,7 @@ public class Secured extends Security.Authenticator {
 	
     @Override
     public String getUsername(Context ctx) {
-        String authTokenHeaderValues = ctx.request().header(UserController.AUTH_TOKEN_HEADER).get();
+        String authTokenHeaderValues = ctx.request().header(LogController.AUTH_TOKEN_HEADER).get();
         if ((authTokenHeaderValues != null)) {
             Users user = Users.findByAuthToken(authTokenHeaderValues);
             if (user != null) {

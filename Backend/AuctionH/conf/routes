@@ -1,14 +1,16 @@
 # User API routes
-GET		/api/v1/users/list	      			controllers.UserController.users
-GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
-
-+nocsrf
-POST	/api/v1/users/login					controllers.UserController.login
-POST	/api/v1/users/logout				controllers.UserController.logout
-
+GET		/api/v1/users	      				controllers.UserController.getAll
 +nocsrf
 POST	/api/v1/users						controllers.UserController.create
 PUT		/api/v1/users						controllers.UserController.update
+
+# not in usage yet
+GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
+
+# Login/Logout API routes
++nocsrf
+POST	/api/v1/login						controllers.LogController.login
+POST	/api/v1/logout						controllers.LogController.logout
 
 
 # Bid API routes
@@ -30,8 +32,8 @@ DELETE	/api/v1/sales						controllers.SaleController.delete
 
 
 # Product API routes
-GET		/api/v1/products					controllers.ProductController.products
-GET		/api/v1/products/:id				controllers.ProductController.product(id : Long)
+GET		/api/v1/products					controllers.ProductController.getAll
+GET		/api/v1/products/:id				controllers.ProductController.get(id : Long)
 GET		/api/v1/products/:id/bids			controllers.ProductController.bids(id : Long)
 POST	/api/v1/products					controllers.ProductController.create
 PUT		/api/v1/products					controllers.ProductController.update
@@ -39,8 +41,8 @@ DELETE	/api/v1/products					controllers.ProductController.delete
 
 
 # Category API routes
-GET		/api/v1/category					controllers.CategoryController.categories
-GET		/api/v1/category/:id				controllers.CategoryController.category(id : Long)
+GET		/api/v1/category					controllers.CategoryController.getAll
+GET		/api/v1/category/:id				controllers.CategoryController.get(id : Long)
 POST	/api/v1/category					controllers.CategoryController.create
 PUT		/api/v1/category					controllers.CategoryController.update
 DELETE	/api/v1/category					controllers.CategoryController.delete

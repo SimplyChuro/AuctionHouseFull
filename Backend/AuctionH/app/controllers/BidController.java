@@ -15,17 +15,18 @@ public class BidController extends Controller {
 		public Result create() {
 			try {
 				JsonNode jsonNode = request().body().asJson();
-		
-				try {
-					Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			
+				Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+				if(bidChecker != null) {
 					return badRequest();
-				}catch(Exception e) {
+				}else {
 					Bids bid = Json.fromJson(jsonNode, Bids.class);
 					bid.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
 					bid.product = Products.find.byId(jsonNode.findPath("product_id").asLong());
 					bid.save();
-					return ok();	
+					return ok();
 				}
+		
 			}catch(Exception e){
 				return badRequest();
 			}
@@ -35,13 +36,13 @@ public class BidController extends Controller {
 		public Result update() {
 			try {
 				JsonNode jsonNode = request().body().asJson();
-				
-				try {
-					Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+					
+				Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+				if(bidChecker != null) {
 					bidChecker = Json.fromJson(jsonNode, Bids.class);
 					bidChecker.update();
 					return ok();
-				}catch(Exception e) {
+				} else {
 					return badRequest();
 				}		
 			
@@ -55,14 +56,14 @@ public class BidController extends Controller {
 			try {
 				JsonNode jsonNode = request().body().asJson();
 				
-				try {
-					Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+				Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+				if(bidChecker != null) {
 					bidChecker = Json.fromJson(jsonNode, Bids.class);
 					bidChecker.delete();
 					return ok();
-				}catch(Exception e) {
+				} else {
 					return badRequest();
-				}	
+				}
 		
 			}catch(Exception e){
 				return badRequest();

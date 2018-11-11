@@ -16,14 +16,14 @@ public class WishlistController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			if(wishlistChecker != null) {
 				return badRequest();
-			}catch(Exception e) {
-				Wishlists wishlistItem = Json.fromJson(jsonNode, Wishlists.class);
-				wishlistItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
-				wishlistItem.product = Products.find.byId(jsonNode.findPath("product_id").asLong());
-				wishlistItem.save();
+			} else {
+				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
+				wishlistChecker.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
+				wishlistChecker.product = Products.find.byId(jsonNode.findPath("product_id").asLong());
+				wishlistChecker.save();
 				return ok();
 			}
 		}catch(Exception e){
@@ -36,12 +36,12 @@ public class WishlistController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.update();
 				return ok();
-			}catch(Exception e) {
+			} else {
 				return badRequest();
 			}
 			
@@ -55,12 +55,12 @@ public class WishlistController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();			
+			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.delete();
 				return ok();
-			}catch(Exception e) {
+			} else {
 				return badRequest();
 			}
 			

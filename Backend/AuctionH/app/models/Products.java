@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.validation.Constraints.Required;
 import play.libs.Json;
 
 
@@ -75,5 +76,21 @@ public class Products extends Model{
     public List<Sales> sales;
 
 	public static final Finder<Long, Products> find = new Finder<>(Products.class);
+
+	public Products() {}
+	
+	public Products(@Required String name, @Required Date publishDate, @Required Date expireDate,
+			@Required Double mainBid, @Required String status, @Required String color, @Required String size,
+			@Required String description, @Required Double startingPrice) {
+		this.name = name;
+		this.publishDate = publishDate;
+		this.expireDate = expireDate;
+		this.mainBid = mainBid;
+		this.status = status;
+		this.color = color;
+		this.size = size;
+		this.description = description;
+		this.startingPrice = startingPrice;
+	}
 	
 }

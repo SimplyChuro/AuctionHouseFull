@@ -1,7 +1,11 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -25,7 +29,7 @@ import play.libs.Json;
 public class ProductController extends Controller {
 	
 	//get products
-	public Result products() {
+	public Result getAll() {
 		try {
 			List<Products> products = Products.find.all();
 			return ok(Json.toJson(products));
@@ -35,7 +39,7 @@ public class ProductController extends Controller {
 	}
 	
 	//get products
-	public Result product(Long id) {
+	public Result get(Long id) {
 		try {
 			Products product = Products.find.byId(id);
 			
@@ -89,20 +93,19 @@ public class ProductController extends Controller {
 			JsonNode jsonNode = request().body().asJson();
 	
 			Products product = Json.fromJson(jsonNode, Products.class);
-			product.delete();
-			
 			for(Pictures picture : product.pictures) {
-				picture.product = product;
 				picture.delete();
 			}
 			
+			product.delete();
+					
 			return ok();
 		}catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Get top 5 bidder amounts  NOT FINISHED
+	//Get top 5 bidders
 	public Result bids(Long id) {
 		try {
 			List<Bids> bidList = Bids.find.query().where().conjunction()
@@ -112,10 +115,15 @@ public class ProductController extends Controller {
 			        .setMaxRows(5)
 			        .findList();
 			
-			return ok(Json.toJson(bidList));
+			List<Users> users = new ArrayList<>();
+			for(Bids bid : bidList) {
+				users.add(bid.getUser());
+			}
+			
+			return ok(Json.toJson(users));
 		}catch(Exception e){
 			return notFound();
 		}
 	}
-
+	
 }

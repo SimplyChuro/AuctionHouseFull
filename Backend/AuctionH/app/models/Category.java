@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.validation.Constraints.Required;
 import play.libs.Json;
 
 @Entity
@@ -32,5 +33,13 @@ public class Category extends Model{
     public List<ProductCategory> products;
     
 	public static final Finder<Long, Category> find = new Finder<>(Category.class);
+
+	public Category(@Required String name, @Required Long parent_id, List<ProductCategory> products) {
+		this.name = name;
+		this.parent_id = parent_id;
+		this.products = products;
+	}
+	
+	
 	
 }

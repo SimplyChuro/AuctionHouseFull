@@ -4,7 +4,7 @@ export default Controller.extend({
 	actions: {
 	  login: function() {
 		Ember.$.ajax({
-            url: 'http://localhost:9000/api/v1/users/login',
+            url: 'http://localhost:9000/api/v1/login',
             type: 'POST',
             data: JSON.stringify({
                 email: this.get('emailAddress'),
@@ -13,7 +13,6 @@ export default Controller.extend({
             contentType: 'application/json;charset=utf-8',
             dataType: 'json'
         }).then(function(response) {
-        	alert(response);
             Ember.run(function() {
                 resolve({
                     token: response.authToken
