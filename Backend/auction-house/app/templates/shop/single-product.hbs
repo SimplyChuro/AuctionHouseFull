@@ -33,10 +33,15 @@
 				<h1 class="title-text-links">{{model.name}}</h1>
 				<p class="single-product-price-text">Starting from - {{model.startingPriceFormated}}</p>
 				<div class="mt-4">
-					{{input type="number" value=name class="single-product-bid-input"}}
-					{{#link-to "home" class="single-product-featured-button"}}
-	  					PLACE BID
-					{{/link-to}}
+					{{input type="number" value=bidAmount class="single-product-bid-input"}}
+
+					{{#if (isLogged)}}
+						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.id}}>PLACE BID</button>
+						{{else}}
+							{{#link-to "login" class="single-product-featured-button"}}
+	  							PLACE BID
+							{{/link-to}}
+					{{/if}}
 					<p class="single-product-small-text mt-1">Enter - {{model.mainBidFormated}} or more</p>
 				</div>
 				<div class="mt-5">

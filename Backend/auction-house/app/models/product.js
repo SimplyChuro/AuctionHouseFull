@@ -11,6 +11,7 @@ export default DS.Model.extend({
   description: DS.attr('string'),
   startingPrice: DS.attr('number'),
   pictures: DS.hasMany('picture'),
+  bids: DS.hasMany('bid'),
   duration: Ember.computed('publishDate', 'expireDate', function() {
     var date1 = new Date(this.get('publishDate'));
     var date2 = new Date(this.get('expireDate'));

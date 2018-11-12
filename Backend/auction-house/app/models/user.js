@@ -11,5 +11,6 @@ export default DS.Model.extend({
   gender: DS.attr('string'),
   dateOfBirth: DS.attr('date'),
   phoneNumber: DS.attr('string'),
-  phoneVerified: DS.attr('boolean')
+  phoneVerified: DS.attr('boolean'),
+  bids: DS.hasMany('bid')
 });

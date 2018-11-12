@@ -4,18 +4,23 @@
   			<span class="navbar-brand text-light">Placeholder</span>
   			<div class="" id="navigationList">
   				<ul class="navbar-nav ml-auto">
-  					<li class="nav-item active">
-  						{{#link-to "login" class="nav-link text-light"}}
-  							Login
-						{{/link-to}}
-  					</li>				
-					<p class="divider">or</p>
-  					<li class="nav-item">
-  						{{#link-to "register" class="nav-link text-light"}}
-  							Create an Account
-						{{/link-to}}
-  					</li>
-
+            {{#if (isLogged)}}
+              <li class="nav-item active">
+                <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
+              </li>   
+            {{else}}
+                <li class="nav-item active">
+                  {{#link-to "login" class="nav-link text-light"}}
+                      Login
+                  {{/link-to}}
+                </li>       
+                <p class="divider">or</p>
+                <li class="nav-item">
+                  {{#link-to "register" class="nav-link text-light"}}
+                    Create an Account
+                  {{/link-to}}
+                </li>
+            {{/if}}
   				</ul>
    			</div>
 		</div>

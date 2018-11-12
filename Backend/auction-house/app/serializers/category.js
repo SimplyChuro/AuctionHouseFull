@@ -5,5 +5,5 @@ export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
   	payload = {category:payload};
     console.log(payload);
     return this._super(store, primaryModelClass, payload, id, requestType);
-  } 
+  }
 })
