@@ -10,7 +10,7 @@
 			
 				 <tbody>
 					{{#each model.categoryList as |category|}}
-						{{#if category.isParent}}
+						{{#if (is-parent category.parent_id)}}
 							<tr>
 								<td class="m-0 p-0">
 									{{#link-to "shop" class="category-table-link"}}
@@ -37,7 +37,7 @@
 			<div class="col-lg-8 col-xl-8 center-margin">
 				<div class="ml-5">
 					<h1 class="home-featured-title">{{model.productRandom.name}}</h1>
-					<p class="home-featured-price">Starting from - {{model.productRandom.startingPriceFormated}}</p>
+					<p class="home-featured-price">Starting from - {{format-bid model.productRandom.startingPrice}}</p>
 					<p class="home-featured-description">{{model.productRandom.description}}</p>
 					<div class="mt-4">
 						{{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
@@ -65,7 +65,7 @@
 								</div>
 								 <div class="mt-2">
 									<h5 class="home-product-card-name-text">{{product.name}}</h5>
-									<p class="home-product-card-price-text">Starting from - {{product.startingPriceFormated}}</p>
+									<p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
 								</div>
 							</div>	
 						</div>

@@ -12,23 +12,21 @@ import play.mvc.Security;
 
 public class BidController extends Controller {
 	
-	//Create bid
+	//Create and or Update bid
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			JsonNode objectNode = jsonNode.get("bid");
 			Users user = LogController.getUser();
+			
 			Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", objectNode.findPath("product_id").asLong()).endJunction().findUnique();
 			if(bidChecker != null) {
-				return badRequest();
+				bidChecker.updateBid(objectNode);
+				return ok();
 			}else {
-				Bids bid = Json.fromJson(objectNode, Bids.class);
-				bid.user = user;
-				bid.product = Products.find.byId(objectNode.findPath("product_id").asLong());
-				bid.product.mainBid = bid.amount;
-				bid.product.update();
-				bid.save();
+				bidChecker = Json.fromJson(objectNode, Bids.class);
+				bidChecker.createBid(user, objectNode);
 				return ok();
 			}
 		}catch(Exception e){

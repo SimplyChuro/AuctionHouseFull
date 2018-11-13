@@ -31,23 +31,23 @@
 			</div>
 			<div class="col-lg-7 col-xl-7">
 				<h1 class="title-text-links">{{model.name}}</h1>
-				<p class="single-product-price-text">Starting from - {{model.startingPriceFormated}}</p>
+				<p class="single-product-price-text">Starting from - {{format-bid model.startingPrice}}</p>
 				<div class="mt-4">
 					{{input type="number" value=bidAmount class="single-product-bid-input"}}
 
-					{{#if (isLogged)}}
+					{{#if (is-logged)}}
 						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.id}}>PLACE BID</button>
 						{{else}}
 							{{#link-to "login" class="single-product-featured-button"}}
 	  							PLACE BID
 							{{/link-to}}
 					{{/if}}
-					<p class="single-product-small-text mt-1">Enter - {{model.mainBidFormated}} or more</p>
+					<p class="single-product-small-text mt-1">Enter - {{format-bid model.mainBid}} or more</p>
 				</div>
 				<div class="mt-5">
-					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{model.mainBidFormated}}</span></p>
+					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.mainBid}}</span></p>
 					<p class="single-product-small-text m-0 p-0">Number of Bids:</p>
-					<p class="single-product-small-text m-0 p-0">Time Remaining: {{model.duration}}</p>
+					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duratation model.publishDate model.expireDate}}</p>
 				</div>
 				<button class="single-product-watchlist-btn mt-4">Watchlist</button>
 				<p class="single-product-description-text mt-3">Placeholder</p>

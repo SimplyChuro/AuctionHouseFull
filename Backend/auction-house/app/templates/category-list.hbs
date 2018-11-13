@@ -10,7 +10,7 @@
 	<div class="container">
 		<div class="row">
 			{{#each model.categoryList as |category|}}
-				{{#if category.isParent}}
+				{{#if (is-parent category.parent_id)}}
 					<div class="col-lg-3 col-xl-3 mt-4 mb-2">
 						{{#link-to "home" class="category-list-parent-text"}}
 							{{category.name}}

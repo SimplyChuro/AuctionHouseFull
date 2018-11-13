@@ -56,7 +56,7 @@ public class Products extends Model{
 	
 	@Constraints.Required
 	public Double startingPrice;
-   
+	
 	
 	//Foreign Keys
 	
