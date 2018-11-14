@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  name: DS.attr('string'),
-  directory: DS.attr('string'),
+  url: DS.attr('string'),
+  main: DS.attr('boolean'),
   product: DS.belongsTo('product')
 });

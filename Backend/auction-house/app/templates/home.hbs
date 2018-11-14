@@ -36,13 +36,24 @@
 			</div>
 			<div class="col-lg-8 col-xl-8 center-margin">
 				<div class="ml-5">
-					<h1 class="home-featured-title">{{model.productRandom.name}}</h1>
-					<p class="home-featured-price">Starting from - {{format-bid model.productRandom.startingPrice}}</p>
-					<p class="home-featured-description">{{model.productRandom.description}}</p>
-					<div class="mt-4">
-						{{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
-		  					BID NOW
-						{{/link-to}}
+					<div class="row">
+						<div class="col-lg-7 col-xl-7">
+							<h1 class="home-featured-title">{{model.productRandom.name}}</h1>
+							<p class="home-featured-price">Starting from - {{format-bid model.productRandom.startingPrice}}</p>
+							<p class="home-featured-description">{{model.productRandom.description}}</p>
+							<div class="mt-4">
+								{{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
+				  					BID NOW
+								{{/link-to}}
+							</div>
+						</div>
+						<div class="col-lg-5 col-xl-5">
+							{{#each model.productRandom.pictures as |picture|}}
+								{{#if picture.main}}
+									<img class="home-product-card-image" src="{{picture.url}}">
+								{{/if}}
+							{{/each}}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -61,7 +72,11 @@
 						<div class="mb-5 mt-3">
 							<div class="home-product-card">
 								<div class="home-product-card-image-holder">
-
+									{{#each product.pictures as |picture|}}
+										{{#if picture.main}}
+											<img class="home-product-card-image" src="{{picture.url}}">		
+										{{/if}}
+									{{/each}}
 								</div>
 								 <div class="mt-2">
 									<h5 class="home-product-card-name-text">{{product.name}}</h5>

@@ -8,25 +8,25 @@
 	<div class="container">
 		<div class="row single-product-margin">
 			<div class="col-lg-5 col-xl-5">
-				<div class="single-product-picture-background single-product-main-picture">
-				</div>
+				{{#each model.pictures as |picture|}}
+					{{#if picture.main}}
+						<div class="single-product-picture-background single-product-main-picture">
+							<div class="single-product-main-image-holder">
+								<img class="single-product-main-image" src="{{picture.url}}">
+							</div>
+						</div>
+					{{/if}}
+				{{/each}}
 				<div class="row single-product-margin-small"> 
-					<div class="col-lg-3 col-xl-3 p-1">
-						<div class="single-product-picture-background single-product-side-picture">
-						</div>
-					</div>
-					<div class="col-lg-3 col-xl-3 p-1">
-						<div class="single-product-picture-background single-product-side-picture">
-						</div>
-					</div>
-					<div class="col-lg-3 col-xl-3 p-1">
-						<div class="single-product-picture-background single-product-side-picture">
-						</div>
-					</div>
-					<div class="col-lg-3 col-xl-3 p-1">
-						<div class="single-product-picture-background single-product-side-picture">
-						</div>
-					</div>
+					{{#each model.pictures as |picture|}}
+						{{#unless picture.main}}
+							<div class="col-lg-3 col-xl-3 p-0 m-0">
+								<div class="single-product-picture-background single-product-side-picture m-1 p-0">	
+									<img class="single-product-secondary-image m-0 p-0" src="{{picture.url}}">
+								</div>
+							</div>
+						{{/unless}}
+					{{/each}}
 				</div>
 			</div>
 			<div class="col-lg-7 col-xl-7">
@@ -46,7 +46,7 @@
 				</div>
 				<div class="mt-5">
 					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.mainBid}}</span></p>
-					<p class="single-product-small-text m-0 p-0">Number of Bids:</p>
+					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.bidCount}}</p>
 					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duratation model.publishDate model.expireDate}}</p>
 				</div>
 				<button class="single-product-watchlist-btn mt-4">Watchlist</button>

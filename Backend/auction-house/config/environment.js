@@ -7,6 +7,7 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'auto',
     USER_TOKEN: '',
+    HOST_URL: 'http://localhost:9000',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

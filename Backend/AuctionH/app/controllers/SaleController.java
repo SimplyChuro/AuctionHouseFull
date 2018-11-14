@@ -1,14 +1,42 @@
 package controllers;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
+import models.Bids;
 import models.Sales;
+import models.Users;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class SaleController extends Controller {
 	
+	//Get sale not in usage
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
+		try {
+			Users user = LogController.getUser();
+			Sales sale = Sales.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			return ok(Json.toJson(sale));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
+	
+	//Get sales
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
+		try {
+			Users user = LogController.getUser();
+			List<Sales> sales = user.sales;
+			return ok(Json.toJson(sales));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
 	
 //Create Sale
 	////////////////////////////////////////////

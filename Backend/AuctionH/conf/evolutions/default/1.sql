@@ -34,8 +34,8 @@ create table category (
 
 create table pictures (
   id                            bigserial not null,
-  name                          varchar(255),
-  directory                     varchar(255),
+  url                           varchar(255),
+  main                          boolean,
   product_id                    bigint,
   constraint pk_pictures primary key (id)
 );
@@ -52,12 +52,13 @@ create table products (
   name                          varchar(255),
   publish_date                  timestamptz,
   expire_date                   timestamptz,
+  starting_price                float,
   main_bid                      float,
+  bid_count                     integer,
   status                        varchar(255),
   color                         varchar(255),
   size                          varchar(255),
   description                   varchar(2048),
-  starting_price                float,
   constraint pk_products primary key (id)
 );
 

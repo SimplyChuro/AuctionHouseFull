@@ -42,7 +42,6 @@ public class ProductController extends Controller {
 	public Result get(Long id) {
 		try {
 			Products product = Products.find.byId(id);
-			
 			return ok(Json.toJson(product));
 		}catch(Exception e){
 			return notFound();

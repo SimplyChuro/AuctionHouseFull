@@ -39,7 +39,13 @@ public class Products extends Model{
 	public Date expireDate;
 	
 	@Constraints.Required
+	public Double startingPrice;
+	
+	@Constraints.Required
 	public Double mainBid;
+	
+	@Constraints.Required
+	public Integer bidCount;
 	
 	@Constraints.Required
 	public String status;
@@ -53,9 +59,6 @@ public class Products extends Model{
 	@Column(columnDefinition = "varchar(2048)")
 	@Constraints.Required
 	public String description;
-	
-	@Constraints.Required
-	public Double startingPrice;
 	
 	
 	//Foreign Keys
@@ -85,12 +88,14 @@ public class Products extends Model{
 		this.name = name;
 		this.publishDate = publishDate;
 		this.expireDate = expireDate;
+		this.startingPrice = startingPrice;
 		this.mainBid = mainBid;
+		bidCount = 0;
 		this.status = status;
 		this.color = color;
 		this.size = size;
 		this.description = description;
-		this.startingPrice = startingPrice;
+		
 	}
 	
 }

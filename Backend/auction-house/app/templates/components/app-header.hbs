@@ -1,11 +1,11 @@
 <header>
 	<nav class="navbar navbar-expand-md p-1 user-navigation-bar">
 		<div class="container">
-  			<span class="navbar-brand text-light">Placeholder</span>
+  			<span class="navbar-brand text-light"></span>
   			<div class="" id="navigationList">
   				<ul class="navbar-nav ml-auto">
             {{#if (is-logged)}}
-              <li class="nav-item active">
+              <li class="nav-item active pt-2 pb-2">
                 <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
               </li>   
             {{else}}
@@ -51,11 +51,30 @@
 						{{/link-to}}
   					</li>
   					<li class="nav-item dropdown">
-  						<a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">MY ACCOUNT<</a>
-  						<div class="dropdown-menu">
-  							<a class="dropdown-item" href="#">About</a>
-  							<a class="dropdown-item" href="#">Questions</a>
-  						</div>
+  						{{#bs-dropdown as |dd|}}
+              {{#dd.toggle  class="nav-link"}}MY ACCOUNT{{/dd.toggle}}
+                {{#dd.menu as |ddm|}}
+                  {{#ddm.item}}
+                  {{#ddm.link-to "account.profile"}}Profile{{/ddm.link-to}}
+                  {{/ddm.item}}
+
+                  {{#ddm.item}}
+                  {{#ddm.link-to "account.sales"}}Sell{{/ddm.link-to}}
+                  {{/ddm.item}}
+                  
+                  {{#ddm.item}}
+                  {{#ddm.link-to "account.bids"}}Your Bids{{/ddm.link-to}}
+                  {{/ddm.item}}
+                  
+                  {{#ddm.item}}
+                  {{#ddm.link-to "account.wishlist"}}Wishlist{{/ddm.link-to}}
+                  {{/ddm.item}}
+                  
+                  {{#ddm.item}}
+                  {{#ddm.link-to "account.settings"}}Settings{{/ddm.link-to}}
+                  {{/ddm.item}}
+                {{/dd.menu}}
+            {{/bs-dropdown}}
   					</li>
   				</ul>
    			</div>

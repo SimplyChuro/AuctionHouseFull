@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import models.Bids;
@@ -12,7 +14,31 @@ import play.mvc.Security;
 
 public class BidController extends Controller {
 	
-	//Create and or Update bid
+	//Get bid not in usage
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
+		try {
+			Users user = LogController.getUser();
+			Bids bid = Bids.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			return ok(Json.toJson(bid));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
+	
+	//Get bids
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
+		try {
+			Users user = LogController.getUser();
+			List<Bids> bids = user.bids;
+			return ok(Json.toJson(bids));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
+	
+	//Create or Update bid
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {

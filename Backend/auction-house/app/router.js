@@ -17,7 +17,13 @@ Router.map(function() {
     this.route('terms-and-conditions');
     this.route('privacy-and-policy');
   });
-  this.route('account');
+  this.route('account', function() {
+    this.route('profile');
+    this.route('sales');
+    this.route('bids');
+    this.route('wishlist');
+    this.route('settings');
+  });
   this.route('password-reset');
   this.route('category-list', { path: 'home/category-list' });
   this.route('register-success');

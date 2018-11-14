@@ -6,6 +6,7 @@ PUT		/api/v1/users						controllers.UserController.update
 
 # not in usage yet
 GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
+GET		/api/v1/users/reset					controllers.UserController.reset
 
 # Login/Logout API routes
 +nocsrf
@@ -14,18 +15,24 @@ POST	/api/v1/logout						controllers.LogController.logout
 
 
 # Bid API routes
+GET		/api/v1/bids						controllers.BidController.getAll
+GET		/api/v1/bids/:id					controllers.BidController.get(id : Long)
 POST	/api/v1/bids						controllers.BidController.create
 PUT		/api/v1/bids						controllers.BidController.update
 DELETE	/api/v1/bids						controllers.BidController.delete
 
 
 # Wishlist API routes
+GET		/api/v1/wishlists					controllers.WishlistController.getAll
+GET		/api/v1/wishlists/:id				controllers.WishlistController.get(id : Long)
 POST	/api/v1/wishlists					controllers.WishlistController.create
 PUT		/api/v1/wishlists					controllers.WishlistController.update
 DELETE	/api/v1/wishlists					controllers.WishlistController.delete
 
 
 # Sale API routes
+GET		/api/v1/sales						controllers.SaleController.getAll
+GET		/api/v1/sales/:id					controllers.SaleController.get(id : Long)
 POST	/api/v1/sales						controllers.SaleController.create
 PUT		/api/v1/sales						controllers.SaleController.update
 DELETE	/api/v1/sales						controllers.SaleController.delete

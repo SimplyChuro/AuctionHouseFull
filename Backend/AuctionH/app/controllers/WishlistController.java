@@ -1,16 +1,44 @@
 package controllers;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import models.Products;
+import models.Sales;
 import models.Users;
 import models.Wishlists;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class WishlistController extends Controller{
 
+	//Get sale not in usage
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
+		try {
+			Users user = LogController.getUser();
+			Wishlists wishlist = Wishlists.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			return ok(Json.toJson(wishlist));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
+	
+	//Get sales
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
+		try {
+			Users user = LogController.getUser();
+			List<Wishlists> wishlist = user.wishlists;
+			return ok(Json.toJson(wishlist));
+		}catch(Exception e){
+			return badRequest();
+		}
+	}
+	
 	//Create wishlist
 	public Result create() {
 		try {

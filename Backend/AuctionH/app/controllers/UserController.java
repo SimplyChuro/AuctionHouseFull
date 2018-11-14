@@ -43,7 +43,7 @@ public class UserController extends Controller {
 		}
 	}
 
-	//	inactive
+	//get user inactive
 	public Result user() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -115,6 +115,24 @@ public class UserController extends Controller {
 			return badRequest();
 		}
 	} 	
+	
+	//reset password not finished
+	public Result reset() {
+//		try {
+//			Users user = Users.find.byId(id);
+//		
+//			if(!user.getEmailVerified()) {
+//				user.setEmailVerified(true);
+//				user.update();
+//				
+//				return ok();
+//			}else {
+//				return notFound();
+//			}
+//		}catch(Exception e) {
+			return badRequest();
+//		}
+	} 
 	
 	
 }

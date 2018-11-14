@@ -198,8 +198,15 @@ public class MockData {
 		};
 		
 		//Product picture data
-		String pictureName [][] = {
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
+		String pictureUrl [][] = {
+				{
+					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
+					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
+					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
+					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
+					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+					
+				}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
@@ -216,25 +223,6 @@ public class MockData {
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}
 		};
 		
-		String baseDirectory = "public/assets/images/";
-		
-		String pictureDirectory [] = {
-				"productOne",
-				"productTwo", 
-				"productThree", 
-				"productFour",  
-				"productFive", 
-				"productSix", 
-				"productSeven",
-				"productEight", 
-				"productNine",
-				"productTen",
-				"productEleven",
-				"productTwelve",
-				"productThirteen",
-				"productFourteen",
-				"productFifteen"
-		};
 		
 		//Product category
 		String productCategory [][] = {
@@ -255,6 +243,7 @@ public class MockData {
 				{"Clothes", "Men"}
 				
 		};
+		
 		
 		
 		
@@ -282,8 +271,14 @@ public class MockData {
 			product = new Products(name[i], start, end, mainBid[i], status[i], color[i], size[i], description[i], startingPrice[i]);
 			product.save();
 			
-			for(int j = 0; j < pictureName[i].length; j++) {
-				picture = new Pictures(pictureName[i][j], baseDirectory + pictureDirectory[i], product);
+			for(int j = 0; j < pictureUrl[i].length; j++) {
+				if(j == 0) {
+					picture = new Pictures(pictureUrl[0][j], true, product);	
+//					picture = new Pictures(pictureUrl[i][j], true, product);
+				} else {
+					picture = new Pictures(pictureUrl[0][j], false, product);
+//					picture = new Pictures(pictureUrl[i][j], false, product);
+				}
 				picture.save();
 			}
 			
