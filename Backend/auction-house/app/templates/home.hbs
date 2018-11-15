@@ -69,8 +69,8 @@
 			{{#each model.productList as |product|}}
 				<div class="col-lg-6 col-xl-4">
 					{{#link-to "shop.single-product" product.id class="category-table-link"}}	
-						<div class="mb-5 mt-3">
-							<div class="home-product-card">
+						<div class="mb-5 mt-5">
+							<div class="home-product-card m-3">
 								<div class="home-product-card-image-holder">
 									{{#each product.pictures as |picture|}}
 										{{#if picture.main}}

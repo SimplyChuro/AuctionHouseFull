@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { later } from '@ember/runloop';
 
 export default Controller.extend({
 	actions: {
@@ -9,8 +10,9 @@ export default Controller.extend({
 			  	status: 'active',
 			  	product_id: productID
 			}).save();
-			// let route = Ember.getOwner(this).lookup(`route:${get(this, 'single-product/'+productID)}`);
-   // 			return route.refresh();
+			later(this, function() {
+			 	this.get('target').send('refresh');   
+            }, 200);
    		}
     }
 });

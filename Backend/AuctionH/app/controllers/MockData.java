@@ -22,12 +22,12 @@ public class MockData {
 		Date start, end;
 		
 		//Category data
-		String parentCategoryName [] = {"Clothes", "Accessories", "Jewlery", "Shoes", "Electronics", "Mobile", "Computer"};
+		String parentCategoryName [] = {"Clothes", "Accessories", "Shoes", "Jewlery", "Electronics", "Mobile", "Computer"};
 		String childCategoryName [][] = {
 				{"Men", "Women", "Boys", "Girls"}, 
 				{"Men", "Women", "Children"}, 
-				{"Rings", "Earrings", "Necklace", "Bracelet", "Miscellaneous"}, 
-				{"Formal", "Traditional", "Summer", "Winter", "Fall", "Spring"}, 
+				{"Formal", "Traditional", "Summer", "Winter", "Fall", "Spring"},
+				{"Rings", "Earrings", "Necklace", "Bracelet", "Miscellaneous"},  
 				{"Appliances", "Parts", "Tools", "Accessories", "Miscellaneous"},
 				{"Android", "iOS", "Parts", "Accessories"},
 				{"Hardware", "Monitors", "Laptops", "Accessories"}		
@@ -85,7 +85,8 @@ public class MockData {
 				"2018-04-16",
 				"2018-04-12",
 				"2018-04-13",
-				"2018-04-14",
+				"2018-04-14"
+				
 		};
 		
 		Double mainBid [] = {
@@ -180,46 +181,42 @@ public class MockData {
 		};
 		
 		String description [] = {
-				"Stylish Blue Sneakers, previously used for only 2 motnhs, in good shape. Small damage across the left sneaker.", 
-				"New T-shirt for auction, fully cotton about 99.5%. Never used or worn.", 
+				"Stylish Blue Sneakers, previously used for only 1 motnhs, in good shape. Like brand new, no issues anywhere.", 
+				"New T-shirts for auction, fully cotton about 99.5%. Never used or worn. They come in all shapes and sizes.", 
 				"Black goth pants signed by a Norwegian Metal Band.", 
 				"Brand new ACER Gaming Laptop for auction. With an i5 8600k processor, 16 gigabytes of DDR4 2600hz ram, 1 TB of SSD storage and a Nvidia GTX 1070.", 
-				"New Samsung Galaxy S8, with a black laminate finish.",
+				"New Samsung Galaxy S8 phones, they come in all shapes and sizes!",
 				"Strong Reliable Comfortable and Stylish Seiko Watch. It has a nice black finish. Electronic battery can last for five years without change. Used for about 2 years.",		
-				"Hand made woolen sweater, crafted from top quality wool. Soft to the touch, never before used.",
+				"Hand made wool sweater, crafted from top quality wool. Soft to the touch, never before used.",
 				"The G502 is a professional gaming mouse made by Logitech for all gamers. I bought it 2 months ago but I never got to use it so now I am selling it for cheap.",
 				"Used Canon Camera, I've been using it for multiple years and it has served me quite well. It's a plain well kept DSLR camera.",
-				"NEW Winter Jacket, imported from Europe. Extremely well made and extremely warm",
+				"NEW Winter Jackets, imported from Europe. Extremely well made and extremely warm. They come in all shapes and sizes.",
 				"Slick Leather Boots, never worn extremely long. Very comfortable latex.",
 				"Brand New iPhone 10. It has a golden outer finish and looks extremely fancy. It comes with all the accessories.",
-				"New 67 inch 4K television, it has a very slick design and sharp edges. The quality of the picture is extremely perstine.",
+				"New 65 inch 4K television, it has a very slick design and sharp edges. The quality of the picture is extremely perstine.",
 				"Used LucidSound headphones, I've been using them for about 2 months and I have no usage for them anymore. They are wireless and have the option to become wired with a 3.5 jack pin",
 				"Vintage Blue Jeans, in a bad shape. These jeans have been worn and torn essentially they are a pair of vintage Jeans that have been damaged over time"
 		};
 		
+		String baseURL = "https://muffin.ml/maki/churo-images/products/";
+		String baseJPG = ".jpg";
+		
 		//Product picture data
 		String pictureUrl [][] = {
-				{
-					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
-					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
-					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
-					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg", 
-					"https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-					
-				}, 
+				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}, 
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
+				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour"},
+				{"pictureOne", "pictureTwo", "pictureThree"},
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
-				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"},
+				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour"},
+				{"pictureOne", "pictureTwo", "pictureThree"},
+				{"pictureOne", "pictureTwo", "pictureThree"},
 				{"pictureOne", "pictureTwo", "pictureThree", "pictureFour", "pictureFive"}
 		};
 		
@@ -270,16 +267,16 @@ public class MockData {
 			
 			product = new Products(name[i], start, end, mainBid[i], status[i], color[i], size[i], description[i], startingPrice[i]);
 			product.save();
-			
-			for(int j = 0; j < pictureUrl[i].length; j++) {
-				if(j == 0) {
-					picture = new Pictures(pictureUrl[0][j], true, product);	
-//					picture = new Pictures(pictureUrl[i][j], true, product);
+			int j = 0;
+			for(String pic : pictureUrl[i]) {
+				if(j == 0) {	
+					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, true, product);
+					j++;
 				} else {
-					picture = new Pictures(pictureUrl[0][j], false, product);
-//					picture = new Pictures(pictureUrl[i][j], false, product);
+					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, false, product);
 				}
 				picture.save();
+				
 			}
 			
 			category = Category.find.query().where().conjunction()

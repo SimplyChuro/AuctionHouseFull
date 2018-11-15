@@ -53,6 +53,7 @@ public class Bids extends Model{
 	public void createBid(Users user, JsonNode objectNode) {
 		this.user = user;
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
+		save();
 		product.bidCount++;
 		product.mainBid = amount;
 		product.update();

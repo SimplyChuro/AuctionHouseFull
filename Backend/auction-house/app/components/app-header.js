@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
+import { later } from '@ember/runloop';
 
 export default Component.extend({
 	actions: {
@@ -12,8 +13,10 @@ export default Component.extend({
 	        	}
 	        });
 	        ENV.USER_TOKEN = '';
-	        window.location.reload(true);
-	        this.transitionToRoute('home');
+	        Ember.getOwner(this).lookup('router:main').transitionTo('home');
+			later(this, function() {
+			 	window.location.reload(true);
+            }, 150);
     	}
 	}
 });
