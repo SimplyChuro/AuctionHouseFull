@@ -568,6 +568,128 @@ button::-moz-focus-inner {
 /**/
 
 
+
+/*Account design*/
+.account-navigation-link{
+	background: #F0F0F0;
+	padding: 15px 30px;
+	margin-right: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.account-navigation-link:hover{
+	color: #8367D8;
+	text-decoration: none;
+}
+
+.account-navigation-link-active{
+	background: #8367D8;;
+	padding: 15px 30px;
+	margin-right: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing: 0.56px;
+}
+
+.account-navigation-link-active:hover{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.account-settings-card-title{
+	background: #F0F0F0;;
+	padding: 15px 0px 15px 25px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-text{
+	padding: 15px 0px 0px 35px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-text-special{
+	padding: 15px 0px 0px 35px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-checkbox{
+	background: #FFFFFF;
+	border: 1px solid #D8D8D8;
+}
+
+.account-settings-card-checkbox-label{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+	line-height: 26px;
+}
+
+.account-settings-checkbox-holder{
+	padding: 0px 0px 5px 35px;
+}
+
+.account-settings-button-deactivate{
+	width: 40%;
+	margin: 15px 0px 75px 35px;
+	padding: 12px 40px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.63px;
+	background: #FFFFFF;
+	border: 3px solid #E3E3E3;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+}
+
+.account-card-header{
+	background-color: #FAFAFA;
+}
+
+.account-card-header-item{
+	margin-left: 3%;
+	margin-right: 5%;
+}
+
+.account-card-header-name{
+	margin-right: 20%;
+}
+
+.account-card-header-time{
+	margin-right: 5%;
+}
+
+.account-card-header-price{
+	margin-right: 5%;
+}
+
+.account-card-header-bid{
+	margin-right: 5%;
+}
+
+.account-card-header-highest-bid{
+	margin-right: 5%;
+}
+
+
+.account-card-header-text{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+/**/
+
+
+
 /*footer links design*/
 /*about us*/
 /*terms and conditions*/

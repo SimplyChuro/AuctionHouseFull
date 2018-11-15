@@ -4,4 +4,52 @@
 	</div>
 </div>
 
-{{outlet}}
+<div class="container-fluid bottom-margin-100">
+	<div class="container">
+		<div>
+			{{#link-to 'account.profile' class="account-navigation-link"}}
+				Profile
+			{{/link-to}}
+			{{#link-to 'account.sales' class="account-navigation-link"}}
+				Sales
+			{{/link-to}}
+			{{#link-to 'account.bids' class="account-navigation-link-active"}}
+				Bids
+			{{/link-to}}
+			{{#link-to 'account.wishlist' class="account-navigation-link"}}
+				Wishlist
+			{{/link-to}}
+			{{#link-to 'account.settings' class="account-navigation-link"}}
+				Settings
+			{{/link-to}}
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-100">
+	<div class="container">
+		<div class="card">
+			<div class="account-card-header pt-3 pb-3">
+				<span class="account-card-header-text account-card-header-item">
+					Item
+				</span>
+				<span class="account-card-header-text account-card-header-name">
+					Name
+				</span>
+				<span class="account-card-header-text account-card-header-time">
+					Time Left
+				</span>
+				<span class="account-card-header-text account-card-header-price">
+					Your Price
+				</span>
+				<span class="account-card-header-text account-card-header-bid">
+					No. Bids
+				</span>
+				<span class="account-card-header-text account-card-header-highest-bid">
+					Highest Bid
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,1 +1,27 @@
-{{outlet}}
+<div class="container-fluid current-route-background bottom-margin-50">
+	<div class="container">
+		<p class="form-title-text">ABOUT US<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   SALES</span></p>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-100">
+	<div class="container">
+		<div>
+			{{#link-to 'account.profile' class="account-navigation-link"}}
+				Profile
+			{{/link-to}}
+			{{#link-to 'account.sales' class="account-navigation-link-active"}}
+				Sales
+			{{/link-to}}
+			{{#link-to 'account.bids' class="account-navigation-link"}}
+				Bids
+			{{/link-to}}
+			{{#link-to 'account.wishlist' class="account-navigation-link"}}
+				Wishlist
+			{{/link-to}}
+			{{#link-to 'account.settings' class="account-navigation-link"}}
+				Settings
+			{{/link-to}}
+		</div>
+	</div>
+</div>
