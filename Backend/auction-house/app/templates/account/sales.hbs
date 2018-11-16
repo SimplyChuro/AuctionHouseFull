@@ -4,13 +4,13 @@
 	</div>
 </div>
 
-<div class="container-fluid bottom-margin-100">
+<div class="container-fluid">
 	<div class="container">
 		<div>
 			{{#link-to 'account.profile' class="account-navigation-link"}}
 				Profile
 			{{/link-to}}
-			{{#link-to 'account.sales' class="account-navigation-link-active"}}
+			{{#link-to 'account.sales.active' class="account-navigation-link-active"}}
 				Sales
 			{{/link-to}}
 			{{#link-to 'account.bids' class="account-navigation-link"}}
@@ -25,3 +25,4 @@
 		</div>
 	</div>
 </div>
+{{outlet}}

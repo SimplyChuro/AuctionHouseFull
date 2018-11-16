@@ -12,5 +12,6 @@ export default DS.Model.extend({
   size: DS.attr('string'),
   description: DS.attr('string'),
   pictures: DS.hasMany('picture'),
+  wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid')
 });

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import models.Bids;
 import models.Products;
 import models.Sales;
 import models.Users;
@@ -39,19 +40,21 @@ public class WishlistController extends Controller{
 		}
 	}
 	
-	//Create wishlist
+	//Create or Update wishlist
+	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
+			JsonNode objectNode = jsonNode.get("wishlist");
+			Users user = LogController.getUser();
 			
-			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", objectNode.findPath("product_id").asLong()).endJunction().findUnique();
 			if(wishlistChecker != null) {
-				return badRequest();
-			} else {
-				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
-				wishlistChecker.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
-				wishlistChecker.product = Products.find.byId(jsonNode.findPath("product_id").asLong());
-				wishlistChecker.save();
+				wishlistChecker.updateWishlist(objectNode);
+				return ok();
+			}else {
+				wishlistChecker = Json.fromJson(objectNode, Wishlists.class);
+				wishlistChecker.createWishlist(user, objectNode);
 				return ok();
 			}
 		}catch(Exception e){

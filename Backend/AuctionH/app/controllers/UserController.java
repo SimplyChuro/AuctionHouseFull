@@ -21,10 +21,6 @@ import models.Bids;
 import models.Sales;
 import models.Wishlists;
 import models.Users;
-
-import play.mvc.Controller;
-import play.mvc.Http;
-import play.mvc.Result;
 import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
@@ -43,32 +39,30 @@ public class UserController extends Controller {
 		}
 	}
 
-	//get user inactive
-	public Result user() {
+	//get user
+	@Security.Authenticated(Secured.class)
+	public Result get() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Users user = Users.findByAuthToken(jsonNode.findPath("authToken").asText());
+			Users user = LogController.getUser();
 			return ok(Json.toJson(user));
 		}catch(Exception e) {
 			return notFound();
 		}
 	}
 	
-	
 	//create user	
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			JsonNode userNode = jsonNode.get("user");
+			JsonNode objectNode = jsonNode.get("user");
 			
-			Users userChecker = Users.find.query().where().conjunction().eq("email", userNode.findPath("email").textValue()).endJunction().findUnique();
+			Users userChecker = Users.find.query().where().conjunction().eq("email", objectNode.findPath("email").textValue()).endJunction().findUnique();
 			if(userChecker != null) {
 				return badRequest();
 			} else {
-				Users user = Json.fromJson(userNode, Users.class);
-				user.setPassword(userNode.findValue("password").asText());
+				Users user = Json.fromJson(objectNode, Users.class);
+				user.setPassword(objectNode.findValue("password").asText());
 				user.setBase();
 				return ok();
 			}

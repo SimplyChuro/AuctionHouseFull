@@ -37,10 +37,10 @@
 
 					{{#if (is-logged)}}
 						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.id}}>PLACE BID</button>
-						{{else}}
-							{{#link-to "login" class="single-product-featured-button"}}
-	  							PLACE BID
-							{{/link-to}}
+					{{else}}
+						{{#link-to "login" class="single-product-featured-button"}}
+  							PLACE BID
+						{{/link-to}}
 					{{/if}}
 					<p class="single-product-small-text mt-1">Enter - {{format-bid model.mainBid}} or more</p>
 				</div>
@@ -49,8 +49,16 @@
 					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.bidCount}}</p>
 					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duratation model.publishDate model.expireDate}}</p>
 				</div>
-				<button class="single-product-watchlist-btn mt-4">Watchlist</button>
-				<p class="single-product-description-text mt-3">Placeholder</p>
+				{{#if (is-logged)}}
+					<button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.id}}>Watchlist</button>
+				{{else}}
+					<div class="single-product-watchlist-holder">
+						{{#link-to "login" class="single-product-watchlist-btn-v2"}}
+							Watchlist
+						{{/link-to}}
+					</div>
+				{{/if}}
+				<p class="single-product-description-text mt-3">Details</p>
 				<hr class="single-product-underline">
 				<p>{{model.description}}</p>
 			</div>

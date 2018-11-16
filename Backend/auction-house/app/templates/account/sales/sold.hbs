@@ -1,0 +1,69 @@
+<div class="container-fluid account-sales-link-holder">
+	<div class="container">
+		<div class="account-sales-route-holder">
+			{{#link-to 'account.sales.active' class="account-sales-navigation-link"}}
+				Active
+			{{/link-to}}
+			<span class="account-sales-navigation-link-active">
+				Sold
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-200">
+	<div class="container">
+		<table class="account-bids-table">
+			<tr class="account-bids-table-header">
+				<th class="account-header-text account-bids-table-item text-center">Item</th>
+				<th class="account-header-text account-bids-table-name">Name</th>
+				<th class="account-header-text account-bids-table-time text-center">Time Left</th>
+				<th class="account-header-text account-bids-table-price text-center">Your Price</th>
+				<th class="account-header-text account-bids-table-bids text-center">No. Bids</th>
+				<th class="account-header-text account-bids-table-highest-bid text-center">Highest Bid</th>
+				<th class="account-header-text account-bids-table-button-view text-center"></th>
+			</tr>
+			<div class="mb-2">
+			</div>
+			{{#each model.saleList as |sale|}}
+				{{#unless (eq sale.id null)}}
+					{{#if (eq sale.status 'sold')}}
+						<tr>
+							<td class="m-0 p-0">
+								<div class="accout-bids-image-holder">
+									{{#each sale.product.pictures as |picture|}}
+										{{#if picture.main}}
+											<img src="{{picture.url}}" class="account-bid-image">
+										{{/if}}
+									{{/each}}
+								</div>
+							</td>
+							<td class="account-header-text account-bids-table-name"> 
+								<span class="account-product-name">{{sale.product.name}}</span>
+								<br>
+								<span class="account-product-id">#{{sale.product.id}}</span>
+							</td>
+							<td class="text-center">
+								<span class="account-product-plain-text">{{duratation sale.product.publishDate sale.product.expireDate}}</span>
+							</td>
+							<td class="text-center">
+								<span class="account-product-plain-text">{{format-bid sale.amount}}</span>
+							</td>
+							<td class="text-center">
+								<span class="account-product-plain-text">{{sale.product.bidCount}}</span>
+							</td>
+							<td class="text-center">
+								<span class="account-product-plain-text">{{format-bid sale.product.mainBid}}</span>
+							</td>
+							<td>
+								{{#link-to 'shop.single-product' sale.product.id class="account-bids-button"}}VIEW{{/link-to}}
+							</td>
+						</tr>
+					{{/if}}
+				{{/unless}}
+			{{/each}}
+			<div class="mb-4">
+			</div>
+		</table>
+	</div>
+</div>

@@ -19,10 +19,14 @@ Router.map(function() {
   });
   this.route('account', function() {
     this.route('profile');
-    this.route('sales');
+    this.route('sales', function() {
+      this.route('active');
+      this.route('sold');
+    });
     this.route('bids');
     this.route('wishlist');
     this.route('settings');
+    this.route('sell');
   });
   this.route('password-reset');
   this.route('category-list', { path: 'home/category-list' });

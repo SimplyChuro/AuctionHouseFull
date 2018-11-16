@@ -477,6 +477,32 @@ button::-moz-focus-inner {
 	cursor: pointer;
 }
 
+.single-product-watchlist-btn:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.single-product-watchlist-btn-v2{
+	padding: 9px 15px;
+	font-size: 15px;
+	color: #252525;
+	letter-spacing: 0.52px;
+	line-height: 22px;
+	background: #FFFFFF;
+	border: 3px solid #ECECEC;
+	cursor: pointer;
+}
+
+.single-product-watchlist-btn-v2:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.single-product-watchlist-holder{
+	margin-top: 30px;
+	margin-bottom: 25px;
+}
+
 .single-product-description-text{
 	font-size: 18px;
 	color: #252525;
@@ -651,41 +677,233 @@ button::-moz-focus-inner {
 	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
 }
 
+
+/*account bids*/
 .account-card-header{
 	background-color: #FAFAFA;
 }
 
-.account-card-header-item{
-	margin-left: 3%;
-	margin-right: 5%;
+.account-header-text{
+	font-size: 18px;
+	font-weight: normal;
+	color: #252525;
+	letter-spacing: 0.63px;
 }
 
-.account-card-header-name{
-	margin-right: 20%;
+.account-bids-table{
+	width: 100%;
+	table-layout:fixed;
+	background: #FFFFFF;
+	border: 1px solid #D8D8D8;
 }
 
-.account-card-header-time{
-	margin-right: 5%;
+.account-bids-table-header{
+	width: 100%;
+	background-color: #FAFAFA;
+	border: 1px solid #E3E3E3;
 }
 
-.account-card-header-price{
-	margin-right: 5%;
+.account-bids-table-header th, td{
+	padding: 15px 25px;
 }
 
-.account-card-header-bid{
-	margin-right: 5%;
+.account-bids-table td{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.account-card-header-highest-bid{
-	margin-right: 5%;
+.account-bids-table-item{
+	width: 10%;
 }
 
+.account-bids-table-name{
+	width: 22%;
+}
 
-.account-card-header-text{
+.account-bids-table-time{
+	width: 13%;
+}
+
+.account-bids-table-price{
+	width: 13%;
+}
+
+.account-bids-table-bids{
+	width: 12%;
+}
+
+.account-bids-table-highest-bid{
+	width: 15%;
+}
+
+.account-bids-table-button-view{
+	width: 15%;
+}
+
+.account-bids-button{
+	background: #FFFFFF;
+	padding: 15px 30px;
+	border: 3px solid #E3E3E3;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+	font-size: 16px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.account-bids-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.accout-bids-image-holder{
+	background: #D8D8D8;
+	margin: 10px 0px 10px 15px;
+	height: 5vw;
+}
+
+.account-bid-image{
+	width: 100%;
+	height: 5vw;
+	background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.account-product-name{
+	font-size: 18px;
+	font-weight: bold;
+	overflow: hidden;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-product-id{
+	font-size: 18px;	
+	color: #8367D8;
+	letter-spacing: 0.63px;
+}
+
+.account-product-plain-text{
 	font-size: 18px;
 	color: #252525;
 	letter-spacing: 0.63px;
 }
+
+/*account wishlist*/
+
+.account-wishlist-table-item{
+	width: 10%;
+}
+
+.account-wishlist-table-name{
+	width: 30%;
+}
+
+.account-wishlist-table-time{
+	width: 12%;
+}
+
+.account-wishlist-table-bid{
+	width: 18%;
+}
+
+.account-wishlist-table-status{
+	width: 15%;
+}
+
+.account-wishlist-status-text{
+	background: #F0F0F0;
+	padding: 15px 30px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.49px;
+	text-align: center;
+}
+
+/*account profile*/
+.account-profile-card-top{
+	background: #FAFAFA;
+	font-size: 20px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.7px;
+	padding: 10px 0px 10px 25px;
+}
+
+
+/*account sales*/
+.account-sales-route-holder{
+	margin-bottom: 11px;
+}
+
+.account-sales-navigation-link{
+	background: #FAFAFA;
+	border: 1px solid #D8D8D8;
+	padding: 15px 30px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}	
+
+.account-sales-navigation-link:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+
+.account-sales-navigation-link-active{
+	background: #8367D8;
+	border: 1px solid #8367D8;
+	padding: 15px 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing: 0.63px;
+}
+
+.account-sales-link-holder{
+	margin-top: 62px;
+}
+
+/*account sell*/
+.account-sell-image-holder{
+	height: 6vw;
+	text-align: center;
+}
+
+.account-sell-image{
+	height: 6vw;
+	text-align: center;
+}
+
+.account-card-title{
+	background: #FAFAFA;
+	padding: 20px 0px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.7px;
+	text-align: center;
+}
+
+.account-sell-link-button{
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+	padding: 15px 60px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-sell-link-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
 /**/
 
 

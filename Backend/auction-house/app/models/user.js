@@ -12,5 +12,6 @@ export default DS.Model.extend({
   phoneNumber: DS.attr('string'),
   phoneVerified: DS.attr('boolean'),
   address: DS.belongsTo('address'),
+  wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid')
 });

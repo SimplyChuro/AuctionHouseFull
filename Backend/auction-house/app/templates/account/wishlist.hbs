@@ -10,7 +10,7 @@
 			{{#link-to 'account.profile' class="account-navigation-link"}}
 				Profile
 			{{/link-to}}
-			{{#link-to 'account.sales' class="account-navigation-link"}}
+			{{#link-to 'account.sales.active' class="account-navigation-link"}}
 				Sales
 			{{/link-to}}
 			{{#link-to 'account.bids' class="account-navigation-link"}}
@@ -23,5 +23,56 @@
 				Settings
 			{{/link-to}}
 		</div>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-200">
+	<div class="container">
+		<table class="account-bids-table">
+			<tr class="account-bids-table-header">
+				<th class="account-header-text account-wishlist-table-item text-center">Item</th>
+				<th class="account-header-text account-wishlist-table-name">Name</th>
+				<th class="account-header-text account-wishlist-table-time text-center">Time Left</th>
+				<th class="account-header-text account-wishlist-table-bid text-center">Highest Bid</th>
+				<th class="account-header-text account-wishlist-table-status text-center">Status</th>
+				<th class="account-header-text account-bids-table-button-view text-center"></th>
+			</tr>
+			<div class="mb-2">
+			</div>
+			{{#each model.wishlistItems as |wishlist|}}
+				{{#unless (eq wishlist.id null)}}
+					<tr>
+						<td class="m-0 p-0">
+							<div class="accout-bids-image-holder">
+								{{#each wishlist.product.pictures as |picture|}}
+									{{#if picture.main}}
+										<img src="{{picture.url}}" class="account-bid-image">
+									{{/if}}
+								{{/each}}
+							</div>
+						</td>
+						<td class="account-header-text account-bids-table-name"> 
+							<span class="account-product-name">{{wishlist.product.name}}</span>
+							<br>
+							<span class="account-product-id">#{{wishlist.product.id}}</span>
+						</td>
+						<td class="text-center">
+							<span class="account-product-plain-text">{{duratation wishlist.product.publishDate wishlist.product.expireDate}}</span>
+						</td>
+						<td class="text-center">
+							<span class="account-product-plain-text">{{format-bid wishlist.product.mainBid}}</span>
+						</td>
+						<td class="text-center">
+							<span class="account-wishlist-status-text">{{wishlist.product.status}}</span>
+						</td>
+						<td>
+							{{#link-to 'shop.single-product' wishlist.product.id class="account-bids-button"}}BID{{/link-to}}
+						</td>
+					</tr>
+				{{/unless}}
+			{{/each}}
+			<div class="mb-4">
+			</div>
+		</table>
 	</div>
 </div>
