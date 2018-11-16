@@ -1,0 +1,32 @@
+{{app-header}}
+
+<div class="container-fluid current-route-background bottom-margin-100">
+	<div class="container">
+		<p class="form-title-text">ALL CATEGORIES<span class="current-route-text"><span class="current-route-parent-text">HOME /</span>   ALL CATEGORIES</span></p>
+	</div>
+</div>
+
+<div class="container-fluid bottom-margin-300">
+	<div class="container">
+		<div class="row">
+			{{#each model.categoryList as |category|}}
+				{{#if category.isParent}}
+					<div class="col-lg-3 col-xl-3 mt-4 mb-2">
+						{{#link-to "home" class="category-list-parent-text"}}
+							{{category.name}}
+						{{/link-to}}
+						{{#each model.categoryList as |subcategory|}}
+							{{#if (eq subcategory.parent_id category.id)}}
+								<div>
+									{{#link-to "home" class="category-list-child-text"}}
+										{{subcategory.name}}
+									{{/link-to}}
+								</div>
+							{{/if}}
+						{{/each}}
+					</div>
+				{{/if}}
+			{{/each}}
+		</div>
+	</div>
+</div>

@@ -17,7 +17,7 @@ create table address (
 
 create table bids (
   id                            bigserial not null,
-  amount                        integer,
+  amount                        float,
   date                          timestamptz,
   status                        varchar(255),
   user_id                       bigint,
@@ -52,12 +52,12 @@ create table products (
   name                          varchar(255),
   publish_date                  timestamptz,
   expire_date                   timestamptz,
-  main_bid                      integer,
+  main_bid                      float,
   status                        varchar(255),
   color                         varchar(255),
   size                          varchar(255),
   description                   varchar(2048),
-  starting_price                integer,
+  starting_price                float,
   constraint pk_products primary key (id)
 );
 

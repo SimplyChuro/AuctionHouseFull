@@ -1,0 +1,59 @@
+<header>
+	<nav class="navbar navbar-expand-md p-1 user-navigation-bar">
+		<div class="container">
+  			<span class="navbar-brand text-light">Placeholder</span>
+  			<div class="" id="navigationList">
+  				<ul class="navbar-nav ml-auto">
+  					<li class="nav-item active">
+  						{{#link-to "login" class="nav-link text-light"}}
+  							Login
+						{{/link-to}}
+  					</li>				
+					<p class="divider">or</p>
+  					<li class="nav-item">
+  						{{#link-to "register" class="nav-link text-light"}}
+  							Create an Account
+						{{/link-to}}
+  					</li>
+
+  				</ul>
+   			</div>
+		</div>
+	</nav>
+	<nav class="navbar navbar-expand-md navbar-white bg-white pt-3 pb-3">
+		<div class="container">
+  			<p class="title">AUCTION</p>
+  			<button type="button" class="navbar-toggler" data-target="#navigationList" data-toggle="collapse">
+  			</button>
+  			<form class="navbar-form navigation-form">
+				<div class="input-group">
+     				<input type="text" class="form-control" placeholder="Search" name="search">
+      				<div class="input-group-btn">
+        				<button class="btn btn-default" type="submit">GO</button>
+      				</div>
+    			</div>
+  			</form>
+  			<div class="collapse navbar-collapse" id="navigationList">
+  				<ul class="navbar-nav ml-auto">
+  					<li class="nav-item mr-4">
+  						{{#link-to "home" class="nav-link"}}
+  							HOME
+						{{/link-to}}
+  					</li>
+  					<li class="nav-item mr-4">
+  						{{#link-to "shop" class="nav-link"}}
+  							SHOP
+						{{/link-to}}
+  					</li>
+  					<li class="nav-item dropdown">
+  						<a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">MY ACCOUNT<</a>
+  						<div class="dropdown-menu">
+  							<a class="dropdown-item" href="#">About</a>
+  							<a class="dropdown-item" href="#">Questions</a>
+  						</div>
+  					</li>
+  				</ul>
+   			</div>
+		</div>
+	</nav>
+</header>

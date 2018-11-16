@@ -38,7 +38,7 @@ public class Products extends Model{
 	public Date expireDate;
 	
 	@Constraints.Required
-	public Integer mainBid;
+	public Double mainBid;
 	
 	@Constraints.Required
 	public String status;
@@ -54,7 +54,7 @@ public class Products extends Model{
 	public String description;
 	
 	@Constraints.Required
-	public Integer startingPrice;
+	public Double startingPrice;
    
 	
 	//Foreign Keys

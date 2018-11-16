@@ -23,7 +23,7 @@ public class Bids extends Model{
 	public Long id;
 
     @Constraints.Required
-	public Integer amount;
+	public Double amount;
     
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Formats.DateTime(pattern="dd/MM/yyyy")
