@@ -11,8 +11,8 @@ GET		/api/v1/users/reset					controllers.UserController.reset
 
 # Login/Logout API routes
 +nocsrf
-POST	/api/v1/login						controllers.LogController.login
-POST	/api/v1/logout						controllers.LogController.logout
+POST	/api/v1/login						controllers.LoginController.login
+POST	/api/v1/logout						controllers.LoginController.logout
 
 
 # Bid API routes

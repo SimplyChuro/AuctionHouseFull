@@ -28,7 +28,6 @@ public class ProductCategory extends Model {
     @ManyToOne 
     public Products product;
     
-
 	public static final Finder<Long, ProductCategory> find = new Finder<>(ProductCategory.class);
 
 }

@@ -18,10 +18,10 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			Sales sale = Sales.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
 			return ok(Json.toJson(sale));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -30,10 +30,10 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			List<Sales> sales = user.sales;
 			return ok(Json.toJson(sales));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -74,7 +74,7 @@ public class SaleController extends Controller {
 //			saleItem.save();
 
 			return ok();	
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -88,7 +88,7 @@ public class SaleController extends Controller {
 			saleItem.product.update();
 			saleItem.update();
 			return ok();
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -102,7 +102,7 @@ public class SaleController extends Controller {
 			saleItem.product.delete();
 			saleItem.delete();
 			return ok();
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

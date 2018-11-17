@@ -20,10 +20,15 @@ public class WishlistController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
-			Users user = LogController.getUser();
-			Wishlists wishlist = Wishlists.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			Users user = LoginController.getUser();
+			Wishlists wishlist = Wishlists.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", id)
+					.endJunction()
+					.findUnique();
+			
 			return ok(Json.toJson(wishlist));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -32,10 +37,10 @@ public class WishlistController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			List<Wishlists> wishlist = user.wishlists;
 			return ok(Json.toJson(wishlist));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -44,20 +49,24 @@ public class WishlistController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			JsonNode objectNode = jsonNode.get("wishlist");
-			Users user = LogController.getUser();
+			JsonNode objectNode = request().body().asJson().get("wishlist");
+			Users user = LoginController.getUser();
 			
-			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", objectNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", objectNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
 			if(wishlistChecker != null) {
 				wishlistChecker.updateWishlist(objectNode);
 				return ok();
-			}else {
+			} else {
 				wishlistChecker = Json.fromJson(objectNode, Wishlists.class);
 				wishlistChecker.createWishlist(user, objectNode);
 				return ok();
 			}
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
@@ -67,7 +76,12 @@ public class WishlistController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
 			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.update();
@@ -76,7 +90,7 @@ public class WishlistController extends Controller{
 				return badRequest();
 			}
 			
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -86,7 +100,12 @@ public class WishlistController extends Controller{
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();			
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();	
+			
 			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.delete();
@@ -95,7 +114,7 @@ public class WishlistController extends Controller{
 				return badRequest();
 			}
 			
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

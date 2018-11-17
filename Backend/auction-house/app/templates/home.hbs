@@ -1,92 +1,90 @@
 {{app-header}}
 
 <div class="container-fluid current-route-background">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-3 col-xl-3">
-				<table class="table table-hover category-table pb-0 mb-0">
-			  	
-				<p class="category-table-title mt-3 mb-3">CATEGORIES</p>
-			
-				 <tbody>
-					{{#each model.categoryList as |category|}}
-						{{#if (is-parent category.parent_id)}}
-							<tr>
-								<td class="m-0 p-0">
-									{{#link-to "shop" class="category-table-link"}}
-										<div class="category-table-row-full">
-						  					{{category.name}}
-						  				</div>
-									{{/link-to}}
-								</td>
-					    	</tr>	
-			    		{{/if}}
-					{{/each}}
-					<tr>
-						<td class="m-0 p-0">
-							{{#link-to "category-list" class="category-table-link"}}
-								<div class="category-table-row-full">
-				  					All Categories
-				  				</div>
-							{{/link-to}}
-						</td>
-			    	</tr>
-				  </tbody>
-				</table>
-			</div>
-			<div class="col-lg-8 col-xl-8 center-margin">
-				<div class="ml-5">
-					<div class="row">
-						<div class="col-lg-7 col-xl-7">
-							<h1 class="home-featured-title">{{model.productRandom.name}}</h1>
-							<p class="home-featured-price">Starting from - {{format-bid model.productRandom.startingPrice}}</p>
-							<p class="home-featured-description">{{model.productRandom.description}}</p>
-							<div class="mt-4">
-								{{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
-				  					BID NOW
-								{{/link-to}}
-							</div>
-						</div>
-						<div class="col-lg-5 col-xl-5">
-							{{#each model.productRandom.pictures as |picture|}}
-								{{#if picture.main}}
-									<img class="home-product-card-image" src="{{picture.url}}">
-								{{/if}}
-							{{/each}}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-xl-3">
+        <table class="table table-hover category-table pb-0 mb-0">
+          <p class="category-table-title mt-3 mb-3">CATEGORIES</p>
+          <tbody>
+            {{#each model.categoryList as |category|}}
+              {{#if (is-parent category.parent_id)}}
+                <tr>
+                  <td class="m-0 p-0">
+                    {{#link-to "shop" class="category-table-link"}}
+                      <div class="category-table-row-full">
+                        {{category.name}}
+                      </div>
+                    {{/link-to}}
+                  </td>
+                </tr>	
+              {{/if}}
+            {{/each}}
+            <tr>
+              <td class="m-0 p-0">
+                {{#link-to "category-list" class="category-table-link"}}
+                  <div class="category-table-row-full">
+                    All Categories
+                  </div>
+                {{/link-to}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-8 col-xl-8 center-margin">
+        <div class="ml-5">
+          <div class="row">
+            <div class="col-lg-7 col-xl-7">
+              <h1 class="home-featured-title">{{model.productRandom.name}}</h1>
+              <p class="home-featured-price">Starting from - {{format-bid model.productRandom.startingPrice}}</p>
+              <p class="home-featured-description">{{model.productRandom.description}}</p>
+              <div class="mt-4">
+                {{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
+                  BID NOW
+                {{/link-to}}
+              </div>
+            </div>
+            <div class="col-lg-5 col-xl-5">
+              {{#each model.productRandom.pictures as |picture|}}
+                {{#if picture.main}}
+                  <img class="home-product-card-image" src="{{picture.url}}">
+                {{/if}}
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid mt-5 bottom-margin-100">
-	<div class="container">
-		<h1 class="feature-collection-text">Feature Collection</h1>
-		<hr class="feature-line">
-		<div class="row">
-			{{#each model.productList as |product|}}
-				<div class="col-lg-6 col-xl-4">
-					{{#link-to "shop.single-product" product.id class="category-table-link"}}	
-						<div class="mb-5 mt-5">
-							<div class="home-product-card m-3">
-								<div class="home-product-card-image-holder">
-									{{#each product.pictures as |picture|}}
-										{{#if picture.main}}
-											<img class="home-product-card-image" src="{{picture.url}}">		
-										{{/if}}
-									{{/each}}
-								</div>
-								 <div class="mt-2">
-									<h5 class="home-product-card-name-text">{{product.name}}</h5>
-									<p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-								</div>
-							</div>	
-						</div>
-					{{/link-to}}
-				</div>
-			{{/each}}
-		</div>
-	</div>
+  <div class="container">
+    <h1 class="feature-collection-text">Feature Collection</h1>
+    <hr class="feature-line">
+    <div class="row">
+      {{#each model.productList as |product|}}
+        <div class="col-lg-6 col-xl-4">
+          {{#link-to "shop.single-product" product.id class="category-table-link"}}	
+            <div class="mb-5 mt-5">
+              <div class="home-product-card m-3">
+                <div class="home-product-card-image-holder">
+                  {{#each product.pictures as |picture|}}
+                    {{#if picture.main}}
+                      <img class="home-product-card-image" src="{{picture.url}}">		
+                    {{/if}}
+                  {{/each}}
+                </div>
+                <div class="mt-2">
+                  <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                  <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                </div>
+              </div>	
+            </div>
+          {{/link-to}}
+        </div>
+      {{/each}}
+    </div>
+  </div>
 </div>

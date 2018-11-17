@@ -39,7 +39,5 @@ public class Category extends Model{
 		this.parent_id = parent_id;
 		this.products = products;
 	}
-	
-	
-	
+		
 }

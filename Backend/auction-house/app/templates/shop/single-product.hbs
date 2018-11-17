@@ -47,7 +47,7 @@
 				<div class="mt-5">
 					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.mainBid}}</span></p>
 					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.bidCount}}</p>
-					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duratation model.publishDate model.expireDate}}</p>
+					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.publishDate model.expireDate}}</p>
 				</div>
 				{{#if (is-logged)}}
 					<button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.id}}>Watchlist</button>
@@ -74,10 +74,10 @@
 			{{#each product as |product|}}
 				<div class="col-lg-4 col-xl-4 mb-3 mt-2">
 					<div class="card">
-					 <h1 class="card-title">{{product.name}}</h1>
-						  <div class="card-body">
-						    <p class="card-text">{{product.description}}</p>
-						  </div>
+            <h1 class="card-title">{{product.name}}</h1>
+					  <div class="card-body">
+					    <p class="card-text">{{product.description}}</p>
+					  </div>
 					</div>
 				</div>
 			{{/each}}
