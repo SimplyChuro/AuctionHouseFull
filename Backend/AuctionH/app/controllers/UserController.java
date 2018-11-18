@@ -30,6 +30,7 @@ import play.mvc.*;
 public class UserController extends Controller {
 	
 	//API GET all users  ------ Testing only
+	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
 			List<Users> users = Users.find.all();
@@ -41,7 +42,7 @@ public class UserController extends Controller {
 
 	//get user
 	@Security.Authenticated(Secured.class)
-	public Result get() {
+	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
 			return ok(Json.toJson(user));
@@ -55,7 +56,12 @@ public class UserController extends Controller {
 		try {
 			JsonNode objectNode = request().body().asJson().get("user");
 			
-			Users userChecker = Users.find.query().where().conjunction().eq("email", objectNode.findPath("email").textValue()).endJunction().findUnique();
+			Users userChecker = Users.find.query().where()
+					.conjunction()
+					.eq("email", objectNode.findPath("email").textValue())
+					.endJunction()
+					.findUnique();
+			
 			if(userChecker != null) {
 				return badRequest();
 			} else {
@@ -70,19 +76,14 @@ public class UserController extends Controller {
 	}
 	
 	//Update user
+	@Security.Authenticated(Secured.class)
 	public Result update() {
 		try {
 			JsonNode objectNode = request().body().asJson().get("user");
+			Users user = LoginController.getUser();
+			user.updateUser(objectNode);
+			return ok(Json.toJson(user));
 			
-			Users userChecker = Users.find.query().where().conjunction().eq("email", objectNode.findPath("email").textValue()).endJunction().findUnique();
-			if(userChecker != null) {
-				userChecker = Json.fromJson(objectNode, Users.class);
-				userChecker.setPassword(objectNode.findValue("password").asText());
-				userChecker.updateUser();
-				return ok();
-			} else {
-				return badRequest();
-			}
 		} catch(Exception e) {
 			return badRequest();
 		}

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.validation.Constraints.Required;
 import play.libs.Json;
 
 @Entity
@@ -40,5 +41,14 @@ public class Address extends Model{
     public Users user;
 	
 	public static final Finder<Long, Address> find = new Finder<>(Address.class);
+
+	public void updateAddress(String street, String city, String zipCode, String state, String country) {
+		this.street = street;
+		this.city = city;
+		this.zipCode = zipCode;
+		this.state = state;
+		this.country = country;
+		update();
+	}
 	
 }

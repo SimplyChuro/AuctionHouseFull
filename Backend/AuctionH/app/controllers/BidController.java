@@ -20,7 +20,8 @@ public class BidController extends Controller {
 		try {
 			Users user = LoginController.getUser();
 			Bids bid = Bids.find.query().where().conjunction()
-					.eq("user_id", user.id).eq("product_id", id)
+					.eq("user_id", user.id)
+					.eq("product_id", id)
 					.endJunction()
 					.findUnique();
 			return ok(Json.toJson(bid));

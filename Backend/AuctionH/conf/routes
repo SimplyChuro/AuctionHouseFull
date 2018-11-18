@@ -1,6 +1,6 @@
 # User API routes
 GET		/api/v1/users	      				controllers.UserController.getAll
-GET		/api/v1/users						controllers.UserController.get
+GET		/api/v1/users/:id					controllers.UserController.get(id : Long)
 POST	/api/v1/users						controllers.UserController.create
 PUT		/api/v1/users						controllers.UserController.update
 

@@ -3,12 +3,15 @@ package models;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -96,9 +99,29 @@ public class Users extends Model{
 		address.save();
 	}
 	
-	public void updateUser() {
-		update();
-		address.update();
+	public void updateUser(JsonNode objectNode) {
+		this.gender = objectNode.findPath("gender").asText();
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
+			this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		this.phoneNumber = objectNode.findPath("phoneNumber").asText();
+		
+		this.update();
+		this.address.updateAddress(
+				objectNode.findPath("street").asText(),
+				objectNode.findPath("city").asText(),
+				objectNode.findPath("zipCode").asText(),
+				objectNode.findPath("state").asText(),
+				objectNode.findPath("country").asText()
+			);
 	}
 	
     //Token commands
