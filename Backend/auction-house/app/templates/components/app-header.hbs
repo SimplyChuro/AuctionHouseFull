@@ -4,7 +4,7 @@
   			<span class="navbar-brand text-light"></span>
   			<div class="" id="navigationList">
   				<ul class="navbar-nav ml-auto">
-            {{#if (is-logged)}}
+            {{#if session.authToken}}
               <li class="nav-item pt-2 pb-2">
                 <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
               </li>   
@@ -28,15 +28,13 @@
 	<nav class="navbar navbar-expand-md navbar-white bg-white pt-3 pb-3">
 		<div class="container">
 			<p class="title">AUCTION</p>
-			<button type="button" class="navbar-toggler" data-target="#navigationList" data-toggle="collapse">
-			</button>
 			<form class="navbar-form navigation-form">
-			<div class="input-group">
- 				<input type="text" class="form-control" placeholder="Search" name="search">
+  			<div class="input-group">
+ 			    {{input type="text" class="form-control" placeholder="Search" name="search"}}
   				<div class="input-group-btn">
     				<button class="btn btn-default" type="submit">GO</button>
   				</div>
-			</div>
+  			</div>
 			</form>
 			<div class="collapse navbar-collapse" id="navigationList">
 				<ul class="navbar-nav ml-auto">
@@ -46,12 +44,12 @@
 					{{/link-to}}
 					</li>
 					<li class="nav-item mr-4">
-						{{#link-to "shop" class="nav-link"}}
+						{{#link-to "shop.product-list" class="nav-link"}}
 							SHOP
 				   	{{/link-to}}
 					</li>
 					<li class="nav-item dropdown">
-            {{#if (is-logged)}}
+            {{#if session.authToken}}
               {{#bs-dropdown as |dd|}}
               {{#dd.toggle class="nav-link"}}MY ACCOUNT{{/dd.toggle}}
                 {{#dd.menu as |ddm|}}  

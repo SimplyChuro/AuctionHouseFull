@@ -1,29 +1,18 @@
 import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
+import Cookies from 'ember-cli-js-cookie';
+import { later } from '@ember/runloop';
 
 export default Controller.extend({
+  session: Ember.inject.service(),
   actions: {
     login: function() {
-      $.ajax({
-        url: 'http://localhost:9000/api/v1/login',
-        type: 'POST',
-        data: JSON.stringify({
-          email: this.get('emailAddress'),
-          password: this.get('password')
-        }),
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        success: function(data){
-          ENV.USER_TOKEN = data.authToken;
-        }
-      }).then(() => {
-        if(ENV.USER_TOKEN !== ''){
-          this.transitionToRoute("home");
-        } else {
-          alert("Incorrect Loging Details");
-        }
-      });
+      this.get('session').login(this.get('emailAddress'), this.get('password'));
+      this.transitionToRoute('index');
+      later(this, function() {
+        window.location.reload(true);
+      }, 300);
     }
   }
 });

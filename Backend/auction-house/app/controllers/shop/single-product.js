@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { later } from '@ember/runloop';
 
 export default Controller.extend({
+  session: Ember.inject.service(),
   actions: {
     createBid: function(productID) {
       this.store.createRecord('bid', {

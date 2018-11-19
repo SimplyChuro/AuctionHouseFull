@@ -56,12 +56,18 @@ public class BidController extends Controller {
 					.findUnique();
 			
 			if(bidChecker != null) {
-				bidChecker.updateBid(objectNode);
-				return ok();
+				if(bidChecker.updateBid(objectNode)) {
+					return ok();
+				}else {
+					return badRequest();
+				}
 			} else {
 				bidChecker = Json.fromJson(objectNode, Bids.class);
-				bidChecker.createBid(user, objectNode);
-				return ok();
+				if(bidChecker.createBid(user, objectNode)) {
+					return ok();
+				} else {
+					return badRequest();
+				}
 			}
 		} catch(Exception e) {
 			return badRequest();

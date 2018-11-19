@@ -50,20 +50,30 @@ public class Bids extends Model{
 		this.user = user;
 	}
 	
-	public void createBid(Users user, JsonNode objectNode) {
-		this.user = user;
+	public Boolean createBid(Users user, JsonNode objectNode) {
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
-		save();
-		product.bidCount++;
-		product.mainBid = amount;
-		product.update();
+		if(product.mainBid >= amount) {
+			return false;
+		} else {
+			this.user = user;
+			save();
+			product.bidCount++;
+			product.mainBid = amount;
+			product.update();
+			return true;
+		}
 	}
 	
-	public void updateBid(JsonNode objectNode) {
+	public Boolean updateBid(JsonNode objectNode) {
 		amount = objectNode.findPath("amount").asDouble();
-		product.mainBid = amount;
-		update();
-		product.update();
+		if(product.mainBid >= amount) {
+			return false;
+		} else {
+			product.mainBid = amount;
+			update();
+			product.update();
+			return true;
+		}
 	}
 	
 }

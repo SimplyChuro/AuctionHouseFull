@@ -16,6 +16,7 @@ Router.map(function() {
     this.route('about-us');
     this.route('terms-and-conditions');
     this.route('privacy-and-policy');
+    this.route('product-list');
   });
   this.route('account', function() {
     this.route('profile');

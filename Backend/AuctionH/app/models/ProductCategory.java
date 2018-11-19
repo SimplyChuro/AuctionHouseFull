@@ -22,10 +22,10 @@ public class ProductCategory extends Model {
 	public Long id;
 	
     //Foreign Keys
-    @ManyToOne @JsonIgnore
+    @ManyToOne
     public Category category;
     
-    @ManyToOne 
+    @ManyToOne @JsonIgnore
     public Products product;
     
 	public static final Finder<Long, ProductCategory> find = new Finder<>(ProductCategory.class);

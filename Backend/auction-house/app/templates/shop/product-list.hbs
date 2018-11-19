@@ -1,0 +1,219 @@
+<div class="container-fluid current-route-background mb-4">
+  <div class="container">
+    <p class="form-title-text">SHOP<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   ALL CATEGORIES</span></p>
+  </div>
+</div>
+
+<div class="container-fluid bottom-margin-300">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-xl-3">
+        <table class="table categort-table-v2 pb-0 mb-3">
+          <p class="category-table-title-v2 mt-3 mb-3 ml-3">PRODUCT CATEGORIES</p>
+          <tbody>
+            {{#each model.categoryList as |category|}}
+              {{#if (eq category.parent_id null)}}
+                <tr {{action 'toggleDetails' category}} class="product-list-pointer"> 
+                  <div class="category-table-link-v2">
+                    {{category.name}}
+                  </div>
+                </tr>
+                {{#if displayDetails}}
+                  {{#if (eq category.id currentCategory)}}
+                    {{#each model.categoryList as |subcategory|}}
+                      {{#if (eq subcategory.parent_id category.id)}}
+                        <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
+                          <div class="category-table-link-v3">
+                            {{subcategory.name}}
+                          </div>
+                        </tr>
+                      {{/if}}
+                    {{/each}}
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            {{/each}} 
+            <tr {{action "setSelection" null}} class="product-list-pointer"> 
+                <div class="category-table-link-v2">
+                  All Categories
+                </div>
+              </tr> 
+          </tbody>
+        </table>
+
+        <table class="table categort-table-v2 pb-0 mb-3">
+          <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
+          <tbody>
+            <tr class="product-list-pointer">
+              <div class="category-table-link-v2" {{action 'setColor' "White"}}>
+                White
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Black'}}>
+              <div class="category-table-link-v2">
+                Black
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Blue'}}>
+              <div class="category-table-link-v2">
+                Blue
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Red'}}>
+              <div class="category-table-link-v2">
+                Red
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Orange'}}>
+              <div class="category-table-link-v2">
+                Orange
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Yellow'}}>
+              <div class="category-table-link-v2">
+                Yellow
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' 'Green'}}>
+              <div class="category-table-link-v2">
+                Green
+              </div>
+            </tr>
+            <tr class="product-list-pointer" {{action 'setColor' null}}>
+              <div class="category-table-link-v2">
+                All Colors
+              </div>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table categort-table-v2 pb-0 mb-2">
+          <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY SIZE</p>
+          <tbody>
+            <tr class="product-list-pointer">
+              <div class="category-table-link-v2">
+                Extra Small
+              </div>
+            </tr>
+            <tr class="product-list-pointer">
+              <div class="category-table-link-v2">
+                Small
+              </div>
+            </tr>
+            <tr class="product-list-pointer">
+              <div class="category-table-link-v2">
+                Medium
+              </div>
+            </tr>
+            <tr class="product-list-pointer">
+              <div class="category-table-link-v2">
+                Large
+              </div>
+            </tr>
+            <tr class="product-list-pointer">  
+              <div class="category-table-link-v2">
+                Extra Large
+              </div>             
+            </tr>
+            <tr class="product-list-pointer">  
+              <div class="category-table-link-v2">
+                All Sizes
+              </div>             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-9 col-xl-9">
+        <div class="row">
+            {{#each filteredProducts as |product|}}
+              {{#if (eq selectedColor null)}}
+                {{#if (eq selectedSize null)}}
+                  <div class="col-lg-4 col-xl-4">
+                    {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                      <div class="home-product-card m-3">
+                        <div class="home-product-card-image-holder">
+                          {{#each product.pictures as |picture|}}
+                            {{#if picture.main}}
+                              <img class="home-product-card-image" src="{{picture.url}}">   
+                            {{/if}}
+                          {{/each}}
+                        </div>
+                        <div class="mt-2">
+                          <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                          <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                        </div>
+                      </div>
+                    {{/link-to}}
+                  </div>
+                {{else}}
+                  {{#if (eq product.size selectedSize)}}
+                    <div class="col-lg-4 col-xl-4">
+                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                        <div class="home-product-card m-3">
+                          <div class="home-product-card-image-holder">
+                            {{#each product.pictures as |picture|}}
+                              {{#if picture.main}}
+                                <img class="home-product-card-image" src="{{picture.url}}">   
+                              {{/if}}
+                            {{/each}}
+                          </div>
+                          <div class="mt-2">
+                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                          </div>
+                        </div>
+                      {{/link-to}}
+                    </div>
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{#if (eq selectedSize null)}}
+                  {{#if (eq product.color selectedColor)}}
+                    <div class="col-lg-4 col-xl-4">
+                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                        <div class="home-product-card m-3">
+                          <div class="home-product-card-image-holder">
+                            {{#each product.pictures as |picture|}}
+                              {{#if picture.main}}
+                                <img class="home-product-card-image" src="{{picture.url}}">   
+                              {{/if}}
+                            {{/each}}
+                          </div>
+                          <div class="mt-2">
+                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                          </div>
+                        </div>
+                      {{/link-to}}
+                    </div>
+                  {{/if}}
+                {{else}}
+                  {{#if (eq product.color selectedColor)}}
+                    {{#if (eq product.size selectedSize)}}
+                      <div class="col-lg-4 col-xl-4">
+                        {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                          <div class="home-product-card m-3">
+                            <div class="home-product-card-image-holder">
+                              {{#each product.pictures as |picture|}}
+                                {{#if picture.main}}
+                                  <img class="home-product-card-image" src="{{picture.url}}">   
+                                {{/if}}
+                              {{/each}}
+                            </div>
+                            <div class="mt-2">
+                              <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                              <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                            </div>
+                          </div>
+                        {{/link-to}}
+                      </div>
+                    {{/if}}
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

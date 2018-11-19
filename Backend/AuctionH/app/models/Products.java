@@ -66,8 +66,8 @@ public class Products extends Model{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
     public List<Pictures> pictures;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
-    public List<ProductCategory> category;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
+    public List<ProductCategory> productcategory;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Bids> bids;
