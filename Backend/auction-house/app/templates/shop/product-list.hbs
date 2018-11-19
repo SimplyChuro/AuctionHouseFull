@@ -23,7 +23,7 @@
                     {{#each model.categoryList as |subcategory|}}
                       {{#if (eq subcategory.parent_id category.id)}}
                         <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
-                          <div class="category-table-link-v3">
+                          <div class="{{is-active selectedOption subcategory 1}}">
                             {{subcategory.name}}
                           </div>
                         </tr>
@@ -44,38 +44,38 @@
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
           <tbody>
-            <tr class="product-list-pointer">
-              <div class="category-table-link-v2" {{action 'setColor' "White"}}>
+            <tr class="product-list-pointer" {{action 'setColor' 'White'}}>
+              <div class="{{is-active selectedColor 'White' 0}}">
                 White
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Black'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Black' 0}}">
                 Black
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Blue'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Blue' 0}}">
                 Blue
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Red'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Red' 0}}">
                 Red
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Orange'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Orange' 0}}">
                 Orange
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Yellow'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Yellow' 0}}">
                 Yellow
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Green'}}>
-              <div class="category-table-link-v2">
+              <div class="{{is-active selectedColor 'Green' 0}}">
                 Green
               </div>
             </tr>
@@ -90,32 +90,32 @@
         <table class="table categort-table-v2 pb-0 mb-2">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY SIZE</p>
           <tbody>
-            <tr class="product-list-pointer">
-              <div class="category-table-link-v2">
+            <tr class="product-list-pointer" {{action 'setSize' 'Extra Small'}}>
+              <div class="{{is-active selectedSize 'Extra Small' 0}}">
                 Extra Small
               </div>
             </tr>
-            <tr class="product-list-pointer">
-              <div class="category-table-link-v2">
+            <tr class="product-list-pointer" {{action 'setSize' 'Small'}}>
+              <div class="{{is-active selectedSize 'Small' 0}}">
                 Small
               </div>
             </tr>
-            <tr class="product-list-pointer">
-              <div class="category-table-link-v2">
+            <tr class="product-list-pointer" {{action 'setSize' 'Medium'}}>
+              <div class="{{is-active selectedSize 'Medium' 0}}">
                 Medium
               </div>
             </tr>
-            <tr class="product-list-pointer">
-              <div class="category-table-link-v2">
+            <tr class="product-list-pointer" {{action 'setSize' 'Large'}}>
+              <div class="{{is-active selectedSize 'Large' 0}}">
                 Large
               </div>
             </tr>
-            <tr class="product-list-pointer">  
-              <div class="category-table-link-v2">
+            <tr class="product-list-pointer" {{action 'setSize' 'Extra Large'}}>  
+              <div class="{{is-active selectedSize 'Extra Large' 0}}">
                 Extra Large
               </div>             
             </tr>
-            <tr class="product-list-pointer">  
+            <tr class="product-list-pointer" {{action 'setSize' null}}>  
               <div class="category-table-link-v2">
                 All Sizes
               </div>             
@@ -124,73 +124,90 @@
         </table>
       </div>
       <div class="col-lg-9 col-xl-9">
+        <div class="bottom-margin-75">
+          <div class="product-list-type-holder">
+            <button class="{{is-active selectedListType null 2}}" {{action 'setListType' null}}>Grid</button>
+            <button class="{{is-active selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>List</button>
+          </div>
+        </div>
+
         <div class="row">
             {{#each filteredProducts as |product|}}
               {{#if (eq selectedColor null)}}
                 {{#if (eq selectedSize null)}}
-                  <div class="col-lg-4 col-xl-4">
-                    {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                      <div class="home-product-card m-3">
-                        <div class="home-product-card-image-holder">
-                          {{#each product.pictures as |picture|}}
-                            {{#if picture.main}}
-                              <img class="home-product-card-image" src="{{picture.url}}">   
-                            {{/if}}
-                          {{/each}}
+                  {{#if (eq selectedListType 'List')}}
+                    <div class="col-lg-12 col-xl-12 fade">
+                        <div class="row mb-4">
+                          <div class="col-lg-4 col-xl-4">
+                            <div class="product-list-image-holder">
+                               {{#each product.pictures as |picture|}}
+                                {{#if picture.main}}
+                                  <img class="product-list-image-v1" src="{{picture.url}}">   
+                                {{/if}}
+                              {{/each}}
+                            </div>
+                          </div>
+                          <div class="col-lg-8 col-xl-8">
+                            <h1 class="product-list-title-v1">{{product.name}}</h1>
+                            <p class="product-list-paragraph-v1">{{product.description}}</p>
+                            <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
+                            <div>
+                              <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>Wishlist</button>
+                              {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
+                                Bid  
+                              {{/link-to}}
+                            </div>
+                          </div>
                         </div>
-                        <div class="mt-2">
-                          <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                          <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                    </div>
+                  {{else}}
+                    <div class="col-lg-4 col-xl-4 fade">
+                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                        <div class="home-product-card m-3">
+                          <div class="home-product-card-image-holder">
+                            {{#each product.pictures as |picture|}}
+                              {{#if picture.main}}
+                                <img class="home-product-card-image" src="{{picture.url}}">   
+                              {{/if}}
+                            {{/each}}
+                          </div>
+                          <div class="mt-2">
+                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                          </div>
                         </div>
+                      {{/link-to}}
+                    </div>
+                  {{/if}}
+                {{else}}
+                  {{#if (eq product.size selectedSize)}}
+                    {{#if (eq selectedListType 'List')}}
+                      <div class="col-lg-12 col-xl-12 fade">
+                          <div class="row mb-4">
+                            <div class="col-lg-4 col-xl-4">
+                              <div class="product-list-image-holder">
+                                 {{#each product.pictures as |picture|}}
+                                  {{#if picture.main}}
+                                    <img class="product-list-image-v1" src="{{picture.url}}">   
+                                  {{/if}}
+                                {{/each}}
+                              </div>
+                            </div>
+                            <div class="col-lg-8 col-xl-8">
+                              <h1 class="product-list-title-v1">{{product.name}}</h1>
+                              <p class="product-list-paragraph-v1">{{product.description}}</p>
+                              <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
+                              <div>
+                                <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>Wishlist</button>
+                                {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
+                                  Bid  
+                                {{/link-to}}
+                              </div>
+                            </div>
+                          </div>
                       </div>
-                    {{/link-to}}
-                  </div>
-                {{else}}
-                  {{#if (eq product.size selectedSize)}}
-                    <div class="col-lg-4 col-xl-4">
-                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                        <div class="home-product-card m-3">
-                          <div class="home-product-card-image-holder">
-                            {{#each product.pictures as |picture|}}
-                              {{#if picture.main}}
-                                <img class="home-product-card-image" src="{{picture.url}}">   
-                              {{/if}}
-                            {{/each}}
-                          </div>
-                          <div class="mt-2">
-                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                          </div>
-                        </div>
-                      {{/link-to}}
-                    </div>
-                  {{/if}}
-                {{/if}}
-              {{else}}
-                {{#if (eq selectedSize null)}}
-                  {{#if (eq product.color selectedColor)}}
-                    <div class="col-lg-4 col-xl-4">
-                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                        <div class="home-product-card m-3">
-                          <div class="home-product-card-image-holder">
-                            {{#each product.pictures as |picture|}}
-                              {{#if picture.main}}
-                                <img class="home-product-card-image" src="{{picture.url}}">   
-                              {{/if}}
-                            {{/each}}
-                          </div>
-                          <div class="mt-2">
-                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                          </div>
-                        </div>
-                      {{/link-to}}
-                    </div>
-                  {{/if}}
-                {{else}}
-                  {{#if (eq product.color selectedColor)}}
-                    {{#if (eq product.size selectedSize)}}
-                      <div class="col-lg-4 col-xl-4">
+                    {{else}}
+                      <div class="col-lg-4 col-xl-4 fade">
                         {{#link-to "shop.single-product" product.id class="category-table-link"}}
                           <div class="home-product-card m-3">
                             <div class="home-product-card-image-holder">
@@ -207,6 +224,104 @@
                           </div>
                         {{/link-to}}
                       </div>
+                    {{/if}}
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{#if (eq selectedSize null)}}
+                  {{#if (eq product.color selectedColor)}}
+                    {{#if (eq selectedListType 'List')}}
+                      <div class="col-lg-12 col-xl-12 fade">
+                          <div class="row mb-4">
+                            <div class="col-lg-4 col-xl-4">
+                              <div class="product-list-image-holder">
+                                 {{#each product.pictures as |picture|}}
+                                  {{#if picture.main}}
+                                    <img class="product-list-image-v1" src="{{picture.url}}">   
+                                  {{/if}}
+                                {{/each}}
+                              </div>
+                            </div>
+                            <div class="col-lg-8 col-xl-8">
+                              <h1 class="product-list-title-v1">{{product.name}}</h1>
+                              <p class="product-list-paragraph-v1">{{product.description}}</p>
+                              <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
+                              <div>
+                                <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>Wishlist</button>
+                                {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
+                                  Bid  
+                                {{/link-to}}
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    {{else}}
+                      <div class="col-lg-4 col-xl-4 fade">
+                        {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                          <div class="home-product-card m-3">
+                            <div class="home-product-card-image-holder">
+                              {{#each product.pictures as |picture|}}
+                                {{#if picture.main}}
+                                  <img class="home-product-card-image" src="{{picture.url}}">   
+                                {{/if}}
+                              {{/each}}
+                            </div>
+                            <div class="mt-2">
+                              <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                              <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                            </div>
+                          </div>
+                        {{/link-to}}
+                      </div>
+                    {{/if}}
+                  {{/if}}
+                {{else}}
+                  {{#if (eq product.color selectedColor)}}
+                    {{#if (eq product.size selectedSize)}}
+                      {{#if (eq selectedListType 'List')}}
+                        <div class="col-lg-12 col-xl-12 fade">
+                            <div class="row mb-4">
+                              <div class="col-lg-4 col-xl-4">
+                                <div class="product-list-image-holder">
+                                   {{#each product.pictures as |picture|}}
+                                    {{#if picture.main}}
+                                      <img class="product-list-image-v1" src="{{picture.url}}">   
+                                    {{/if}}
+                                  {{/each}}
+                                </div>
+                              </div>
+                              <div class="col-lg-8 col-xl-8">
+                                <h1 class="product-list-title-v1">{{product.name}}</h1>
+                                <p class="product-list-paragraph-v1">{{product.description}}</p>
+                                <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
+                                <div>
+                                  <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>Wishlist</button>
+                                  {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
+                                    Bid  
+                                  {{/link-to}}
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                      {{else}}
+                        <div class="col-lg-4 col-xl-4 fade">
+                          {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                            <div class="home-product-card m-3">
+                              <div class="home-product-card-image-holder">
+                                {{#each product.pictures as |picture|}}
+                                  {{#if picture.main}}
+                                    <img class="home-product-card-image" src="{{picture.url}}">   
+                                  {{/if}}
+                                {{/each}}
+                              </div>
+                              <div class="mt-2">
+                                <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                                <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                              </div>
+                            </div>
+                          {{/link-to}}
+                        </div>
+                      {{/if}}
                     {{/if}}
                   {{/if}}
                 {{/if}}

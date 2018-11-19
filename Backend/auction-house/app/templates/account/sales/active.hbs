@@ -27,7 +27,7 @@
       {{#each model.saleList as |sale|}}
         {{#unless (eq sale.id null)}}
           {{#if (eq sale.status 'active')}}
-            <tr>
+            <tr class="fade">
               <td class="m-0 p-0">
                 <div class="accout-bids-image-holder">
                   {{#each sale.product.pictures as |picture|}}

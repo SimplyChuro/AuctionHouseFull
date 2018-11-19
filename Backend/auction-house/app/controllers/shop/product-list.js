@@ -6,6 +6,7 @@ export default Controller.extend({
   selectedOption: null,
   selectedColor: null,
   selectedSize: null,
+  selectedListType: null,
 
   filteredProducts: Ember.computed('selectedOption', function(){
     var selI = this.get('selectedOption');
@@ -51,6 +52,17 @@ export default Controller.extend({
 
     setSize: function(selected) {
       this.set('selectedSize', selected);  
+    },
+
+    setListType: function(selected) {
+      this.set('selectedListType', selected);  
+    },
+
+    createWishlist: function(productID) {
+      this.store.createRecord('wishlist', {
+        status: 'active',
+        product_id: productID
+      }).save();
     }
   }
 });
