@@ -10,7 +10,6 @@ export default Component.extend({
     logout: function(){
       this.get('session').logout();
       getOwner(this).lookup('router:main').transitionTo('home');
-    
     }
   }
 });

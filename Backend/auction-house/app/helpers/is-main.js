@@ -4,19 +4,17 @@ export function isMain(params) {
   const picture = params[0];
   const currentPicture = params[1];
   const index = params[2];
-  if(index === null){
+
+  if(index === 0 && (currentPicture === null || currentPicture === '')){
     return true;
   } else {
-    if(index === 0 && (currentPicture === null || currentPicture === '')){
-      return true;
+    if(picture !== currentPicture){
+      return false;
     } else {
-      if(picture !== currentPicture){
-        return false;
-      } else {
-        return true;
-      }
+      return true;
     }
   }
+  
 }
 
 

@@ -8,10 +8,7 @@ export default Controller.extend({
   actions: {
     login: function() {
       this.get('session').login(this.get('emailAddress'), this.get('password'));
-      this.transitionToRoute('index');
-      later(this, function() {
-        window.location.reload(true);
-      }, 300);
+      this.transitionToRoute('home');
     }
   }
 });

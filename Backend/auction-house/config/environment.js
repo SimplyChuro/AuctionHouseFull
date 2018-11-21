@@ -19,11 +19,11 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-    // ENV.HOST_URL = 'http://localhost:9000'
+    ENV.HOST_URL = 'http://localhost:9000'
   }
 
   if (environment === 'production') {
-    // ENV.HOST_URL = 'https://auction-house-backend.herokuapp.com'
+    ENV.HOST_URL = 'https://auction-house-backend.herokuapp.com'
   }
 
   return ENV;
