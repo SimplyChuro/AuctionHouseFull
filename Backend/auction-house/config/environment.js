@@ -7,7 +7,7 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'auto',
     USER_TOKEN: '',
-    HOST_URL: 'https://powerful-brushlands-25218.herokuapp.com',
+    HOST_URL: 'https://auction-house-backend.herokuapp.com',
     EmberENV: {
       FEATURES: {},
       EXTEND_PROTOTYPES: {
