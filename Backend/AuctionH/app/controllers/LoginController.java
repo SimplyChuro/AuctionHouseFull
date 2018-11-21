@@ -16,14 +16,15 @@ public class LoginController extends Controller {
 	public static final String AUTH_TOKEN = "authToken";
 	
 	public static Users getUser() {
-	    return (Users)Http.Context.current().args.get("user");
+	    return (Users) Http.Context.current().args.get("user");
 	}
 	
 	// returns an authToken
 	public Result login() {
 	    JsonNode jsonNode = request().body().asJson();
 	
-	    Users user = Users.find.query().where().conjunction()
+	    Users user = Users.find.query().where()
+	    		.conjunction()
 	    		.eq("email", jsonNode.findPath("email").textValue())
 	    		.eq("password", jsonNode.findPath("password").textValue())
 	    		.endJunction()
@@ -38,7 +39,7 @@ public class LoginController extends Controller {
 	    		authTokenJson = Json.newObject();
 	    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
 	    		return ok(authTokenJson);
-	    	}else {
+	    	} else {
 		        String authToken = user.createToken();
 		        authTokenJson = Json.newObject();
 		        authTokenJson.put(AUTH_TOKEN, authToken);

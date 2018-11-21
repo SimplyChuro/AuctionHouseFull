@@ -3,6 +3,7 @@ import { later } from '@ember/runloop';
 
 export default Controller.extend({
   session: Ember.inject.service(),
+  currentPicture: null,
   actions: {
     createBid: function(productID) {
       this.store.createRecord('bid', {
@@ -23,6 +24,9 @@ export default Controller.extend({
       later(this, function() {
         this.get('target').send('refresh');
       }, 200);
+    },
+    setCurrentPicture: function(picture){
+      this.set('currentPicture', picture);
     }
   }
 });

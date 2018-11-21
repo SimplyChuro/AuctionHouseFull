@@ -91,6 +91,10 @@ public class Users extends Model{
 	public static final Finder<Long, Users> find = new Finder<>(Users.class);
     
 	
+	
+	
+	//	Getters Setters
+	
 	public void setBase() {
 		emailVerified = false;
 		save();

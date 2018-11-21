@@ -73,8 +73,8 @@
             <div class="mb-5 mt-5">
               <div class="home-product-card m-3">
                 <div class="home-product-card-image-holder">
-                  {{#each product.pictures as |picture|}}
-                    {{#if picture.main}}
+                  {{#each bid.product.pictures as |picture|}}
+                    {{#if (is-main picture null 0)}}
                       <img class="home-product-card-image" src="{{picture.url}}">		
                     {{/if}}
                   {{/each}}

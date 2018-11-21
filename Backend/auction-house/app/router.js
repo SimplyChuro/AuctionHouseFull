@@ -10,7 +10,7 @@ Router.map(function() {
   this.route('error', {path: '/*wildcard'});
   this.route('login');
   this.route('register');
-  this.route('home', function() {});
+  this.route('home');
   this.route('shop', function() {
     this.route('single-product', { path: 'single-product/:product_id' });
     this.route('about-us');
@@ -20,10 +20,7 @@ Router.map(function() {
   });
   this.route('account', function() {
     this.route('profile');
-    this.route('sales', function() {
-      this.route('active');
-      this.route('sold');
-    });
+    this.route('sales', function() {});
     this.route('bids');
     this.route('wishlist');
     this.route('settings');

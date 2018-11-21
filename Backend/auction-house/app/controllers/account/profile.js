@@ -18,8 +18,7 @@ export default Controller.extend({
         this.get('zipCode'),
         this.get('state'),
         this.get('country') 
-        );
-      
+        ); 
     }
   }
 });

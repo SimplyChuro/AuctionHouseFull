@@ -130,7 +130,6 @@
             <button class="{{is-active selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>List</button>
           </div>
         </div>
-
         <div class="row">
             {{#each filteredProducts as |product|}}
               {{#if (eq selectedColor null)}}
@@ -140,8 +139,8 @@
                         <div class="row mb-4">
                           <div class="col-lg-4 col-xl-4">
                             <div class="product-list-image-holder">
-                               {{#each product.pictures as |picture|}}
-                                {{#if picture.main}}
+                              {{#each bid.product.pictures as |picture index|}}
+                                {{#if (is-main picture null index)}}
                                   <img class="product-list-image-v1" src="{{picture.url}}">   
                                 {{/if}}
                               {{/each}}

@@ -24,10 +24,10 @@ public class CategoryController extends Controller{
 	public Result getAll() {
 		try {
 			List<Category> categories = Category.find.all();
-			if(categories.isEmpty()) {
-				MockData data = new MockData();
-				data.create();
-			}
+//			if(categories.isEmpty()) {
+//				MockData data = new MockData();
+//				data.create();
+//			}
 			return ok(Json.toJson(categories));
 		} catch(Exception e) {
 			return badRequest();

@@ -10,7 +10,7 @@
       {{#link-to 'account.profile' class="account-navigation-link"}}
         Profile
       {{/link-to}}
-      {{#link-to 'account.sales.active' class="account-navigation-link"}}
+      {{#link-to 'account.sales' class="account-navigation-link"}}
         Sales
       {{/link-to}}
       {{#link-to 'account.bids' class="account-navigation-link-active"}}
@@ -44,8 +44,8 @@
           <tr>
             <td class="m-0 p-0">
               <div class="accout-bids-image-holder">
-                {{#each bid.product.pictures as |picture|}}
-                  {{#if picture.main}}
+                {{#each bid.product.pictures as |picture index|}}
+                  {{#if (is-main picture null index)}}
                     <img src="{{picture.url}}" class="account-bid-image">
                   {{/if}}
                 {{/each}}

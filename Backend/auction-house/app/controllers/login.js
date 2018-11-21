@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
-import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
 import { later } from '@ember/runloop';
 
