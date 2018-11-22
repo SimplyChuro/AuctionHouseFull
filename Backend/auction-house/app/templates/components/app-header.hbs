@@ -1,54 +1,54 @@
 <header>
-	<nav class="navbar navbar-expand-md p-1 user-navigation-bar">
-		<div class="container">
-  			<span class="navbar-brand text-light"></span>
-  			<div class="" id="navigationList">
-  				<ul class="navbar-nav ml-auto">
-            {{#if (is-logged-in)}}
-              <li class="nav-item pt-2 pb-2">
-                <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
-              </li>   
-            {{else}}
-                <li class="nav-item">
-                  {{#link-to "login" class="nav-link text-light"}}
-                    Login
-                  {{/link-to}}
-                </li>       
-                <p class="divider">or</p>
-                <li class="nav-item">
-                  {{#link-to "register" class="nav-link text-light"}}
-                    Create an Account
-                  {{/link-to}}
-                </li>
-            {{/if}}
-  				</ul>
-   			</div>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-md navbar-white bg-white pt-3 pb-3">
-		<div class="container">
-			<p class="title">AUCTION</p>
-			<form class="navbar-form navigation-form">
-  			<div class="input-group">
- 			    {{input type="text" class="form-control" placeholder="Search" name="search"}}
-  				<div class="input-group-btn">
-    				<button class="btn btn-default" type="submit">GO</button>
-  				</div>
-  			</div>
-			</form>
-			<div class="collapse navbar-collapse" id="navigationList">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item mr-4">
-						{{#link-to "home" class="nav-link"}}
-							HOME
-					{{/link-to}}
-					</li>
-					<li class="nav-item mr-4">
-						{{#link-to "shop.product-list" class="nav-link"}}
-							SHOP
-				   	{{/link-to}}
-					</li>
-					<li class="nav-item dropdown">
+  <nav class="navbar navbar-expand-md p-1 user-navigation-bar">
+    <div class="container">
+      <span class="navbar-brand text-light"></span>
+      <div class="" id="navigationList">
+        <ul class="navbar-nav ml-auto">
+          {{#if (is-logged-in)}}
+            <li class="nav-item pt-2 pb-2">
+              <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
+            </li>   
+          {{else}}
+            <li class="nav-item">
+              {{#link-to "login" class="nav-link text-light"}}
+                Login
+              {{/link-to}}
+            </li>       
+            <p class="divider">or</p>
+              <li class="nav-item">
+                {{#link-to "register" class="nav-link text-light"}}
+                  Create an Account
+                {{/link-to}}
+              </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <nav class="navbar navbar-expand-md navbar-white bg-white pt-3 pb-3">
+    <div class="container">
+      <p class="title">AUCTION</p>
+      <form class="navbar-form navigation-form">
+        <div class="input-group">
+          {{input type="text" class="form-control" placeholder="Search" name="search"}}
+          <div class="input-group-btn">
+            <button class="btn btn-default" type="submit">GO</button>
+          </div>
+        </div>
+      </form>
+      <div class="collapse navbar-collapse" id="navigationList">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item mr-4">
+            {{#link-to "home" class="nav-link"}}
+                HOME
+            {{/link-to}}
+          </li>
+          <li class="nav-item mr-4">
+            {{#link-to "shop.product-list" class="nav-link"}}
+              SHOP
+            {{/link-to}}
+          </li>
+          <li class="nav-item dropdown">
             {{#if (is-logged-in)}}
               {{#bs-dropdown as |dd|}}
               {{#dd.toggle class="nav-link"}}MY ACCOUNT{{/dd.toggle}}
@@ -83,9 +83,9 @@
                 MY ACCOUNT
               {{/link-to}}
             {{/if}}
-					</li>
-				</ul>
- 			</div>
-		</div>
-	</nav>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </header>

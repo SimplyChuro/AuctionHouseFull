@@ -1,35 +1,35 @@
 <div class="container-fluid current-route-background bottom-margin-50">
-	<div class="container">
-		<p class="form-title-text">PROFILE<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   PROFILE</span></p>
-	</div>
+  <div class="container">
+    <p class="form-title-text">PROFILE<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   PROFILE</span></p>
+  </div>
 </div>
 
 <div class="container-fluid mb-4">
-	<div class="container">
-		<div>
-			{{#link-to 'account.profile' class="account-navigation-link-active"}}
-				Profile
-			{{/link-to}}
-			{{#link-to 'account.sales' class="account-navigation-link"}}
-				Sales
-			{{/link-to}}
-			{{#link-to 'account.bids' class="account-navigation-link"}}
-				Bids
-			{{/link-to}}
-			{{#link-to 'account.wishlist' class="account-navigation-link"}}
-				Wishlist
-			{{/link-to}}
-			{{#link-to 'account.settings' class="account-navigation-link"}}
-				Settings
-			{{/link-to}}
-		</div>
-	</div>
+  <div class="container">
+    <div>
+      {{#link-to 'account.profile' class="account-navigation-link-active"}}
+        Profile
+      {{/link-to}}
+      {{#link-to 'account.sales' class="account-navigation-link"}}
+        Sales
+      {{/link-to}}
+      {{#link-to 'account.bids' class="account-navigation-link"}}
+        Bids
+      {{/link-to}}
+      {{#link-to 'account.wishlist' class="account-navigation-link"}}
+        Wishlist
+      {{/link-to}}
+      {{#link-to 'account.settings' class="account-navigation-link"}}
+        Settings
+      {{/link-to}}
+    </div>
+  </div>
 </div>
 
 <div class="container-fluid bottom-margin-400">
-	<div class="container">
-		<div class="card fade">
-			<p class="account-profile-card-top">REQUIRED</p>
+  <div class="container">
+    <div class="card fade">
+      <p class="account-profile-card-top">REQUIRED</p>
       <div class="row m-0 p-0">
         <div class="account-profile-card-left-side">
           <div class="account-profile-image-holder">
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-		</div>
+    </div>
     <div class="card mt-5">
       <p class="account-profile-card-top">OPTIONAL</p>
       <div class="row m-0 p-0">
@@ -122,6 +122,6 @@
     <div class="mt-4">
       <button class="account-profile-save-info-button" {{action "updateUser"}}>SAVE INFO</button>
     </div>
-	</div>
+  </div>
 </div>
 

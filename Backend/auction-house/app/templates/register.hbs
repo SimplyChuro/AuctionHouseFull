@@ -1,59 +1,59 @@
 {{app-header}}
 
 <div class="container-fluid current-route-background">
-	<div class="container">
-		<p class="form-title-text">REGISTER</p>
-	</div>
+  <div class="container">
+    <p class="form-title-text">REGISTER</p>
+  </div>
 </div>
 
 <div class="container-fluid pt-4">
-	<div class="container">
-		<div class="row fade">
-			<div class="col-2"></div>
-			<div class="col-8">
-				<div class="card margin-card">
-					<h1 class="card-title">REGISTER</h1>
-					<div class="card-body mr-4 ml-4">
+  <div class="container">
+    <div class="row fade">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <div class="card margin-card">
+          <h1 class="card-title">REGISTER</h1>
+          <div class="card-body mr-4 ml-4">
             <form>
-  						<div class="form-group mt-4">
-  							<label>First Name</label>
-  							{{input type="text" value=name class="form-control form-background-color p-4"}}
-  						</div>
+              <div class="form-group mt-4">
+                <label>First Name</label>
+                {{input type="text" value=name class="form-control form-background-color p-4"}}
+              </div>
               <div class="validation-error-message">
                 {{v-get user 'name' 'message'}}
               </div>
-  						<div class="form-group mt-5">
-  							<label>Last Name</label>
-  							{{input type="text" value=surname  class="form-control form-background-color p-4"}}
-  						</div>
+              <div class="form-group mt-5">
+                <label>Last Name</label>
+                {{input type="text" value=surname  class="form-control form-background-color p-4"}}
+              </div>
               <div class="validation-error-message">
                 {{v-get user 'surname' 'message'}}
               </div>
-  						<div class="form-group mt-5">
-  							<label>Enter Email</label>
-  							{{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
-  						</div>
+              <div class="form-group mt-5">
+                <label>Enter Email</label>
+                {{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
+              </div>
               <div class="validation-error-message">
                 {{v-get user 'email' 'message'}}
               </div>
-  						<div class="form-group mt-5">
-  							<label>Password</label>
-  							{{input type="password" value=password  class="form-control form-background-color p-4"}}
-  						</div>
+              <div class="form-group mt-5">
+                <label>Password</label>
+                {{input type="password" value=password  class="form-control form-background-color p-4"}}
+              </div>
               <div class="validation-error-message">
                 {{v-get user 'password' 'message'}}
               </div>
-  						<button type="submit" class="btn btn-purple-outline mt-5" {{action "createUser"}}>REGISTER</button>
-  						<div class="text-center mt-5 mb-4">
-  							<span>Already have an account?  </span>
-  							{{#link-to "login" class="login-nav-link"}}
-  		  						Login
-  							{{/link-to}}
-  						</div>
+              <button type="submit" class="btn btn-purple-outline mt-5" {{action "createUser"}}>REGISTER</button>
+              <div class="text-center mt-5 mb-4">
+                <span>Already have an account?  </span>
+                {{#link-to "login" class="login-nav-link"}}
+                  Login
+                {{/link-to}}
+              </div>
             </form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
