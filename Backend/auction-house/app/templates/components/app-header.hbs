@@ -4,7 +4,7 @@
   			<span class="navbar-brand text-light"></span>
   			<div class="" id="navigationList">
   				<ul class="navbar-nav ml-auto">
-            {{#if session.authToken}}
+            {{#if (is-logged-in)}}
               <li class="nav-item pt-2 pb-2">
                 <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
               </li>   

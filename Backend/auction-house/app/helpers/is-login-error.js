@@ -2,7 +2,7 @@ import { helper } from '@ember/component/helper';
 
 export function isLoginError(params) {
   session: Ember.inject.service();
-  if(session.authToken === null || session.authToken === ''){
+  if(this.get('session').authToken === null || this.get('session').authToken === ''){
     return true;
   } else {
     return false;
