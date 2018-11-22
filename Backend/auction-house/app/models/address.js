@@ -1,9 +1,10 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  name: DS.attr('street'),
-  name: DS.attr('city'),
-  name: DS.attr('zipCode'),
-  name: DS.attr('state'),
-  name: DS.attr('country')
+  street: DS.attr('string'),
+  city: DS.attr('string'),
+  zipCode: DS.attr('string'),
+  state: DS.attr('string'),
+  country: DS.attr('string'),
+  user: DS.belongsTo('user')
 });

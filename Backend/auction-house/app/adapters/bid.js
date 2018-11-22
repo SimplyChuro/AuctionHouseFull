@@ -1,7 +1,7 @@
 import ApplicationAdapter from './application';
 
 export default ApplicationAdapter.extend({
-	pathForType(){
-		return 'bids';
-	}
+  pathForType(){
+    return 'bids';
+  }
 });

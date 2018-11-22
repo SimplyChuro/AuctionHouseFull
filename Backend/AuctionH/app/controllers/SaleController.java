@@ -3,8 +3,13 @@ package controllers;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import models.Bids;
+import models.Category;
+import models.Pictures;
+import models.ProductCategory;
+import models.Products;
 import models.Sales;
 import models.Users;
 import play.libs.Json;
@@ -18,10 +23,10 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			Sales sale = Sales.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
 			return ok(Json.toJson(sale));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -30,51 +35,61 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			List<Sales> sales = user.sales;
 			return ok(Json.toJson(sales));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-//Create Sale
-	////////////////////////////////////////////
-	///////////////NOT FINISHED/////////////////
-	////////////////////////////////////////////
-	////////////////////////////////////////////
+	//Create Sale
+	@Security.Authenticated(Secured.class)
 	public Result create() {
-		try {
-//				
-//			JsonNode jsonNode = request().body().asJson();	
-//			
-//			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-//			saleItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
-//			saleItem.product.save();
-//			
-//			JsonNode arrayNode = jsonNode.get("").readTree().get("objects");
-//			if (arrayNode.isArray()) {
-//			    for (final JsonNode objNode : arrNode) {
-//			        System.out.println(objNode);
-//			    }
-//			}
-//			
-//			for (int i = 0; i < catIds.size(); i++) {
-//				ProductCategory categoryConnection = new ProductCategory();
-//				categoryConnection.product = saleItem.product;
-//				categoryConnection.category = Category.find.byId(jsonNode.findPath("product_category_category_id").asLong());
-//				categoryConnection.save();
-//			}
-//			
-//			for(Pictures picture : saleItem.product.pictures) {
-//				picture.product = saleItem.product;
-//				picture.save();
-//			}
-//			
-//			saleItem.save();
+		try {		
+			JsonNode jsonNode = request().body().asJson().get("sale");	
+			JsonNode productNode = jsonNode.get("product");
+			List<String> categories = productNode.findValuesAsText("categories");
+			Products product = Json.fromJson(productNode, Products.class);
+			product.save();
+			
+			for(Pictures picture : product.pictures) {
+				picture.product = product;
+				picture.save();
+			}
+			
+			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
+			saleItem.user = LoginController.getUser();
+			saleItem.product = product;
+
+			
+			for (String category : categories) {
+				String categorySpliter[] = category.split("/");
+				
+				Category parentCategory = Category.find.query().where()
+						.conjunction()
+						.eq("parent_id", null)
+						.eq("name", categorySpliter[0])
+						.endJunction()
+						.findUnique();
+				
+				Category childCategory = Category.find.query().where()
+						.conjunction()
+						.eq("parent_id", parentCategory.id)
+						.eq("name", categorySpliter[1])
+						.endJunction()
+						.findUnique();
+				
+				ProductCategory categoryConnection = new ProductCategory();
+				categoryConnection.product = saleItem.product;
+				categoryConnection.category = childCategory;
+				categoryConnection.save();
+			}
+
+			saleItem.save();
 
 			return ok();	
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -88,7 +103,7 @@ public class SaleController extends Controller {
 			saleItem.product.update();
 			saleItem.update();
 			return ok();
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -102,7 +117,7 @@ public class SaleController extends Controller {
 			saleItem.product.delete();
 			saleItem.delete();
 			return ok();
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

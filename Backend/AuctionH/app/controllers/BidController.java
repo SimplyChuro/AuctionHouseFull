@@ -18,10 +18,14 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
-			Users user = LogController.getUser();
-			Bids bid = Bids.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			Users user = LoginController.getUser();
+			Bids bid = Bids.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", id)
+					.endJunction()
+					.findUnique();
 			return ok(Json.toJson(bid));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -30,10 +34,10 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
-			Users user = LogController.getUser();
+			Users user = LoginController.getUser();
 			List<Bids> bids = user.bids;
 			return ok(Json.toJson(bids));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -42,20 +46,30 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			JsonNode objectNode = jsonNode.get("bid");
-			Users user = LogController.getUser();
+			JsonNode objectNode = request().body().asJson().get("bid");
+			Users user = LoginController.getUser();
 			
-			Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", objectNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Bids bidChecker = Bids.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", objectNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
 			if(bidChecker != null) {
-				bidChecker.updateBid(objectNode);
-				return ok();
-			}else {
+				if(bidChecker.updateBid(objectNode)) {
+					return ok();
+				}else {
+					return badRequest();
+				}
+			} else {
 				bidChecker = Json.fromJson(objectNode, Bids.class);
-				bidChecker.createBid(user, objectNode);
-				return ok();
+				if(bidChecker.createBid(user, objectNode)) {
+					return ok();
+				} else {
+					return badRequest();
+				}
 			}
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
@@ -65,7 +79,12 @@ public class BidController extends Controller {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 				
-			Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Bids bidChecker = Bids.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
 			if(bidChecker != null) {
 				bidChecker = Json.fromJson(jsonNode, Bids.class);
 				bidChecker.update();
@@ -73,8 +92,7 @@ public class BidController extends Controller {
 			} else {
 				return badRequest();
 			}		
-		
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
@@ -84,7 +102,12 @@ public class BidController extends Controller {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			Bids bidChecker = Bids.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findUnique();
+			Bids bidChecker = Bids.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
 			if(bidChecker != null) {
 				bidChecker = Json.fromJson(jsonNode, Bids.class);
 				bidChecker.delete();
@@ -92,8 +115,7 @@ public class BidController extends Controller {
 			} else {
 				return badRequest();
 			}
-	
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}	

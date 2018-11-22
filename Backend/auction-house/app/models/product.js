@@ -12,5 +12,7 @@ export default DS.Model.extend({
   size: DS.attr('string'),
   description: DS.attr('string'),
   pictures: DS.hasMany('picture'),
+  productcategory: DS.hasMany('productcategory'),
+  wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid')
 });

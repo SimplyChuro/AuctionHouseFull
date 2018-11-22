@@ -29,17 +29,15 @@ public class Category extends Model{
  	public Long parent_id;
 	
     //Foreign Keys
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="category") 
-    public List<ProductCategory> products;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="category") @JsonIgnore
+    public List<ProductCategory> productcategory;
     
 	public static final Finder<Long, Category> find = new Finder<>(Category.class);
 
 	public Category(@Required String name, @Required Long parent_id, List<ProductCategory> products) {
 		this.name = name;
 		this.parent_id = parent_id;
-		this.products = products;
+		this.productcategory = products;
 	}
-	
-	
-	
+		
 }

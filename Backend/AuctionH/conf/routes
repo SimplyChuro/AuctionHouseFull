@@ -1,6 +1,6 @@
 # User API routes
 GET		/api/v1/users	      				controllers.UserController.getAll
-+nocsrf
+GET		/api/v1/users/:id					controllers.UserController.get(id : Long)
 POST	/api/v1/users						controllers.UserController.create
 PUT		/api/v1/users						controllers.UserController.update
 
@@ -8,10 +8,11 @@ PUT		/api/v1/users						controllers.UserController.update
 GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
 GET		/api/v1/users/reset					controllers.UserController.reset
 
+
 # Login/Logout API routes
 +nocsrf
-POST	/api/v1/login						controllers.LogController.login
-POST	/api/v1/logout						controllers.LogController.logout
+POST	/api/v1/login						controllers.LoginController.login
+POST	/api/v1/logout						controllers.LoginController.logout
 
 
 # Bid API routes

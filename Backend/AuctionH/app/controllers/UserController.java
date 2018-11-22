@@ -21,10 +21,6 @@ import models.Bids;
 import models.Sales;
 import models.Wishlists;
 import models.Users;
-
-import play.mvc.Controller;
-import play.mvc.Http;
-import play.mvc.Result;
 import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
@@ -34,66 +30,61 @@ import play.mvc.*;
 public class UserController extends Controller {
 	
 	//API GET all users  ------ Testing only
+	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
 			List<Users> users = Users.find.all();
 			return ok(Json.toJson(users));
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return notFound();
 		}
 	}
 
-	//get user inactive
-	public Result user() {
+	//get user
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Users user = Users.findByAuthToken(jsonNode.findPath("authToken").asText());
+			Users user = LoginController.getUser();
 			return ok(Json.toJson(user));
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return notFound();
 		}
 	}
 	
-	
 	//create user	
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
+			JsonNode objectNode = request().body().asJson().get("user");
 			
-			JsonNode userNode = jsonNode.get("user");
+			Users userChecker = Users.find.query().where()
+					.conjunction()
+					.eq("email", objectNode.findPath("email").textValue())
+					.endJunction()
+					.findUnique();
 			
-			Users userChecker = Users.find.query().where().conjunction().eq("email", userNode.findPath("email").textValue()).endJunction().findUnique();
 			if(userChecker != null) {
 				return badRequest();
 			} else {
-				Users user = Json.fromJson(userNode, Users.class);
-				user.setPassword(userNode.findValue("password").asText());
+				Users user = Json.fromJson(objectNode, Users.class);
+				user.setPassword(objectNode.findValue("password").asText());
 				user.setBase();
 				return ok();
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
 	//Update user
+	@Security.Authenticated(Secured.class)
 	public Result update() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
+			JsonNode objectNode = request().body().asJson().get("user");
+			Users user = LoginController.getUser();
+			user.updateUser(objectNode);
+			return ok(Json.toJson(user));
 			
-			JsonNode userNode = jsonNode.get("user");
-			
-			Users userChecker = Users.find.query().where().conjunction().eq("email", userNode.findPath("email").textValue()).endJunction().findUnique();
-			if(userChecker != null) {
-				userChecker = Json.fromJson(userNode, Users.class);
-				userChecker.setPassword(userNode.findValue("password").asText());
-				userChecker.updateUser();
-				return ok();
-			} else {
-				return badRequest();
-			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -108,10 +99,10 @@ public class UserController extends Controller {
 				user.update();
 				
 				return ok();
-			}else {
+			} else {
 				return notFound();
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	} 	
@@ -133,6 +124,5 @@ public class UserController extends Controller {
 			return badRequest();
 //		}
 	} 
-	
 	
 }

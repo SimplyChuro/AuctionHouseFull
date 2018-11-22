@@ -6,11 +6,11 @@
 
 <div class="container-fluid bottom-margin-100">
 	<div class="container">
-		<div class="row single-product-margin">
+		<div class="row single-product-margin fade">
 			<div class="col-lg-5 col-xl-5">
-				{{#each model.pictures as |picture|}}
-					{{#if picture.main}}
-						<div class="single-product-picture-background single-product-main-picture">
+				{{#each model.product.pictures as |picture index|}}
+					{{#if (is-main picture currentPicture index)}}
+						<div class="single-product-picture-background single-product-main-picture fade">
 							<div class="single-product-main-image-holder">
 								<img class="single-product-main-image" src="{{picture.url}}">
 							</div>
@@ -18,9 +18,9 @@
 					{{/if}}
 				{{/each}}
 				<div class="row single-product-margin-small"> 
-					{{#each model.pictures as |picture|}}
-						{{#unless picture.main}}
-							<div class="col-lg-3 col-xl-3 p-0 m-0">
+					{{#each model.product.pictures as |picture index|}}
+						{{#unless (is-main picture currentPicture index)}}
+							<div class="col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
 								<div class="single-product-picture-background single-product-side-picture m-1 p-0">	
 									<img class="single-product-secondary-image m-0 p-0" src="{{picture.url}}">
 								</div>
@@ -30,29 +30,37 @@
 				</div>
 			</div>
 			<div class="col-lg-7 col-xl-7">
-				<h1 class="title-text-links">{{model.name}}</h1>
-				<p class="single-product-price-text">Starting from - {{format-bid model.startingPrice}}</p>
+				<h1 class="title-text-links">{{model.product.name}}</h1>
+				<p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
 				<div class="mt-4">
 					{{input type="number" value=bidAmount class="single-product-bid-input"}}
 
-					{{#if (is-logged)}}
-						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.id}}>PLACE BID</button>
-						{{else}}
-							{{#link-to "login" class="single-product-featured-button"}}
-	  							PLACE BID
-							{{/link-to}}
+					{{#if session.authToken}}
+						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>PLACE BID</button>
+					{{else}}
+						{{#link-to "login" class="single-product-featured-button"}}
+  						PLACE BID
+						{{/link-to}}
 					{{/if}}
-					<p class="single-product-small-text mt-1">Enter - {{format-bid model.mainBid}} or more</p>
+					<p class="single-product-small-text mt-1">Enter - {{format-bid model.product.mainBid}} or more</p>
 				</div>
 				<div class="mt-5">
-					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.mainBid}}</span></p>
-					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.bidCount}}</p>
-					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duratation model.publishDate model.expireDate}}</p>
+					<p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.product.mainBid}}</span></p>
+					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bidCount}}</p>
+					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
 				</div>
-				<button class="single-product-watchlist-btn mt-4">Watchlist</button>
-				<p class="single-product-description-text mt-3">Placeholder</p>
+				{{#if session.authToken}}
+					<button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.product.id}}>Watchlist</button>
+				{{else}}
+					<div class="single-product-watchlist-holder">
+						{{#link-to "login" class="single-product-watchlist-btn-v2"}}
+							Watchlist
+						{{/link-to}}
+					</div>
+				{{/if}}
+				<p class="single-product-description-text mt-3">Details</p>
 				<hr class="single-product-underline">
-				<p>{{model.description}}</p>
+				<p>{{model.product.description}}</p>
 			</div>
 		</div>
 	</div>
@@ -66,10 +74,10 @@
 			{{#each product as |product|}}
 				<div class="col-lg-4 col-xl-4 mb-3 mt-2">
 					<div class="card">
-					 <h1 class="card-title">{{product.name}}</h1>
-						  <div class="card-body">
-						    <p class="card-text">{{product.description}}</p>
-						  </div>
+            <h1 class="card-title">{{product.name}}</h1>
+					  <div class="card-body">
+					    <p class="card-text">{{product.description}}</p>
+					  </div>
 					</div>
 				</div>
 			{{/each}}

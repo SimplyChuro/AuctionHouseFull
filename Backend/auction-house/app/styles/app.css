@@ -19,6 +19,26 @@ button::-moz-focus-inner {
 }
 
 
+/*animations*/
+@keyframes fade{
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade{
+  animation-name: fade;
+  animation-duration: 1s;
+  position: relative;
+  animation-fill-mode: forwards;
+}
+/**/
+
+
 /*header design*/
 
 .user-navigation-bar{
@@ -40,9 +60,9 @@ button::-moz-focus-inner {
 }
 
 .navigation-form{
-	margin-left: 10%;
+	margin-left: 13%;
 	margin-bottom: 4px;	
-	width: 50%;
+	width: 45%;
 	box-shadow: 2px 2px 2px  #C0C0C0;
 }
 
@@ -78,7 +98,6 @@ button::-moz-focus-inner {
 }
 
 /**/
-
 
 
 
@@ -121,6 +140,10 @@ button::-moz-focus-inner {
 	margin-bottom: 50px;
 }
 
+.bottom-margin-75{
+  margin-bottom: 50px;
+}
+
 .bottom-margin-100{
 	margin-bottom: 100px;
 }
@@ -132,6 +155,10 @@ button::-moz-focus-inner {
 
 .bottom-margin-300{
 	margin-bottom: 300px;
+}
+
+.bottom-margin-400{
+  margin-bottom: 400px;
 }
 
 .top-margin-100{
@@ -338,6 +365,11 @@ button::-moz-focus-inner {
 	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.11);
 }
 
+.categort-table-v2{
+  background: #FFFFFF;
+  border: 1px solid #D8D8D8;
+}
+
 .category-table-title{
 	font-size: 16px;
 	font-weight: bold;
@@ -346,10 +378,46 @@ button::-moz-focus-inner {
 	margin-left: 10px;
 }
 
+.category-table-title-v2{
+  font-size: 14px;
+  font-weight: bold;
+  color: #8367D8;
+  letter-spacing: 0.49px;
+}
+
 .category-table-link{
 	font-size: 16px;
 	color: #252525;
 	letter-spacing: 0.56px;
+}
+
+.category-table-link-v2{
+  font-size: 14px;
+  color: #252525;
+  padding: 10px 15px;
+  letter-spacing: 0.49px;
+}
+
+.category-table-link-v2:hover{
+  color: #696969;
+  background: #F0F0F0;
+}
+
+.category-table-link-active{
+  background-color: #F0F0F0;
+  color: #696969;
+}
+
+.category-table-link-v3{
+  font-size: 14px;
+  color: #9B9B9B;
+  padding: 5px 15px;
+  letter-spacing: 0.49px;
+}
+
+.category-table-link-v3:hover{
+  color: #696969;
+  background: #F5F5F5 ;
 }
 
 .category-table-link:hover{
@@ -386,7 +454,7 @@ button::-moz-focus-inner {
 	height: 15vw;
 	width: 100%;
 	background-repeat: no-repeat;
-    background-size: contain;
+  background-size: contain;
 }
 
 .home-product-card-name-text{
@@ -399,6 +467,14 @@ button::-moz-focus-inner {
 	font-size: 16px;
 	color: #252525;
 	letter-spacing: 0.56px;
+}
+
+.validation-error-message{
+ /* background: #ffcccc;
+  padding: 5px 15px;*/
+  /*border-radius: 5px;*/
+/*  border-bottom: 1px #FF6666 solid;*/
+  color: #FF6666; 
 }
 
 /**/
@@ -477,6 +553,32 @@ button::-moz-focus-inner {
 	cursor: pointer;
 }
 
+.single-product-watchlist-btn:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.single-product-watchlist-btn-v2{
+	padding: 9px 15px;
+	font-size: 15px;
+	color: #252525;
+	letter-spacing: 0.52px;
+	line-height: 22px;
+	background: #FFFFFF;
+	border: 3px solid #ECECEC;
+	cursor: pointer;
+}
+
+.single-product-watchlist-btn-v2:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.single-product-watchlist-holder{
+	margin-top: 30px;
+	margin-bottom: 25px;
+}
+
 .single-product-description-text{
 	font-size: 18px;
 	color: #252525;
@@ -532,7 +634,7 @@ button::-moz-focus-inner {
 	width: 100%;
 	height: 5vw;
 	background-repeat: no-repeat;
-    background-size: contain;
+  background-size: contain;
 }
 
 
@@ -566,6 +668,542 @@ button::-moz-focus-inner {
 
 
 /**/
+
+
+
+/*Account design*/
+.account-navigation-link{
+	background: #F0F0F0;
+	padding: 15px 30px;
+	margin-right: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.account-navigation-link:hover{
+	color: #8367D8;
+	text-decoration: none;
+}
+
+.account-navigation-link-active{
+	background: #8367D8;;
+	padding: 15px 30px;
+	margin-right: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing: 0.56px;
+}
+
+.account-navigation-link-active:hover{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.account-settings-card-title{
+	background: #F0F0F0;;
+	padding: 15px 0px 15px 25px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-text{
+	padding: 15px 0px 0px 35px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-text-special{
+	padding: 15px 0px 0px 35px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-settings-card-checkbox{
+	background: #FFFFFF;
+	border: 1px solid #D8D8D8;
+}
+
+.account-settings-card-checkbox-label{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+	line-height: 26px;
+}
+
+.account-settings-checkbox-holder{
+	padding: 0px 0px 5px 35px;
+}
+
+.account-settings-button-deactivate{
+	width: 40%;
+	margin: 15px 0px 75px 35px;
+	padding: 12px 40px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.63px;
+	background: #FFFFFF;
+	border: 3px solid #E3E3E3;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+}
+
+
+/*account bids*/
+.account-card-header{
+	background-color: #FAFAFA;
+}
+
+.account-header-text{
+	font-size: 18px;
+	font-weight: normal;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-bids-table{
+	width: 100%;
+	table-layout:fixed;
+	background: #FFFFFF;
+	border: 1px solid #D8D8D8;
+}
+
+.account-bids-table-header{
+	width: 100%;
+	background-color: #FAFAFA;
+	border: 1px solid #E3E3E3;
+}
+
+.account-bids-table-header th, td{
+	padding: 15px 25px;
+}
+
+.account-bids-table td{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.account-bids-table-item{
+	width: 10%;
+}
+
+.account-bids-table-name{
+	width: 22%;
+}
+
+.account-bids-table-time{
+	width: 13%;
+}
+
+.account-bids-table-price{
+	width: 13%;
+}
+
+.account-bids-table-bids{
+	width: 12%;
+}
+
+.account-bids-table-highest-bid{
+	width: 15%;
+}
+
+.account-bids-table-button-view{
+	width: 15%;
+}
+
+.account-bids-button{
+	background: #FFFFFF;
+	padding: 15px 30px;
+	border: 3px solid #E3E3E3;
+	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+	font-size: 16px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.56px;
+}
+
+.account-bids-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+.accout-bids-image-holder{
+	background: #D8D8D8;
+	margin: 10px 0px 10px 15px;
+	height: 5vw;
+}
+
+.account-bid-image{
+	width: 100%;
+	height: 5vw;
+	background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.account-product-name{
+	font-size: 18px;
+	font-weight: bold;
+	overflow: hidden;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-product-id{
+	font-size: 18px;	
+	color: #8367D8;
+	letter-spacing: 0.63px;
+}
+
+.account-product-plain-text{
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+/*account wishlist*/
+
+.account-wishlist-table-item{
+	width: 10%;
+}
+
+.account-wishlist-table-name{
+	width: 30%;
+}
+
+.account-wishlist-table-time{
+	width: 12%;
+}
+
+.account-wishlist-table-bid{
+	width: 18%;
+}
+
+.account-wishlist-table-status{
+	width: 15%;
+}
+
+.account-wishlist-status-text{
+	background: #F0F0F0;
+	padding: 15px 30px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.49px;
+	text-align: center;
+}
+
+/*account profile*/
+.account-profile-card-top{
+	background: #FAFAFA;
+	font-size: 20px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.7px;
+	padding: 10px 0px 10px 35px;
+}
+
+.account-profile-card-left-side{
+  width: 25%;
+  margin: 20px 20px 30px 20px;
+  padding: 0px 20px 0px 20px;
+  overflow: auto;
+  height: 40vw;
+}
+
+.account-profile-card-right-side{
+  width: 50%;
+  margin: 20px 0px 30px 0px;
+  overflow: auto;
+  height: 40vw;
+}
+
+.account-profile-card-left-side-address{
+  width: 25%;
+  margin: 20px 20px 30px 20px;
+  padding: 0px 20px 0px 20px;
+  overflow: auto;
+  height: 30vw;
+}
+
+.account-profile-card-right-side-address{
+  width: 50%;
+  margin: 20px 0px 30px 0px;
+  overflow: auto;
+  height: 30vw;
+}
+
+.account-profile-card-image-button{
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #252525;
+  letter-spacing: 0.56px;
+  text-align: center;
+  background: #FFFFFF;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+}
+
+.account-profile-image-holder{
+  height: 15vw;
+  background: #ECECEC;
+}
+
+.account-profile-image{
+  height: 15vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.account-profile-input-form-static{
+  width: 100%;
+  padding: 10px 0px 10px 15px;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8;
+}
+
+.account-profile-input-form-half-static{
+  width: 50%;
+  padding: 10px 0px 10px 15px;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8;
+}
+
+.account-profile-form-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.account-profile-pointer{
+  cursor: pointer;
+}
+
+.account-profile-address-title{
+  font-size: 28px;
+  color: #252525;
+  letter-spacing: 0.98px;
+} 
+
+.account-profile-input-form-holder{
+  width: 49%;
+}
+
+.account-profile-holder-margin{
+  margin-right: 11px;
+}
+
+.account-profile-save-info-button{
+  background: #FFFFFF;
+  float: right;
+  padding: 10px 40px;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+
+/*account sales*/
+.account-sales-route-holder{
+	margin-bottom: 11px;
+}
+
+.account-sales-navigation-link{
+	background: #FAFAFA;
+	border: 1px solid #D8D8D8;
+	padding: 15px 30px;
+	font-size: 18px;
+	color: #252525;
+	letter-spacing: 0.63px;
+}	
+
+.account-sales-navigation-link:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+
+.account-sales-navigation-link-active{
+	background: #8367D8;
+	border: 1px solid #8367D8;
+	padding: 15px 30px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing: 0.63px;
+}
+
+.account-sales-link-holder{
+	margin-top: 62px;
+}
+
+/*account sell*/
+.account-sell-image-holder{
+	height: 6vw;
+	text-align: center;
+}
+
+.account-sell-image{
+	height: 6vw;
+	text-align: center;
+}
+
+.account-card-title{
+	background: #FAFAFA;
+	padding: 20px 0px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.7px;
+	text-align: center;
+}
+
+.account-sell-link-button{
+	background: #FFFFFF;
+	border: 3px solid #8367D8;
+	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+	padding: 15px 60px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #252525;
+	letter-spacing: 0.63px;
+}
+
+.account-sell-link-button:hover{
+	text-decoration: none;
+	color: #8367D8;
+}
+
+
+
+/**/
+
+
+/*Shop*/
+.shop-product-list-category-list{
+
+}
+
+.shop-product-list-dropdown-button{
+  background: #FFFFFF;
+  width: 100%;
+  font-size: 14px;
+  color: #252525;
+  border: none;
+  letter-spacing: 0.49px;
+}
+
+.shop-product-list-dropdown-button:hover{
+  text-decoration: none;
+  background: #ffffff;
+  color: #8367D8;
+}
+
+.product-list-pointer{
+  cursor: pointer;
+}
+
+
+.product-list-pointer:hover{
+  cursor: pointer;
+}
+
+.product-list-type-holder{
+  margin-top: auto;
+  margin-bottom: auto;
+  float: right;
+}
+
+.product-list-button{
+  padding: 10px 20px;
+  background: #F0F0F0;
+  border: 0px #ffff solid;
+  font-size: 16px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.56px;
+  cursor: pointer;
+}
+
+.product-list-button-active{
+  background: #8367D8;
+  color: #ffffff;
+}
+
+.product-list-title-v1{
+  font-size: 24px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.84px;
+}
+
+.product-list-paragraph-v1{
+  font-size: 16px;
+  color: #9B9B9B;
+  letter-spacing: 0.56px;
+  line-height: 21px;
+}
+
+.product-list-price-v1{
+  font-size: 24px;
+  color: #8367D8;
+  letter-spacing: 0.84px;
+}
+
+.product-list-button-v1{
+  background: #FFFFFF;
+  border: 3px solid #ECECEC;
+  padding: 5px 25px;
+  font-size: 15px;
+  color: #252525;
+  letter-spacing: 0.52px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.product-list-button-v1:hover{
+  color: #696969;
+  cursor: pointer;
+}
+
+.product-list-button-v2{
+  background: #FFFFFF;
+  border: 3px solid #ECECEC;
+  padding: 9px 25px;
+  font-size: 15px;
+  color: #252525;
+  letter-spacing: 0.52px;
+  line-height: 22px;
+}
+
+.product-list-image-holder{
+  width: 100%;
+  height: 15vw;
+  background: #ECECEC;
+}
+
+.product-list-image-v1{
+  width: 100%;
+  height: 15vw;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/**/
+
 
 
 /*footer links design*/
@@ -616,7 +1254,7 @@ button::-moz-focus-inner {
 .about-us-main-image{
 	width: 100%;
 	background-repeat: no-repeat;
-    background-size: contain;
+  background-size: contain;
 }
 
 .about-us-image-holder{
@@ -626,7 +1264,7 @@ button::-moz-focus-inner {
 .about-us-image{
 	width: 100%;
 	background-repeat: no-repeat;
-    background-size: cover;
+  background-size: cover;
 }
 
 /**/

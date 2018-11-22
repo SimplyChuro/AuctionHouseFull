@@ -35,7 +35,6 @@ create table category (
 create table pictures (
   id                            bigserial not null,
   url                           varchar(255),
-  main                          boolean,
   product_id                    bigint,
   constraint pk_pictures primary key (id)
 );

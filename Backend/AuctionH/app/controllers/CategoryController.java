@@ -29,7 +29,7 @@ public class CategoryController extends Controller{
 				data.create();
 			}
 			return ok(Json.toJson(categories));
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -39,7 +39,7 @@ public class CategoryController extends Controller{
 		try {
 			Category category = Category.find.byId(id);
 			return ok(Json.toJson(category));
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -53,7 +53,7 @@ public class CategoryController extends Controller{
 			category.save();
 	
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -67,7 +67,7 @@ public class CategoryController extends Controller{
 			category.update();
 	
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -81,7 +81,7 @@ public class CategoryController extends Controller{
 			category.delete();
 	
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

@@ -33,7 +33,7 @@ public class ProductController extends Controller {
 		try {
 			List<Products> products = Products.find.all();
 			return ok(Json.toJson(products));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return notFound();
 		}
 	}
@@ -43,7 +43,7 @@ public class ProductController extends Controller {
 		try {
 			Products product = Products.find.byId(id);
 			return ok(Json.toJson(product));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return notFound();
 		}
 	}
@@ -62,7 +62,7 @@ public class ProductController extends Controller {
 			}
 			
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -81,7 +81,7 @@ public class ProductController extends Controller {
 			}
 			
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -99,7 +99,7 @@ public class ProductController extends Controller {
 			product.delete();
 					
 			return ok();
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
@@ -120,7 +120,7 @@ public class ProductController extends Controller {
 			}
 			
 			return ok(Json.toJson(users));
-		}catch(Exception e){
+		} catch(Exception e) {
 			return notFound();
 		}
 	}

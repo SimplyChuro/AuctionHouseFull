@@ -73,19 +73,19 @@ public class MockData {
 		String endDate [] = {
 				"2019-01-01", 
 				"2019-09-23", 
-				"2018-11-05", 
+				"2018-12-05", 
 				"2019-06-11", 
-				"2018-05-17", 
-				"2018-05-17", 
-				"2018-05-17", 
-				"2018-02-17", 
-				"2018-02-21", 
-				"2018-04-11",
-				"2018-04-21",
-				"2018-04-16",
-				"2018-04-12",
-				"2018-04-13",
-				"2018-04-14"
+				"2019-05-17", 
+				"2019-05-17", 
+				"2019-05-17", 
+				"2019-02-17", 
+				"2019-02-21", 
+				"2019-04-11",
+				"2019-04-21",
+				"2019-04-16",
+				"2019-04-12",
+				"2019-04-13",
+				"2019-04-14"
 				
 		};
 		
@@ -148,12 +148,12 @@ public class MockData {
 				"Blue", 
 				"Red", 
 				"Blue", 
+				"Black", 
+				"Black", 
+				"Black", 
 				"White", 
 				"Black", 
-				"Black", 
-				"White", 
-				"Black", 
-				"White",
+				"Black",
 				"Black",
 				"Black",
 				"Gold",
@@ -191,7 +191,7 @@ public class MockData {
 				"The G502 is a professional gaming mouse made by Logitech for all gamers. I bought it 2 months ago but I never got to use it so now I am selling it for cheap.",
 				"Used Canon Camera, I've been using it for multiple years and it has served me quite well. It's a plain well kept DSLR camera.",
 				"NEW Winter Jackets, imported from Europe. Extremely well made and extremely warm. They come in all shapes and sizes.",
-				"Slick Leather Boots, never worn extremely long. Very comfortable latex.",
+				"Slick Leather Boots, never worn extremely long and very comfortable latex.",
 				"Brand New iPhone 10. It has a golden outer finish and looks extremely fancy. It comes with all the accessories.",
 				"New 65 inch 4K television, it has a very slick design and sharp edges. The quality of the picture is extremely perstine.",
 				"Used LucidSound headphones, I've been using them for about 2 months and I have no usage for them anymore. They are wireless and have the option to become wired with a 3.5 jack pin",
@@ -267,14 +267,9 @@ public class MockData {
 			
 			product = new Products(name[i], start, end, mainBid[i], status[i], color[i], size[i], description[i], startingPrice[i]);
 			product.save();
-			int j = 0;
+			
 			for(String pic : pictureUrl[i]) {
-				if(j == 0) {	
-					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, true, product);
-					j++;
-				} else {
-					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, false, product);
-				}
+				picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, product);
 				picture.save();
 				
 			}
