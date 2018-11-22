@@ -35,7 +35,7 @@
 				<div class="mt-4">
 					{{input type="number" value=bidAmount class="single-product-bid-input"}}
 
-					{{#if session.authToken}}
+					{{#if (is-logged-in)}}
 						<button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>PLACE BID</button>
 					{{else}}
 						{{#link-to "login" class="single-product-featured-button"}}
@@ -49,7 +49,7 @@
 					<p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bidCount}}</p>
 					<p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
 				</div>
-				{{#if session.authToken}}
+				{{#if (is-logged-in)}}
 					<button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.product.id}}>Watchlist</button>
 				{{else}}
 					<div class="single-product-watchlist-holder">
