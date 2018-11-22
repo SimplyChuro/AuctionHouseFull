@@ -19,7 +19,7 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-    ENV.HOST_URL = 'http://localhost:9000'
+    // ENV.HOST_URL = 'http://localhost:9000'
   }
 
   if (environment === 'production') {

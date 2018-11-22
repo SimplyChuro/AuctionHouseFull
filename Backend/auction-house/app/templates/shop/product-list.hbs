@@ -139,7 +139,7 @@
                         <div class="row mb-4">
                           <div class="col-lg-4 col-xl-4">
                             <div class="product-list-image-holder">
-                              {{#each bid.product.pictures as |picture index|}}
+                              {{#each product.pictures as |picture index|}}
                                 {{#if (is-main picture null index)}}
                                   <img class="product-list-image-v1" src="{{picture.url}}">   
                                 {{/if}}
@@ -164,9 +164,9 @@
                       {{#link-to "shop.single-product" product.id class="category-table-link"}}
                         <div class="home-product-card m-3">
                           <div class="home-product-card-image-holder">
-                            {{#each product.pictures as |picture|}}
-                              {{#if picture.main}}
-                                <img class="home-product-card-image" src="{{picture.url}}">   
+                            {{#each product.pictures as |picture index|}}
+                              {{#if (is-main picture null index)}}
+                                <img class="product-list-image-v1" src="{{picture.url}}">   
                               {{/if}}
                             {{/each}}
                           </div>
@@ -185,8 +185,8 @@
                           <div class="row mb-4">
                             <div class="col-lg-4 col-xl-4">
                               <div class="product-list-image-holder">
-                                 {{#each product.pictures as |picture|}}
-                                  {{#if picture.main}}
+                                {{#each product.pictures as |picture index|}}
+                                  {{#if (is-main picture null index)}}
                                     <img class="product-list-image-v1" src="{{picture.url}}">   
                                   {{/if}}
                                 {{/each}}
@@ -210,9 +210,9 @@
                         {{#link-to "shop.single-product" product.id class="category-table-link"}}
                           <div class="home-product-card m-3">
                             <div class="home-product-card-image-holder">
-                              {{#each product.pictures as |picture|}}
-                                {{#if picture.main}}
-                                  <img class="home-product-card-image" src="{{picture.url}}">   
+                              {{#each product.pictures as |picture index|}}
+                                {{#if (is-main picture null index)}}
+                                  <img class="product-list-image-v1" src="{{picture.url}}">   
                                 {{/if}}
                               {{/each}}
                             </div>
@@ -234,8 +234,8 @@
                           <div class="row mb-4">
                             <div class="col-lg-4 col-xl-4">
                               <div class="product-list-image-holder">
-                                 {{#each product.pictures as |picture|}}
-                                  {{#if picture.main}}
+                                {{#each product.pictures as |picture index|}}
+                                  {{#if (is-main picture null index)}}
                                     <img class="product-list-image-v1" src="{{picture.url}}">   
                                   {{/if}}
                                 {{/each}}
@@ -259,9 +259,9 @@
                         {{#link-to "shop.single-product" product.id class="category-table-link"}}
                           <div class="home-product-card m-3">
                             <div class="home-product-card-image-holder">
-                              {{#each product.pictures as |picture|}}
-                                {{#if picture.main}}
-                                  <img class="home-product-card-image" src="{{picture.url}}">   
+                              {{#each product.pictures as |picture index|}}
+                                {{#if (is-main picture null index)}}
+                                  <img class="product-list-image-v1" src="{{picture.url}}">   
                                 {{/if}}
                               {{/each}}
                             </div>
@@ -282,8 +282,8 @@
                             <div class="row mb-4">
                               <div class="col-lg-4 col-xl-4">
                                 <div class="product-list-image-holder">
-                                   {{#each product.pictures as |picture|}}
-                                    {{#if picture.main}}
+                                  {{#each product.pictures as |picture index|}}
+                                    {{#if (is-main picture null index)}}
                                       <img class="product-list-image-v1" src="{{picture.url}}">   
                                     {{/if}}
                                   {{/each}}
@@ -307,9 +307,9 @@
                           {{#link-to "shop.single-product" product.id class="category-table-link"}}
                             <div class="home-product-card m-3">
                               <div class="home-product-card-image-holder">
-                                {{#each product.pictures as |picture|}}
-                                  {{#if picture.main}}
-                                    <img class="home-product-card-image" src="{{picture.url}}">   
+                                {{#each product.pictures as |picture index|}}
+                                  {{#if (is-main picture null index)}}
+                                    <img class="product-list-image-v1" src="{{picture.url}}">   
                                   {{/if}}
                                 {{/each}}
                               </div>

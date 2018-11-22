@@ -6,9 +6,13 @@ export default Route.extend({
       product: this.store.findRecord('product', params.product_id),
     })
   },
+
   actions: {
     refresh: function() {
       this.refresh();
+    },
+    willTransition: function(transition) {
+      this.controllerFor('shop/single-product').send('clearFields');
     }
   }
 });

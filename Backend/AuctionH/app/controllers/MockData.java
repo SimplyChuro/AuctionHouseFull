@@ -267,14 +267,9 @@ public class MockData {
 			
 			product = new Products(name[i], start, end, mainBid[i], status[i], color[i], size[i], description[i], startingPrice[i]);
 			product.save();
-			int j = 0;
+			
 			for(String pic : pictureUrl[i]) {
-				if(j == 0) {	
-					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, true, product);
-					j++;
-				} else {
-					picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, false, product);
-				}
+				picture = new Pictures(baseURL+(i+1)+"/"+pic+baseJPG, product);
 				picture.save();
 				
 			}

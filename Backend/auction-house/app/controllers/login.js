@@ -9,6 +9,10 @@ export default Controller.extend({
     login: function() {
       this.get('session').login(this.get('emailAddress'), this.get('password'));
       this.transitionToRoute('home');
+    },
+    clearFields: function() {
+      this.set('emailAddress', ''); 
+      this.set('password', '');
     }
   }
 });

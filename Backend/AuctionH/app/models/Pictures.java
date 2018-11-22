@@ -22,10 +22,7 @@ public class Pictures extends Model{
 		
     @Constraints.Required
 	public String url;
-    
-    @Constraints.Required
-  	public Boolean main;
-    
+
     //Foreign Keys
     @ManyToOne @JsonIgnore
     public Products product;
@@ -34,9 +31,8 @@ public class Pictures extends Model{
 
 	public Pictures() {}
 	
-	public Pictures(@Required String url, @Required Boolean main, Products product) {
+	public Pictures(@Required String url, Products product) {
 		this.url = url;
-		this.main = main;
 		this.product = product;
 	}
 	

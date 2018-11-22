@@ -27,6 +27,10 @@ export default Controller.extend({
     },
     setCurrentPicture: function(picture){
       this.set('currentPicture', picture);
+    },
+    clearFields: function(){
+      this.set('bidAmount', '');
+      this.set('currentPicture', null);
     }
   }
 });

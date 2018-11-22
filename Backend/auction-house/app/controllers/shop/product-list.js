@@ -63,6 +63,14 @@ export default Controller.extend({
         status: 'active',
         product_id: productID
       }).save();
+    },
+
+    clearFields: function(){
+      this.set('currentCategory', 0);
+      this.set('selectedOption', null);
+      this.set('selectedColor', null); 
+      this.set('selectedSize', null); 
+      this.set('selectedListType', null); 
     }
   }
 });

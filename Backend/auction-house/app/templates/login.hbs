@@ -37,6 +37,11 @@
 							{{#link-to "password-reset" class="nav-link"}}
 		  						Forgot Password?
 							{{/link-to}}
+              {{#if is-login-error}}
+                <div class="validation-error-message">
+                  Incorrect username or password.
+                </div>
+              {{/if}}
 					 	</div>
 					</div>
 				</div>

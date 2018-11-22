@@ -469,6 +469,14 @@ button::-moz-focus-inner {
 	letter-spacing: 0.56px;
 }
 
+.validation-error-message{
+ /* background: #ffcccc;
+  padding: 5px 15px;*/
+  /*border-radius: 5px;*/
+/*  border-bottom: 1px #FF6666 solid;*/
+  color: #FF6666; 
+}
+
 /**/
 
 

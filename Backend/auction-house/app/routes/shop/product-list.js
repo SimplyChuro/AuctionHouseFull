@@ -10,5 +10,14 @@ export default Route.extend({
         return list.objectAt(rand);
       })
     })
+  },
+
+  actions: {
+    refresh: function() {
+      this.refresh();
+    },
+    willTransition: function(transition) {
+      this.controllerFor('shop/product-list').send('clearFields');
+    }
   }
 });
