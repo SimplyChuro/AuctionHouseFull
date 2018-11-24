@@ -52,8 +52,6 @@ create table products (
   publish_date                  timestamptz,
   expire_date                   timestamptz,
   starting_price                float,
-  main_bid                      float,
-  bid_count                     integer,
   status                        varchar(255),
   color                         varchar(255),
   size                          varchar(255),

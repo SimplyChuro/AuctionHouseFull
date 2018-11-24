@@ -5,6 +5,8 @@ import $ from 'jquery';
 
 export default Service.extend({
   authToken: Cookies.get('auth-token'),
+  userID: Cookies.get('user-id'),
+
   login(mail, pass){
     var _this = this;
     $.ajax({
@@ -17,20 +19,25 @@ export default Service.extend({
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
       success: function(data){
-        Cookies.set('auth-token', data.authToken);
+        Cookies.set('auth-token', data[0].authToken);
+        Cookies.set('user-id', data[1].userID);
         _this.authToken = data.authToken;
+        _this.userID = data.userID;
       }
     });
   },
   logout(){
+    var _this = this;
     $.ajax({
       url: ENV.HOST_URL+'/api/v1/logout',
       type: 'POST',
-      headers: { 
-        'X-AUTH-TOKEN': Cookies.get('auth-token')
-      }
+      headers: {
+        'X-AUTH-TOKEN': _this.authToken
+      },
+      contentType: 'application/text'
     });
     Cookies.remove('auth-token');
+    Cookies.remove('user-id');
   },
   
 });

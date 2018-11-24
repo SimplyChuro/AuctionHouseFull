@@ -1,11 +1,15 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,14 +38,19 @@ public class Bids extends Model{
     public String status;
     
     //Foreign Keys
-    @ManyToOne @JsonIgnore
+    @ManyToOne 
     public Users user;
     
-    @ManyToOne 
+    @ManyToOne @JsonIgnore
     public Products product;
     
 	public static final Finder<Long, Bids> find = new Finder<>(Bids.class);
 
+	
+	
+	//Getter--setters--functions	
+	
+	
 	public Users getUser() {
 		return user;
 	}
@@ -52,28 +61,53 @@ public class Bids extends Model{
 	
 	public Boolean createBid(Users user, JsonNode objectNode) {
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
-		if(product.mainBid >= amount) {
-			return false;
-		} else {
-			this.user = user;
-			save();
-			product.bidCount++;
-			product.mainBid = amount;
-			product.update();
-			return true;
+		
+		Double highestBid = 0.00;
+		if(product.bids.size() != 0) {
+			for(Bids bid : product.bids) {
+				if(bid.amount > highestBid) {
+					highestBid = bid.amount;
+				}
+			}
+		}else {
+			highestBid = product.startingPrice;
 		}
+		
+		if(highestBid >= product.startingPrice) {
+			if(highestBid >= amount) {
+				return false;
+			} else {
+				this.user = user;
+				date = new Date();
+				status = "active";
+				save();
+				return true;
+			}
+		} else {
+			return false;
+		}
+		
 	}
 	
 	public Boolean updateBid(JsonNode objectNode) {
+		product = Products.find.byId(objectNode.findPath("product_id").asLong());
 		amount = objectNode.findPath("amount").asDouble();
-		if(product.mainBid >= amount) {
+		
+		Double highestBid = 0.00;
+		for(Bids bid : product.bids) {
+			if(bid.amount > highestBid) {
+				highestBid = bid.amount;
+			}
+		}
+	
+		if(highestBid >= amount) {
 			return false;
 		} else {
-			product.mainBid = amount;
+			date = new Date();
 			update();
-			product.update();
 			return true;
 		}
+				
 	}
 	
 }

@@ -1,8 +1,11 @@
 package controllers;
 
+
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import models.Bids;
 import models.Products;
@@ -24,6 +27,7 @@ public class BidController extends Controller {
 					.eq("product_id", id)
 					.endJunction()
 					.findUnique();
+			
 			return ok(Json.toJson(bid));
 		} catch(Exception e) {
 			return badRequest();
@@ -57,24 +61,26 @@ public class BidController extends Controller {
 			
 			if(bidChecker != null) {
 				if(bidChecker.updateBid(objectNode)) {
-					return ok();
+					return ok(Json.toJson(bidChecker));
 				}else {
 					return badRequest();
 				}
 			} else {
 				bidChecker = Json.fromJson(objectNode, Bids.class);
 				if(bidChecker.createBid(user, objectNode)) {
-					return ok();
+					return ok(Json.toJson(bidChecker));
 				} else {
 					return badRequest();
 				}
 			}
+			
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
 	
-	//Update bid		
+	//Update bid	
+	@Security.Authenticated(Secured.class)	
 	public Result update() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -97,7 +103,8 @@ public class BidController extends Controller {
 		}
 	}	
 	
-	//Delete bid		
+	//Delete bid	
+	@Security.Authenticated(Secured.class)	
 	public Result delete() {
 		try {
 			JsonNode jsonNode = request().body().asJson();

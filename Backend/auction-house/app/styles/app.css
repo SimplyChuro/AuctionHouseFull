@@ -148,6 +148,10 @@ button::-moz-focus-inner {
 	margin-bottom: 100px;
 }
 
+.bottom-margin-150{
+  margin-bottom: 150px;
+}
+
 .bottom-margin-200{
 	margin-bottom: 200px;
 }
@@ -635,6 +639,61 @@ button::-moz-focus-inner {
 	height: 5vw;
 	background-repeat: no-repeat;
   background-size: contain;
+}
+
+
+.single-product-user-holder-v1{
+  padding: 0px 25px;
+}
+
+.single-product-user-holder-v2{
+  padding: 0px 5px;
+}
+
+.single-product-user-holder-v3{
+  padding: 0px 0px;
+}
+
+.single-product-bidder-user-holder{
+  margin: auto 0px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.single-product-bidder-user-icon{
+  height: 4vw;
+  width: 12%;
+  border-radius: 100%;
+  background: #ECECEC;
+}
+
+.single-product-bid-user-avatar{
+  height: 4vw;
+  width: 12%;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
+.single-product-date{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.single-product-bid{
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+  letter-spacing: 0.63px;
+}
+
+.sp-margin-auto{
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 

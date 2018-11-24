@@ -44,7 +44,7 @@
           <tr>
             <td class="m-0 p-0">
               <div class="accout-bids-image-holder">
-                {{#each bid.product.pictures as |picture index|}}
+                {{#each wishlist.product.pictures as |picture index|}}
                   {{#if (is-main picture null index)}}
                     <img src="{{picture.url}}" class="account-bid-image">
                   {{/if}}
@@ -60,7 +60,7 @@
               <span class="account-product-plain-text">{{duration wishlist.product.publishDate wishlist.product.expireDate}}</span>
             </td>
             <td class="text-center">
-              <span class="account-product-plain-text">{{format-bid wishlist.product.mainBid}}</span>
+              <span class="account-product-plain-text">{{format-bid (get-biggest wishlist.product.bids)}}</span>
             </td>
             <td class="text-center">
               <span class="account-wishlist-status-text">{{wishlist.product.status}}</span>

@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 
+import org.apache.commons.codec.binary.Base64;
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -79,13 +82,13 @@ public class Users extends Model{
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="user")
     public Address address; 
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
     public List<Bids> bids; 
 	 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
     public List<Wishlists> wishlists; 
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="user")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
     public List<Sales> sales; 
 	
 	public static final Finder<Long, Users> find = new Finder<>(Users.class);
@@ -166,7 +169,7 @@ public class Users extends Model{
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());;
     }
     
 	public Boolean getEmailVerified() {

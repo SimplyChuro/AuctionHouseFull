@@ -17,6 +17,7 @@ import models.Products;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class CategoryController extends Controller{
 	
@@ -45,6 +46,7 @@ public class CategoryController extends Controller{
 	}
 	
 	//create category  
+	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -59,6 +61,7 @@ public class CategoryController extends Controller{
 	}
 	
 	//update category  
+	@Security.Authenticated(Secured.class)
 	public Result update() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -73,6 +76,7 @@ public class CategoryController extends Controller{
 	}
 	
 	//delete category 
+	@Security.Authenticated(Secured.class)
 	public Result delete() {
 		try {
 			JsonNode jsonNode = request().body().asJson();

@@ -24,7 +24,13 @@ public class SaleController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			Sales sale = Sales.find.query().where().conjunction().eq("user_id", user.id).eq("product_id", id).endJunction().findUnique();
+			Sales sale = Sales.find.query().where()
+					.conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", id)
+					.endJunction()
+					.findUnique();
+			
 			return ok(Json.toJson(sale));
 		} catch(Exception e) {
 			return badRequest();
@@ -95,6 +101,7 @@ public class SaleController extends Controller {
 	}
 	
 	//Update Sale
+	@Security.Authenticated(Secured.class)
 	public Result update() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -109,6 +116,7 @@ public class SaleController extends Controller {
 	}
 	
 	//Delete Sale
+	@Security.Authenticated(Secured.class)
 	public Result delete() {
 		try {
 			JsonNode jsonNode = request().body().asJson();	

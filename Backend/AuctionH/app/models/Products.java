@@ -1,11 +1,15 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -19,6 +23,7 @@ import play.libs.Json;
 
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Products extends Model{
 	
 	@Id
@@ -42,12 +47,6 @@ public class Products extends Model{
 	public Double startingPrice;
 	
 	@Constraints.Required
-	public Double mainBid;
-	
-	@Constraints.Required
-	public Integer bidCount;
-	
-	@Constraints.Required
 	public String status;
 	
 	@Constraints.Required
@@ -69,7 +68,7 @@ public class Products extends Model{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
     public List<ProductCategory> productcategory;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
     public List<Bids> bids;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
@@ -89,8 +88,6 @@ public class Products extends Model{
 		this.publishDate = publishDate;
 		this.expireDate = expireDate;
 		this.startingPrice = startingPrice;
-		this.mainBid = mainBid;
-		bidCount = 0;
 		this.status = status;
 		this.color = color;
 		this.size = size;

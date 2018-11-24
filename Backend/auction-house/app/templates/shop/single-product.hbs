@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<div class="container-fluid bottom-margin-100">
+<div class="container-fluid bottom-margin-150">
   <div class="container">
     <div class="row single-product-margin fade">
       <div class="col-lg-5 col-xl-5">
@@ -33,20 +33,47 @@
         <h1 class="title-text-links">{{model.product.name}}</h1>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
-          {{input type="number" value=bidAmount class="single-product-bid-input"}}
 
           {{#if (is-logged-in)}}
-            <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>PLACE BID</button>
+            <form>
+              {{input type="string" value=bidAmount class="single-product-bid-input"}}
+              <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>PLACE BID</button>
+              <br>
+              {{#if amountHasError}}
+                <div class="validation-error-message mt-1 fade">
+                  {{amountErrorMessage}}
+                </div>
+              {{/if}}
+            </form>
           {{else}}
+            {{input type="string" value=bidAmount class="single-product-bid-input"}}
             {{#link-to "login" class="single-product-featured-button"}}
               PLACE BID
             {{/link-to}}
           {{/if}}
-          <p class="single-product-small-text mt-1">Enter - {{format-bid model.product.mainBid}} or more</p>
+          <p class="single-product-small-text mt-1">Enter -
+            {{#if (eq model.product.bids.length 0)}}
+              {{format-bid model.product.startingPrice}}
+            {{else}}
+              {{format-bid (get-biggest model.product.bids)}}
+            {{/if}}    
+          or more</p>
         </div>
           <div class="mt-5">
-            <p class="single-product-small-text m-0 p-0">Highest Bid: <span class="single-product-highest-bid-amount ml-2">{{format-bid model.product.mainBid}}</span></p>
-            <p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bidCount}}</p>
+            <p class="single-product-small-text m-0 p-0">Highest Bid: 
+              <span class="single-product-highest-bid-amount ml-2">
+                {{#if (eq model.product.bids.length 0)}}
+                  {{format-bid model.product.startingPrice}}
+                {{else}}
+                  {{format-bid (get-biggest model.product.bids)}}
+                {{/if}}
+              </span>
+            </p>
+            {{#if (eq model.product.bids.length 0)}}
+              <p class="single-product-small-text m-0 p-0">Number of Bids: 0</p>
+            {{else}}
+              <p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bids.length}}</p>
+            {{/if}}
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
         {{#if (is-logged-in)}}
@@ -66,21 +93,44 @@
   </div>
 </div>
 
-<!-- <div class="container-fluid pt-5 bottom-margin-100">
+<div class="container-fluid mt-5 bottom-margin-150">
   <div class="container">
-    <h1 class="feature-collection-text">Feature Collection</h1>
-    <hr class="feature-line">
     <div class="row">
-      {{#each product as |product|}}
-        <div class="col-lg-4 col-xl-4 mb-3 mt-2">
-          <div class="card">
-            <h1 class="card-title">{{product.name}}</h1>
-            <div class="card-body">
-              <p class="card-text">{{product.description}}</p>
-            </div>
-          </div>
-        </div>
-      {{/each}}
+      <table class="account-bids-table fade">
+        <tbody>
+          <tr class="account-bids-table-header row m-0 p-0">
+            <th class="account-header-text col-xl-8 col-lg-8">Bidder</th>
+            <th class="account-header-text col-xl-2 col-lg-2">Date</th>
+            <th class="account-header-text col-xl-2 col-lg-2">Bid</th>
+          </tr>
+          {{#each sortedBids as |bid index|}}
+            {{#if (is-less index 5)}}
+              <tr>
+                <div class="row">
+                  <div class="col-xl-8 col-lg-8 sp-margin-auto">
+                    <div class="single-product-user-holder-v1 row">
+                      <div class="single-product-bidder-user-icon">
+                        <img src="{{bid.user.avatar}}" class="single-product-bid-user-avatar">
+                      </div>
+                      <span class="sp-margin-auto ml-3">{{bid.user.name}} {{bid.user.surname}}</span>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="single-product-user-holder-v2">
+                      {{bid.date}}
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="single-product-user-holder-v3">
+                      {{format-bid bid.amount}}
+                    </div>
+                  </div>
+                </div> 
+              </tr>
+            {{/if}}
+          {{/each}}
+        </tbody>
+      </table>
     </div>
   </div>
-</div> -->
+</div>

@@ -4,8 +4,6 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   publishDate: DS.attr('date'),
   expireDate: DS.attr('date'),
-  mainBid: DS.attr('number'),
-  bidCount: DS.attr('number'),
   startingPrice: DS.attr('number'),
   status: DS.attr('string'),
   color: DS.attr('string'),

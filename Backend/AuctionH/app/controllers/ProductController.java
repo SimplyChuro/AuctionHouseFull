@@ -22,6 +22,7 @@ import models.Bids;
 import models.Users;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import play.data.Form;
 import play.data.FormFactory;
 import play.libs.Json;
@@ -49,6 +50,7 @@ public class ProductController extends Controller {
 	}
 	
 	//Create product
+	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -68,6 +70,7 @@ public class ProductController extends Controller {
 	}
 	
 	//Update product
+	@Security.Authenticated(Secured.class)
 	public Result update() {
 		try {
 			JsonNode jsonNode = request().body().asJson();
@@ -87,6 +90,7 @@ public class ProductController extends Controller {
 	}
 	
 	//Delete product
+	@Security.Authenticated(Secured.class)
 	public Result delete() {
 		try {
 			JsonNode jsonNode = request().body().asJson();

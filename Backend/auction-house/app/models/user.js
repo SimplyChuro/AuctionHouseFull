@@ -12,6 +12,10 @@ const Validations = buildValidations({
     validator('presence', true),
     validator('length', { 
       min: 4 
+    }),
+    validator('format', {
+      regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/,
+      message: 'Password must include at least one upper case letter, one lower case letter, and a number'
     })
   ]
 });
@@ -29,5 +33,6 @@ export default DS.Model.extend(Validations, {
   phoneVerified: DS.attr('boolean'),
   address: DS.belongsTo('address'),
   wishlist: DS.hasMany('wishlist'),
-  bids: DS.hasMany('bid')
+  bids: DS.hasMany('bid'),
+  sales: DS.hasMany('sale')
 });

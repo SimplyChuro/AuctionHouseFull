@@ -1,7 +1,11 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import org.apache.commons.codec.binary.Base64;
+import org.mindrot.jbcrypt.BCrypt;
 
 import models.Users;
 import play.libs.Json;
@@ -26,26 +30,48 @@ public class LoginController extends Controller {
 	    Users user = Users.find.query().where()
 	    		.conjunction()
 	    		.eq("email", jsonNode.findPath("email").textValue())
-	    		.eq("password", jsonNode.findPath("password").textValue())
 	    		.endJunction()
 	    		.findUnique();	    
 	    
-	    if (user == null) {
-	        return unauthorized();
-	    } else {
+	    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
+    		
+	    	ArrayNode response;
+    		
 	    	ObjectNode authTokenJson;
+	    	ObjectNode userNode;
 	    	
 	    	if(user.hasAuthToken()) {
 	    		authTokenJson = Json.newObject();
 	    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
-	    		return ok(authTokenJson);
+	    		
+	    		userNode = Json.newObject();
+	    		userNode.put("userID", user.id);
+	    		
+	    		response = Json.newArray();
+	    		response.add(authTokenJson);
+	    		response.add(userNode);
+	    		
+	    		return ok(response);
 	    	} else {
 		        String authToken = user.createToken();
+		        
 		        authTokenJson = Json.newObject();
 		        authTokenJson.put(AUTH_TOKEN, authToken);
-		        return ok(authTokenJson);
+		        
+	    		userNode = Json.newObject();
+	    		userNode.put("userID", user.id);
+	    		
+	    		response = Json.newArray();
+	    		response.add(authTokenJson);
+	    		response.add(userNode);
+	    		
+		        return ok(response);
 	        }
-	    }
+	    	
+        } else {
+            return notFound();
+    	}
+	    
 	}
 	
 	@Security.Authenticated(Secured.class)

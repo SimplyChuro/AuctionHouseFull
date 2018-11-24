@@ -19,30 +19,42 @@
                 <label>First Name</label>
                 {{input type="text" value=name class="form-control form-background-color p-4"}}
               </div>
-              <div class="validation-error-message">
-                {{v-get user 'name' 'message'}}
-              </div>
+              {{#if nameHasError}}
+                <div class="validation-error-message fade">
+                  {{nameErrorMessage}}
+                </div>
+              {{/if}}
+              
               <div class="form-group mt-5">
                 <label>Last Name</label>
                 {{input type="text" value=surname  class="form-control form-background-color p-4"}}
               </div>
-              <div class="validation-error-message">
-                {{v-get user 'surname' 'message'}}
-              </div>
+              {{#if surnameHasError}}
+                <div class="validation-error-message fade">
+                  {{surnameErrorMessage}}
+                </div>
+              {{/if}}
+              
               <div class="form-group mt-5">
                 <label>Enter Email</label>
                 {{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
               </div>
-              <div class="validation-error-message">
-                {{v-get user 'email' 'message'}}
-              </div>
+              {{#if emailHasError}}
+                <div class="validation-error-message fade">
+                  {{emailErrorMessage}}
+                </div>
+              {{/if}}
+              
               <div class="form-group mt-5">
                 <label>Password</label>
                 {{input type="password" value=password  class="form-control form-background-color p-4"}}
               </div>
-              <div class="validation-error-message">
-                {{v-get user 'password' 'message'}}
-              </div>
+              {{#if passwordHasError}}
+                <div class="validation-error-message fade">
+                  {{passwordErrorMessage}}
+                </div>
+              {{/if}}
+
               <button type="submit" class="btn btn-purple-outline mt-5" {{action "createUser"}}>REGISTER</button>
               <div class="text-center mt-5 mb-4">
                 <span>Already have an account?  </span>
