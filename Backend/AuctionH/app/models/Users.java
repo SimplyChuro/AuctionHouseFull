@@ -111,9 +111,6 @@ public class Users extends Model{
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		try {
-			TimeZone timeZone;
-			timeZone = TimeZone.getTimeZone("GMT+0:00");
-			TimeZone.setDefault(timeZone);
 			this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
 		} catch(Exception e) {
 			e.printStackTrace();

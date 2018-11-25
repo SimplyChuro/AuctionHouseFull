@@ -33,7 +33,6 @@
         <h1 class="title-text-links">{{model.product.name}}</h1>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
-
           {{#if (is-logged-in)}}
             <form>
               {{input type="string" value=bidAmount class="single-product-bid-input"}}
@@ -43,6 +42,19 @@
                 <div class="validation-error-message mt-1 fade">
                   {{amountErrorMessage}}
                 </div>
+                {{#if (eq amountErrorMessage '')}}
+                  {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                    <div class="validation-error-message mt-1 fade">
+                      The input amount is insufficient.
+                    </div>
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                  <div class="validation-error-message mt-1 fade">
+                    The input amount is insufficient.
+                  </div>
+                {{/if}}
               {{/if}}
             </form>
           {{else}}

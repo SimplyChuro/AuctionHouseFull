@@ -79,10 +79,12 @@ public class Products extends Model{
 
 	public static final Finder<Long, Products> find = new Finder<>(Products.class);
 
+	
+	
 	public Products() {}
 	
 	public Products(@Required String name, @Required Date publishDate, @Required Date expireDate,
-			@Required Double mainBid, @Required String status, @Required String color, @Required String size,
+			@Required String status, @Required String color, @Required String size,
 			@Required String description, @Required Double startingPrice) {
 		this.name = name;
 		this.publishDate = publishDate;

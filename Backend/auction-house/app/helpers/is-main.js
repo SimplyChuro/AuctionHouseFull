@@ -5,10 +5,10 @@ export function isMain(params) {
   const currentPicture = params[1];
   const index = params[2];
 
-  if(index === 0 && (currentPicture === null || currentPicture === '')){
+  if (index === 0 && (currentPicture === null || currentPicture === '')) {
     return true;
   } else {
-    if(picture !== currentPicture){
+    if (picture !== currentPicture) {
       return false;
     } else {
       return true;

@@ -7,7 +7,6 @@ export default Ember.Helper.extend({
     var highestBid = 0.00;
     
     bids.forEach((item, index) => {
-      console.log(item.amount)
       if(item.amount > highestBid){
         highestBid = item.amount;
       }

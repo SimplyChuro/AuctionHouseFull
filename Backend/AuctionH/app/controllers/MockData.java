@@ -89,25 +89,6 @@ public class MockData {
 				
 		};
 		
-		Double mainBid [] = {
-				93.99, 
-				12.39, 
-				23.49,
-				679.59, 
-				430.49, 
-				240.20, 
-				25.40, 
-				49.99, 
-				349.99, 
-				129.99,
-				69.99,
-				999.99,
-				1249.99,
-				149.99,
-				29.99
-				
-		};
-		
 		Double startingPrice [] = {
 				93.99, 
 				12.39, 
@@ -265,7 +246,7 @@ public class MockData {
 				end = new Date();
 			}
 			
-			product = new Products(name[i], start, end, mainBid[i], status[i], color[i], size[i], description[i], startingPrice[i]);
+			product = new Products(name[i], start, end, status[i], color[i], size[i], description[i], startingPrice[i]);
 			product.save();
 			
 			for(String pic : pictureUrl[i]) {

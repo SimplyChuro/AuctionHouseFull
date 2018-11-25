@@ -39,7 +39,7 @@ public class ProductController extends Controller {
 		}
 	}
 	
-	//get products
+	//get product
 	public Result get(Long id) {
 		try {
 			Products product = Products.find.byId(id);
@@ -105,27 +105,6 @@ public class ProductController extends Controller {
 			return ok();
 		} catch(Exception e) {
 			return badRequest();
-		}
-	}
-	
-	//Get top 5 bidders
-	public Result bids(Long id) {
-		try {
-			List<Bids> bidList = Bids.find.query().where().conjunction()
-					.eq("product_id", id)
-					.endJunction()
-					.orderBy("bidAmount desc")
-			        .setMaxRows(5)
-			        .findList();
-			
-			List<Users> users = new ArrayList<>();
-			for(Bids bid : bidList) {
-				users.add(bid.getUser());
-			}
-			
-			return ok(Json.toJson(users));
-		} catch(Exception e) {
-			return notFound();
 		}
 	}
 	

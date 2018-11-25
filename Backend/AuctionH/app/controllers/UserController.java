@@ -77,7 +77,7 @@ public class UserController extends Controller {
 	
 	//Update user
 	@Security.Authenticated(Secured.class)
-	public Result update() {
+	public Result update(Long id) {
 		try {
 			JsonNode objectNode = request().body().asJson().get("user");
 			Users user = LoginController.getUser();

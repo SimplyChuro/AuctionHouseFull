@@ -7,6 +7,7 @@ export default Controller.extend({
   amountHasError: null,
   amountErrorMessage: null,
   currentPicture: null,
+  bidValue: null,
 
   sortedBids: Ember.computed(function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
@@ -17,7 +18,6 @@ export default Controller.extend({
       var self = this;
 
       function transitionToHome(data) {
-        console.log(data);
         self.get('target').send('refresh');
       }
 
@@ -30,8 +30,13 @@ export default Controller.extend({
       bid.set('product_id', productID);
 
       bid.validate().then(({ validations }) =>{
-        if(validations.get('isValid')){
-          bid.save().then(transitionToHome).catch(failure);
+        if(validations.get('isValid') && this.get('bidAmount') > this.get('sortedBids')[0].amount){
+          this.set('amountHasError', false);
+          bid.save().then(function() {
+            self.get('target').send('refresh');
+          }, function(response){
+            console.log(response);
+          });
 
         } else {
 

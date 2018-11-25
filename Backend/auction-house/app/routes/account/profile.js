@@ -7,7 +7,8 @@ export default Route.extend({
     return Ember.RSVP.hash({
       user: this.store.findRecord('user', this.get('session').userID)
     })
-  }, 
+  },
+  
   setupController(controller, model) {
     this._super(controller, model);
     this.controllerFor('account/profile').set('dateOfBirth', model.user.dateOfBirth);

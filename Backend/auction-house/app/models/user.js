@@ -4,10 +4,12 @@ import { buildValidations, validator } from 'ember-cp-validations';
 const Validations = buildValidations({
   name: validator('presence', true),
   surname: validator('presence', true),
+
   email: [ 
     validator('presence', true),
     validator('format', { type: 'email' })
   ],
+
   password: [ 
     validator('presence', true),
     validator('length', { 
@@ -17,7 +19,15 @@ const Validations = buildValidations({
       regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/,
       message: 'Password must include at least one upper case letter, one lower case letter, and a number'
     })
+  ],
+
+  phoneNumber: [ 
+    validator('format', { 
+      allowBlank: true,
+      type: 'phone'
+    })
   ]
+
 });
 
 export default DS.Model.extend(Validations, {
