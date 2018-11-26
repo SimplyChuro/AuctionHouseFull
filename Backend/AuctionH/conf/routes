@@ -18,39 +18,39 @@ POST	/api/v1/logout						controllers.LoginController.logout
 GET		/api/v1/bids						controllers.BidController.getAll
 GET		/api/v1/bids/:id					controllers.BidController.get(id : Long)
 POST	/api/v1/bids						controllers.BidController.create
-PUT		/api/v1/bids						controllers.BidController.update
-DELETE	/api/v1/bids						controllers.BidController.delete
+PUT		/api/v1/bids/:id					controllers.BidController.update(id : Long)
+DELETE	/api/v1/bids/:id					controllers.BidController.delete(id : Long)
 
 
 # Wishlist API routes
 GET		/api/v1/wishlists					controllers.WishlistController.getAll
 GET		/api/v1/wishlists/:id				controllers.WishlistController.get(id : Long)
 POST	/api/v1/wishlists					controllers.WishlistController.create
-PUT		/api/v1/wishlists					controllers.WishlistController.update
-DELETE	/api/v1/wishlists					controllers.WishlistController.delete
+PUT		/api/v1/wishlists/:id				controllers.WishlistController.update(id : Long)
+DELETE	/api/v1/wishlists/:id				controllers.WishlistController.delete(id : Long)
 
 
 # Sale API routes
 GET		/api/v1/sales						controllers.SaleController.getAll
 GET		/api/v1/sales/:id					controllers.SaleController.get(id : Long)
 POST	/api/v1/sales						controllers.SaleController.create
-PUT		/api/v1/sales						controllers.SaleController.update
-DELETE	/api/v1/sales						controllers.SaleController.delete
+PUT		/api/v1/sales/:id					controllers.SaleController.update(id : Long)
+DELETE	/api/v1/sales/:id					controllers.SaleController.delete(id : Long)
 
 
 # Product API routes
 GET		/api/v1/products					controllers.ProductController.getAll
 GET		/api/v1/products/:id				controllers.ProductController.get(id : Long)
 POST	/api/v1/products					controllers.ProductController.create
-PUT		/api/v1/products					controllers.ProductController.update
-DELETE	/api/v1/products					controllers.ProductController.delete
+PUT		/api/v1/products/:id				controllers.ProductController.update(id : Long)
+DELETE	/api/v1/products/:id				controllers.ProductController.delete(id : Long)
 
 
 # Category API routes
 GET		/api/v1/category					controllers.CategoryController.getAll
 GET		/api/v1/category/:id				controllers.CategoryController.get(id : Long)
 POST	/api/v1/category					controllers.CategoryController.create
-PUT		/api/v1/category					controllers.CategoryController.update
-DELETE	/api/v1/category					controllers.CategoryController.delete
+PUT		/api/v1/category/:id				controllers.CategoryController.update(id : Long)
+DELETE	/api/v1/category/:id				controllers.CategoryController.delete(id : Long)
 
 

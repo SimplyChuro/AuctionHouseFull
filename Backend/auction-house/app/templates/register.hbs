@@ -55,6 +55,12 @@
                 </div>
               {{/if}}
 
+              {{#if emailExistsHasError}}
+                <div class="validation-error-message fade">
+                  {{emailExistsErrorMessage}}
+                </div>
+              {{/if}}
+              
               <button type="submit" class="btn btn-purple-outline mt-5" {{action "createUser"}}>REGISTER</button>
               <div class="text-center mt-5 mb-4">
                 <span>Already have an account?  </span>

@@ -71,7 +71,7 @@ public class ProductController extends Controller {
 	
 	//Update product
 	@Security.Authenticated(Secured.class)
-	public Result update() {
+	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 	
@@ -91,7 +91,7 @@ public class ProductController extends Controller {
 	
 	//Delete product
 	@Security.Authenticated(Secured.class)
-	public Result delete() {
+	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 	

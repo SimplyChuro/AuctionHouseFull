@@ -23,6 +23,11 @@
                 <label>Password</label>
                 {{input type="password" value=password  class="form-control form-background-color p-4"}}
               </div>
+              {{#if loginHasError}}
+                <div class="validation-error-message pt-1 fade">
+                  {{loginErrorMessage}}
+                </div>
+              {{/if}}
               <div class="form-check mt-5">
                 {{input type="checkbox" name="remember" checked=remember class="form-check-input"}}
                 <label>Remember me</label>
@@ -38,11 +43,6 @@
                 {{#link-to "password-reset" class="nav-link"}}
                   Forgot Password?
                 {{/link-to}}
-                {{#if is-login-error}}
-                  <div class="validation-error-message">
-                    Incorrect username or password.
-                  </div>
-                {{/if}}
               </div>
             </form>
           </div>

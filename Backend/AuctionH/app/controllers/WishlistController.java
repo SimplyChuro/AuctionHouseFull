@@ -73,7 +73,7 @@ public class WishlistController extends Controller{
 	
 	//Update wishlist
 	@Security.Authenticated(Secured.class)
-	public Result update() {
+	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
@@ -98,7 +98,7 @@ public class WishlistController extends Controller{
 	
 	//Delete wishlist
 	@Security.Authenticated(Secured.class)
-	public Result delete() {
+	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			

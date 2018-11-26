@@ -1,15 +1,30 @@
 import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
-import { getOwner } from '@ember/application';
-import { later } from '@ember/runloop';
+import Cookies from 'ember-cli-js-cookie';
 
 export default Component.extend({
   session: Ember.inject.service(),
+  router: Ember.inject.service(),
+  
   actions: {
     logout: function(){
-      this.get('session').logout();
-      getOwner(this).lookup('router:main').transitionTo('home');
-    }
+      var _this = this;
+      $.ajax({
+        url: ENV.HOST_URL+'/api/v1/logout',
+        type: 'POST',
+        headers: {
+          'X-AUTH-TOKEN': _this.get('session').authToken
+        },
+        contentType: 'application/text'
+      }).then(function(){
+        Cookies.remove('auth-token');
+        Cookies.remove('user-id');
+        _this.set('session.authToken', null);
+        _this.set('session.userID', null);
+        _this.get('router').transitionTo('index');
+      });
+    },
+    
   }
 });

@@ -102,7 +102,7 @@ public class SaleController extends Controller {
 	
 	//Update Sale
 	@Security.Authenticated(Secured.class)
-	public Result update() {
+	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
@@ -117,7 +117,7 @@ public class SaleController extends Controller {
 	
 	//Delete Sale
 	@Security.Authenticated(Secured.class)
-	public Result delete() {
+	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();	
 			

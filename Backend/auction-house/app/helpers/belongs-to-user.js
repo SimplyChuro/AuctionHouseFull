@@ -6,7 +6,7 @@ export default Ember.Helper.extend({
   compute(params) {
     let session = this.get('session');
     const user = params[0];
-    if(user === session.userID) {
+    if(user == session.userID) {
       return true;
     } else {
       return false;

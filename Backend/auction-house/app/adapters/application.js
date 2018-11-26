@@ -8,9 +8,9 @@ export default DS.RESTAdapter.extend({
   session: Ember.inject.service(),
   host: ENV.HOST_URL,
   namespace: 'api/v1',
-  headers: computed(function() {
+  headers: function() {
     return {
       'X-AUTH-TOKEN': this.get('session').authToken
     };
-  })
+  }.property().volatile()
 });

@@ -81,7 +81,7 @@ public class BidController extends Controller {
 	
 	//Update bid	
 	@Security.Authenticated(Secured.class)	
-	public Result update() {
+	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 				
@@ -105,7 +105,7 @@ public class BidController extends Controller {
 	
 	//Delete bid	
 	@Security.Authenticated(Secured.class)	
-	public Result delete() {
+	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			

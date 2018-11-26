@@ -2,8 +2,17 @@ import DS from 'ember-data';
 import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
-  name: validator('presence', true),
-  surname: validator('presence', true),
+  name: validator('presence', {
+    presence: true,
+    ignoreBlank: true,
+    message: "Name should not be empty or contain any empty spaces"
+  }),
+
+  surname: validator('presence', {
+    presence: true,
+    ignoreBlank: true,
+    message: "Surname should not be empty or contain any empty spaces"
+  }),
 
   email: [ 
     validator('presence', true),
@@ -11,10 +20,12 @@ const Validations = buildValidations({
   ],
 
   password: [ 
+  
     validator('presence', true),
     validator('length', { 
       min: 4 
     }),
+
     validator('format', {
       regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/,
       message: 'Password must include at least one upper case letter, one lower case letter, and a number'

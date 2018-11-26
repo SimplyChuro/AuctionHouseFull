@@ -14,7 +14,7 @@ export default Controller.extend({
       user.set('gender', this.get('selectedOption'));
 
       var bd = new Date(this.get('dateOfBirth'));
-      bd.setMinutes(bd.getMinutes() - bd.getTimezoneOffset());
+      bd.setMinutes(bd.getMinutes() + bd.getTimezoneOffset());
       user.set('dateOfBirth', bd);
 
       user.set('phoneNumber', this.get('phoneNumber'));

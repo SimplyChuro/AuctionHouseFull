@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-import { later } from '@ember/runloop';
 
 export default Controller.extend({
   session: Ember.inject.service(),
@@ -9,7 +8,7 @@ export default Controller.extend({
   currentPicture: null,
   bidValue: null,
 
-  sortedBids: Ember.computed(function(){
+  sortedBids: Ember.computed('model', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
@@ -22,20 +21,26 @@ export default Controller.extend({
       }
 
       function failure(reason) {
-        // self.get('target').send('refresh');
+        self.get('target').send('refresh');
       }
 
       let bid = this.store.createRecord('bid');
       bid.set('amount', this.get('bidAmount'));
       bid.set('product_id', productID);
 
-      bid.validate().then(({ validations }) =>{
-        if(validations.get('isValid') && this.get('bidAmount') > this.get('sortedBids')[0].amount){
+      var topBid = this.get('sortedBids.firstObject.amount');
+      if(topBid == null){
+        topBid = this.get('model.product.startingPrice');
+      }
+      var userBid = this.get('bidAmount');
+      
+      bid.validate().then(({ validations }) => {
+        if(validations.get('isValid') && (userBid > topBid) && (userBid != topBid)){
           this.set('amountHasError', false);
           bid.save().then(function() {
             self.get('target').send('refresh');
           }, function(response){
-            console.log(response);
+            self.get('target').send('refresh');
           });
 
         } else {
@@ -60,7 +65,7 @@ export default Controller.extend({
     },
 
     clearFields: function(){
-      this.set('bidAmount', '');
+      this.set('bidAmount', null);
       this.set('currentPicture', null);
       this.set('amountHasError', null);
       this.set('amountErrorMessage', null);

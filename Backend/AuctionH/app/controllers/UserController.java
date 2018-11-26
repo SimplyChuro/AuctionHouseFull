@@ -68,7 +68,7 @@ public class UserController extends Controller {
 				Users user = Json.fromJson(objectNode, Users.class);
 				user.setPassword(objectNode.findValue("password").asText());
 				user.setBase();
-				return ok();
+				return ok(Json.toJson(user));
 			}
 		} catch(Exception e) {
 			return badRequest();
@@ -109,20 +109,29 @@ public class UserController extends Controller {
 	
 	//reset password not finished
 	public Result reset() {
-//		try {
-//			Users user = Users.find.byId(id);
-//		
-//			if(!user.getEmailVerified()) {
-//				user.setEmailVerified(true);
-//				user.update();
-//				
-//				return ok();
-//			}else {
-//				return notFound();
-//			}
-//		}catch(Exception e) {
+		try {
+			JsonNode objectNode = request().body().asJson();
+			Users userChecker = Users.find.query().where()
+					.conjunction()
+					.eq("email", objectNode.findPath("email").textValue())
+					.endJunction()
+					.findUnique();
+			
+			if(userChecker != null) {
+//
+//				Email email = new Email()
+//				        .setSubject("Simple email")
+//				        .setFrom("t***f@gmail.com")
+//				        .addTo("d****i@gmail.com")
+//				        .setBodyText("A text message");
+//				Mail.send(email); 
+				return ok();
+			} else {
+				return badRequest();
+			}
+		}catch(Exception e) {
 			return badRequest();
-//		}
+		}
 	} 
 	
 }

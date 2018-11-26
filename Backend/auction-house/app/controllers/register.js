@@ -13,6 +13,10 @@ export default Controller.extend({
 
   passwordErrorMessage: null,
   passwordHasError: null,
+  
+  emailExistsErrorMessage: 'The input email is in usage',
+  emailExistsHasError: null,
+
 
   actions: {
     createUser: function() {		
@@ -21,11 +25,25 @@ export default Controller.extend({
       user.set('surname', this.get('surname'));
       user.set('email', this.get('emailAddress'));
       user.set('password', this.get('password'));
+      var _this = this;
       user.validate().then(({ validations }) =>{
         if(validations.get('isValid')){
-          user.save().then(
-            this.transitionToRoute('register-success')
-          ).catch();
+          user.save().then(function(data) {
+            _this.transitionToRoute('register-success')
+          }).catch(function(data) {
+            _this.set('emailExistsHasError', true);
+            _this.set('nameHasError', null); 
+            _this.set('nameErrorMessage', null);
+
+            _this.set('surnameHasError', null); 
+            _this.set('surnameErrorMessage', null);
+
+            _this.set('emailHasError', null); 
+            _this.set('emailErrorMessage', null);
+
+            _this.set('passwordHasError', null); 
+            _this.set('passwordErrorMessage', null);
+          });
         } else {
 
           if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null){
@@ -57,14 +75,20 @@ export default Controller.extend({
       this.set('surname', '');
       this.set('email', '');
       this.set('password', '');
+
       this.set('nameHasError', null); 
       this.set('nameErrorMessage', null);
+
       this.set('surnameHasError', null); 
       this.set('surnameErrorMessage', null);
+
       this.set('emailHasError', null); 
       this.set('emailErrorMessage', null);
+
       this.set('passwordHasError', null); 
       this.set('passwordErrorMessage', null);
+
+      this.set('emailExistsHasError', null);
     }
   }
 });
