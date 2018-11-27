@@ -8,22 +8,28 @@
   <div class="container">
     <div>
       {{#link-to 'account.profile' class="account-navigation-link-active"}}
-        Profile
+        {{material-icon "person"}} Profile
       {{/link-to}}
       {{#link-to 'account.sales' class="account-navigation-link"}}
-        Sales
+        {{material-icon "view_list"}} Sales
       {{/link-to}}
       {{#link-to 'account.bids' class="account-navigation-link"}}
-        Bids
+        {{material-icon "gavel"}} Bids
       {{/link-to}}
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
-        Wishlist
+        {{material-icon "card_giftcard"}} Wishlist
       {{/link-to}}
       {{#link-to 'account.settings' class="account-navigation-link"}}
-        Settings
+        {{material-icon "settings"}} Settings
       {{/link-to}}
     </div>
   </div>
+</div>
+
+<div class="container">
+  {{#each flashMessages.queue as |flash|}}
+    <p class="fade">{{flash-message flash=flash}}</p>
+  {{/each}}
 </div>
 
 <div class="container-fluid bottom-margin-400">
@@ -70,7 +76,7 @@
                   <option value="other" selected>
                     Other
                   </option>
-                  {{else}}
+                {{else}}
                   <option value="other">
                     Other
                   </option>
@@ -121,7 +127,7 @@
         </div>
       </div>
       <div class="mt-4">
-        <button class="account-profile-save-info-button" {{action "updateUser"}}>SAVE INFO</button>
+        <button class="account-profile-save-info-button" {{action "updateUser"}}>SAVE INFO {{material-icon "keyboard_arrow_right"}}</button>
       </div>
     </form>
   </div>

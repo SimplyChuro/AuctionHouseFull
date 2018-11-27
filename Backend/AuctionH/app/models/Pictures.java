@@ -22,7 +22,7 @@ public class Pictures extends Model{
 		
     @Constraints.Required
 	public String url;
-
+    
     //Foreign Keys
     @ManyToOne @JsonIgnore
     public Products product;

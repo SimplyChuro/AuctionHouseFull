@@ -1,10 +1,29 @@
-<div class="container-fluid current-route-background mb-5">
+<div class="container-fluid current-route-background">
   <div class="container">
-    <p class="form-title-text">SINGLE PRODUCT<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   SINGLE PRODUCT</span></p>
+    <p class="form-title-text m-0">SINGLE PRODUCT<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   SINGLE PRODUCT</span></p>
   </div>
 </div>
 
-<div class="container-fluid bottom-margin-150">
+{{#each model.product.bids as |bid|}}
+  {{#if (belongs-to-user bid.user.id)}}
+    {{#if (eq bid.amount (get-biggest model.product.bids))}}
+      <div class="container-fluid sp-bidder-highest-holder fade">
+        <div class="container">
+          <p class="sp-highest-bid-text mt-0">Congrats! you are the higest bider!</p>
+        </div>
+      </div>
+
+    {{else}}
+      <div class="container-fluid sp-bidder-losing-holder fade">
+        <div class="container">
+          <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
+        </div>
+      </div>
+    {{/if}}
+  {{/if}}
+{{/each}}
+
+<div class="container-fluid bottom-margin-150 mt-5">
   <div class="container">
     <div class="row single-product-margin fade">
       <div class="col-lg-5 col-xl-5">
@@ -36,7 +55,9 @@
           {{#if (is-logged-in)}}
             <form>
               {{input type="string" value=bidAmount class="single-product-bid-input"}}
-              <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>PLACE BID</button>
+              <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                PLACE BID {{material-icon "keyboard_arrow_right"}}
+              </button>
               <br>
               {{#if amountHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -76,7 +97,7 @@
           {{else}}
             {{input type="string" value=bidAmount class="single-product-bid-input"}}
             {{#link-to "login" class="single-product-featured-button"}}
-              PLACE BID
+              PLACE BID {{material-icon "keyboard_arrow_right"}}
             {{/link-to}}
           {{/if}}
           <p class="single-product-small-text mt-1">Enter more than -
@@ -86,6 +107,11 @@
               {{format-bid (get-biggest model.product.bids)}}
             {{/if}}    
           </p>
+          <div class="sp-notification-holder">
+            {{#each flashMessages.queue as |flash|}}
+              <p class="fade">{{flash-message flash=flash}}</p>
+            {{/each}}
+          </div>
         </div>
           <div class="mt-5">
             <p class="single-product-small-text m-0 p-0">Highest Bid: 
@@ -105,11 +131,13 @@
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
         {{#if (is-logged-in)}}
-          <button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.product.id}}>Watchlist</button>
+          <button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.product.id}}>
+            Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+          </button>
         {{else}}
           <div class="single-product-watchlist-holder">
             {{#link-to "login" class="single-product-watchlist-btn-v2"}}
-              Watchlist
+              Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
             {{/link-to}}
           </div>
         {{/if}}

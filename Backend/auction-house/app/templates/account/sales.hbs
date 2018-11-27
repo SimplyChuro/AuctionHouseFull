@@ -4,30 +4,31 @@
   </div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid bottom-margin-62">
   <div class="container">
     <div>
       {{#link-to 'account.profile' class="account-navigation-link"}}
-        Profile
+        {{material-icon "person"}} Profile
       {{/link-to}}
       {{#link-to 'account.sales' class="account-navigation-link-active"}}
-        Sales
+        {{material-icon "view_list"}} Sales
       {{/link-to}}
       {{#link-to 'account.bids' class="account-navigation-link"}}
-        Bids
+        {{material-icon "gavel"}} Bids
       {{/link-to}}
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
-        Wishlist
+        {{material-icon "card_giftcard"}} Wishlist
       {{/link-to}}
       {{#link-to 'account.settings' class="account-navigation-link"}}
-        Settings
+        {{material-icon "settings"}} Settings
       {{/link-to}}
     </div>
   </div>
 </div>
-<div class="container-fluid account-sales-link-holder">
+
+<div class="container-fluid bottom-margin-200">
   <div class="container fade">
-    <div class="account-sales-route-holder">
+     <div class="account-sales-route-holder">
       {{#if (eq saleStatus 'active')}}
         <span class="account-sales-navigation-link-active account-profile-pointer">
           Active
@@ -44,11 +45,6 @@
         </span>
       {{/if}}
     </div>
-  </div>
-</div>
-
-<div class="container-fluid bottom-margin-200">
-  <div class="container fade">
     <table class="account-bids-table">
       <tr class="account-bids-table-header">
         <th class="account-header-text account-bids-table-item text-center">Item</th>

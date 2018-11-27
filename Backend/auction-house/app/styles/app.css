@@ -36,6 +36,16 @@ button::-moz-focus-inner {
   position: relative;
   animation-fill-mode: forwards;
 }
+
+.alert.alert-success{
+  color: #008000;
+}
+
+.material-icons, .icon-text {
+  vertical-align: middle !important;
+  padding-bottom: 3px;
+}
+
 /**/
 
 
@@ -60,7 +70,7 @@ button::-moz-focus-inner {
 }
 
 .navigation-form{
-	margin-left: 13%;
+	margin-left: 9%;
 	margin-bottom: 4px;	
 	width: 45%;
 	box-shadow: 2px 2px 2px  #C0C0C0;
@@ -138,6 +148,10 @@ button::-moz-focus-inner {
 /*global margin class list*/
 .bottom-margin-50{
 	margin-bottom: 50px;
+}
+
+.bottom-margin-62{
+  margin-bottom: 62px;
 }
 
 .bottom-margin-75{
@@ -345,7 +359,7 @@ button::-moz-focus-inner {
 	font-size: 18px;
 	font-weight: bold
 	letter-spacing: 0.63px;
-	padding: 15px 30px;
+	padding: 15px 25px 15px 30px;
 	background: #FFFFFF;
 	border: 3px solid #8367D8;
 	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
@@ -509,7 +523,7 @@ button::-moz-focus-inner {
 	font-size: 18px;
 	font-weight: bold
 	letter-spacing: 0.63px;
-	padding: 15px 30px;
+	padding: 15px 25px 15px 30px;
 	background: #FFFFFF;
 	border: 3px solid #8367D8;
 	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
@@ -525,7 +539,7 @@ button::-moz-focus-inner {
 	font-size: 18px;
 	font-weight: bold
 	letter-spacing: 0.63px;
-	padding: 10px 30px;
+	padding: 10px 25px 10px 30px; 
 	background: #FFFFFF;
 	border: 3px solid #8367D8;
 	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
@@ -555,6 +569,10 @@ button::-moz-focus-inner {
 	background: #FFFFFF;
 	border: 3px solid #ECECEC;
 	cursor: pointer;
+}
+
+.single-product-heart{
+  color: #ECECEC;
 }
 
 .single-product-watchlist-btn:hover{
@@ -696,6 +714,34 @@ button::-moz-focus-inner {
   margin-bottom: auto;
 }
 
+.sp-highest-bid-text{
+  font-size: 18px;
+  padding: 15px 0px;
+  font-weight: bold;
+  color: #417505;
+  letter-spacing: 0.63px;
+}
+
+.sp-bidder-highest-holder{
+  background: #F0F3EE;
+}
+
+.sp-losing-bid-text{
+  font-size: 18px;
+  padding: 15px 0px;
+  color: #AB944E;
+  letter-spacing: 0.63px;
+}
+
+.sp-bidder-losing-holder{
+  background: #F6F2E5;
+}
+
+.sp-notification-holder{
+  width: 58%;
+}
+
+
 
 /**/
 
@@ -816,6 +862,11 @@ button::-moz-focus-inner {
 /*account bids*/
 .account-card-header{
 	background-color: #FAFAFA;
+}
+
+.logo{
+  height: 33px;
+  padding: 0px 10px 5px 0px;
 }
 
 .account-header-text{
@@ -947,14 +998,24 @@ button::-moz-focus-inner {
 	width: 15%;
 }
 
-.account-wishlist-status-text{
+.account-wishlist-status-text-active{
 	background: #F0F0F0;
 	padding: 15px 30px;
 	font-size: 14px;
 	font-weight: bold;
-	color: #252525;
+	color: #417505;
 	letter-spacing: 0.49px;
 	text-align: center;
+}
+
+.account-wishlist-status-text-sold{
+  background: #F0F0F0;
+  padding: 15px 30px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #A6555F;
+  letter-spacing: 0.49px;
+  text-align: center;
 }
 
 /*account profile*/
@@ -1105,10 +1166,10 @@ button::-moz-focus-inner {
 	letter-spacing: 0.63px;
 }
 
-.account-sales-link-holder{
+/*.account-sales-link-holder{
 	margin-top: 62px;
 }
-
+*/
 /*account sell*/
 .account-sell-image-holder{
 	height: 6vw;
@@ -1134,7 +1195,7 @@ button::-moz-focus-inner {
 	background: #FFFFFF;
 	border: 3px solid #8367D8;
 	box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
-	padding: 15px 60px;
+	padding: 15px 55px 15px 60px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #252525;
@@ -1241,7 +1302,7 @@ button::-moz-focus-inner {
 .product-list-button-v2{
   background: #FFFFFF;
   border: 3px solid #ECECEC;
-  padding: 9px 25px;
+  padding: 11px 25px;
   font-size: 15px;
   color: #252525;
   letter-spacing: 0.52px;
@@ -1374,7 +1435,7 @@ button::-moz-focus-inner {
 
 .footer-purple-button{
 	border: 3px solid #8367D8;
-	padding: 15px 30px;
+	padding: 15px 20px 15px 30px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #D8D8D8;

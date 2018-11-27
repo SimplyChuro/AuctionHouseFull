@@ -4,9 +4,18 @@ GET		/api/v1/users/:id					controllers.UserController.get(id : Long)
 POST	/api/v1/users						controllers.UserController.create
 PUT		/api/v1/users/:id					controllers.UserController.update(id : Long)
 
+
 # not in usage yet
 GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
 GET		/api/v1/users/reset					controllers.UserController.reset
+
+
+# Address API routes
+GET		/api/v1/address						controllers.AddressController.getAll
+GET		/api/v1/address/:id					controllers.AddressController.get(id : Long)
+POST	/api/v1/address						controllers.AddressController.create
+PUT		/api/v1/address/:id					controllers.AddressController.update(id : Long)
+DELETE	/api/v1/address/:id					controllers.AddressController.delete(id : Long)
 
 
 # Login/Logout API routes
@@ -52,5 +61,3 @@ GET		/api/v1/category/:id				controllers.CategoryController.get(id : Long)
 POST	/api/v1/category					controllers.CategoryController.create
 PUT		/api/v1/category/:id				controllers.CategoryController.update(id : Long)
 DELETE	/api/v1/category/:id				controllers.CategoryController.delete(id : Long)
-
-

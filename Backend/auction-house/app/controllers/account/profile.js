@@ -10,6 +10,7 @@ export default Controller.extend({
 
     updateUser: function() {
       let selectedOption = this.get('selectedOption');
+      var _this = this;
       let user = this.get('model.user');
       user.set('gender', this.get('selectedOption'));
 
@@ -23,7 +24,11 @@ export default Controller.extend({
       user.set('address.zipCode', this.get('zipCode'));
       user.set('address.state', this.get('state'));
       user.set('address.country', this.get('country'));
-      user.save();
+      user.save().then(function(){
+
+      }).catch(function(){
+          _this.get('flashMessages').success('Updated Profile!');
+      });
      
     }
   }

@@ -14,14 +14,14 @@ export default Controller.extend({
 
   actions: {
     createBid: function(productID) {
-      var self = this;
+      var _this = this;
 
       function transitionToHome(data) {
-        self.get('target').send('refresh');
+        _this.get('target').send('refresh');
       }
 
       function failure(reason) {
-        self.get('target').send('refresh');
+        _this.get('target').send('refresh');
       }
 
       let bid = this.store.createRecord('bid');
@@ -38,9 +38,10 @@ export default Controller.extend({
         if(validations.get('isValid') && (userBid > topBid) && (userBid != topBid)){
           this.set('amountHasError', false);
           bid.save().then(function() {
-            self.get('target').send('refresh');
+            _this.get('target').send('refresh');
           }, function(response){
-            self.get('target').send('refresh');
+            _this.get('target').send('refresh');
+            _this.get('flashMessages').success('Bid Created!');
           });
 
         } else {
@@ -55,9 +56,14 @@ export default Controller.extend({
     },
 
     createWishlist: function(productID) {
+      var _this = this;
       this.store.createRecord('wishlist', {
         product_id: productID
-      }).save();  
+      }).save().then(function(){
+        _this.get('flashMessages').success('Added to Wishlist!');
+      }).catch(function(){
+        _this.get('flashMessages').success('Added to Wishlist!');
+      });  
     },
 
     setCurrentPicture: function(picture){

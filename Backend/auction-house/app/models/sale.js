@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
   address: validator('presence', {
