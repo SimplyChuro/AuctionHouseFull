@@ -24,7 +24,10 @@ Router.map(function() {
     this.route('bids');
     this.route('wishlist');
     this.route('settings');
-    this.route('sell');
+    this.route('sell', function() {
+      this.route('new');
+      this.route('entry');
+    });
   });
   this.route('password-reset');
   this.route('category-list', { path: 'home/category-list' });

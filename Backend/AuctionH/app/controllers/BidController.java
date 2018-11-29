@@ -17,7 +17,7 @@ import play.mvc.Security;
 
 public class BidController extends Controller {
 	
-	//Get bid not in usage
+	//Get bid not in usage right now
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -53,27 +53,13 @@ public class BidController extends Controller {
 			JsonNode objectNode = request().body().asJson().get("bid");
 			Users user = LoginController.getUser();
 			
-			Bids bidChecker = Bids.find.query().where().conjunction()
-					.eq("user_id", user.id)
-					.eq("product_id", objectNode.findPath("product_id").asLong())
-					.endJunction()
-					.findUnique();
-			
-			if(bidChecker != null) {
-				if(bidChecker.updateBid(objectNode)) {
-					return ok(Json.toJson(bidChecker));
-				}else {
-					return badRequest();
-				}
+			Bids bidChecker = Json.fromJson(objectNode, Bids.class);
+			if(bidChecker.createBid(user, objectNode)) {
+				return ok(Json.toJson(bidChecker));
 			} else {
-				bidChecker = Json.fromJson(objectNode, Bids.class);
-				if(bidChecker.createBid(user, objectNode)) {
-					return ok(Json.toJson(bidChecker));
-				} else {
-					return badRequest();
-				}
+				return badRequest();
 			}
-			
+				
 		} catch(Exception e) {
 			return badRequest();
 		}

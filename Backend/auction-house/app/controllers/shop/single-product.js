@@ -8,7 +8,7 @@ export default Controller.extend({
   currentPicture: null,
   bidValue: null,
 
-  sortedBids: Ember.computed('model', function(){
+  sortedBids: Ember.computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
@@ -38,17 +38,17 @@ export default Controller.extend({
         if(validations.get('isValid') && (userBid > topBid) && (userBid != topBid)){
           this.set('amountHasError', false);
           bid.save().then(function() {
+            _this.get('flashMessages').success('Bid Created!');
             _this.get('target').send('refresh');
           }, function(response){
-            _this.get('target').send('refresh');
-            _this.get('flashMessages').success('Bid Created!');
+            // _this.get('flashMessages').failure('An error occoured please try again!');
           });
 
         } else {
 
           if(bid.get('validations.attrs.amount.messages') !== '' && bid.get('validations.attrs.amount.messages') !== null){
-            this.set('amountHasError', true);
-            this.set('amountErrorMessage', bid.get('validations.attrs.amount.messages'));
+            _this.set('amountHasError', true);
+            _this.set('amountErrorMessage', bid.get('validations.attrs.amount.messages'));
           }
 
         }
