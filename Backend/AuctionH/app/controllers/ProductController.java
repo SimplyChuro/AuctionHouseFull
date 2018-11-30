@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -33,7 +34,24 @@ public class ProductController extends Controller {
 	public Result getAll() {
 		try {
 			List<Products> products = Products.find.all();
-			return ok(Json.toJson(products));
+			
+			JsonNode filteredProducts = Json.toJson(products);
+			
+	        for (JsonNode productListNode : filteredProducts) {
+	        	for(JsonNode bidListNode : productListNode.get("bids")) {
+	        		ObjectNode currentUser = (ObjectNode)bidListNode.get("user");
+	        		currentUser.remove("email");
+	        		currentUser.remove("emailVerified");
+	        		currentUser.remove("gender");
+	        		currentUser.remove("dateOfBirth");
+	        		currentUser.remove("phoneNumber");
+	        		currentUser.remove("phoneVerified");
+	        		currentUser.remove("address");
+	        		
+	        	}
+	        }
+			
+			return ok(filteredProducts);
 		} catch(Exception e) {
 			return notFound();
 		}
@@ -43,7 +61,20 @@ public class ProductController extends Controller {
 	public Result get(Long id) {
 		try {
 			Products product = Products.find.byId(id);
-			return ok(Json.toJson(product));
+				
+			JsonNode filteredProduct = Json.toJson(product);
+			
+        	for(JsonNode bidListNode : filteredProduct.get("bids")) {
+        		ObjectNode currentUser = (ObjectNode)bidListNode.get("user");
+        		currentUser.remove("email");
+        		currentUser.remove("emailVerified");
+        		currentUser.remove("gender");
+        		currentUser.remove("dateOfBirth");
+        		currentUser.remove("phoneNumber");
+        		currentUser.remove("address");
+        	}
+	        
+			return ok(filteredProduct);
 		} catch(Exception e) {
 			return notFound();
 		}

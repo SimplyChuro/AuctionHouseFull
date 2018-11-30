@@ -7,12 +7,30 @@ export default Controller.extend({
   amountErrorMessage: null,
   currentPicture: null,
   bidValue: null,
+  bidListSize: 5,
 
   sortedBids: Ember.computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
+  userWishlistItem: Ember.computed('model.wishlist.[]', function(){
+    var _this = this;
+
+    var wishlistItems = this.get('model.wishlist');
+    var checker = null;
+    wishlistItems.forEach(function(item){
+      if(checker == null) {
+        if(_this.get('model.product.id') == item.get('product').get('id')) {
+          checker = item;
+        }
+      }
+    });
+
+    return checker;
+  }),
+
   actions: {
+
     createBid: function(productID) {
       var _this = this;
 
@@ -55,19 +73,30 @@ export default Controller.extend({
       })
     },
 
+
     createWishlist: function(productID) {
       var _this = this;
       this.store.createRecord('wishlist', {
         product_id: productID
       }).save().then(function(){
-        _this.get('flashMessages').success('Added to Wishlist!');
+        _this.get('target').send('refresh');       
       }).catch(function(){
-        _this.get('flashMessages').success('Added to Wishlist!');
       });  
+    },
+
+
+    deleteWishlist: function(productID) {
+      var _this = this;
+      var wishlist = _this.get('userWishlistItem');
+      wishlist.destroyRecord();
     },
 
     setCurrentPicture: function(picture){
       this.set('currentPicture', picture);
+    },
+
+    loadMore: function(){
+      this.set('bidListSize', this.get('bidListSize') + 5);
     },
 
     clearFields: function(){
@@ -75,6 +104,7 @@ export default Controller.extend({
       this.set('currentPicture', null);
       this.set('amountHasError', null);
       this.set('amountErrorMessage', null);
+      this.set('bidListSize', 5);
     }
   }
 });

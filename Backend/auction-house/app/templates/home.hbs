@@ -50,7 +50,9 @@
               {{#bs-carousel autoPlay=true as |car|}}
                 {{#each model.productRandom.pictures as |picture|}}
                   {{#car.slide}}
+                  <div class="home-product-card-image-holder">
                     <img class="home-product-card-image fade" src="{{picture.url}}">
+                  </div>
                   {{/car.slide}}
                 {{/each}}
               {{/bs-carousel}}

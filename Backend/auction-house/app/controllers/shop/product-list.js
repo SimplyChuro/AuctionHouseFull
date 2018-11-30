@@ -19,7 +19,7 @@ export default Controller.extend({
           categories.forEach(function(item){
             if((item.get('category').get('name') == selI.name)&&(item.get('category').get('id') == selI.id)){
               everyProduct = product;
-            }else{
+            } else {
               return;
             }
           });

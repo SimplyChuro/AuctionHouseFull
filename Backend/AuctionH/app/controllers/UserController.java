@@ -30,7 +30,7 @@ import play.mvc.*;
 public class UserController extends Controller {
 	
 	//API GET all users  ------ Testing only
-	@Security.Authenticated(Secured.class)
+//	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
 			List<Users> users = Users.find.all();
