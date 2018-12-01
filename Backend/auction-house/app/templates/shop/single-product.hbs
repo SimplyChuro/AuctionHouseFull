@@ -56,11 +56,17 @@
         <div class="mt-4">
           {{#if (is-logged-in)}}
             <form>
-              {{input type="string" value=bidAmount class="single-product-bid-input"}}
-              <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
-                PLACE BID {{material-icon "keyboard_arrow_right"}}
-              </button>
-              <br>
+              <div class="row ml-0 mr-0">
+                {{input type="string" value=bidAmount class="single-product-bid-input"}}
+                <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                  PLACE BID {{material-icon "keyboard_arrow_right"}}
+                </button>
+                {{#each flashMessages.queue as |flash|}}
+                  <p class="checkmarker-v1 fade">
+                    {{material-icon "done"}}
+                  </p>
+                {{/each}}
+              </div>
               {{#if amountHasError}}
                 <div class="validation-error-message mt-1 fade">
                   {{amountErrorMessage}}
@@ -109,11 +115,6 @@
               {{format-bid (get-biggest model.product.bids)}}
             {{/if}}    
           </p>
-          <div class="sp-notification-holder">
-            {{#each flashMessages.queue as |flash|}}
-              <p class="fade">{{flash-message flash=flash}}</p>
-            {{/each}}
-          </div>
         </div>
           <div class="mt-5">
             <p class="single-product-small-text m-0 p-0">Highest Bid: 

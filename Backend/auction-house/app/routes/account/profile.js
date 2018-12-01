@@ -11,6 +11,8 @@ export default Route.extend({
   
   setupController(controller, model) {
     this._super(controller, model);
+    this.controllerFor('account/profile').set('name', model.user.name);
+    this.controllerFor('account/profile').set('surname', model.user.surname);
     this.controllerFor('account/profile').set('dateOfBirth', model.user.dateOfBirth);
     this.controllerFor('account/profile').set('phoneNumber', model.user.phoneNumber);
     this.controllerFor('account/profile').set('selectedOption', model.user.gender);

@@ -16,7 +16,7 @@ import play.mvc.Security;
 
 public class WishlistController extends Controller{
 
-	//Get sale not in usage
+	//Get w
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -33,7 +33,7 @@ public class WishlistController extends Controller{
 		}
 	}
 	
-	//Get sales
+	//Get  wishlist
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
@@ -45,7 +45,7 @@ public class WishlistController extends Controller{
 		}
 	}
 	
-	//Create or Update wishlist
+	//Create wishlist
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {

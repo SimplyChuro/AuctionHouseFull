@@ -2,16 +2,19 @@ import DS from 'ember-data';
 import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
+
+  address: validator('belongs-to'),
+
   name: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Name should not be empty or contain any empty spaces"
+    message: "First Name should not be empty"
   }),
 
   surname: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Surname should not be empty or contain any empty spaces"
+    message: "Last Name should not be empty"
   }),
 
   email: [ 
@@ -35,7 +38,7 @@ const Validations = buildValidations({
   phoneNumber: [ 
     validator('format', { 
       allowBlank: true,
-      type: 'phone'
+      regex: /^\+{0,1}[0-9, ]*$/,
     })
   ]
 

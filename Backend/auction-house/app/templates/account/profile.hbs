@@ -26,12 +26,6 @@
   </div>
 </div>
 
-<div class="container">
-  {{#each flashMessages.queue as |flash|}}
-    <p class="fade">{{flash-message flash=flash}}</p>
-  {{/each}}
-</div>
-
 <div class="container-fluid bottom-margin-400">
   <div class="container">
     <form>
@@ -47,9 +41,11 @@
           <div class="account-profile-card-right-side account-profile-card-body-holder">
             <div>
               <label class="account-profile-form-text">First Name</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.name}}</p>
+              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text mb-3"}}
+
               <label class="account-profile-form-text">Last Name</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.surname}}</p>
+              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text mb-3"}}
+
               <label class="account-profile-form-text">I am</label>
               <br>
               <select onchange={{action "setSelection" value="target.value"}} class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer">
@@ -90,7 +86,7 @@
               <label class="account-profile-form-text mt-5">Phone Number</label>
               {{input type="string" value=phoneNumber class="account-profile-input-form-static account-profile-form-text"}}
               <label class="account-profile-form-text mt-3">Email Address</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.email}}</p>
+              <p class="account-profile-input-form-static account-profile-form-text cursor-not-allowed">{{model.user.email}}</p>
             </div>
           </div>
         </div>
@@ -106,13 +102,17 @@
               {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text"}}
               <br>
               <div class="row p-0 m-0">
-                <div class="account-profile-input-form-holder account-profile-holder-margin">
-                  <label class="account-profile-form-text mt-3">City</label>
-                  {{input type="string" value=city name="{{model.user.address.city}}" placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text"}}
+                <div class="account-profile-input-form-holder">
+                  <div class="mr-2">
+                    <label class="account-profile-form-text mt-3">City</label>
+                    <br>
+                    {{input type="string" value=city name="{{model.user.address.city}}" placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text"}}
+                  </div>
                 </div>
                 <div class="account-profile-input-form-holder">
                   <label class="account-profile-form-text mt-3">ZipCode</label>
-                  {{input type="string" value=zipCode name="{{model.user.street}}" placeholder="e.g. 10065" class="account-profile-input-form-static account-profile-form-text"}}
+                  <br>
+                  {{input type="string" value=zipCode name="{{model.user.street}}" placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text"}}
                 </div>
               </div>
               <br>
@@ -126,10 +126,14 @@
           </div>
         </div>
       </div>
-      <div class="mt-4">
-        <button class="account-profile-save-info-button" {{action "updateUser"}}>SAVE INFO {{material-icon "keyboard_arrow_right"}}</button>
+      <div class="account-profile-save-holder row mt-4 p-0 mr-0 ml-0">
+        <button class="account-profile-save-info-button" {{action "updateUser"}}>
+          SAVE INFO {{material-icon "keyboard_arrow_right"}}
+        </button>
+        {{#each flashMessages.queue as |flash|}}
+          <p class="checkmarker fade">{{material-icon "done"}}</p>
+        {{/each}}
       </div>
     </form>
   </div>
 </div>
-

@@ -59,7 +59,7 @@ export default Controller.extend({
             _this.get('flashMessages').success('Bid Created!');
             _this.get('target').send('refresh');
           }, function(response){
-            // _this.get('flashMessages').failure('An error occoured please try again!');
+            _this.get('flashMessages').error('An error occoured please try again!');
           });
 
         } else {

@@ -3,6 +3,7 @@ package controllers;
 import java.util.Iterator;
 import play.data.validation.*;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -34,6 +35,9 @@ public class UserController extends Controller {
 	public Result getAll() {
 		try {
 			List<Users> users = Users.find.all();
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
 			return ok(Json.toJson(users));
 		} catch(Exception e) {
 			return notFound();
@@ -83,7 +87,6 @@ public class UserController extends Controller {
 			Users user = LoginController.getUser();
 			user.updateUser(objectNode);
 			return ok(Json.toJson(user));
-			
 		} catch(Exception e) {
 			return badRequest();
 		}

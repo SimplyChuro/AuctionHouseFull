@@ -66,7 +66,7 @@ public class Users extends Model{
     @Constraints.Required
   	public String gender;
   	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT")
 	@Formats.DateTime(pattern="dd/MM/yyyy")
 	@Constraints.Required
   	public Date dateOfBirth;
@@ -108,8 +108,11 @@ public class Users extends Model{
 	
 	public void updateUser(JsonNode objectNode) {
 		this.gender = objectNode.findPath("gender").asText();
-		
+
+		this.name = objectNode.findPath("name").asText();
+		this.surname = objectNode.findPath("surname").asText();
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
 		try {
 			this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
 		} catch(Exception e) {
