@@ -134,15 +134,17 @@
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
         {{#if (is-logged-in)}}
-          {{#if userWishlistItem}}
-            <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>
-              Wishlist <span class="pl-1 single-product-heart-active">{{material-icon "favorite"}}</span>
-            </button>
-          {{else}}
-            <button type="submit" class="single-product-watchlist-btn mt-4 fade" {{action "createWishlist" model.product.id}}>
-              Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
-            </button>            
-          {{/if}}
+          {{#unless userWishlistItem}}
+            {{#unless (eq checker null)}}
+              <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>
+                Wishlist <span class="pl-1 single-product-heart-active">{{material-icon "favorite"}}</span>
+              </button>
+            {{else}}
+              <button type="submit" class="single-product-watchlist-btn mt-4 fade" {{action "createWishlist" model.product.id}}>
+                Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+              </button>            
+            {{/unless}}
+          {{/unless}}
         {{else}}
           <div class="single-product-watchlist-holder">
             {{#link-to "login" class="single-product-watchlist-btn-v2"}}

@@ -5,7 +5,7 @@ export default Route.extend({
 
   model(){
     return Ember.RSVP.hash({
-      user: this.store.findRecord('user', this.get('session').userID)
+      user: this.store.findRecord('user', this.get('session').userID, { reload: true }),
     })
   },
   

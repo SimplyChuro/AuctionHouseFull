@@ -2,32 +2,36 @@ import Controller from '@ember/controller';
 
 export default Controller.extend({
   session: Ember.inject.service(),
-
+  store: Ember.inject.service(),
+  
   amountHasError: null,
   amountErrorMessage: null,
   currentPicture: null,
   bidValue: null,
   bidListSize: 5,
+  checker: null,
 
   sortedBids: Ember.computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
-  userWishlistItem: Ember.computed('model.wishlist.[]', function(){
+  wishlist: Ember.computed(function(){
+    const store = this.get('store');
+    return this.store.findAll('wishlist', { reload: true });
+  }).volatile(),
+
+  userWishlistItem: Ember.computed('checker', 'wishlist.@each', function(){
     var _this = this;
-
-    var wishlistItems = this.get('model.wishlist');
-    var checker = null;
-    wishlistItems.forEach(function(item){
-      if(checker == null) {
-        if(_this.get('model.product.id') == item.get('product').get('id')) {
-          checker = item;
+    var one = this.get('wishlist').then(resolvedWishlist => {
+      resolvedWishlist.forEach(item => {
+       if(_this.get('checker') == null) {
+          if(_this.get('model.product.id') === item.get('product').get('id')) {
+            _this.set('checker', item);
+          }
         }
-      }
+      });
     });
-
-    return checker;
-  }),
+  }).volatile(),
 
   actions: {
 
@@ -76,19 +80,23 @@ export default Controller.extend({
 
     createWishlist: function(productID) {
       var _this = this;
-      this.store.createRecord('wishlist', {
+      var wishlistCreate = this.store.createRecord('wishlist', {
         product_id: productID
-      }).save().then(function(){
+      }).save().then(function(data){
+        _this.set('checker', data); 
         _this.get('target').send('refresh');       
       }).catch(function(){
-      });  
+
+      });
     },
 
 
-    deleteWishlist: function(productID) {
+    deleteWishlist: function() {
       var _this = this;
-      var wishlist = _this.get('userWishlistItem');
-      wishlist.destroyRecord();
+      var currentWishlistItem = _this.get('checker');
+      currentWishlistItem.destroyRecord().then(function(){
+        _this.set('checker', null);  
+      });
     },
 
     setCurrentPicture: function(picture){

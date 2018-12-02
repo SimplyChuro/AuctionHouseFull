@@ -82,29 +82,29 @@ export default Controller.extend({
             this.set('dateOfBirthErrorMessage', user.get('validations.attrs.dateOfBirth.messages'));
           }            
 
-          if(user.get('validations.attrs.street.messages') !== '' && user.get('validations.attrs.street.messages') !== null){
+          if(address.get('validations.attrs.street.messages') !== '' && address.get('validations.attrs.street.messages') !== null){
             this.set('streetHasError', true);
-            this.set('streetErrorMessage', user.get('validations.attrs.street.messages'));
+            this.set('streetErrorMessage', address.get('validations.attrs.street.messages'));
           }
-          
-          if(user.get('validations.attrs.city.messages') !== '' && user.get('validations.attrs.city.messages') !== null){
+    
+          if(address.get('validations.attrs.city.messages') !== '' && address.get('validations.attrs.city.messages') !== null){
             this.set('cityHasError', true);
-            this.set('cityErrorMessage', user.get('validations.attrs.city.messages'));
+            this.set('cityErrorMessage', address.get('validations.attrs.city.messages'));
           }
           
-          if(user.get('validations.attrs.zipCode.messages') !== '' && user.get('validations.attrs.zipCode.messages') !== null){
+          if(address.get('validations.attrs.zipCode.messages') !== '' && address.get('validations.attrs.zipCode.messages') !== null){
             this.set('zipCodeHasError', true);
-            this.set('zipCodeErrorMessage', user.get('validations.attrs.dateOfBirth.messages'));
+            this.set('zipCodeErrorMessage', address.get('validations.attrs.dateOfBirth.messages'));
           }   
 
-          if(user.get('validations.attrs.state.messages') !== '' && user.get('validations.attrs.state.messages') !== null){
+          if(address.get('validations.attrs.state.messages') !== '' && address.get('validations.attrs.state.messages') !== null){
             this.set('stateHasError', true);
-            this.set('stateErrorMessage', user.get('validations.attrs.state.messages'));
+            this.set('stateErrorMessage', address.get('validations.attrs.state.messages'));
           }
           
-          if(user.get('validations.attrs.country.messages') !== '' && user.get('validations.attrs.country.messages') !== null){
+          if(address.get('validations.attrs.country.messages') !== '' && address.get('validations.attrs.country.messages') !== null){
             this.set('countryHasError', true);
-            this.set('countryErrorMessage', user.get('validations.attrs.country.messages'));
+            this.set('countryErrorMessage', address.get('validations.attrs.country.messages'));
           } 
         }
       });
