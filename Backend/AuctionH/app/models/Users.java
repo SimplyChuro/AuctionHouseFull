@@ -65,8 +65,8 @@ public class Users extends Model{
       
     @Constraints.Required
   	public String gender;
-  	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="GMT")
+    
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="GMT")
 	@Formats.DateTime(pattern="dd/MM/yyyy")
 	@Constraints.Required
   	public Date dateOfBirth;
@@ -111,9 +111,13 @@ public class Users extends Model{
 
 		this.name = objectNode.findPath("name").asText();
 		this.surname = objectNode.findPath("surname").asText();
+		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		
 		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
 			this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
 		} catch(Exception e) {
 			e.printStackTrace();

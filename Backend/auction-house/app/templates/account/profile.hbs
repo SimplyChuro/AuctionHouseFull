@@ -8,19 +8,38 @@
   <div class="container">
     <div>
       {{#link-to 'account.profile' class="account-navigation-link-active"}}
-        {{material-icon "person"}} Profile
+        <i class="material-icons">
+          person
+        </i>
+        Profile
       {{/link-to}}
+
       {{#link-to 'account.sales' class="account-navigation-link"}}
-        {{material-icon "view_list"}} Sales
+        <i class="material-icons">
+          view_list
+        </i>
+        Sales
       {{/link-to}}
+
       {{#link-to 'account.bids' class="account-navigation-link"}}
-        {{material-icon "gavel"}} Bids
+        <i class="material-icons">
+          gavel
+        </i>
+        Bids
       {{/link-to}}
+
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
-        {{material-icon "card_giftcard"}} Wishlist
+        <i class="material-icons">
+          card_giftcard
+        </i>
+        Wishlist
       {{/link-to}}
+
       {{#link-to 'account.settings' class="account-navigation-link"}}
-        {{material-icon "settings"}} Settings
+        <i class="material-icons">
+          settings
+        </i>
+        Settings
       {{/link-to}}
     </div>
   </div>
@@ -41,12 +60,22 @@
           <div class="account-profile-card-right-side account-profile-card-body-holder">
             <div>
               <label class="account-profile-form-text">First Name</label>
-              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text mb-3"}}
+              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text "}}
+              {{#if nameHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{nameErrorMessage}}
+                </div>
+              {{/if}}
 
-              <label class="account-profile-form-text">Last Name</label>
-              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text mb-3"}}
+              <label class="account-profile-form-text mt-3">Last Name</label>
+              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text"}}
+              {{#if surnameHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{surnameErrorMessage}}
+                </div>
+              {{/if}}
 
-              <label class="account-profile-form-text">I am</label>
+              <label class="account-profile-form-text mt-3">I am</label>
               <br>
               <select onchange={{action "setSelection" value="target.value"}} class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer">
                 <option disabled selected> -- Gender? -- </option>
@@ -83,8 +112,18 @@
               <br>
                 {{bootstrap-datepicker value=dateOfBirth class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
               <br>
+              {{#if dateOfBirthHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{dateOfBirthErrorMessage}}
+                </div>
+              {{/if}}
               <label class="account-profile-form-text mt-5">Phone Number</label>
               {{input type="string" value=phoneNumber class="account-profile-input-form-static account-profile-form-text"}}
+              {{#if phoneNumberHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{phoneNumberErrorMessage}}
+                </div>
+              {{/if}}
               <label class="account-profile-form-text mt-3">Email Address</label>
               <p class="account-profile-input-form-static account-profile-form-text cursor-not-allowed">{{model.user.email}}</p>
             </div>
@@ -128,10 +167,27 @@
       </div>
       <div class="account-profile-save-holder row mt-4 p-0 mr-0 ml-0">
         <button class="account-profile-save-info-button" {{action "updateUser"}}>
-          SAVE INFO {{material-icon "keyboard_arrow_right"}}
+          SAVE INFO 
+          <i class="material-icons">
+            keyboard_arrow_right
+          </i>
         </button>
-        {{#each flashMessages.queue as |flash|}}
-          <p class="checkmarker fade">{{material-icon "done"}}</p>
+        {{#each flashMessages.queue as |flash index|}}
+          {{#if (eq index 0)}}
+            {{#if hasError}}
+              <p class="errormarker fade">
+                <i class="material-icons">
+                  error_outline
+                </i>
+              </p>
+            {{else}}
+              <p class="checkmarker fade">
+                <i class="material-icons">
+                  done
+                </i>
+              </p>
+            {{/if}}
+          {{/if}}
         {{/each}}
       </div>
     </form>

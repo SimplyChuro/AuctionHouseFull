@@ -74,7 +74,7 @@ button::-moz-focus-inner {
 }
 
 .navigation-form{
-	margin-left: 9%;
+	margin-left: 10%;
 	margin-bottom: 4px;	
 	width: 45%;
 	box-shadow: 2px 2px 2px  #C0C0C0;
@@ -109,6 +109,22 @@ button::-moz-focus-inner {
 
 .active{
 	color: #8367D8;
+}
+
+.social-media-link{
+  background-color: #808080;
+  width: 33px;
+  padding: 1px 5px 0px 5px;
+  margin: 0px 10px 0px 0px;
+  text-align: center;
+  border-radius: 100%;
+  color: #252525;
+  font-size: 20px;
+}
+
+.social-media-link:hover{
+  text-decoration: none;
+  color: #A9A9A9;
 }
 
 /**/
@@ -511,6 +527,12 @@ button::-moz-focus-inner {
   margin: 5px 10px 0px 10px;
   font-size: 20px;
   color: #008000;
+}
+
+.errormarker{
+  margin: 10px 10px 0px 10px;
+  font-size: 20px;
+  color: #FF6666; 
 }
 
 .checkmarker-v1{
@@ -931,7 +953,7 @@ button::-moz-focus-inner {
 
 .logo{
   height: 33px;
-  padding: 0px 10px 5px 0px;
+  padding: 0px 5px 5px 0px;
 }
 
 .account-header-text{
@@ -1098,14 +1120,14 @@ button::-moz-focus-inner {
   margin: 20px 20px 30px 20px;
   padding: 0px 20px 0px 20px;
   overflow: auto;
-  height: 650px;;
+  height: 750px;;
 }
 
 .account-profile-card-right-side{
   width: 50%;
   margin: 20px 0px 30px 0px;
   overflow: auto;
-  height: 650px;;
+  height: 750px;;
 }
 
 .account-profile-card-left-side-address{
@@ -1113,14 +1135,14 @@ button::-moz-focus-inner {
   margin: 20px 20px 30px 20px;
   padding: 0px 20px 0px 20px;
   overflow: auto;
-  height: 500px;
+  height: 600px;
 }
 
 .account-profile-card-right-side-address{
   width: 50%;
   margin: 20px 0px 30px 0px;
   overflow: auto;
-  height: 500px;
+  height: 600px;
 }
 
 .account-profile-card-image-button{

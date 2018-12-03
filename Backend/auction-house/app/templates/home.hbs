@@ -42,7 +42,10 @@
               <p class="home-featured-description">{{model.productRandom.description}}</p>
               <div class="mt-4">
                 {{#link-to "shop.single-product" model.productRandom.id class="home-featured-button"}}
-                  BID NOW {{material-icon "keyboard_arrow_right"}}
+                  BID NOW
+                  <i class="material-icons">
+                    keyboard_arrow_right
+                  </i>
                 {{/link-to}}
               </div>
             </div>

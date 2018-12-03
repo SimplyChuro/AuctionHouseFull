@@ -126,8 +126,18 @@
       <div class="col-lg-9 col-xl-9">
         <div class="bottom-margin-100">
           <div class="product-list-type-holder">
-            <button class="{{is-active selectedListType null 2}}" {{action 'setListType' null}}>{{material-icon "view_module"}} Grid</button>
-            <button class="{{is-active selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>{{material-icon "view_list"}} List</button>
+            <button class="{{is-active selectedListType null 2}}" {{action 'setListType' null}}>
+              <i class="material-icons">
+                view_module
+              </i>
+              Grid
+            </button>
+            <button class="{{is-active selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>
+              <i class="material-icons">
+                view_list
+              </i>
+              List
+            </button>
           </div>
         </div>
         <div class="row">
@@ -152,10 +162,20 @@
                             <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                             <div>
                               <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+                                Wishlist 
+                                <span class="pl-1 single-product-heart">
+                                  <i class="material-icons">
+                                    favorite
+                                  </i>
+                                </span>
                               </button>
                               {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                Bid <span class="pl-1 single-product-heart">{{material-icon "gavel"}}</span> 
+                                Bid 
+                                <span class="pl-1 single-product-heart">
+                                  <i class="material-icons">
+                                    gavel
+                                  </i>
+                                </span> 
                               {{/link-to}}
                             </div>
                           </div>
@@ -200,10 +220,20 @@
                               <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                               <div>
                                 <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                  Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+                                  Wishlist 
+                                  <span class="pl-1 single-product-heart">              
+                                    <i class="material-icons">
+                                      favorite
+                                    </i>
+                                  </span>
                                 </button>
                                 {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                  Bid <span class="pl-1 single-product-heart">{{material-icon "gavel"}}</span>
+                                  Bid 
+                                  <span class="pl-1 single-product-heart">
+                                    <i class="material-icons">
+                                      gavel
+                                    </i>
+                                  </span>
                                 {{/link-to}}
                               </div>
                             </div>
@@ -251,10 +281,20 @@
                               <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                               <div>
                                 <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                  Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+                                  Wishlist 
+                                  <span class="pl-1 single-product-heart">
+                                    <i class="material-icons">
+                                      favorite
+                                    </i>
+                                  </span>
                                 </button>
                                 {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                  Bid <span class="pl-1 single-product-heart">{{material-icon "gavel"}}</span>
+                                  Bid 
+                                  <span class="pl-1 single-product-heart">
+                                    <i class="material-icons">
+                                      gavel
+                                    </i>
+                                  </span>
                                 {{/link-to}}
                               </div>
                             </div>
@@ -301,10 +341,20 @@
                                 <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                                 <div>
                                   <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                    Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+                                    Wishlist 
+                                    <span class="pl-1 single-product-heart">
+                                      <i class="material-icons">
+                                        favorite
+                                      </i>
+                                    </span>
                                   </button>
                                   {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                    Bid <span class="pl-1 single-product-heart">{{material-icon "gavel"}}</span>
+                                    Bid 
+                                    <span class="pl-1 single-product-heart">
+                                      <i class="material-icons">
+                                        gavel
+                                      </i>
+                                    </span>
                                   {{/link-to}}
                                 </div>
                               </div>

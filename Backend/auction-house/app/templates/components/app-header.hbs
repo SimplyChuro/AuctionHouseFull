@@ -1,8 +1,15 @@
 <header>
   <nav class="navbar navbar-expand-md p-1 user-navigation-bar">
     <div class="container">
-      <span class="navbar-brand text-light"></span>
-      <div class="" id="navigationList">
+      <div class="navbar-brand text-light">
+        <div class="row mr-0 ml-0">
+          <a class="social-media-link" href="#"><i class="fab fa-facebook-f"></i></a>
+          <a class="social-media-link" href="#"><i class="fab fa-instagram"></i></a>
+          <a class="social-media-link" href="#"><i class="fab fa-twitter"></i></a>
+          <a class="social-media-link" href="#"><i class="fab fa-google-plus-g"></i></a>
+        </div>
+      </div>
+      <div>
         <ul class="navbar-nav ml-auto">
           {{#if (is-logged-in)}}
             <li class="nav-item pt-2 pb-2">
@@ -31,7 +38,11 @@
       <form class="navbar-form navigation-form mr-2">
         <div class="input-group">
           {{input type="text" class="form-control" placeholder="Search" name="search"}}  
-          <span class="btn btn-default pb-1" type="submit">{{material-icon "search"}}</span>
+          <span class="btn btn-default pb-1" type="submit">
+            <i class="material-icons">
+              search
+            </i>
+          </span>
         </div>
       </form>
       <div class="collapse navbar-collapse" id="navigationList">

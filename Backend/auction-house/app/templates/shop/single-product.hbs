@@ -59,12 +59,19 @@
               <div class="row ml-0 mr-0">
                 {{input type="string" value=bidAmount class="single-product-bid-input"}}
                 <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
-                  PLACE BID {{material-icon "keyboard_arrow_right"}}
+                  PLACE BID 
+                  <i class="material-icons">
+                    keyboard_arrow_right
+                  </i>
                 </button>
-                {{#each flashMessages.queue as |flash|}}
-                  <p class="checkmarker-v1 fade">
-                    {{material-icon "done"}}
-                  </p>
+                {{#each flashMessages.queue as |flash index|}}
+                  {{#if (eq index 0)}}
+                    <p class="checkmarker-v1 fade">
+                      <i class="material-icons">
+                        done
+                      </i>
+                    </p>
+                  {{/if}}
                 {{/each}}
               </div>
               {{#if amountHasError}}
@@ -105,7 +112,10 @@
           {{else}}
             {{input type="string" value=bidAmount class="single-product-bid-input"}}
             {{#link-to "login" class="single-product-featured-button"}}
-              PLACE BID {{material-icon "keyboard_arrow_right"}}
+              PLACE BID 
+              <i class="material-icons">
+                keyboard_arrow_right
+              </i>
             {{/link-to}}
           {{/if}}
           <p class="single-product-small-text mt-1">Enter more than -
@@ -120,7 +130,7 @@
             <p class="single-product-small-text m-0 p-0">Highest Bid: 
               <span class="single-product-highest-bid-amount ml-2">
                 {{#if (eq model.product.bids.length 0)}}
-                  {{format-bid model.product.startingPrice}}
+                  {{format-bid 0}}
                 {{else}}
                   {{format-bid (get-biggest model.product.bids)}}
                 {{/if}}
@@ -137,18 +147,27 @@
           {{#unless userWishlistItem}}
             {{#unless (eq checker null)}}
               <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>
-                Wishlist <span class="pl-1 single-product-heart-active">{{material-icon "favorite"}}</span>
+                Wishlist <span class="pl-1 single-product-heart-active">
+                <i class="material-icons">
+                  favorite
+                </i></span>
               </button>
             {{else}}
               <button type="submit" class="single-product-watchlist-btn mt-4 fade" {{action "createWishlist" model.product.id}}>
-                Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+                Wishlist <span class="pl-1 single-product-heart">
+                <i class="material-icons">
+                  favorite
+                </i></span>
               </button>            
             {{/unless}}
           {{/unless}}
         {{else}}
           <div class="single-product-watchlist-holder">
             {{#link-to "login" class="single-product-watchlist-btn-v2"}}
-              Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+              Wishlist <span class="pl-1 single-product-heart">
+              <i class="material-icons">
+                favorite
+              </i></span>
             {{/link-to}}
           </div>
         {{/if}}
