@@ -36,14 +36,12 @@
     <div class="container">
       <p class="title"><img class="logo" src="https://muffin.ml/maki/churo-images/logo/logo.png">AUCTION</p>
       <form class="navbar-form navigation-form mr-2">
-        <div class="input-group">
-          {{input type="text" class="form-control" placeholder="Search" name="search"}}  
-          <span class="btn btn-default pb-1" type="submit">
-            <i class="material-icons">
-              search
-            </i>
-          </span>
-        </div>
+        {{input type="text" class="header-search-input" value=searchQuery placeholder="Search" name="search"}}  
+        <button class="header-search-button" type="submit" {{action 'searchForItem'}}>
+          <i class="material-icons">
+            search
+          </i>
+        </button>
       </form>
       <div class="collapse navbar-collapse" id="navigationList">
         <ul class="navbar-nav ml-auto">

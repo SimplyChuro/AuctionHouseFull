@@ -8,7 +8,11 @@ export default Controller.extend({
   selectedSize: null,
   selectedListType: null,
 
-  filteredProducts: Ember.computed('selectedOption', function(){
+  queryParams: ['name'],
+  name: null,
+
+  filteredProducts: Ember.computed('name', 'selectedOption', function(){
+    console.log(this.get('name'));
     var selI = this.get('selectedOption');
     var products = this.get('model.productList');
     if(this.get('selectedOption') !== null) {

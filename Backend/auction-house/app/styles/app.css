@@ -76,7 +76,9 @@ button::-moz-focus-inner {
 .navigation-form{
 	margin-left: 10%;
 	margin-bottom: 4px;	
-	width: 45%;
+	width: 42%;
+  border: 1px solid #DDD;
+  border-radius: 2px;
 	box-shadow: 2px 2px 2px  #C0C0C0;
 }
 
@@ -125,6 +127,18 @@ button::-moz-focus-inner {
 .social-media-link:hover{
   text-decoration: none;
   color: #A9A9A9;
+}
+
+.header-search-button{
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.header-search-input{
+  border: none;
+  width: 89%;
+  padding: 5px 0px 5px 15px;
 }
 
 /**/

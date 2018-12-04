@@ -25,6 +25,9 @@ export default Component.extend({
         _this.get('router').transitionTo('index');
       });
     },
-    
+
+    searchForItem: function(){
+      this.get('router').transitionTo('shop.product-list', {queryParams: {name: this.get('searchQuery')}});
+    }
   }
 });
