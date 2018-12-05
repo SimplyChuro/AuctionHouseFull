@@ -83,8 +83,7 @@ export default Controller.extend({
       var wishlistCreate = this.store.createRecord('wishlist', {
         product_id: productID
       }).save().then(function(data){
-        _this.set('checker', data); 
-        _this.get('target').send('refresh');       
+        _this.set('checker', data);      
       }).catch(function(){
 
       });
@@ -113,6 +112,7 @@ export default Controller.extend({
       this.set('amountHasError', null);
       this.set('amountErrorMessage', null);
       this.set('bidListSize', 5);
+      this.set('checker', null);
     }
   }
 });

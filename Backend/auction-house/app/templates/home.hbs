@@ -12,7 +12,7 @@
               {{#if (eq category.parent_id null)}}
                 <tr>
                   <td class="m-0 p-0">
-                    {{#link-to "shop.product-list" class="category-table-link"}}
+                    {{#link-to "shop.product-list" (query-params parentCategory=category.id) class="category-table-link"}}
                       <div class="category-table-row-full">
                         {{category.name}}
                       </div>

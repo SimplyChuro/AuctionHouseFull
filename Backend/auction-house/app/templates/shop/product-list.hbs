@@ -14,18 +14,30 @@
             {{#each model.categoryList as |category|}}
               {{#if (eq category.parent_id null)}}
                 <tr {{action 'toggleDetails' category}} class="product-list-pointer"> 
-                  <div class="category-table-link-v2">
-                    {{category.name}}
-                  </div>
+                  {{#if (eq parentCategory category.id)}}
+                    <div class="category-table-link-v2 category-table-link-active">
+                      {{category.name}}
+                    </div>
+                  {{else}}
+                    <div class="category-table-link-v2">
+                      {{category.name}}
+                    </div>
+                  {{/if}}
                 </tr>
                 {{#if displayDetails}}
-                  {{#if (eq category.id currentCategory)}}
+                  {{#if (eq category.id parentCategory)}}
                     {{#each model.categoryList as |subcategory|}}
                       {{#if (eq subcategory.parent_id category.id)}}
                         <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
-                          <div class="{{is-active selectedOption subcategory 1}}">
-                            {{subcategory.name}}
-                          </div>
+                          {{#if (eq childCategory subcategory.id)}}
+                            <div class="category-table-link-v3 category-table-link-active">
+                              {{subcategory.name}}
+                            </div>
+                          {{else}}
+                            <div class="category-table-link-v3">
+                              {{subcategory.name}}
+                            </div>                          
+                          {{/if}}
                         </tr>
                       {{/if}}
                     {{/each}}
@@ -45,37 +57,37 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setColor' 'White'}}>
-              <div class="{{is-active selectedColor 'White' 0}}">
+              <div class="{{is-active-item-css selectedColor 'White' 0}}">
                 White
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Black'}}>
-              <div class="{{is-active selectedColor 'Black' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Black' 0}}">
                 Black
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Blue'}}>
-              <div class="{{is-active selectedColor 'Blue' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Blue' 0}}">
                 Blue
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Red'}}>
-              <div class="{{is-active selectedColor 'Red' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Red' 0}}">
                 Red
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Orange'}}>
-              <div class="{{is-active selectedColor 'Orange' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Orange' 0}}">
                 Orange
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Yellow'}}>
-              <div class="{{is-active selectedColor 'Yellow' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Yellow' 0}}">
                 Yellow
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Green'}}>
-              <div class="{{is-active selectedColor 'Green' 0}}">
+              <div class="{{is-active-item-css selectedColor 'Green' 0}}">
                 Green
               </div>
             </tr>
@@ -91,27 +103,27 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY SIZE</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Small'}}>
-              <div class="{{is-active selectedSize 'Extra Small' 0}}">
+              <div class="{{is-active-item-css selectedSize 'Extra Small' 0}}">
                 Extra Small
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Small'}}>
-              <div class="{{is-active selectedSize 'Small' 0}}">
+              <div class="{{is-active-item-css selectedSize 'Small' 0}}">
                 Small
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Medium'}}>
-              <div class="{{is-active selectedSize 'Medium' 0}}">
+              <div class="{{is-active-item-css selectedSize 'Medium' 0}}">
                 Medium
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Large'}}>
-              <div class="{{is-active selectedSize 'Large' 0}}">
+              <div class="{{is-active-item-css selectedSize 'Large' 0}}">
                 Large
               </div>
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Large'}}>  
-              <div class="{{is-active selectedSize 'Extra Large' 0}}">
+              <div class="{{is-active-item-css selectedSize 'Extra Large' 0}}">
                 Extra Large
               </div>             
             </tr>
@@ -126,13 +138,13 @@
       <div class="col-lg-9 col-xl-9">
         <div class="bottom-margin-100">
           <div class="product-list-type-holder">
-            <button class="{{is-active selectedListType null 2}}" {{action 'setListType' null}}>
+            <button class="{{is-active-item-css selectedListType null 2}}" {{action 'setListType' null}}>
               <i class="material-icons">
                 view_module
               </i>
               Grid
             </button>
-            <button class="{{is-active selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>
+            <button class="{{is-active-item-css selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>
               <i class="material-icons">
                 view_list
               </i>
@@ -141,249 +153,64 @@
           </div>
         </div>
         <div class="row">
-            {{#each filteredProducts as |product|}}
-              {{#if (eq selectedColor null)}}
-                {{#if (eq selectedSize null)}}
-                  {{#if (eq selectedListType 'List')}}
-                    <div class="col-lg-12 col-xl-12 fade">
-                        <div class="row mb-4">
-                          <div class="col-lg-4 col-xl-4">
-                            <div class="product-list-image-holder">
-                              {{#each product.pictures as |picture index|}}
-                                {{#if (is-main picture null index)}}
-                                  <img class="product-list-image-v1" src="{{picture.url}}">   
-                                {{/if}}
-                              {{/each}}
-                            </div>
-                          </div>
-                          <div class="col-lg-8 col-xl-8">
-                            <h1 class="product-list-title-v1">{{product.name}}</h1>
-                            <p class="product-list-paragraph-v1">{{product.description}}</p>
-                            <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
-                            <div>
-                              <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                Wishlist 
-                                <span class="pl-1 single-product-heart">
-                                  <i class="material-icons">
-                                    favorite
-                                  </i>
-                                </span>
-                              </button>
-                              {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                Bid 
-                                <span class="pl-1 single-product-heart">
-                                  <i class="material-icons">
-                                    gavel
-                                  </i>
-                                </span> 
-                              {{/link-to}}
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                  {{else}}
-                    <div class="col-lg-4 col-xl-4 mb-5 fade">
-                      {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                        <div class="home-product-card">
-                          <div class="home-product-card-image-holder">
-                            {{#each product.pictures as |picture index|}}
-                              {{#if (is-main picture null index)}}
-                                <img class="product-list-image-v1" src="{{picture.url}}">   
-                              {{/if}}
-                            {{/each}}
-                          </div>
-                          <div class="mt-2">
-                            <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                            <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                          </div>
-                        </div>
-                      {{/link-to}}
-                    </div>
-                  {{/if}}
-                {{else}}
-                  {{#if (eq product.size selectedSize)}}
-                    {{#if (eq selectedListType 'List')}}
-                      <div class="col-lg-12 col-xl-12 fade">
-                          <div class="row mb-4">
-                            <div class="col-lg-4 col-xl-4">
-                              <div class="product-list-image-holder">
-                                {{#each product.pictures as |picture index|}}
-                                  {{#if (is-main picture null index)}}
-                                    <img class="product-list-image-v1" src="{{picture.url}}">   
-                                  {{/if}}
-                                {{/each}}
-                              </div>
-                            </div>
-                            <div class="col-lg-8 col-xl-8">
-                              <h1 class="product-list-title-v1">{{product.name}}</h1>
-                              <p class="product-list-paragraph-v1">{{product.description}}</p>
-                              <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
-                              <div>
-                                <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                  Wishlist 
-                                  <span class="pl-1 single-product-heart">              
-                                    <i class="material-icons">
-                                      favorite
-                                    </i>
-                                  </span>
-                                </button>
-                                {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                  Bid 
-                                  <span class="pl-1 single-product-heart">
-                                    <i class="material-icons">
-                                      gavel
-                                    </i>
-                                  </span>
-                                {{/link-to}}
-                              </div>
-                            </div>
-                          </div>
+          {{#each filteredProducts as |product|}}
+            {{#if (eq selectedListType 'List')}}
+              <div class="col-lg-12 col-xl-12 fade">
+                  <div class="row mb-4">
+                    <div class="col-lg-4 col-xl-4">
+                      <div class="product-list-image-holder">
+                        {{#each product.pictures as |picture index|}}
+                          {{#if (is-main picture null index)}}
+                            <img class="product-list-image-v1" src="{{picture.url}}">   
+                          {{/if}}
+                        {{/each}}
                       </div>
-                    {{else}}
-                      <div class="col-lg-4 col-xl-4 fade">
-                        {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                          <div class="home-product-card m-3">
-                            <div class="home-product-card-image-holder">
-                              {{#each product.pictures as |picture index|}}
-                                {{#if (is-main picture null index)}}
-                                  <img class="product-list-image-v1" src="{{picture.url}}">   
-                                {{/if}}
-                              {{/each}}
-                            </div>
-                            <div class="mt-2">
-                              <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                              <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                            </div>
-                          </div>
+                    </div>
+                    <div class="col-lg-8 col-xl-8">
+                      <h1 class="product-list-title-v1">{{product.name}}</h1>
+                      <p class="product-list-paragraph-v1">{{product.description}}</p>
+                      <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
+                      <div>
+                        <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
+                          Wishlist 
+                          <span class="pl-1 single-product-heart">
+                            <i class="material-icons">
+                              favorite
+                            </i>
+                          </span>
+                        </button>
+                        {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
+                          Bid 
+                          <span class="pl-1 single-product-heart">
+                            <i class="material-icons">
+                              gavel
+                            </i>
+                          </span> 
                         {{/link-to}}
                       </div>
-                    {{/if}}
-                  {{/if}}
-                {{/if}}
-              {{else}}
-                {{#if (eq selectedSize null)}}
-                  {{#if (eq product.color selectedColor)}}
-                    {{#if (eq selectedListType 'List')}}
-                      <div class="col-lg-12 col-xl-12 fade">
-                          <div class="row mb-4">
-                            <div class="col-lg-4 col-xl-4">
-                              <div class="product-list-image-holder">
-                                {{#each product.pictures as |picture index|}}
-                                  {{#if (is-main picture null index)}}
-                                    <img class="product-list-image-v1" src="{{picture.url}}">   
-                                  {{/if}}
-                                {{/each}}
-                              </div>
-                            </div>
-                            <div class="col-lg-8 col-xl-8">
-                              <h1 class="product-list-title-v1">{{product.name}}</h1>
-                              <p class="product-list-paragraph-v1">{{product.description}}</p>
-                              <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
-                              <div>
-                                <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                  Wishlist 
-                                  <span class="pl-1 single-product-heart">
-                                    <i class="material-icons">
-                                      favorite
-                                    </i>
-                                  </span>
-                                </button>
-                                {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                  Bid 
-                                  <span class="pl-1 single-product-heart">
-                                    <i class="material-icons">
-                                      gavel
-                                    </i>
-                                  </span>
-                                {{/link-to}}
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                    {{else}}
-                      <div class="col-lg-4 col-xl-4 fade">
-                        {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                          <div class="home-product-card m-3">
-                            <div class="home-product-card-image-holder">
-                              {{#each product.pictures as |picture index|}}
-                                {{#if (is-main picture null index)}}
-                                  <img class="product-list-image-v1" src="{{picture.url}}">   
-                                {{/if}}
-                              {{/each}}
-                            </div>
-                            <div class="mt-2">
-                              <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                              <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                            </div>
-                          </div>
-                        {{/link-to}}
-                      </div>
-                    {{/if}}
-                  {{/if}}
-                {{else}}
-                  {{#if (eq product.color selectedColor)}}
-                    {{#if (eq product.size selectedSize)}}
-                      {{#if (eq selectedListType 'List')}}
-                        <div class="col-lg-12 col-xl-12 fade">
-                            <div class="row mb-4">
-                              <div class="col-lg-4 col-xl-4">
-                                <div class="product-list-image-holder">
-                                  {{#each product.pictures as |picture index|}}
-                                    {{#if (is-main picture null index)}}
-                                      <img class="product-list-image-v1" src="{{picture.url}}">   
-                                    {{/if}}
-                                  {{/each}}
-                                </div>
-                              </div>
-                              <div class="col-lg-8 col-xl-8">
-                                <h1 class="product-list-title-v1">{{product.name}}</h1>
-                                <p class="product-list-paragraph-v1">{{product.description}}</p>
-                                <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
-                                <div>
-                                  <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                                    Wishlist 
-                                    <span class="pl-1 single-product-heart">
-                                      <i class="material-icons">
-                                        favorite
-                                      </i>
-                                    </span>
-                                  </button>
-                                  {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
-                                    Bid 
-                                    <span class="pl-1 single-product-heart">
-                                      <i class="material-icons">
-                                        gavel
-                                      </i>
-                                    </span>
-                                  {{/link-to}}
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                      {{else}}
-                        <div class="col-lg-4 col-xl-4 fade">
-                          {{#link-to "shop.single-product" product.id class="category-table-link"}}
-                            <div class="home-product-card m-3">
-                              <div class="home-product-card-image-holder">
-                                {{#each product.pictures as |picture index|}}
-                                  {{#if (is-main picture null index)}}
-                                    <img class="product-list-image-v1" src="{{picture.url}}">   
-                                  {{/if}}
-                                {{/each}}
-                              </div>
-                              <div class="mt-2">
-                                <h5 class="home-product-card-name-text">{{product.name}}</h5>
-                                <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
-                              </div>
-                            </div>
-                          {{/link-to}}
-                        </div>
-                      {{/if}}
-                    {{/if}}
-                  {{/if}}
-                {{/if}}
-              {{/if}}
-            {{/each}}
+                    </div>
+                  </div>
+              </div>
+            {{else}}
+              <div class="col-lg-4 col-xl-4 mb-5 fade">
+                {{#link-to "shop.single-product" product.id class="category-table-link"}}
+                  <div class="home-product-card">
+                    <div class="home-product-card-image-holder">
+                      {{#each product.pictures as |picture index|}}
+                        {{#if (is-main picture null index)}}
+                          <img class="product-list-image-v1" src="{{picture.url}}">   
+                        {{/if}}
+                      {{/each}}
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="home-product-card-name-text">{{product.name}}</h5>
+                      <p class="home-product-card-price-text">Starting from - {{format-bid product.startingPrice}}</p>
+                    </div>
+                  </div>
+                {{/link-to}}
+              </div>
+            {{/if}}
+          {{/each}}
         </div>
       </div>
     </div>

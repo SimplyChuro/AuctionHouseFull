@@ -7,20 +7,17 @@
 {{#each sortedBids as |bid index|}}
   {{#if (eq index 0)}}
     {{#if (belongs-to-user bid.user.id)}}
-      {{#if (eq bid.amount (get-biggest model.product.bids))}}
-        <div class="container-fluid sp-bidder-highest-holder fade">
-          <div class="container">
-            <p class="sp-highest-bid-text mt-0">Congrats! you are the higest bider!</p>
-          </div>
+      <div class="container-fluid sp-bidder-highest-holder fade">
+        <div class="container">
+          <p class="sp-highest-bid-text mt-0">Congrats! you are the higest bider!</p>
         </div>
-
-      {{else}}
-        <div class="container-fluid sp-bidder-losing-holder fade">
-          <div class="container">
-            <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
-          </div>
+      </div>
+    {{else}}
+      <div class="container-fluid sp-bidder-losing-holder fade">
+        <div class="container">
+          <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
         </div>
-      {{/if}}
+      </div>
     {{/if}}
   {{/if}}
 {{/each}}

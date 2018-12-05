@@ -6,7 +6,8 @@ import Cookies from 'ember-cli-js-cookie';
 export default Component.extend({
   session: Ember.inject.service(),
   router: Ember.inject.service(),
-  
+  store: Ember.inject.service(),
+
   actions: {
     logout: function(){
       var _this = this;
@@ -23,6 +24,7 @@ export default Component.extend({
         _this.set('session.authToken', null);
         _this.set('session.userID', null);
         _this.get('router').transitionTo('index');
+        _this.get('store').unloadAll('wishlist');
       });
     },
 
