@@ -77,7 +77,7 @@
 
               <label class="account-profile-form-text mt-3">I am</label>
               <br>
-              <select onchange={{action "setSelection" value="target.value"}} class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer">
+              <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
                 <option disabled selected> -- Gender? -- </option>
                 {{#if (is-equal model.user.gender 'male')}}
                   <option value="male" selected>

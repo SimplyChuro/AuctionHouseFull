@@ -23,25 +23,23 @@
                       {{category.name}}
                     </div>
                   {{/if}}
-                </tr>
-                {{#if displayDetails}}
-                  {{#if (eq category.id parentCategory)}}
-                    {{#each model.categoryList as |subcategory|}}
-                      {{#if (eq subcategory.parent_id category.id)}}
-                        <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
-                          {{#if (eq childCategory subcategory.id)}}
-                            <div class="category-table-link-v3 category-table-link-active">
-                              {{subcategory.name}}
-                            </div>
-                          {{else}}
-                            <div class="category-table-link-v3">
-                              {{subcategory.name}}
-                            </div>                          
-                          {{/if}}
-                        </tr>
-                      {{/if}}
-                    {{/each}}
-                  {{/if}}
+                </tr>        
+                {{#if (eq category.id parentCategory)}}
+                  {{#each model.categoryList as |subcategory|}}
+                    {{#if (eq subcategory.parent_id category.id)}}
+                      <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
+                        {{#if (eq childCategory subcategory.id)}}
+                          <div class="category-table-link-v3 category-table-link-active">
+                            {{subcategory.name}}
+                          </div>
+                        {{else}}
+                          <div class="category-table-link-v3">
+                            {{subcategory.name}}
+                          </div>                          
+                        {{/if}}
+                      </tr>
+                    {{/if}}
+                  {{/each}}
                 {{/if}}
               {{/if}}
             {{/each}} 
@@ -136,7 +134,41 @@
         </table>
       </div>
       <div class="col-lg-9 col-xl-9">
-        <div class="bottom-margin-100">
+        <div class="mr-0 ml-0 bottom-margin-100">
+          <div class="product-sort-type-holder">
+            <select class="product-list-select" onchange={{action "setSortType" value="target.value"}}>
+
+              <option selected value="default">
+                Default Sorting
+              </option>
+
+              <option value="popularity">
+                Sort by Popularity
+              </option>
+
+              <option value="rating">
+                Sort by Rating
+              </option>
+
+              <option value="newest">
+                Sort by Date Newly Listed
+              </option>
+
+              <option value="oldest">
+                Sort by Date Ending Soon
+              </option>
+
+              <option value="price-high">
+                Sort by Highest Price
+              </option>
+
+              <option value="price-low">
+                Sort by Lowest Price
+              </option>
+
+            </select>
+          </div>
+
           <div class="product-list-type-holder">
             <button class="{{is-active-item-css selectedListType null 2}}" {{action 'setListType' null}}>
               <i class="material-icons">

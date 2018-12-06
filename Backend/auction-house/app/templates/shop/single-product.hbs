@@ -76,14 +76,14 @@
                   {{amountErrorMessage}}
                 </div>
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                  {{#if (is-less bidAmount (get-biggest sortedBids))}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest model.product.bids))}}
+                  {{#if (eq bidAmount (get-biggest sortedBids))}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -91,14 +91,14 @@
                 {{/if}}
               {{else}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                  {{#if (is-less bidAmount (get-biggest sortedBids))}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest model.product.bids))}}
+                  {{#if (eq bidAmount (get-biggest sortedBids))}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -116,27 +116,27 @@
             {{/link-to}}
           {{/if}}
           <p class="single-product-small-text mt-1">Enter more than -
-            {{#if (eq model.product.bids.length 0)}}
+            {{#if (eq sortedBids.length 0)}}
               {{format-bid model.product.startingPrice}}
             {{else}}
-              {{format-bid (get-biggest model.product.bids)}}
+              {{format-bid (get-biggest sortedBids)}}
             {{/if}}    
           </p>
         </div>
           <div class="mt-5">
             <p class="single-product-small-text m-0 p-0">Highest Bid: 
               <span class="single-product-highest-bid-amount ml-2">
-                {{#if (eq model.product.bids.length 0)}}
+                {{#if (eq sortedBids.length 0)}}
                   {{format-bid 0}}
                 {{else}}
-                  {{format-bid (get-biggest model.product.bids)}}
+                  {{format-bid (get-biggest sortedBids)}}
                 {{/if}}
               </span>
             </p>
-            {{#if (eq model.product.bids.length 0)}}
+            {{#if (eq sortedBids.length 0)}}
               <p class="single-product-small-text m-0 p-0">Number of Bids: 0</p>
             {{else}}
-              <p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bids.length}}</p>
+              <p class="single-product-small-text m-0 p-0">Number of Bids: {{sortedBids.length}}</p>
             {{/if}}
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
@@ -176,7 +176,7 @@
   </div>
 </div>
 
-{{#unless (eq model.product.bids.length 0)}}
+{{#unless (eq sortedBids.length 0)}}
   <div class="container-fluid mt-5 bottom-margin-150">
     <div class="container">
       <div class="row">

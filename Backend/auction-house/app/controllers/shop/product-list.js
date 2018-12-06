@@ -4,16 +4,15 @@ import { isEmpty } from '@ember/utils';
 export default Controller.extend({
   queryParams: ['name', 'parentCategory', 'childCategory'],
   name: null,
-  displayDetails: false,
   parentCategory: null,
   childCategory: null,
+  selectedSorting: null,
   selectedColor: null,
   selectedSize: null,
   selectedListType: null,
 
-  filteredProducts: Ember.computed('name', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', function(){
+  filteredProducts: Ember.computed('name', 'selectedSorting', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', function(){
  
-    var selI = this.get('childCategory');
     var products = this.get('model.productList');
     var _this = this;
     let singleProduct = null;
@@ -28,7 +27,6 @@ export default Controller.extend({
             } else {
               singleProduct = null;
             }
-
           });
           return singleProduct;
         }
@@ -40,12 +38,11 @@ export default Controller.extend({
         function(product) { 
           let categories = product.get('productcategory');
           categories.forEach(function(item){
-            if(item.get('category').get('id') == selI){
+            if(item.get('category').get('id') == _this.get('childCategory')){
               singleProduct = product;
             } else {
               singleProduct = null;
             }
-
           });
           return singleProduct;
         }
@@ -91,6 +88,37 @@ export default Controller.extend({
       );
     }
 
+
+
+
+    if(this.get('selectedSorting') == 'popularity'){
+      return products.sortBy('bids.length').reverse();
+    }
+
+    // if(this.get('selectedSorting') == 'rating-high'){
+    //   return products.sortBy('startingPrice');
+    // }
+
+    // if(this.get('selectedSorting') == 'rating-low'){
+    //   return products.sortBy('startingPrice');
+    // }
+
+    if(this.get('selectedSorting') == 'newest'){
+      return products.sortBy('publishDate');
+    }
+
+    if(this.get('selectedSorting') == 'oldest'){
+      return products.sortBy('expireDate');
+    }
+
+    if(this.get('selectedSorting') == 'price-low'){
+      return products.sortBy('startingPrice');
+    }
+
+    if(this.get('selectedSorting') == 'price-high'){
+      return products.sortBy('startingPrice').reverse();
+    }
+
     return products;
 
   }),
@@ -100,12 +128,9 @@ export default Controller.extend({
 
       if(category.id !== this.get('parentCategory')){
         this.set('parentCategory', category.id);
-        this.set('selectedCategory', null);
-        this.set('displayDetails', true);
       } else {
         this.set('parentCategory', null);
         this.set('childCategory', null);
-        this.toggleProperty('displayDetails');
       }
 
     },
@@ -131,6 +156,10 @@ export default Controller.extend({
       this.set('selectedListType', selected);  
     },
 
+    setSortType: function(selected){
+      this.set('selectedSorting', selected);  
+    },
+
     createWishlist: function(productID) {
       this.store.createRecord('wishlist', {
         status: 'active',
@@ -139,10 +168,10 @@ export default Controller.extend({
     },
 
     clearFields: function(){
-      this.set('displayDetails', false);
       this.set('name', null);
       this.set('parentCategory', null);
       this.set('childCategory', null);
+      this.set('selectedSorting', null)
       this.set('selectedColor', null); 
       this.set('selectedSize', null); 
       this.set('selectedListType', null); 

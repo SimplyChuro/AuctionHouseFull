@@ -15,7 +15,7 @@ export default Controller.extend({
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
-  wishlist: Ember.computed(function(){
+  wishlist: Ember.computed('model.product.bids.[]', function(){
     const store = this.get('store');
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
@@ -60,8 +60,9 @@ export default Controller.extend({
         if(validations.get('isValid') && (userBid > topBid) && (userBid != topBid)){
           this.set('amountHasError', false);
           bid.save().then(function() {
+            _this.set('bidAmount', null);
             _this.get('flashMessages').success('Bid Created!');
-            _this.get('target').send('refresh');
+            _this.get('model.product.bids').addObject(bid);
           }, function(response){
             _this.get('flashMessages').warning('An error occoured please try again!');
           });

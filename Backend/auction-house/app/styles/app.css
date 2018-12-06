@@ -23,6 +23,12 @@ button::-moz-focus-inner {
 }
 
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
 /*animations*/
 @keyframes fade{
   0% {
@@ -1199,6 +1205,13 @@ button::-moz-focus-inner {
   border: 1px solid #D8D8D8;
 }
 
+.account-profile-select{
+  width: 50%;
+  padding: 10px 0px 10px 15px;
+  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 12% no-repeat #ffff;
+  border: 1px solid #D8D8D8;
+}
+
 .account-profile-form-text{
   font-size: 18px;
   color: #252525;
@@ -1346,17 +1359,31 @@ button::-moz-focus-inner {
 }
 
 .product-list-type-holder{
-  margin-top: auto;
   margin-bottom: auto;
   float: right;
 }
 
+.product-sort-type-holder{
+  margin-bottom: auto;
+  float: left;
+}
+
+.product-list-select{
+  padding: 10px 60px 10px 15px;
+  background: #FFFFFF;  
+  border: 3px solid #ECECEC;
+  font-size: 16px;
+  color: #252525;
+  letter-spacing: 0.56px;
+  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 15% no-repeat #ffff;
+  cursor: pointer;
+}
+
 .product-list-button{
   padding: 10px 20px;
-  background: #F0F0F0;
+  background: #ffff;
   border: 0px #ffff solid;
   font-size: 16px;
-  font-weight: bold;
   color: #252525;
   letter-spacing: 0.56px;
   cursor: pointer;
