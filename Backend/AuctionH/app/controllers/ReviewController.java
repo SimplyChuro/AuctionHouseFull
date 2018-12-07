@@ -1,86 +1,81 @@
 package controllers;
 
-
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import models.Bids;
-import models.Products;
+import models.Reviews;
 import models.Users;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-public class BidController extends Controller {
+public class ReviewController extends Controller {
 	
-	//Get bid
+	//Get review
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			Bids bid = Bids.find.query().where().conjunction()
+			Reviews review = Reviews.find.query().where().conjunction()
 					.eq("user_id", user.id)
 					.eq("product_id", id)
 					.endJunction()
 					.findUnique();
 			
-			return ok(Json.toJson(bid));
+			return ok(Json.toJson(review));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Get bids
+	//Get reviews
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			List<Bids> bids = user.bids;
-			return ok(Json.toJson(bids));
+			List<Reviews> review = user.reviews;
+			
+			return ok(Json.toJson(review));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Create bid
+	//Create review
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode objectNode = request().body().asJson().get("bid");
+			JsonNode objectNode = request().body().asJson().get("review");
 			Users user = LoginController.getUser();
 			
-			Bids bidChecker = Json.fromJson(objectNode, Bids.class);
-			if(bidChecker.createBid(user, objectNode)) {
-				return ok(Json.toJson(bidChecker));
-			} else {
-				return badRequest();
-			}
-				
+			Reviews review = Json.fromJson(objectNode, Reviews.class);
+			review.createReview(user, objectNode);	
+			
+			return ok(Json.toJson(review));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
 	
-	//Update bid	
+	//Update review	
 	@Security.Authenticated(Secured.class)	
 	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 				
-			Bids bidChecker = Bids.find.query().where().conjunction()
+			Reviews review = Reviews.find.query().where().conjunction()
 					.eq("user_id", jsonNode.findPath("user_id").asLong())
 					.eq("product_id", jsonNode.findPath("product_id").asLong())
 					.endJunction()
 					.findUnique();
 			
-			if(bidChecker != null) {
-				bidChecker = Json.fromJson(jsonNode, Bids.class);
-				bidChecker.update();
-				return ok(Json.toJson(bidChecker));
+			if(review != null) {
+				review = Json.fromJson(jsonNode, Reviews.class);
+				review.update();
+				return ok(Json.toJson(review));
 			} else {
 				return badRequest();
 			}		
@@ -89,21 +84,22 @@ public class BidController extends Controller {
 		}
 	}	
 	
-	//Delete bid	
+	//Delete review	
 	@Security.Authenticated(Secured.class)	
 	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			Bids bidChecker = Bids.find.query().where().conjunction()
+			
+			Reviews review = Reviews.find.query().where().conjunction()
 					.eq("user_id", jsonNode.findPath("user_id").asLong())
 					.eq("product_id", jsonNode.findPath("product_id").asLong())
 					.endJunction()
 					.findUnique();
 			
-			if(bidChecker != null) {
-				bidChecker = Json.fromJson(jsonNode, Bids.class);
-				bidChecker.delete();
+			if(review != null) {
+				review = Json.fromJson(jsonNode, Reviews.class);
+				review.delete();
 				return ok(Json.toJson(""));
 			} else {
 				return badRequest();

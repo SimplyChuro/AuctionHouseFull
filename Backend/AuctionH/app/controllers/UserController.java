@@ -29,33 +29,32 @@ import play.libs.Json;
 import play.mvc.*;
 
 public class UserController extends Controller {
-	
-	//API GET all users  ------ Testing only
-//	@Security.Authenticated(Secured.class)
-	public Result getAll() {
-		try {
-			List<Users> users = Users.find.all();
-			TimeZone timeZone;
-			timeZone = TimeZone.getTimeZone("GMT+0:00");
-			TimeZone.setDefault(timeZone);
-			return ok(Json.toJson(users));
-		} catch(Exception e) {
-			return notFound();
-		}
-	}
 
-	//get user
+	//Get user
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
+			
 			return ok(Json.toJson(user));
 		} catch(Exception e) {
 			return notFound();
 		}
 	}
 	
-	//create user	
+	//Get users
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
+		try {
+			List<Users> users = Users.find.all();
+			
+			return ok(Json.toJson(users));
+		} catch(Exception e) {
+			return notFound();
+		}
+	}
+	
+	//Create user	
 	public Result create() {
 		try {
 			JsonNode objectNode = request().body().asJson().get("user");
@@ -110,7 +109,7 @@ public class UserController extends Controller {
 		}
 	} 	
 	
-	//reset password not finished
+	//Reset password not finished
 	public Result reset() {
 		try {
 			JsonNode objectNode = request().body().asJson();
@@ -122,12 +121,12 @@ public class UserController extends Controller {
 			
 			if(userChecker != null) {
 //
-//				Email email = new Email()
-//				        .setSubject("Simple email")
-//				        .setFrom("t***f@gmail.com")
-//				        .addTo("d****i@gmail.com")
-//				        .setBodyText("A text message");
-//				Mail.send(email); 
+//				SimpleEmail email = new SimpleEmail();
+//	            email.setFrom(address);
+//	            email.addTo("ss@gmail.com");
+//	            email.setSubject("Reset Password");
+//	            email.setMsg("Click the link bellow to reset your password");
+//	            Mail.send(email);
 				return ok();
 			} else {
 				return badRequest();

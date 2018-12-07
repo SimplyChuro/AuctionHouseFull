@@ -16,7 +16,7 @@ import play.mvc.Security;
 
 public class WishlistController extends Controller{
 
-	//Get w
+	//Get one wishlist
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -33,7 +33,7 @@ public class WishlistController extends Controller{
 		}
 	}
 	
-	//Get  wishlist
+	//Get all wishlist items
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
@@ -85,7 +85,7 @@ public class WishlistController extends Controller{
 			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.update();
-				return ok();
+				return ok(Json.toJson(wishlistChecker));
 			} else {
 				return badRequest();
 			}

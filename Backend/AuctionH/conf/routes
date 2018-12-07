@@ -47,6 +47,14 @@ PUT		/api/v1/sales/:id					controllers.SaleController.update(id : Long)
 DELETE	/api/v1/sales/:id					controllers.SaleController.delete(id : Long)
 
 
+# Review API routes
+GET		/api/v1/review						controllers.ReviewController.getAll
+GET		/api/v1/review/:id					controllers.ReviewController.get(id : Long)
+POST	/api/v1/review						controllers.ReviewController.create
+PUT		/api/v1/review/:id					controllers.ReviewController.update(id : Long)
+DELETE	/api/v1/review/:id					controllers.ReviewController.delete(id : Long)
+
+
 # Product API routes
 GET		/api/v1/products					controllers.ProductController.getAll
 GET		/api/v1/products/:id				controllers.ProductController.get(id : Long)

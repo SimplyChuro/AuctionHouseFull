@@ -68,5 +68,6 @@ export default DS.Model.extend(Validations, {
   address: DS.belongsTo('address'),
   wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid'),
-  sales: DS.hasMany('sale')
+  sales: DS.hasMany('sale'),
+  reviews: DS.hasMany('review')
 });

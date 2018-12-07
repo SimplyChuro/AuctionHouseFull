@@ -15,12 +15,22 @@
               {{#if (eq category.parent_id null)}}
                 <tr {{action 'toggleDetails' category}} class="product-list-pointer"> 
                   {{#if (eq parentCategory category.id)}}
-                    <div class="category-table-link-v2 category-table-link-active">
+                    <div class="category-table-link-v2">
                       {{category.name}}
+                      <span class="category-table-link-icon-active">
+                        <i class="material-icons">
+                          remove
+                        </i>
+                      </span>
                     </div>
                   {{else}}
                     <div class="category-table-link-v2">
                       {{category.name}}
+                      <span class="category-table-link-icon">
+                        <i class="material-icons">
+                          add
+                        </i>
+                      </span>
                     </div>
                   {{/if}}
                 </tr>        
@@ -55,39 +65,81 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setColor' 'White'}}>
-              <div class="{{is-active-item-css selectedColor 'White' 0}}">
-                White
-              </div>
+              {{#if (eq selectedColor 'White')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  White
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  White
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Black'}}>
-              <div class="{{is-active-item-css selectedColor 'Black' 0}}">
-                Black
-              </div>
+              {{#if (eq selectedColor 'Black')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Black
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Black
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Blue'}}>
-              <div class="{{is-active-item-css selectedColor 'Blue' 0}}">
-                Blue
-              </div>
+              {{#if (eq selectedColor 'Blue')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Blue
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Blue
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Red'}}>
-              <div class="{{is-active-item-css selectedColor 'Red' 0}}">
-                Red
-              </div>
+              {{#if (eq selectedColor 'Red')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Red
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Red
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Orange'}}>
-              <div class="{{is-active-item-css selectedColor 'Orange' 0}}">
-                Orange
-              </div>
+              {{#if (eq selectedColor 'Orange')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Orange
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Orange
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Yellow'}}>
-              <div class="{{is-active-item-css selectedColor 'Yellow' 0}}">
-                Yellow
-              </div>
+              {{#if (eq selectedColor 'Yellow')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Yellow
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Yellow
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Green'}}>
-              <div class="{{is-active-item-css selectedColor 'Green' 0}}">
-                Green
-              </div>
+              {{#if (eq selectedColor 'Green')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Green
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Green
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' null}}>
               <div class="category-table-link-v2">
@@ -101,29 +153,59 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY SIZE</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Small'}}>
-              <div class="{{is-active-item-css selectedSize 'Extra Small' 0}}">
-                Extra Small
-              </div>
+              {{#if (eq selectedSize 'Extra Small')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Extra Small
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Extra Small
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Small'}}>
-              <div class="{{is-active-item-css selectedSize 'Small' 0}}">
-                Small
-              </div>
+              {{#if (eq selectedSize 'Small')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Small
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Small
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Medium'}}>
-              <div class="{{is-active-item-css selectedSize 'Medium' 0}}">
-                Medium
-              </div>
+              {{#if (eq selectedSize 'Medium')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Medium
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Medium
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Large'}}>
-              <div class="{{is-active-item-css selectedSize 'Large' 0}}">
-                Large
-              </div>
+              {{#if (eq selectedSize 'Large')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Large
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Large
+                </div>              
+              {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Large'}}>  
-              <div class="{{is-active-item-css selectedSize 'Extra Large' 0}}">
-                Extra Large
-              </div>             
+              {{#if (eq selectedSize 'Extra Large')}}
+                <div class="category-table-link-v2 category-table-link-active">
+                  Extra Large
+                </div>
+              {{else}}
+                <div class="category-table-link-v2">
+                  Extra Large
+                </div>              
+              {{/if}}            
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' null}}>  
               <div class="category-table-link-v2">
@@ -146,8 +228,12 @@
                 Sort by Popularity
               </option>
 
-              <option value="rating">
-                Sort by Rating
+              <option value="rating-high">
+                Sort by Rating Highest
+              </option>
+
+              <option value="rating-low">
+                Sort by Rating Lowest
               </option>
 
               <option value="newest">
@@ -170,25 +256,40 @@
           </div>
 
           <div class="product-list-type-holder">
-            <button class="{{is-active-item-css selectedListType null 2}}" {{action 'setListType' null}}>
-              <i class="material-icons">
-                view_module
-              </i>
-              Grid
-            </button>
-            <button class="{{is-active-item-css selectedListType 'List' 2}}" {{action 'setListType' 'List'}}>
-              <i class="material-icons">
-                view_list
-              </i>
-              List
-            </button>
+            {{#if (eq selectedListType null)}}
+              <button class="product-list-button product-list-button-active" {{action 'setListType' null}}>
+                <i class="material-icons">
+                  view_module
+                </i>
+                Grid
+              </button>
+              <button class="product-list-button" {{action 'setListType' 'List'}}>
+                <i class="material-icons">
+                  view_list
+                </i>
+                List
+              </button>
+            {{else}}
+              <button class="product-list-button" {{action 'setListType' null}}>
+                <i class="material-icons">
+                  view_module
+                </i>
+                Grid
+              </button>
+              <button class="product-list-button product-list-button-active" {{action 'setListType' 'List'}}>
+                <i class="material-icons">
+                  view_list
+                </i>
+                List
+              </button>
+            {{/if}}
           </div>
         </div>
         <div class="row">
           {{#each filteredProducts as |product|}}
             {{#if (eq selectedListType 'List')}}
               <div class="col-lg-12 col-xl-12 fade">
-                  <div class="row mb-4">
+                  <div class="row mb-5">
                     <div class="col-lg-4 col-xl-4">
                       <div class="product-list-image-holder">
                         {{#each product.pictures as |picture index|}}

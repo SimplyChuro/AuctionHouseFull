@@ -30,7 +30,42 @@ import play.libs.Json;
 
 public class ProductController extends Controller {
 	
-	//get products
+	//Get product
+	public Result get(Long id) {
+		try {
+			Products product = Products.find.byId(id);
+				
+			JsonNode filteredProduct = Json.toJson(product);
+			
+        	for(JsonNode bidListNode : filteredProduct.get("bids")) {
+        		ObjectNode currentUser = (ObjectNode)bidListNode.get("user");
+        		currentUser.remove("email");
+        		currentUser.remove("emailVerified");
+        		currentUser.remove("gender");
+        		currentUser.remove("dateOfBirth");
+        		currentUser.remove("phoneNumber");
+        		currentUser.remove("address");
+        	}
+        	
+	      
+        	for(JsonNode reviewNode : filteredProduct.get("reviews")) {
+        		ObjectNode currentUser = (ObjectNode) reviewNode.get("user");
+        		currentUser.remove("email");
+        		currentUser.remove("emailVerified");
+        		currentUser.remove("gender");
+        		currentUser.remove("dateOfBirth");
+        		currentUser.remove("phoneNumber");
+        		currentUser.remove("phoneVerified");
+        		currentUser.remove("address");
+        	}
+	       
+			return ok(filteredProduct);
+		} catch(Exception e) {
+			return notFound();
+		}
+	}
+	
+	//Get products
 	public Result getAll() {
 		try {
 			List<Products> products = Products.find.all();
@@ -47,34 +82,23 @@ public class ProductController extends Controller {
 	        		currentUser.remove("phoneNumber");
 	        		currentUser.remove("phoneVerified");
 	        		currentUser.remove("address");
-	        		
+	        	}
+	        }
+	        
+	        for (JsonNode productListNode : filteredProducts) {
+	        	for(JsonNode reviewNode : productListNode.get("reviews")) {
+	        		ObjectNode currentUser = (ObjectNode) reviewNode.get("user");
+	        		currentUser.remove("email");
+	        		currentUser.remove("emailVerified");
+	        		currentUser.remove("gender");
+	        		currentUser.remove("dateOfBirth");
+	        		currentUser.remove("phoneNumber");
+	        		currentUser.remove("phoneVerified");
+	        		currentUser.remove("address");
 	        	}
 	        }
 			
 			return ok(filteredProducts);
-		} catch(Exception e) {
-			return notFound();
-		}
-	}
-	
-	//get product
-	public Result get(Long id) {
-		try {
-			Products product = Products.find.byId(id);
-				
-			JsonNode filteredProduct = Json.toJson(product);
-			
-        	for(JsonNode bidListNode : filteredProduct.get("bids")) {
-        		ObjectNode currentUser = (ObjectNode)bidListNode.get("user");
-        		currentUser.remove("email");
-        		currentUser.remove("emailVerified");
-        		currentUser.remove("gender");
-        		currentUser.remove("dateOfBirth");
-        		currentUser.remove("phoneNumber");
-        		currentUser.remove("address");
-        	}
-	        
-			return ok(filteredProduct);
 		} catch(Exception e) {
 			return notFound();
 		}
@@ -94,7 +118,7 @@ public class ProductController extends Controller {
 				picture.save();
 			}
 			
-			return ok();
+			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -114,7 +138,7 @@ public class ProductController extends Controller {
 				picture.update();
 			}
 			
-			return ok();
+			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -133,7 +157,7 @@ public class ProductController extends Controller {
 			
 			product.delete();
 					
-			return ok();
+			return ok(Json.toJson(""));
 		} catch(Exception e) {
 			return badRequest();
 		}

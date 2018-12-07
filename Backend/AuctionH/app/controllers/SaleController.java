@@ -19,7 +19,7 @@ import play.mvc.Security;
 
 public class SaleController extends Controller {
 	
-	//Get sale not in usage
+	//Get sale
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -43,13 +43,14 @@ public class SaleController extends Controller {
 		try {
 			Users user = LoginController.getUser();
 			List<Sales> sales = user.sales;
+			
 			return ok(Json.toJson(sales));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Create Sale
+	//Create sale
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {		
@@ -94,13 +95,13 @@ public class SaleController extends Controller {
 
 			saleItem.save();
 
-			return ok();	
+			return ok(Json.toJson(saleItem));	
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Update Sale
+	//Update sale
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
@@ -109,13 +110,14 @@ public class SaleController extends Controller {
 			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
 			saleItem.product.update();
 			saleItem.update();
-			return ok();
+			
+			return ok(Json.toJson(saleItem));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//Delete Sale
+	//Delete sale
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
@@ -124,7 +126,8 @@ public class SaleController extends Controller {
 			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
 			saleItem.product.delete();
 			saleItem.delete();
-			return ok();
+			
+			return ok(Json.toJson(""));
 		} catch(Exception e) {
 			return badRequest();
 		}

@@ -23,7 +23,6 @@ import play.libs.Json;
 
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Products extends Model{
 	
 	@Id
@@ -76,6 +75,9 @@ public class Products extends Model{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Sales> sales;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
+    public List<Reviews> reviews;
 
 	public static final Finder<Long, Products> find = new Finder<>(Products.class);
 

@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { isEmpty } from '@ember/utils';
 
 export default Controller.extend({
   session: Ember.inject.service(),
@@ -10,6 +11,7 @@ export default Controller.extend({
   bidValue: null,
   bidListSize: 5,
   checker: null,
+  topBid: null,
 
   sortedBids: Ember.computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
@@ -38,29 +40,26 @@ export default Controller.extend({
     createBid: function(productID) {
       var _this = this;
 
-      function transitionToHome(data) {
-        _this.get('target').send('refresh');
-      }
-
-      function failure(reason) {
-        _this.get('target').send('refresh');
-      }
-
       let bid = this.store.createRecord('bid');
       bid.set('amount', this.get('bidAmount'));
       bid.set('product_id', productID);
 
-      var topBid = this.get('sortedBids.firstObject.amount');
-      if(topBid == null){
-        topBid = this.get('model.product.startingPrice');
+      this.set('topBid', this.get('sortedBids.firstObject.amount'));
+
+      if(isEmpty(this.get('topBid'))){
+        this.set('topBid', this.get('model.product.startingPrice'));
       }
+
       var userBid = this.get('bidAmount');
-      
+
+
       bid.validate().then(({ validations }) => {
-        if(validations.get('isValid') && (userBid > topBid) && (userBid != topBid)){
-          this.set('amountHasError', false);
+        if(validations.get('isValid') && (userBid > _this.get('topBid')) && (userBid != _this.get('topBid'))){
+          
           bid.save().then(function() {
             _this.set('bidAmount', null);
+            _this.set('amountHasError', false);
+            _this.set('amountErrorMessage', null);
             _this.get('flashMessages').success('Bid Created!');
             _this.get('model.product.bids').addObject(bid);
           }, function(response){

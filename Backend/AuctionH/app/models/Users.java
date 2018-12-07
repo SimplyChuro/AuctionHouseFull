@@ -91,6 +91,9 @@ public class Users extends Model{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
     public List<Sales> sales; 
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
+    public List<Reviews> reviews; 
+	
 	public static final Finder<Long, Users> find = new Finder<>(Users.class);
     
 	

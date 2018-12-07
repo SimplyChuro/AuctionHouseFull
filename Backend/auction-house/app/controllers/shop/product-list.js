@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
 
 export default Controller.extend({
-  queryParams: ['name', 'parentCategory', 'childCategory'],
+  queryParams: ['selectedSorting', 'selectedListType', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', 'name'],
   name: null,
   parentCategory: null,
   childCategory: null,
@@ -90,18 +90,17 @@ export default Controller.extend({
 
 
 
-
     if(this.get('selectedSorting') == 'popularity'){
       return products.sortBy('bids.length').reverse();
     }
 
-    // if(this.get('selectedSorting') == 'rating-high'){
-    //   return products.sortBy('startingPrice');
-    // }
+    if(this.get('selectedSorting') == 'rating-high'){
+      return products.sortBy('averageScore').reverse();
+    }
 
-    // if(this.get('selectedSorting') == 'rating-low'){
-    //   return products.sortBy('startingPrice');
-    // }
+    if(this.get('selectedSorting') == 'rating-low'){
+      return products.sortBy('averageScore');
+    }
 
     if(this.get('selectedSorting') == 'newest'){
       return products.sortBy('publishDate');

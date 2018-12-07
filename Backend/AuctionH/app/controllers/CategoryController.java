@@ -21,6 +21,16 @@ import play.mvc.Security;
 
 public class CategoryController extends Controller{
 	
+	//Get one category	
+	public Result get(Long id) {
+		try {
+			Category category = Category.find.byId(id);
+			return ok(Json.toJson(category));
+		} catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
 	//Get categories
 	public Result getAll() {
 		try {
@@ -35,17 +45,7 @@ public class CategoryController extends Controller{
 		}
 	}
 	
-	//Get one category	
-	public Result get(Long id) {
-		try {
-			Category category = Category.find.byId(id);
-			return ok(Json.toJson(category));
-		} catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
-	//create category  
+	//Create category  
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
@@ -54,13 +54,13 @@ public class CategoryController extends Controller{
 			Category category = Json.fromJson(jsonNode, Category.class);
 			category.save();
 	
-			return ok();
+			return ok(Json.toJson(category));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//update category  
+	//Update category  
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
@@ -69,13 +69,13 @@ public class CategoryController extends Controller{
 			Category category = Json.fromJson(jsonNode, Category.class);
 			category.update();
 	
-			return ok();
+			return ok(Json.toJson(category));
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
-	//delete category 
+	//Delete category 
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
@@ -84,7 +84,7 @@ public class CategoryController extends Controller{
 			Category category = Json.fromJson(jsonNode, Category.class);
 			category.delete();
 	
-			return ok();
+			return ok(Json.toJson(""));
 		} catch(Exception e) {
 			return badRequest();
 		}

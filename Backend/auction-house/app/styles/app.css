@@ -143,7 +143,8 @@ select {
 
 .header-search-input{
   border: none;
-  width: 89%;
+  max-width: 89%;
+  min-width: 88%;
   padding: 5px 0px 5px 15px;
 }
 
@@ -461,6 +462,15 @@ select {
   background: #F0F0F0;
 }
 
+.category-table-link-icon{
+  float: right;
+}
+
+.category-table-link-icon-active{
+  float: right;
+  color: #8367D8; 
+}
+
 .category-table-link-active{
   background-color: #F0F0F0;
   color: #696969;
@@ -504,14 +514,30 @@ select {
 }
 
 .home-product-card-image-holder{
-	height: 15vw;
+	height: 225px;
   text-align: center;
 }
 
 .home-product-card-image{
-	height: 15vw;
+	height: 225px;
   max-width: 100%;
 	background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.home-product-card-featured-image-holder{
+  height: 300px;
+  text-align: center;
+}
+
+.home-product-card-featured-image{
+  max-height: 300px;
+  max-width: 100%;
+  background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   margin-left: 50%;
@@ -695,7 +721,7 @@ select {
 }
 
 .single-product-main-picture{
-	height: 25vw;
+	height: 375px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -704,7 +730,7 @@ select {
 
 .single-product-side-picture{
 	padding: 5px;
-	height: 5vw;
+	max-height: 75px;
 }
 
 .single-product-margin{
@@ -728,7 +754,7 @@ select {
 
 .single-product-main-image{
 	height: auto;
-  max-height: 25vw;
+  max-height: 375px;
   width: 100%;
   align-self: center;
 /*  margin-left: 50%;
@@ -741,7 +767,7 @@ select {
 
 .single-product-secondary-image{
 	width: 100%;
-	height: 5vw;
+	max-height: 75px;
 	background-repeat: no-repeat;
   background-size: contain;
 }
@@ -768,15 +794,15 @@ select {
 }
 
 .single-product-bidder-user-icon{
-  height: 4vw;
-  width: 12%;
+  height: 75px;
+  width: 75px;
   border-radius: 100%;
   background: #ECECEC;
 }
 
 .single-product-bid-user-avatar{
-  height: 4vw;
-  width: 12%;
+  height: 75px;
+  width: 75px;
   border-radius: 100%;
   background-repeat: no-repeat;
   background-size: contain;
@@ -1053,12 +1079,12 @@ select {
 .accout-bids-image-holder{
 	background: #D8D8D8;
 	margin: 10px 0px 10px 15px;
-	height: 5vw;
+	max-height: 150px;
 }
 
 .account-bid-image{
 	width: 100%;
-	height: 5vw;
+	max-height: 150px;
 	background-repeat: no-repeat;
   background-size: contain;
 }
@@ -1181,12 +1207,12 @@ select {
 }
 
 .account-profile-image-holder{
-  height: 15vw;
+  height: 250px;
   background: #ECECEC;
 }
 
 .account-profile-image{
-  height: 15vw;
+  max-height: 250px;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -1289,12 +1315,12 @@ select {
 */
 /*account sell*/
 .account-sell-image-holder{
-	height: 6vw;
+	height: 90px;
 	text-align: center;
 }
 
 .account-sell-image{
-	height: 6vw;
+	height: 90px;
 	text-align: center;
 }
 
@@ -1375,7 +1401,7 @@ select {
   font-size: 16px;
   color: #252525;
   letter-spacing: 0.56px;
-  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 15% no-repeat #ffff;
+  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 12% no-repeat #ffff;
   cursor: pointer;
 }
 
@@ -1442,8 +1468,8 @@ select {
 
 .product-list-image-holder{
   width: 100%;
-  height: 15vw;
-  max-width: 15vw;
+  height: 225px;
+  max-width: 225px;
   position: relative;
   align-items: center;
   justify-content: center;
@@ -1451,13 +1477,13 @@ select {
 
 .product-list-image-v1{
   height: auto;
-  max-height: 15vw;
+  max-height: 225px;
   max-width: 100%;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  margin-top: 50%;
-  transform: translateY(-50%);
+ /* margin-top: 50%;
+  transform: translateY(-50%);*/
   overflow: hidden;
 }
 
@@ -1532,8 +1558,8 @@ select {
 /*footer design*/
 .footer{
 	background: #252525;
-	padding-top: 1vw;
-	padding-bottom: 5vw;
+	padding-top: 30px;
+	padding-bottom: 90px;
 }
 
 .footer-title-text{

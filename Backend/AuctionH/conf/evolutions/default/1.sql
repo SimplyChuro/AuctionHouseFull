@@ -59,6 +59,16 @@ create table products (
   constraint pk_products primary key (id)
 );
 
+create table reviews (
+  id                            bigserial not null,
+  rating                        integer not null,
+  description                   varchar(255),
+  post_date                     timestamptz,
+  user_id                       bigint,
+  product_id                    bigint,
+  constraint pk_reviews primary key (id)
+);
+
 create table sales (
   id                            bigserial not null,
   address                       varchar(255),
@@ -114,6 +124,12 @@ create index ix_product_category_category_id on product_category (category_id);
 alter table product_category add constraint fk_product_category_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
 create index ix_product_category_product_id on product_category (product_id);
 
+alter table reviews add constraint fk_reviews_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_reviews_user_id on reviews (user_id);
+
+alter table reviews add constraint fk_reviews_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
+create index ix_reviews_product_id on reviews (product_id);
+
 alter table sales add constraint fk_sales_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
 create index ix_sales_user_id on sales (user_id);
 
@@ -146,6 +162,12 @@ drop index if exists ix_product_category_category_id;
 alter table if exists product_category drop constraint if exists fk_product_category_product_id;
 drop index if exists ix_product_category_product_id;
 
+alter table if exists reviews drop constraint if exists fk_reviews_user_id;
+drop index if exists ix_reviews_user_id;
+
+alter table if exists reviews drop constraint if exists fk_reviews_product_id;
+drop index if exists ix_reviews_product_id;
+
 alter table if exists sales drop constraint if exists fk_sales_user_id;
 drop index if exists ix_sales_user_id;
 
@@ -169,6 +191,8 @@ drop table if exists pictures cascade;
 drop table if exists product_category cascade;
 
 drop table if exists products cascade;
+
+drop table if exists reviews cascade;
 
 drop table if exists sales cascade;
 

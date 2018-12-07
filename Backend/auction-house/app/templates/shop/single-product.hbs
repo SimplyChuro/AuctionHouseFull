@@ -38,7 +38,7 @@
         <div class="row single-product-margin-small"> 
           {{#each model.product.pictures as |picture index|}}
             {{#unless (is-main picture currentPicture index)}}
-              <div class="col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
+              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
                 <div class="single-product-picture-background single-product-side-picture m-1 p-0">	
                   <img class="single-product-secondary-image m-0 p-0" src="{{picture.url}}">
                 </div>
@@ -76,14 +76,14 @@
                   {{amountErrorMessage}}
                 </div>
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest sortedBids))}}
+                  {{#if (is-less bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest sortedBids))}}
+                  {{#if (eq bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -91,14 +91,14 @@
                 {{/if}}
               {{else}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest sortedBids))}}
+                  {{#if (is-less bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest sortedBids))}}
+                  {{#if (eq bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -213,17 +213,13 @@
                 </tr>
               {{/if}}
             {{/each}}
-            {{#if (is-less sortedBids.length bidListSize)}}
-
-            {{else}}
-              {{#if (eq sortedBids.length bidListSize)}}
-
-              {{else}}
+            {{#unless (is-less sortedBids.length bidListSize)}}
+              {{#unless (eq sortedBids.length bidListSize)}}
                 <div class="sp-load-more-holder">
                   <button class="sp-load-more-button" {{action 'loadMore'}}>LOAD MORE</button>
                 </div>
-              {{/if}}
-            {{/if}}
+              {{/unless}}
+            {{/unless}}
           </tbody>
         </table>
       </div>
