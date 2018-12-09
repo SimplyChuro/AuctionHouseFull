@@ -22,7 +22,7 @@ export default Controller.extend({
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  userWishlistItem: Ember.computed('checker', 'wishlist.@each', function(){
+  userWishlistItem: Ember.computed('checker', function(){
     var _this = this;
     var one = this.get('wishlist').then(resolvedWishlist => {
       resolvedWishlist.forEach(item => {

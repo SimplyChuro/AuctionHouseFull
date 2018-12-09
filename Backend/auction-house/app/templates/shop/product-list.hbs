@@ -1,6 +1,25 @@
 <div class="container-fluid current-route-background mb-4">
   <div class="container">
-    <p class="form-title-text">SHOP<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   ALL CATEGORIES</span></p>
+
+    {{#if productNameErrorMessage}}
+      {{#if (eq closestName null)}}
+        <p class="search-error-text fade">
+          Ooops! It would seem that there are no similar matches to that item
+        </p>
+      {{else}}
+        <p class="search-error-text fade">
+          Did you mean?
+          <span class="pl-3">
+            {{#link-to 'shop.product-list' (query-params name=closestName) class="search-error-text-highlight"}}
+              {{closestName}}
+            {{/link-to}}
+          </span>
+        </p>
+      {{/if}}
+    {{else}}
+      <p class="form-title-text">SHOP<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   ALL CATEGORIES</span></p>
+    {{/if}}
+
   </div>
 </div>
 
@@ -53,13 +72,30 @@
                 {{/if}}
               {{/if}}
             {{/each}} 
-            <tr {{action "setSelection" null}} class="product-list-pointer"> 
+              <tr {{action "setSelection" null}} class="product-list-pointer"> 
                 <div class="category-table-link-v2">
                   All Categories
                 </div>
               </tr> 
           </tbody>
         </table>
+
+        <!--
+        <table class="table categort-table-v2 pb-0 mb-3">
+          <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY PRICE</p>
+          <tbody>          
+            <div class="category-table-link-v4">
+                {{range-slider start=0
+                  min=0
+                  max=100
+                  connect=true
+                  on-change="sliderChanged"
+                }}
+
+            </div>
+          </tbody>
+        </table> 
+        -->
 
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
@@ -304,14 +340,48 @@
                       <p class="product-list-paragraph-v1">{{product.description}}</p>
                       <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                       <div>
-                        <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
-                          Wishlist 
-                          <span class="pl-1 single-product-heart">
-                            <i class="material-icons">
-                              favorite
-                            </i>
-                          </span>
-                        </button>
+                        {{#if (is-logged-in)}}
+                          {{#if wishlistItems}}
+                            {{#if (belongs-to-user-wishlist wishlistItems product.id wishlistItems.length wishlist.length)}}
+
+                              <button class="product-list-button-v1-active mr-2" {{action 'deleteWishlist' (belongs-to-user-wishlist wishlistItems product.id wishlistItems.length wishlist.length)}}>
+                                Wishlist 
+                                <span class="pl-1">
+                                  <i class="material-icons">
+                                    favorite
+                                  </i>
+                                </span>
+                              </button>
+                            {{else}}
+                              <button class="product-list-button-v1 fade mr-2" {{action 'createWishlist' product.id}}>
+                                Wishlist 
+                                <span class="pl-1 single-product-heart">
+                                  <i class="material-icons">
+                                    favorite
+                                  </i>
+                                </span>
+                              </button>
+                            {{/if}}
+                          {{else}}
+                            <button class="product-list-button-v1 mr-2" {{action 'createWishlist' product.id}}>
+                              Wishlist 
+                              <span class="pl-1 single-product-heart">
+                                <i class="material-icons">
+                                  favorite
+                                </i>
+                              </span>
+                            </button>
+                          {{/if}}
+                        {{else}}
+                          {{#link-to 'login' class="product-list-button-v3 mr-2"}}
+                            Wishlist 
+                            <span class="pl-1 single-product-heart">
+                              <i class="material-icons">
+                                favorite
+                              </i>
+                            </span>
+                          {{/link-to}}
+                        {{/if}}
                         {{#link-to "shop.single-product" product.id class="product-list-button-v2 category-table-link"}}
                           Bid 
                           <span class="pl-1 single-product-heart">

@@ -1,21 +1,62 @@
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
+import { stringSimilarity } from "string-similarity-js";
 
 export default Controller.extend({
+  store: Ember.inject.service(),
+
   queryParams: ['selectedSorting', 'selectedListType', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', 'name'],
-  name: null,
+  name: '',
   parentCategory: null,
   childCategory: null,
   selectedSorting: null,
   selectedColor: null,
   selectedSize: null,
   selectedListType: null,
+  checker: null,
+  allWishlistItems: null,
+  closestName: null,
+  nameNotFound: false,
+
+  wishlist: Ember.computed(function(){
+    const store = this.get('store');
+    return this.store.findAll('wishlist', { reload: true });
+  }).volatile(),
+
+  wishlistItems: Ember.computed('wishlist', function(){
+    this.set('allWishlistItems', this.get('wishlist'));
+
+    return this.get('allWishlistItems');
+  }).volatile(),
+
+
 
   filteredProducts: Ember.computed('name', 'selectedSorting', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', function(){
  
     var products = this.get('model.productList');
     var _this = this;
     let singleProduct = null;
+
+    if(!(isEmpty(this.get('name')))) {
+      products = products.filter(
+        function(product) { 
+          if(product.name.toLowerCase().includes(_this.get('name').toLowerCase())) {
+            singleProduct = product;
+          } else {
+            singleProduct = null;
+          }
+          return singleProduct;
+        }
+      );
+
+      if(!(isEmpty(products))){
+        _this.set('nameNotFound', false);
+      }
+    }
+
+    if(isEmpty(this.get('name'))){
+      _this.set('nameNotFound', false);
+    }
 
     if(this.get('parentCategory') !== null && this.get('parentCategory') !== 0) {
       products = products.filter(
@@ -75,21 +116,6 @@ export default Controller.extend({
       );
     }
 
-    if(!(isEmpty(this.get('name')))) {
-      products = products.filter(
-        function(product) { 
-          if(product.name.toLowerCase().includes(_this.get('name').toLowerCase())) {
-            singleProduct = product;
-          } else {
-            singleProduct = null;
-          }
-          return singleProduct;
-        }
-      );
-    }
-
-
-
     if(this.get('selectedSorting') == 'popularity'){
       return products.sortBy('bids.length').reverse();
     }
@@ -120,6 +146,29 @@ export default Controller.extend({
 
     return products;
 
+  }),
+
+  productNameErrorMessage: Ember.computed('filteredProducts', function(){
+
+    var nameChecker = null;
+    var similarityRate = 0;
+    var _this = this;
+
+    if(isEmpty(this.get('filteredProducts'))){
+      var products = this.get('model.productList');
+      _this.set('closestName', null);
+      products.forEach((item, index) => {
+        if(stringSimilarity(item.name, this.get('name')) > similarityRate){
+          similarityRate = stringSimilarity(item.name, this.get('name'));
+          nameChecker = item.name;
+          _this.set('closestName', nameChecker);
+        }
+      });
+
+      _this.set('nameNotFound', true);
+    
+      }
+      return _this.get('nameNotFound');
   }),
 
   actions: {
@@ -160,10 +209,24 @@ export default Controller.extend({
     },
 
     createWishlist: function(productID) {
+      var _this = this;
+      // console.log(this.get('allWishlistItems'));
       this.store.createRecord('wishlist', {
         status: 'active',
         product_id: productID
-      }).save();
+      }).save().then(function(data){
+        // console.log(_this.get('allWishlistItems'));
+        // _this.get('allwishlistItems').addObject(data);
+        // console.log(_this.get('allwishlistItems'));
+      });
+    },
+
+    deleteWishlist: function(wishlistItem) {
+      var _this = this;
+      var currentWishlistItem = wishlistItem;
+      currentWishlistItem.destroyRecord().then(function(){
+        _this.get('allWishlistItems').removeObject(wishlistItem);
+      });
     },
 
     clearFields: function(){
@@ -174,6 +237,8 @@ export default Controller.extend({
       this.set('selectedColor', null); 
       this.set('selectedSize', null); 
       this.set('selectedListType', null); 
+      this.set('closestName', null);
+      this.set('nameNotFound', false);
     }
   }
 });
