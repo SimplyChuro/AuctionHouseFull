@@ -5,10 +5,10 @@ POST	/api/v1/users						controllers.UserController.create
 PUT		/api/v1/users/:id					controllers.UserController.update(id : Long)
 
 
-# not in usage yet
-GET		/api/v1/users/verify/:id			controllers.UserController.verify(id : Long)
-GET		/api/v1/users/reset					controllers.UserController.reset
-
+# Additional User API routes
+GET		/api/v1/verify/:id					controllers.UserController.verify(id : Long)
+POST	/api/v1/reset						controllers.UserController.sendResetMail
+POST	/api/v1/password/reset				controllers.UserController.reset
 
 # Address API routes
 GET		/api/v1/address						controllers.AddressController.getAll

@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
 import Cookies from 'ember-cli-js-cookie';
+import swal from 'sweetalert';
 
 export default Controller.extend({
   session: Ember.inject.service(),
@@ -27,9 +28,10 @@ export default Controller.extend({
         }
       }).then(function(data){
         _this.set('loginHasError', false);
+        swal("Success!", "You have been successfully logged in!", "success");
         _this.transitionToRoute('home');
       }).catch(function(data){
-        _this.set('loginHasError', true);
+        swal("Ooops!", "Incorrect email or password", "error");
       });
     },
 

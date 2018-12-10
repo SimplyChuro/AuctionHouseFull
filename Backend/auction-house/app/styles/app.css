@@ -1538,8 +1538,14 @@ select {
 
 .search-error-text-highlight:hover{
   text-decoration: none;
-
 }
+
+.product-list-select-option{
+  font-size: 16px;
+  color: #252525;
+  letter-spacing: 0.56px;
+}
+
 /**/
 
 

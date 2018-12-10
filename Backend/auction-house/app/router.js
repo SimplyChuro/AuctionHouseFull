@@ -32,6 +32,8 @@ Router.map(function() {
   this.route('password-reset');
   this.route('category-list', { path: 'home/category-list' });
   this.route('register-success');
+  this.route('new-password');
+  this.route('verify-email');
 });
 
 export default Router;

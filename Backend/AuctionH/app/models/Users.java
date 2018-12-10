@@ -138,6 +138,11 @@ public class Users extends Model{
 			);
 	}
 	
+	public void updatePassword(JsonNode objectNode) {
+		this.setPassword(objectNode.findValue("password").asText());
+		this.update();
+	}
+	
     //Token commands
     
     public String createToken() {
