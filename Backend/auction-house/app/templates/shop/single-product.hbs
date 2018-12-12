@@ -4,7 +4,7 @@
   </div>
 </div>
 
-{{#if (is-logged-in)}}
+{{#if (is-logged-in session.authToken)}}
   {{#each sortedBids as |bid index|}}
     {{#if (eq index 0)}}
       {{#if (belongs-to-user bid.user.id)}}
@@ -53,7 +53,7 @@
         <h1 class="title-text-links">{{model.product.name}}</h1>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
-          {{#if (is-logged-in)}}
+          {{#if (is-logged-in session.authToken)}}
             <form>
               <div class="row ml-0 mr-0">
                 {{input type="string" value=bidAmount class="single-product-bid-input"}}
@@ -142,7 +142,7 @@
             {{/if}}
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
-        {{#if (is-logged-in)}}
+        {{#if (is-logged-in session.authToken)}}
           {{#unless userWishlistItem}}
             {{#unless (eq checker null)}}
               <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>

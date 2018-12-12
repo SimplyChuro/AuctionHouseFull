@@ -7,12 +7,11 @@
         <table class="table table-hover category-table pb-0 mb-0">
           <p class="category-table-title mt-3 mb-3">CATEGORIES</p>
           <tbody>
-          
             {{#each model.categoryList as |category|}}
               {{#if (eq category.parent_id null)}}
                 <tr>
                   <td class="m-0 p-0">
-                    {{#link-to "shop.product-list" (query-params parentCategory=category.id) class="category-table-link"}}
+                    {{#link-to "shop.product-list" (query-params parent_category=category.id) class="category-table-link"}}
                       <div class="category-table-row-full">
                         {{category.name}}
                       </div>

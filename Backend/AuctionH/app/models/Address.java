@@ -42,6 +42,8 @@ public class Address extends Model{
 	
 	public static final Finder<Long, Address> find = new Finder<>(Address.class);
 
+	
+	//Constructor	
 	public void updateAddress(String street, String city, String zipCode, String state, String country) {
 		this.street = street;
 		this.city = city;

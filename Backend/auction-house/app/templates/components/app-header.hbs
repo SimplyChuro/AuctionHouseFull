@@ -11,7 +11,7 @@
       </div>
       <div>
         <ul class="navbar-nav ml-auto">
-          {{#if (is-logged-in)}}
+          {{#if (is-logged-in session.authToken)}}
             <li class="nav-item pt-2 pb-2">
               <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
             </li>   
@@ -46,47 +46,49 @@
       <div class="collapse navbar-collapse" id="navigationList">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mr-4">
-            {{#link-to "home" class="nav-link"}}
+            {{#link-to "home" class="nav-link" current-when="index home"}}
                 HOME
             {{/link-to}}
           </li>
           <li class="nav-item mr-4">
-            {{#link-to "shop.product-list" class="nav-link"}}
+            {{#link-to "shop.product-list"  class="nav-link" current-when="shop shop.product-list"}}
               SHOP
             {{/link-to}}
           </li>
           <li class="nav-item dropdown">
-            {{#if (is-logged-in)}}
+            {{#if (is-logged-in session.authToken)}}
               {{#bs-dropdown as |dd|}}
-              {{#dd.toggle class="nav-link"}}MY ACCOUNT{{/dd.toggle}}
+                {{#dd.toggle class="nav-link" current-when="account.profile account.bids account.wishlist account.sales account.sell account.settings"}}
+                  MY ACCOUNT
+                {{/dd.toggle}}
                 {{#dd.menu as |ddm|}}  
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
+                    {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
                   {{/ddm.item}}
 
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Become a seller{{/ddm.link-to}}
+                    {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Become a seller{{/ddm.link-to}}
                   {{/ddm.item}}
                   
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
+                    {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
                   {{/ddm.item}}
 
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
+                    {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
                   {{/ddm.item}}
                   
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
+                    {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
                   {{/ddm.item}}
                   
                   {{#ddm.item}}
-                  {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
+                    {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
                   {{/ddm.item}}
                 {{/dd.menu}}
               {{/bs-dropdown}}
             {{else}}
-              {{#link-to "login" class="nav-link dropdown-toggle"}}
+              {{#link-to "login" class="nav-link dropdown-toggle" current-when="account.profile account.bids account.wishlist account.sales account.sell account.settings"}}
                 MY ACCOUNT
               {{/link-to}}
             {{/if}}

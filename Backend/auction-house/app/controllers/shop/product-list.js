@@ -3,16 +3,17 @@ import { isEmpty } from '@ember/utils';
 import { stringSimilarity } from "string-similarity-js";
 
 export default Controller.extend({
+  session: Ember.inject.service(),
   store: Ember.inject.service(),
 
-  queryParams: ['selectedSorting', 'selectedListType', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', 'name'],
-  name: '',
-  parentCategory: null,
-  childCategory: null,
-  selectedSorting: null,
-  selectedColor: null,
-  selectedSize: null,
-  selectedListType: null,
+  queryParams: ['name', 'parent_category', 'child_category', 'color', 'size', 'list_type' , 'sorting'],
+  name: null,
+  parent_category: null,
+  child_category: null,
+  sorting: null,
+  color: null,
+  size: null,
+  list_type: null,
   checker: null,
   allWishlistItems: null,
   closestName: null,
@@ -31,7 +32,7 @@ export default Controller.extend({
 
 
 
-  filteredProducts: Ember.computed('name', 'selectedSorting', 'parentCategory', 'childCategory', 'selectedColor', 'selectedSize', function(){
+  filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'color', 'size', 'sorting', function(){
  
     var products = this.get('model.productList');
     var _this = this;
@@ -58,12 +59,12 @@ export default Controller.extend({
       _this.set('nameNotFound', false);
     }
 
-    if(this.get('parentCategory') !== null && this.get('parentCategory') !== 0) {
+    if(!(isEmpty(this.get('parent_category'))) && this.get('parent_category') !== 0) {
       products = products.filter(
         function(product) { 
           let categories = product.get('productcategory');
           categories.forEach(function(item){
-            if((item.get('category').get('parent_id') == _this.get('parentCategory'))){
+            if((item.get('category').get('parent_id') == _this.get('parent_category'))){
               singleProduct = product;
             } else {
               singleProduct = null;
@@ -74,12 +75,12 @@ export default Controller.extend({
       );
     }
 
-    if(this.get('childCategory') !== null && this.get('childCategory') !== 0) {
+    if(!(isEmpty(this.get('child_category'))) && this.get('child_category') !== 0) {
       products = products.filter(
         function(product) { 
           let categories = product.get('productcategory');
           categories.forEach(function(item){
-            if(item.get('category').get('id') == _this.get('childCategory')){
+            if(item.get('category').get('id') == _this.get('child_category')){
               singleProduct = product;
             } else {
               singleProduct = null;
@@ -90,10 +91,10 @@ export default Controller.extend({
       );
     }
 
-    if(!(isEmpty(this.get('selectedColor')))) {
+    if(!(isEmpty(this.get('color')))) {
       products = products.filter(
         function(product) { 
-          if(product.color == _this.get('selectedColor')) {
+          if(product.color == _this.get('color')) {
             singleProduct = product;
           } else {
             singleProduct = null;
@@ -103,10 +104,10 @@ export default Controller.extend({
       );
     }
 
-    if(!(isEmpty(this.get('selectedSize')))) {
+    if(!(isEmpty(this.get('size')))) {
       products = products.filter(
         function(product) { 
-          if(product.size == _this.get('selectedSize')) {
+          if(product.size == _this.get('size')) {
             singleProduct = product;
           } else {
             singleProduct = null;
@@ -116,31 +117,31 @@ export default Controller.extend({
       );
     }
 
-    if(this.get('selectedSorting') == 'popularity'){
+    if(this.get('sorting') == 'popularity'){
       return products.sortBy('bids.length').reverse();
     }
 
-    if(this.get('selectedSorting') == 'rating-high'){
+    if(this.get('sorting') == 'rating-high'){
       return products.sortBy('averageScore').reverse();
     }
 
-    if(this.get('selectedSorting') == 'rating-low'){
+    if(this.get('sorting') == 'rating-low'){
       return products.sortBy('averageScore');
     }
 
-    if(this.get('selectedSorting') == 'newest'){
+    if(this.get('sorting') == 'newest'){
       return products.sortBy('publishDate');
     }
 
-    if(this.get('selectedSorting') == 'oldest'){
+    if(this.get('sorting') == 'oldest'){
       return products.sortBy('expireDate');
     }
 
-    if(this.get('selectedSorting') == 'price-low'){
+    if(this.get('sorting') == 'price-low'){
       return products.sortBy('startingPrice');
     }
 
-    if(this.get('selectedSorting') == 'price-high'){
+    if(this.get('sorting') == 'price-high'){
       return products.sortBy('startingPrice').reverse();
     }
 
@@ -174,51 +175,46 @@ export default Controller.extend({
   actions: {
     toggleDetails: function(category) {
 
-      if(category.id !== this.get('parentCategory')){
-        this.set('parentCategory', category.id);
+      if(category.id !== this.get('parent_category')){
+        this.set('parent_category', category.id);
       } else {
-        this.set('parentCategory', null);
-        this.set('childCategory', null);
+        this.set('parent_category', null);
+        this.set('child_category', null);
       }
 
     },
 
-    setSelection: function(selected) {
+    selectCategory: function(selected) {
       if(selected === null){
-        this.set('childCategory', selected);  
-        this.set('parentCategory', selected);  
+        this.set('child_category', selected);  
+        this.set('parent_category', selected);  
       } else {
-        this.set('childCategory', selected.id);  
+        this.set('child_category', selected.id);  
       }
     },
 
-    setColor: function(selected) {
-      this.set('selectedColor', selected);
+    setColor: function(color) {
+      this.set('color', color);
     },
 
-    setSize: function(selected) {
-      this.set('selectedSize', selected);  
+    setSize: function(size) {
+      this.set('size', size);  
     },
 
-    setListType: function(selected) {
-      this.set('selectedListType', selected);  
+    setListType: function(type) {
+      this.set('list_type', type);  
     },
 
-    setSortType: function(selected){
-      this.set('selectedSorting', selected);  
+    setSortType: function(type){
+      this.set('sorting', type);  
     },
 
     createWishlist: function(productID) {
       var _this = this;
-      // console.log(this.get('allWishlistItems'));
       this.store.createRecord('wishlist', {
         status: 'active',
         product_id: productID
-      }).save().then(function(data){
-        // console.log(_this.get('allWishlistItems'));
-        // _this.get('allwishlistItems').addObject(data);
-        // console.log(_this.get('allwishlistItems'));
-      });
+      }).save();
     },
 
     deleteWishlist: function(wishlistItem) {
@@ -230,13 +226,16 @@ export default Controller.extend({
     },
 
     clearFields: function(){
-      this.set('name', null);
-      this.set('parentCategory', null);
-      this.set('childCategory', null);
-      this.set('selectedSorting', null)
-      this.set('selectedColor', null); 
-      this.set('selectedSize', null); 
-      this.set('selectedListType', null); 
+      this.set('name', undefined);
+      this.set('parent_category', undefined);
+      this.set('child_category', undefined);
+      this.set('sorting', undefined)
+      this.set('color', undefined); 
+      this.set('size', undefined); 
+      this.set('list_type', undefined); 
+      this.set('closestName', null); 
+      this.set('checker', null);
+      this.set('allWishlistItems', null);
       this.set('closestName', null);
       this.set('nameNotFound', false);
     }

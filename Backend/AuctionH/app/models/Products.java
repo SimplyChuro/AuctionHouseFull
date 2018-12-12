@@ -58,6 +58,9 @@ public class Products extends Model{
 	@Constraints.Required
 	public String description;
 	
+	@Constraints.Required
+	public Boolean featured;
+	
 	
 	//Foreign Keys
 	
@@ -82,12 +85,11 @@ public class Products extends Model{
 	public static final Finder<Long, Products> find = new Finder<>(Products.class);
 
 	
-	
+	//Constructor	
 	public Products() {}
 	
-	public Products(@Required String name, @Required Date publishDate, @Required Date expireDate,
-			@Required String status, @Required String color, @Required String size,
-			@Required String description, @Required Double startingPrice) {
+	public Products(String name, Date publishDate, Date expireDate,
+			String status, String color, String size, String description, Double startingPrice) {
 		this.name = name;
 		this.publishDate = publishDate;
 		this.expireDate = expireDate;

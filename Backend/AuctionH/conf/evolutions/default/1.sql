@@ -56,6 +56,7 @@ create table products (
   color                         varchar(255),
   size                          varchar(255),
   description                   varchar(2048),
+  featured                      boolean,
   constraint pk_products primary key (id)
 );
 

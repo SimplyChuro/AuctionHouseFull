@@ -31,53 +31,61 @@ public class LoginController extends Controller {
 	    		.conjunction()
 	    		.eq("email", jsonNode.findPath("email").textValue())
 	    		.endJunction()
-	    		.findUnique();	    
+	    		.findUnique();	 
 	    
-	    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
-    		
-	    	ArrayNode response;
-    		
-	    	ObjectNode authTokenJson;
-	    	ObjectNode userNode;
-	    	
-	    	if(user.hasAuthToken()) {
-	    		authTokenJson = Json.newObject();
-	    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
+//	    if(user.emailVerified == true) {
+		    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
 	    		
-	    		userNode = Json.newObject();
-	    		userNode.put("userID", user.id);
+		    	ArrayNode response;
 	    		
-	    		response = Json.newArray();
-	    		response.add(authTokenJson);
-	    		response.add(userNode);
-	    		
-	    		return ok(response);
-	    	} else {
-		        String authToken = user.createToken();
-		        
-		        authTokenJson = Json.newObject();
-		        authTokenJson.put(AUTH_TOKEN, authToken);
-		        
-	    		userNode = Json.newObject();
-	    		userNode.put("userID", user.id);
-	    		
-	    		response = Json.newArray();
-	    		response.add(authTokenJson);
-	    		response.add(userNode);
-	    		
-		        return ok(response);
-	        }
-	    	
+		    	ObjectNode authTokenJson;
+		    	ObjectNode userNode;
+		    	
+		    	if(user.hasAuthToken()) {
+		    		authTokenJson = Json.newObject();
+		    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
+		    		
+		    		userNode = Json.newObject();
+		    		userNode.put("userID", user.id);
+		    		
+		    		response = Json.newArray();
+		    		response.add(authTokenJson);
+		    		response.add(userNode);
+		    		
+		    		return ok(response);
+		    	} else {
+			        String authToken = user.createToken();
+			        
+			        authTokenJson = Json.newObject();
+			        authTokenJson.put(AUTH_TOKEN, authToken);
+			        
+		    		userNode = Json.newObject();
+		    		userNode.put("userID", user.id);
+		    		
+		    		response = Json.newArray();
+		    		response.add(authTokenJson);
+		    		response.add(userNode);
+		    		
+			        return ok(response);
+		        }
+//		    } else {
+//	            return badRequest(Json.toJson("In order to login you have to verify your account!"));	
+//		    }
         } else {
-            return notFound();
+            return notFound(Json.toJson(""));
     	}
 	    
 	}
 	
 	@Security.Authenticated(Secured.class)
 	public Result logout() {
-	    getUser().deleteAuthToken();
-	    return ok();
+		Users user = getUser();
+//		if(user.emailVerified == true) {
+			user.deleteAuthToken();
+		    return ok();
+//		} else {
+//            return badRequest();	
+//		}
     }
 
 }

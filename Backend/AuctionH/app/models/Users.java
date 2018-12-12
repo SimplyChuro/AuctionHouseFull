@@ -97,8 +97,6 @@ public class Users extends Model{
 	public static final Finder<Long, Users> find = new Finder<>(Users.class);
     
 	
-	
-	
 	//	Getters Setters
 	
 	public void setBase() {
@@ -142,6 +140,7 @@ public class Users extends Model{
 		this.setPassword(objectNode.findValue("password").asText());
 		this.update();
 	}
+	
 	
     //Token commands
     
@@ -193,7 +192,7 @@ public class Users extends Model{
 	}
     
 
-	//token based getters	
+	//Token Based Getters	
 	
     public static Users findByAuthToken(String authToken) {
         if (authToken == null) {

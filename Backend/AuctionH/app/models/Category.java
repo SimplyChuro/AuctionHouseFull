@@ -34,7 +34,9 @@ public class Category extends Model{
     
 	public static final Finder<Long, Category> find = new Finder<>(Category.class);
 
-	public Category(@Required String name, @Required Long parent_id, List<ProductCategory> products) {
+	
+	//Constructor	
+	public Category(String name, Long parent_id, List<ProductCategory> products) {
 		this.name = name;
 		this.parent_id = parent_id;
 		this.productcategory = products;

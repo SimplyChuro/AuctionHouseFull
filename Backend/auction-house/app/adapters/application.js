@@ -1,5 +1,4 @@
 import DS from 'ember-data';
-import { computed } from '@ember/object';
 import ENV from 'auction-house/config/environment';
 import config from '../config/environment';
 import Cookies from 'ember-cli-js-cookie';

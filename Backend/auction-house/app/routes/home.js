@@ -4,11 +4,8 @@ export default Route.extend({
   model(){
     return Ember.RSVP.hash({
       categoryList: this.store.findAll('category'),
-      productList: this.store.findAll('product'),
-      productRandom: this.store.findAll('product').then((list) => {
-        const rand = Math.floor(Math.random() * list.get('length'));
-        return list.objectAt(rand);
-      })
+      products: this.store.queryRecord('product', { name: '', category: '', favorite: '', releaseDate: '', expiryDate: '', rating: '' }).then(),
+      productRandom: this.store.findRecord('product', 1)
     })
   }
 });

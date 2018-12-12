@@ -33,7 +33,7 @@
             {{#each model.categoryList as |category|}}
               {{#if (eq category.parent_id null)}}
                 <tr {{action 'toggleDetails' category}} class="product-list-pointer"> 
-                  {{#if (eq parentCategory category.id)}}
+                  {{#if (eq parent_category category.id)}}
                     <div class="category-table-link-v2">
                       {{category.name}}
                       <span class="category-table-link-icon-active">
@@ -53,11 +53,11 @@
                     </div>
                   {{/if}}
                 </tr>        
-                {{#if (eq category.id parentCategory)}}
+                {{#if (eq parent_category category.id)}}
                   {{#each model.categoryList as |subcategory|}}
                     {{#if (eq subcategory.parent_id category.id)}}
-                      <tr class="product-list-pointer" {{action "setSelection" subcategory}} value=selectedItem>
-                        {{#if (eq childCategory subcategory.id)}}
+                      <tr class="product-list-pointer" {{action "selectCategory" subcategory}} value=selectedItem>
+                        {{#if (eq child_category subcategory.id)}}
                           <div class="category-table-link-v3 category-table-link-active">
                             {{subcategory.name}}
                           </div>
@@ -72,7 +72,7 @@
                 {{/if}}
               {{/if}}
             {{/each}} 
-              <tr {{action "setSelection" null}} class="product-list-pointer"> 
+              <tr {{action "selectCategory" null}} class="product-list-pointer"> 
                 <div class="category-table-link-v2">
                   All Categories
                 </div>
@@ -101,7 +101,7 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setColor' 'White'}}>
-              {{#if (eq selectedColor 'White')}}
+              {{#if (eq color 'White')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   White
                 </div>
@@ -112,7 +112,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Black'}}>
-              {{#if (eq selectedColor 'Black')}}
+              {{#if (eq color 'Black')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Black
                 </div>
@@ -123,7 +123,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Blue'}}>
-              {{#if (eq selectedColor 'Blue')}}
+              {{#if (eq color 'Blue')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Blue
                 </div>
@@ -134,7 +134,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Red'}}>
-              {{#if (eq selectedColor 'Red')}}
+              {{#if (eq color 'Red')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Red
                 </div>
@@ -145,7 +145,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Orange'}}>
-              {{#if (eq selectedColor 'Orange')}}
+              {{#if (eq color 'Orange')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Orange
                 </div>
@@ -156,7 +156,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Yellow'}}>
-              {{#if (eq selectedColor 'Yellow')}}
+              {{#if (eq color 'Yellow')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Yellow
                 </div>
@@ -167,7 +167,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setColor' 'Green'}}>
-              {{#if (eq selectedColor 'Green')}}
+              {{#if (eq color 'Green')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Green
                 </div>
@@ -189,7 +189,7 @@
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY SIZE</p>
           <tbody>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Small'}}>
-              {{#if (eq selectedSize 'Extra Small')}}
+              {{#if (eq size 'Extra Small')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Extra Small
                 </div>
@@ -200,7 +200,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Small'}}>
-              {{#if (eq selectedSize 'Small')}}
+              {{#if (eq size 'Small')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Small
                 </div>
@@ -211,7 +211,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Medium'}}>
-              {{#if (eq selectedSize 'Medium')}}
+              {{#if (eq size 'Medium')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Medium
                 </div>
@@ -222,7 +222,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Large'}}>
-              {{#if (eq selectedSize 'Large')}}
+              {{#if (eq size 'Large')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Large
                 </div>
@@ -233,7 +233,7 @@
               {{/if}}
             </tr>
             <tr class="product-list-pointer" {{action 'setSize' 'Extra Large'}}>  
-              {{#if (eq selectedSize 'Extra Large')}}
+              {{#if (eq size 'Extra Large')}}
                 <div class="category-table-link-v2 category-table-link-active">
                   Extra Large
                 </div>
@@ -256,12 +256,8 @@
           <div class="product-sort-type-holder">
             <select class="product-list-select" onchange={{action "setSortType" value="target.value"}}>
 
-              <option selected value="default">
-                Default Sorting
-              </option>
-
-              <option value="popularity">
-                Sort by Popularity
+              <option selected value="popularity">
+                Default Sorting - by Popularity
               </option>
 
               <option value="rating-high">
@@ -292,7 +288,7 @@
           </div>
 
           <div class="product-list-type-holder">
-            {{#if (eq selectedListType null)}}
+            {{#if (eq list_type null)}}
               <button class="product-list-button product-list-button-active" {{action 'setListType' null}}>
                 <i class="material-icons">
                   view_module
@@ -323,7 +319,7 @@
         </div>
         <div class="row">
           {{#each filteredProducts as |product|}}
-            {{#if (eq selectedListType 'List')}}
+            {{#if (eq list_type 'List')}}
               <div class="col-lg-12 col-xl-12 fade">
                   <div class="row mb-5">
                     <div class="col-lg-4 col-xl-4">
@@ -340,7 +336,7 @@
                       <p class="product-list-paragraph-v1">{{product.description}}</p>
                       <p class="product-list-price-v1">Starting from {{format-bid product.startingPrice}}</p>
                       <div>
-                        {{#if (is-logged-in)}}
+                        {{#if (is-logged-in session.authToken)}}
                           {{#if wishlistItems}}
                             {{#if (belongs-to-user-wishlist wishlistItems product.id wishlistItems.length wishlist.length)}}
 

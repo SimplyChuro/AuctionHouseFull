@@ -1,1 +1,27 @@
-{{outlet}}
+{{app-header}}
+
+<div class="container-fluid current-route-background">
+  <div class="container">
+    <p class="form-title-text">MAIL VERIFICATION</p>
+  </div>
+</div>
+
+<div class="container-fluid pt-4">
+  <div class="container">
+    <div class="row fade">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <div class="card margin-card">
+          <h1 class="card-title">You've successfully verified your account!</h1>
+          <div class="card-body mr-5 ml-5">
+            <div class="text-center mt-3 mb-5">
+              {{#link-to "login" class="btn-purple-outline-link"}}
+                Login
+              {{/link-to}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

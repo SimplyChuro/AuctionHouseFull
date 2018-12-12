@@ -28,10 +28,9 @@ export default Controller.extend({
         }
       }).then(function(data){
         _this.set('loginHasError', false);
-        swal("Success!", "You have been successfully logged in!", "success");
         _this.transitionToRoute('home');
       }).catch(function(data){
-        swal("Ooops!", "Incorrect email or password", "error");
+        _this.set('loginHasError', true);
       });
     },
 

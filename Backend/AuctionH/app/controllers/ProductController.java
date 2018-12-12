@@ -66,7 +66,8 @@ public class ProductController extends Controller {
 	}
 	
 	//Get products
-	public Result getAll() {
+	public Result getAll(String name, String category, String favorite, String releaseDate,
+							String expiryDate, String rating) {
 		try {
 			List<Products> products = Products.find.all();
 			

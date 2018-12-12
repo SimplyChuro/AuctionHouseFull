@@ -47,10 +47,7 @@ public class Bids extends Model{
 	public static final Finder<Long, Bids> find = new Finder<>(Bids.class);
 
 	
-	
-	//Getter--setters--functions	
-	
-	
+	//Methods
 	public Users getUser() {
 		return user;
 	}
@@ -69,7 +66,7 @@ public class Bids extends Model{
 					highestBid = bid.amount;
 				}
 			}
-		}else {
+		} else {
 			highestBid = product.startingPrice;
 		}
 		

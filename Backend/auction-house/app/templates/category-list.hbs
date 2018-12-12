@@ -12,13 +12,13 @@
       {{#each model.categoryList as |category|}}
         {{#if (eq category.parent_id null)}}
           <div class="col-lg-3 col-xl-3 mt-4 mb-2">
-            {{#link-to "shop.product-list" (query-params parentCategory=category.id) class="category-list-parent-text"}}
+            {{#link-to "shop.product-list" (query-params parent_category=category.id) class="category-list-parent-text"}}
               {{category.name}}
             {{/link-to}}
             {{#each model.categoryList as |subcategory|}}
               {{#if (eq subcategory.parent_id category.id)}}
                 <div>
-                  {{#link-to "shop.product-list" (query-params parentCategory=category.id childCategory=subcategory.id) class="category-list-child-text"}}
+                  {{#link-to "shop.product-list" (query-params parent_category=category.id child_category=subcategory.id) class="category-list-child-text"}}
                     {{subcategory.name}}
                   {{/link-to}}
                 </div>

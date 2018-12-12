@@ -37,6 +37,7 @@ public class Reviews extends Model{
 	@Constraints.Required
 	public Date postDate;
     
+	
     //Foreign Keys
     @ManyToOne 
     public Users user;
@@ -47,17 +48,13 @@ public class Reviews extends Model{
 	public static final Finder<Long, Reviews> find = new Finder<>(Reviews.class);
 	
 	
-	
-	//Getter--setters--functions	
-	
-	
+	//Method	
 	public void createReview(Users user, JsonNode objectNode) {
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
 		
 		this.user = user;
 		postDate = new Date();
-		save();
-		
+		save();	
 	}
 	
 }

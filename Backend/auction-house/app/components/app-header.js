@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
-import { stringSimilarity } from "string-similarity-js";
 import swal from 'sweetalert';
 
 export default Component.extend({
@@ -28,7 +27,7 @@ export default Component.extend({
         _this.set('session.userID', null);
         _this.get('router').transitionTo('index');
         _this.get('store').unloadAll('wishlist');
-        swal("Success!", "You have successfully logged out!", "success");
+        _this.get('store').unloadAll('user');
       });
     },
 
