@@ -57,7 +57,7 @@ DELETE	/api/v1/review/:id				controllers.ReviewController.delete(id : Long)
 
 
 # Product API routes
-GET		/api/v1/products				controllers.ProductController.getAll(name: String, category: String, favorite: String, releaseDate: String, expiryDate: String, rating: String)
+GET		/api/v1/products				controllers.ProductController.getAll(category: Integer, name: String, featured: String, status: String, rating: String)
 GET		/api/v1/products/:id			controllers.ProductController.get(id : Long)
 POST	/api/v1/products				controllers.ProductController.create
 PUT		/api/v1/products/:id			controllers.ProductController.update(id : Long)

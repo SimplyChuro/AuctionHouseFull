@@ -89,7 +89,7 @@ public class Products extends Model{
 	public Products() {}
 	
 	public Products(String name, Date publishDate, Date expireDate,
-			String status, String color, String size, String description, Double startingPrice) {
+			String status, String color, String size, String description, Double startingPrice, Boolean featured) {
 		this.name = name;
 		this.publishDate = publishDate;
 		this.expireDate = expireDate;
@@ -98,7 +98,7 @@ public class Products extends Model{
 		this.color = color;
 		this.size = size;
 		this.description = description;
-		
+		this.featured = featured;
 	}
 	
 }

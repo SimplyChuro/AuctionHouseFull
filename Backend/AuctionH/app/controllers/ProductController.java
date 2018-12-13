@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Products;
+import models.Reviews;
 import models.Sales;
 import models.Category;
 import models.Pictures;
@@ -66,10 +67,87 @@ public class ProductController extends Controller {
 	}
 	
 	//Get products
-	public Result getAll(String name, String category, String favorite, String releaseDate,
-							String expiryDate, String rating) {
+	public Result getAll(Integer category, String name, String featured, String status, String rating) {
 		try {
-			List<Products> products = Products.find.all();
+			List<Products> products = new ArrayList<>();
+			Boolean checker = false;
+			Date currentDate = new Date();
+			
+			if (name != null && !name.isEmpty()) {
+				if (!(category == 0)) {
+					
+					List<ProductCategory> productCategories = ProductCategory.find.query().where()
+							.conjunction()
+							.eq("category_id", category)
+							.endJunction()
+							.findList();
+					
+					for(ProductCategory cat : productCategories) {
+						if(cat.product.name.equals(name) && cat.product.expireDate.after(currentDate)) {
+							products.add(cat.product);
+						}
+					}
+					
+				} else {
+					
+					products = Products.find.query().where()
+							.conjunction()
+							.eq("name", name)
+							.ge("expireDate", currentDate)
+							.endJunction()
+							.orderBy("name asc")
+							.findList();
+				}
+				
+			} else if (!(category == 0)) {
+				
+				List<ProductCategory> productCategories = ProductCategory.find.query().where()
+						.conjunction()
+						.eq("category_id", category)
+						.endJunction()
+						.findList();
+				
+				for(ProductCategory cat : productCategories) {
+					if(cat.product.expireDate.after(currentDate)) {
+						products.add(cat.product);
+					}
+				}
+				
+			} else if (featured != null && !featured.isEmpty()) {
+				
+				products = Products.find.query().where()
+						.conjunction()
+						.eq("featured", true)
+						.ge("expireDate", currentDate)
+						.endJunction()
+						.orderBy("name asc")
+						.findList();
+				
+			} else if (status != null && !status.isEmpty()) {
+				if(status.equals("new")) {
+					
+					products = Products.find.query().where()
+							.conjunction()
+							.ge("expireDate", currentDate)
+							.endJunction()
+							.orderBy("publishDate asc")
+							.findList();
+					
+				} else if(status.equals("ending")) {
+					products = Products.find.query().where()
+							.conjunction()
+							.ge("expireDate", currentDate)
+							.endJunction()
+							.orderBy("expireDate asc")
+							.findList();
+				}
+			} else {
+				products = Products.find.all();
+			}
+			
+			
+			
+			
 			
 			JsonNode filteredProducts = Json.toJson(products);
 			

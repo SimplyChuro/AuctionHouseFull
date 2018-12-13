@@ -34,7 +34,10 @@
   </nav>
   <nav class="navbar navbar-expand-md navbar-white bg-white pt-3 pb-3">
     <div class="container">
-      <p class="title"><img class="logo" src="https://muffin.ml/maki/churo-images/logo/logo.png">AUCTION</p>
+      {{#link-to 'home' class="header-logo-link"}}
+        <p class="title"><img class="logo" src="https://muffin.ml/maki/churo-images/logo/logo.png">AUCTION</p>
+      {{/link-to}}
+      
       <form class="navbar-form navigation-form mr-2">
         {{input type="text" class="header-search-input" value=searchQuery placeholder="Search" name="search"}}  
         <button class="header-search-button" type="submit" {{action 'searchForItem'}}>

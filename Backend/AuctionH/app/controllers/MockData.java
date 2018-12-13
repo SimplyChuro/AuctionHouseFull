@@ -73,7 +73,7 @@ public class MockData {
 		String endDate [] = {
 				"2019-01-01", 
 				"2019-09-23", 
-				"2018-12-05", 
+				"2019-12-05", 
 				"2019-06-11", 
 				"2019-05-17", 
 				"2019-05-17", 
@@ -246,7 +246,7 @@ public class MockData {
 				end = new Date();
 			}
 			
-			product = new Products(name[i], start, end, status[i], color[i], size[i], description[i], startingPrice[i]);
+			product = new Products(name[i], start, end, status[i], color[i], size[i], description[i], startingPrice[i], true);
 			product.save();
 			
 			for(String pic : pictureUrl[i]) {

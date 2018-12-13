@@ -30,66 +30,20 @@ export default Controller.extend({
     return this.get('allWishlistItems');
   }).volatile(),
 
+  products: Ember.computed('name', 'parent_category', 'child_category', function(){
+    var checker = this.get('child_category');
+    if(isEmpty(checker)) {
+      checker = 0;
+    }
+    return this.store.query('product', { name: this.get('name'), category: checker, featured: '', status: '', rating: '' });
+  }),
 
 
   filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'color', 'size', 'sorting', function(){
  
-    var products = this.get('model.productList');
+    var products = this.get('products');
     var _this = this;
     let singleProduct = null;
-
-    if(!(isEmpty(this.get('name')))) {
-      products = products.filter(
-        function(product) { 
-          if(product.name.toLowerCase().includes(_this.get('name').toLowerCase())) {
-            singleProduct = product;
-          } else {
-            singleProduct = null;
-          }
-          return singleProduct;
-        }
-      );
-
-      if(!(isEmpty(products))){
-        _this.set('nameNotFound', false);
-      }
-    }
-
-    if(isEmpty(this.get('name'))){
-      _this.set('nameNotFound', false);
-    }
-
-    if(!(isEmpty(this.get('parent_category'))) && this.get('parent_category') !== 0) {
-      products = products.filter(
-        function(product) { 
-          let categories = product.get('productcategory');
-          categories.forEach(function(item){
-            if((item.get('category').get('parent_id') == _this.get('parent_category'))){
-              singleProduct = product;
-            } else {
-              singleProduct = null;
-            }
-          });
-          return singleProduct;
-        }
-      );
-    }
-
-    if(!(isEmpty(this.get('child_category'))) && this.get('child_category') !== 0) {
-      products = products.filter(
-        function(product) { 
-          let categories = product.get('productcategory');
-          categories.forEach(function(item){
-            if(item.get('category').get('id') == _this.get('child_category')){
-              singleProduct = product;
-            } else {
-              singleProduct = null;
-            }
-          });
-          return singleProduct;
-        }
-      );
-    }
 
     if(!(isEmpty(this.get('color')))) {
       products = products.filter(
@@ -155,10 +109,10 @@ export default Controller.extend({
     var similarityRate = 0;
     var _this = this;
 
-    if(isEmpty(this.get('filteredProducts'))){
-      var products = this.get('model.productList');
+    if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){
+      var categories = this.get('model.categoryList');
       _this.set('closestName', null);
-      products.forEach((item, index) => {
+      categories.forEach((item, index) => {
         if(stringSimilarity(item.name, this.get('name')) > similarityRate){
           similarityRate = stringSimilarity(item.name, this.get('name'));
           nameChecker = item.name;

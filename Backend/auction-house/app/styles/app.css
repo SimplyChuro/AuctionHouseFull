@@ -148,6 +148,10 @@ select {
   padding: 5px 0px 5px 15px;
 }
 
+.header-logo-link:hover{
+  text-decoration: none;
+}
+
 /**/
 
 
