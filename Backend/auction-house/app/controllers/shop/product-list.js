@@ -11,13 +11,17 @@ export default Controller.extend({
   parent_category: null,
   child_category: null,
   sorting: null,
+  minPrice: null,
+  maxPrice: null,
   color: null,
   size: null,
   list_type: null,
   checker: null,
   allWishlistItems: null,
-  closestName: null,
+  closestCategory: null,
   nameNotFound: false,
+
+  startRange:[1, 5000],
 
   wishlist: Ember.computed(function(){
     const store = this.get('store');
@@ -31,15 +35,26 @@ export default Controller.extend({
   }).volatile(),
 
   products: Ember.computed('name', 'parent_category', 'child_category', function(){
-    var checker = this.get('child_category');
-    if(isEmpty(checker)) {
-      checker = 0;
+    var categoryChecker;
+
+    if(isEmpty(this.get('parent_category'))) {
+      categoryChecker = 0;
+    } else {
+      if(isEmpty(this.get('child_category'))) {
+        categoryChecker = this.get('parent_category');
+      } else {
+        categoryChecker = this.get('child_category');
+      }
     }
-    return this.store.query('product', { name: this.get('name'), category: checker, featured: '', status: '', rating: '' });
+
+    var nameChecker = this.get('name');
+    if(isEmpty(nameChecker)) {
+      nameChecker = '';
+    }
+    return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-
-  filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'color', 'size', 'sorting', function(){
+  filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', function(){
  
     var products = this.get('products');
     var _this = this;
@@ -71,58 +86,45 @@ export default Controller.extend({
       );
     }
 
-    if(this.get('sorting') == 'popularity'){
-      return products.sortBy('bids.length').reverse();
-    }
+    if(!(isEmpty(this.get('minPrice'))) && !(isEmpty(this.get('maxPrice')))) {
+      products = products.filter(
+        function(product) { 
+          console.log(_this.get('maxPrice'));
 
-    if(this.get('sorting') == 'rating-high'){
-      return products.sortBy('averageScore').reverse();
-    }
-
-    if(this.get('sorting') == 'rating-low'){
-      return products.sortBy('averageScore');
-    }
-
-    if(this.get('sorting') == 'newest'){
-      return products.sortBy('publishDate');
-    }
-
-    if(this.get('sorting') == 'oldest'){
-      return products.sortBy('expireDate');
-    }
-
-    if(this.get('sorting') == 'price-low'){
-      return products.sortBy('startingPrice');
-    }
-
-    if(this.get('sorting') == 'price-high'){
-      return products.sortBy('startingPrice').reverse();
+          if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
+            singleProduct = product;
+          } else {
+            singleProduct = null;
+          }
+          return singleProduct;
+        }
+      );
     }
 
     return products;
 
   }),
 
-  productNameErrorMessage: Ember.computed('filteredProducts', function(){
+  productSearchErrorMessage: Ember.computed('filteredProducts', function(){
 
-    var nameChecker = null;
+    var categoryChecker = null;
     var similarityRate = 0;
     var _this = this;
 
     if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){
       var categories = this.get('model.categoryList');
-      _this.set('closestName', null);
+      _this.set('closestCategory', null);
       categories.forEach((item, index) => {
         if(stringSimilarity(item.name, this.get('name')) > similarityRate){
           similarityRate = stringSimilarity(item.name, this.get('name'));
-          nameChecker = item.name;
-          _this.set('closestName', nameChecker);
+          _this.set('closestCategory', item);
         }
       });
-
-      _this.set('nameNotFound', true);
-    
+        _this.set('nameNotFound', true);
+      } else {
+        _this.set('nameNotFound', false);
       }
+
       return _this.get('nameNotFound');
   }),
 
@@ -131,11 +133,17 @@ export default Controller.extend({
 
       if(category.id !== this.get('parent_category')){
         this.set('parent_category', category.id);
+        this.set('child_category', null);
       } else {
         this.set('parent_category', null);
         this.set('child_category', null);
       }
 
+    },
+
+    sliderChanged: function(value) {
+      this.set('minPrice', value[0]);
+      this.set('maxPrice', value[1]);
     },
 
     selectCategory: function(selected) {
@@ -187,10 +195,9 @@ export default Controller.extend({
       this.set('color', undefined); 
       this.set('size', undefined); 
       this.set('list_type', undefined); 
-      this.set('closestName', null); 
+      this.set('closestCategory', null); 
       this.set('checker', null);
       this.set('allWishlistItems', null);
-      this.set('closestName', null);
       this.set('nameNotFound', false);
     }
   }

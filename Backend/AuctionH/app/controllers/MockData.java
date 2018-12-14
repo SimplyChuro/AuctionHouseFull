@@ -267,10 +267,16 @@ public class MockData {
 					.endJunction()
 			        .findUnique();
 			
-			ProductCategory productCategoryLink = new ProductCategory();
-			productCategoryLink.category = childCategory;
-			productCategoryLink.product = product;
-			productCategoryLink.save();
+			ProductCategory productCategoryLinkParent = new ProductCategory();
+			ProductCategory productCategoryLinkChild = new ProductCategory();
+			
+			productCategoryLinkChild.category = childCategory;
+			productCategoryLinkChild.product = product;
+			productCategoryLinkChild.save();
+			
+			productCategoryLinkParent.category = category;
+			productCategoryLinkParent.product = product;
+			productCategoryLinkParent.save();
 		}
 		
 	}

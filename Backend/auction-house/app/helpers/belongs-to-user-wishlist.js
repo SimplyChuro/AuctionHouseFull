@@ -10,7 +10,6 @@ export default Ember.Helper.extend({
     wishlist.forEach((item, index) => {
       if(item.product.get('id') == productID){
         checker = item;
-        console.log(item.product.get('id'))
       }
     });
 

@@ -67,7 +67,6 @@ export default Controller.extend({
 
       user.validate().then(({ validations }) => {
         if(validations.get('isValid')) {
-
           user.save().then(function(){
             _this.set('hasError', false);
             _this.get('flashMessages').success('Updated Profile!');

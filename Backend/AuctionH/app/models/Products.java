@@ -61,7 +61,6 @@ public class Products extends Model{
 	@Constraints.Required
 	public Boolean featured;
 	
-	
 	//Foreign Keys
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")

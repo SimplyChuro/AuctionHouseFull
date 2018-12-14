@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
+import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
-import swal from 'sweetalert';
 
 export default Controller.extend({
   session: Ember.inject.service(),
@@ -26,10 +26,10 @@ export default Controller.extend({
           _this.set('session.authToken', data[0].authToken);
           _this.set('session.userID', data[1].userID);
         }
-      }).then(function(data){
+      }).then(function(){
         _this.set('loginHasError', false);
         _this.transitionToRoute('home');
-      }).catch(function(data){
+      }).catch(function(){
         _this.set('loginHasError', true);
       });
     },

@@ -1,10 +1,11 @@
 import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
 export default Route.extend({
   session: Ember.inject.service(),
 
   model(){
-    return Ember.RSVP.hash({
+    return hash({
       user: this.store.findRecord('user', this.get('session').userID, { reload: true }),
     })
   },
@@ -21,5 +22,11 @@ export default Route.extend({
     this.controllerFor('account/profile').set('zipCode', model.user.address.get('zipCode'));
     this.controllerFor('account/profile').set('state', model.user.address.get('state'));
     this.controllerFor('account/profile').set('country', model.user.address.get('country'));
+  },
+
+  actions: {
+    refresh: function() {
+      this.refresh();
+    }
   }
 });

@@ -1,25 +1,27 @@
 <div class="container-fluid current-route-background mb-4">
   <div class="container">
-
-    {{#if productNameErrorMessage}}
-      {{#if (eq closestName null)}}
-        <p class="search-error-text fade">
-          Ooops! It would seem that there are no similar matches to that item
-        </p>
-      {{else}}
-        <p class="search-error-text fade">
-          Did you mean?
-          <span class="pl-3">
-            {{#link-to 'shop.product-list' (query-params name=closestName) class="search-error-text-highlight"}}
-              {{closestName}}
-            {{/link-to}}
-          </span>
-        </p>
-      {{/if}}
-    {{else}}
+    {{#if filteredProducts}}
       <p class="form-title-text">SHOP<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   ALL CATEGORIES</span></p>
+    {{else}}
+      {{#if productSearchErrorMessage}}
+        {{#if (eq closestCategory null)}}
+          <p class="search-error-text fade">
+            Ooops! It would seem that there are no similar matches to that item
+          </p>
+        {{else}}
+          <p class="search-error-text fade">
+            Did you mean?
+            <span class="pl-3">
+              {{#link-to 'shop.product-list' (query-params name='' parent_category=closestCategory.id) class="search-error-text-highlight"}}
+                {{closestCategory.name}}
+              {{/link-to}}
+            </span>
+          </p>
+        {{/if}}
+      {{else}}
+        <p class="form-title-text">SHOP<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   ALL CATEGORIES</span></p>
+      {{/if}}
     {{/if}}
-
   </div>
 </div>
 
@@ -80,22 +82,21 @@
           </tbody>
         </table>
 
-        <!--
+    
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY PRICE</p>
           <tbody>          
             <div class="category-table-link-v4">
-                {{range-slider start=0
-                  min=0
-                  max=100
-                  connect=true
-                  on-change="sliderChanged"
-                }}
-
+              {{range-slider start=startRange
+                step=1
+                min=0
+                max=5000
+                on-set="sliderChanged"
+              }}
             </div>
           </tbody>
         </table> 
-        -->
+       
 
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY COLOR</p>
@@ -319,7 +320,7 @@
         </div>
         <div class="row">
           {{#if filteredProducts}}
-            {{#each filteredProducts as |product|}}
+            {{#each (product-sort filteredProducts sorting) as |product|}}
               {{#if (eq list_type 'List')}}
                 <div class="col-lg-12 col-xl-12 fade">
                     <div class="row mb-5">

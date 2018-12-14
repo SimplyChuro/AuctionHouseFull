@@ -33,9 +33,8 @@ public class LoginController extends Controller {
 	    		.endJunction()
 	    		.findUnique();	 
 	    
-	    if(user.emailVerified == true) {
-		    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
-	    		
+	    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
+		    if(user.emailVerified == true) {
 		    	ArrayNode response;
 	    		
 		    	ObjectNode authTokenJson;
@@ -69,7 +68,7 @@ public class LoginController extends Controller {
 			        return ok(response);
 		        }
 		    } else {
-	            return badRequest(Json.toJson("In order to login you have to verify your account!"));	
+	            return badRequest();	
 		    }
         } else {
             return notFound(Json.toJson(""));

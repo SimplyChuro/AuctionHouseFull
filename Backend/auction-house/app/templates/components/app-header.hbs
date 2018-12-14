@@ -39,7 +39,7 @@
       {{/link-to}}
       
       <form class="navbar-form navigation-form mr-2">
-        {{input type="text" class="header-search-input" value=searchQuery placeholder="Search" name="search"}}  
+        {{input type="text" class="header-search-input" value=searchQuery placeholder="Search" name="search" autocomplete="off"}}  
         <button class="header-search-button" type="submit" {{action 'searchForItem'}}>
           <i class="material-icons">
             search

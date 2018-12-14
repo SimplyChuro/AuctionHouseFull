@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
-import swal from 'sweetalert';
 
 export default Component.extend({
   session: Ember.inject.service(),
