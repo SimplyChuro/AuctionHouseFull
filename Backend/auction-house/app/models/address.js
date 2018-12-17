@@ -3,7 +3,6 @@ import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
 
-
   user: validator('belongs-to'),
 
   // street: validator('presence', {

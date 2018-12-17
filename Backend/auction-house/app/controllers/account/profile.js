@@ -1,6 +1,8 @@
 import Controller from '@ember/controller';
+import { isEmpty } from '@ember/utils';
 
 export default Controller.extend({ 
+  store: Ember.inject.service(),
   selectedOption: null,
 
   hasError: null,
@@ -32,6 +34,69 @@ export default Controller.extend({
   countryHasError: null,
   countryErrorMessage: null,
 
+  customValidation: function(){
+    var checker = true;
+
+    if(this.get('phoneNumber').length != 0 && this.get('phoneNumber').trim().length == 0) {
+      this.set('phoneNumberHasError', true);
+      this.set('phoneNumberErrorMessage', 'Phone can not be blank');
+      checker = false;
+    } else {
+      this.set('streetHasError', false);
+    }
+
+    if(this.get('street').length != 0 && this.get('street').trim().length == 0) {
+      this.set('streetHasError', true);
+      this.set('streetErrorMessage', 'Street can not be blank');
+      checker = false;
+    } else {
+      this.set('streetHasError', false);
+    }
+
+    if(this.get('street').length != 0 && this.get('street').trim().length == 0) {
+      this.set('streetHasError', true);
+      this.set('streetErrorMessage', 'Street can not be blank');
+      checker = false;
+    } else {
+      this.set('streetHasError', false);
+    }
+
+    if(this.get('city').length != 0 && this.get('city').trim().length == 0) {
+      this.set('cityHasError', true);
+      this.set('cityErrorMessage', 'City can not be blank');
+      checker = false;
+    } else {
+      this.set('cityHasError', false);
+    }
+
+    if(this.get('zipCode').length != 0 && this.get('zipCode').trim().length == 0) {
+      this.set('zipCodeHasError', true);
+      this.set('zipCodeErrorMessage', 'ZipCode can not be blank');
+      checker = false;
+    } else {
+      this.set('zipCodeHasError', false);
+    }
+
+    if(this.get('state').length != 0 && this.get('state').trim().length == 0) {
+      this.set('stateHasError', true);
+      this.set('stateErrorMessage', 'State can not be blank');
+      checker = false;
+    } else {
+      this.set('stateHasError', false);
+    }
+
+    if(this.get('country').length != 0 && this.get('country').trim().length == 0) {
+      this.set('countryHasError', true);
+      this.set('countryErrorMessage', 'Country can not be blank');
+      checker = false;
+    } else {
+      this.set('countryHasError', false);
+    }
+    
+    return checker;
+
+  },
+
   actions: {
     setSelection: function(selected) {
       this.set('selectedOption', selected)
@@ -40,6 +105,7 @@ export default Controller.extend({
     updateUser: function() {
       let selectedOption = this.get('selectedOption');
       var _this = this;
+
       let user = this.get('model.user');
       let address = this.get('model.user.address');
 
@@ -47,18 +113,24 @@ export default Controller.extend({
       user.set('surname', this.get('surname'));
       user.set('password', "Temporary123!@#");
       user.set('passwordConfirmation', "Temporary123!@#");
-
-      user.set('email', "temp@temp.com");
-      user.set('emailConfirmation', "temp@temp.com");
-
+      user.set('emailConfirmation', user.get('email'));
       user.set('gender', this.get('selectedOption'));
 
       var bd = new Date(this.get('dateOfBirth'));
       bd.setMinutes(bd.getMinutes() - bd.getTimezoneOffset());
-      user.set('dateOfBirth', bd);
 
+      if(!isEmpty(this.get('dateOfBirth'))){
+        user.set('dateOfBirth', bd);  
+      } else {
+        user.set('dateOfBirth', null);
+      }
+      
       user.set('phoneNumber', this.get('phoneNumber'));
-
+      user.set('bids', []);
+      user.set('sales', []);
+      user.set('reviews', []);
+      user.set('wishlist', []);
+   
       address.set('street', this.get('street'));
       address.set('city', this.get('city'));
       address.set('zipCode', this.get('zipCode'));
@@ -67,25 +139,26 @@ export default Controller.extend({
 
       user.validate().then(({ validations }) => {
         if(validations.get('isValid')) {
-          user.save().then(function(){
-            _this.set('hasError', false);
-            _this.get('flashMessages').success('Updated Profile!');
+          if(_this.customValidation()){
+            user.save().then(function(){
+              _this.set('hasError', false);
+              _this.get('flashMessages').success('Updated Profile!');
 
-            _this.set('nameHasError', null);
-            _this.set('surnameHasError', null);
-            _this.set('dateOfBirthHasError', null);
-            _this.set('phoneNumberHasError', null);
-            _this.set('streetHasError', null);
-            _this.set('cityHasError', null);
-            _this.set('zipCodeHasError', null);
-            _this.set('stateHasError', null);
-            _this.set('countryErrorMessage', null);
-          
-          }).catch(function(){
-            _this.set('hasError', true);
-            _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
-          });
-
+              _this.set('nameHasError', null);
+              _this.set('surnameHasError', null);
+              _this.set('dateOfBirthHasError', null);
+              _this.set('phoneNumberHasError', null);
+              _this.set('streetHasError', null);
+              _this.set('cityHasError', null);
+              _this.set('zipCodeHasError', null);
+              _this.set('stateHasError', null);
+              _this.set('countryErrorMessage', null);
+            
+            }).catch(function(){
+              _this.set('hasError', true);
+              _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
+            });
+          }
         } else {
 
           if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null){
@@ -107,34 +180,7 @@ export default Controller.extend({
             this.set('phoneNumberHasError', true);
             this.set('phoneNumberErrorMessage', user.get('validations.attrs.phoneNumber.messages'));
           }
-
-          if(address.get('validations.attrs.street.messages') !== '' && address.get('validations.attrs.street.messages') !== null){
-            this.set('streetHasError', true);
-            this.set('streetErrorMessage', address.get('validations.attrs.street.messages'));
-          }
-    
-          if(address.get('validations.attrs.city.messages') !== '' && address.get('validations.attrs.city.messages') !== null){
-            this.set('cityHasError', true);
-            this.set('cityErrorMessage', address.get('validations.attrs.city.messages'));
-          }
           
-          if(address.get('validations.attrs.zipCode.messages') !== '' && address.get('validations.attrs.zipCode.messages') !== null){
-            this.set('zipCodeHasError', true);
-            this.set('zipCodeErrorMessage', address.get('validations.attrs.dateOfBirth.messages'));
-          }   
-
-          if(address.get('validations.attrs.state.messages') !== '' && address.get('validations.attrs.state.messages') !== null){
-            this.set('stateHasError', true);
-            this.set('stateErrorMessage', address.get('validations.attrs.state.messages'));
-          }
-          
-          if(address.get('validations.attrs.country.messages') !== '' && address.get('validations.attrs.country.messages') !== null){
-            this.set('countryHasError', true);
-            this.set('countryErrorMessage', address.get('validations.attrs.country.messages'));
-          }
-
-          validations.get('errors');
-
           _this.set('hasError', true); 
           _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
         }

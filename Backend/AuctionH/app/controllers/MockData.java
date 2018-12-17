@@ -9,10 +9,21 @@ import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
+import models.Users;
 
 public class MockData {
 	
 	public void create() {
+		
+		Users admin = new Users();
+		
+		admin.name = "supremeleader";
+		admin.surname= "best";
+		admin.setEmail("supreme@leader.com");
+		admin.setPassword("SupremeLeader123!@#");
+		admin.setEmailVerified(true);
+		admin.admin = true;
+		admin.save();
 		
 		//Base objects		
 		Category category, childCategory;

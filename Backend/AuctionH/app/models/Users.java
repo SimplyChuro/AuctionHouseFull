@@ -70,12 +70,16 @@ public class Users extends Model{
 	@Formats.DateTime(pattern="dd/MM/yyyy")
 	@Constraints.Required
   	public Date dateOfBirth;
-
+	
+	@Column(length = 256, unique = true)
   	@Constraints.Required
   	public String phoneNumber;
       
     @Constraints.Required
    	public Boolean phoneVerified;
+    
+    @Constraints.Required
+   	public Boolean admin;
     
 	//Foreign Keys
 
@@ -101,30 +105,41 @@ public class Users extends Model{
 	
 	public void setBase() {
 		emailVerified = false;
+		admin = false;
 		save();
-		address = new Address();
+		address = new Address("", "", "", "", "");
 		address.user = this;
 		address.save();
 	}
 	
 	public void updateUser(JsonNode objectNode) {
-		this.gender = objectNode.findPath("gender").asText();
-
 		this.name = objectNode.findPath("name").asText();
 		this.surname = objectNode.findPath("surname").asText();
 		
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-		
-		try {
-			TimeZone timeZone;
-			timeZone = TimeZone.getTimeZone("GMT+0:00");
-			TimeZone.setDefault(timeZone);
-			this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
-		} catch(Exception e) {
-			e.printStackTrace();
+		if(objectNode.findPath("gender").asText() != null || !(objectNode.findPath("gender").asText().equals("null"))) {
+			this.gender = objectNode.findPath("gender").asText();	
 		}
 		
-		this.phoneNumber = objectNode.findPath("phoneNumber").asText();
+		if(objectNode.findPath("dateOfBirth").asText() != null || !(objectNode.findPath("dateOfBirth").asText().equals("null"))) {
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+			
+			try {
+				TimeZone timeZone;
+				timeZone = TimeZone.getTimeZone("GMT+0:00");
+				TimeZone.setDefault(timeZone);
+				this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.dateOfBirth = null;
+		}
+		
+		if(objectNode.findPath("phoneNumber").asText() != null || !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
+			this.phoneNumber = objectNode.findPath("phoneNumber").asText();
+		} else {
+			this.phoneNumber = "";
+		}
 		
 		this.update();
 		this.address.updateAddress(

@@ -94,9 +94,11 @@ create table users (
   avatar                        varchar(255),
   gender                        varchar(255),
   date_of_birth                 timestamptz,
-  phone_number                  varchar(255),
+  phone_number                  varchar(256),
   phone_verified                boolean,
+  admin                         boolean,
   constraint uq_users_email unique (email),
+  constraint uq_users_phone_number unique (phone_number),
   constraint pk_users primary key (id)
 );
 

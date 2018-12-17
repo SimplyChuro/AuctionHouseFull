@@ -3,6 +3,7 @@ import { hash } from 'rsvp';
 
 export default Route.extend({
   session: Ember.inject.service(),
+  store: Ember.inject.service(),
 
   model(){
     return hash({
@@ -22,11 +23,5 @@ export default Route.extend({
     this.controllerFor('account/profile').set('zipCode', model.user.address.get('zipCode'));
     this.controllerFor('account/profile').set('state', model.user.address.get('state'));
     this.controllerFor('account/profile').set('country', model.user.address.get('country'));
-  },
-
-  actions: {
-    refresh: function() {
-      this.refresh();
-    }
   }
 });

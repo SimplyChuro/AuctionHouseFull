@@ -8,17 +8,22 @@ const Validations = buildValidations({
   name: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "First Name should not be empty"
+    message: "First Name can not be empty"
   }),
 
   surname: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Last Name should not be empty"
+    message: "Last Name can not be empty"
   }),
 
   email: [ 
-    validator('presence', true),
+    validator('presence', {
+      presence: true,
+      ignoreBlank: true,
+      message: "E-mail can not be empty"
+    }),
+    
     validator('format', { type: 'email' })
   ],
 
@@ -65,9 +70,9 @@ export default DS.Model.extend(Validations, {
   dateOfBirth: DS.attr('date'),
   phoneNumber: DS.attr('string'),
   phoneVerified: DS.attr('boolean'),
-  address: DS.belongsTo('address'),
-  wishlist: DS.hasMany('wishlist'),
-  bids: DS.hasMany('bid'),
-  sales: DS.hasMany('sale'),
-  reviews: DS.hasMany('review')
+  address: DS.belongsTo('address', { async: false }),
+  wishlist: DS.hasMany('wishlist', { async: false }),
+  bids: DS.hasMany('bid', { async: false }),
+  sales: DS.hasMany('sale', { async: false }),
+  reviews: DS.hasMany('review', { async: false })
 });

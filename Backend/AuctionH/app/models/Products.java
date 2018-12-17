@@ -57,7 +57,7 @@ public class Products extends Model{
 	@Column(columnDefinition = "varchar(2048)")
 	@Constraints.Required
 	public String description;
-	
+
 	@Constraints.Required
 	public Boolean featured;
 	
