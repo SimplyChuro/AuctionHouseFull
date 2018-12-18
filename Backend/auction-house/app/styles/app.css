@@ -215,6 +215,17 @@ select {
 	margin-bottom: 200px;
 }
 
+.bottom-margin-255{
+  margin-bottom: 255px;
+}
+
+.bottom-margin-265{
+  margin-bottom: 265px;
+}
+
+.bottom-margin-275{
+  margin-bottom: 275px;
+}
 
 .bottom-margin-300{
 	margin-bottom: 300px;
@@ -1580,6 +1591,121 @@ select {
 
 /**/
 
+
+
+/*Sale Item*/
+.sale-item-label-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.sale-item-next-button{
+  background: #FFFFFF;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  padding: 10px 35px 10px 45px;
+  float: right;
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.sale-item-next-button:hover{
+  text-decoration: none;
+  color: #8367D8;
+}
+
+.sale-item-back-button{
+  background: #FFFFFF;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  padding: 10px 45px 10px 35px;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.sale-item-back-button:hover{
+  text-decoration: none;
+  color: #8367D8;
+}
+
+.sale-item-product-name-guide-text{
+  font-size: 16px;
+  float: right;
+  color: #9B9B9B;
+  letter-spacing: 0.56px;
+  text-align: right;
+}
+
+.sale-item-category-holder{
+  width: 50%;
+}
+
+.sale-item-select{
+  background: #FFFFFF;
+  border: 3px solid #ECECEC;
+  padding: 10px 35px 10px 15px;
+  width: 100%;
+  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 13% no-repeat #ffff;
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.sale-item-description-text-area{
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8;
+}
+
+.sale-item-price-input-holder{
+  background: #FFFFFF;
+  border: 1px solid #D8D8D8;
+  border-radius: 5px;
+}
+
+.sale-item-price-input{
+  border: none;
+  width: 100%;
+}
+
+.sale-item-text-addition{
+  font-size: 16px;
+  color: #9B9B9B;
+  letter-spacing: 0.56px;
+  line-height: 30px;
+}
+
+.sale-item-checkbox-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+  line-height: 26px;
+}
+.sale-item-checkbox-additional-text{
+  width: 65%;
+  padding: 0px 0px 0px 20px;
+  font-size: 18px;
+  color: #9B9B9B;
+  letter-spacing: 0.63px;
+  line-height: 26px;
+}
+
+.sale-item-checkbox{
+  float: left;
+}
+
+.full-width{
+  width: 100%;
+}
+
+/**/
 
 
 /*footer links design*/

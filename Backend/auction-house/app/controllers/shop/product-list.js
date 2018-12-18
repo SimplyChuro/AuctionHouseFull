@@ -54,7 +54,7 @@ export default Controller.extend({
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-  filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', function(){
+  filteredProducts: Ember.computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', function(){
  
     var products = this.get('products');
     var _this = this;

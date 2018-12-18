@@ -9,10 +9,6 @@ export default Route.extend({
   },
 
   actions: {
-    refresh: function() {
-      this.refresh();
-    },
-    
     willTransition: function() {
       this.controllerFor('shop/product-list').send('clearFields');
     }

@@ -14,11 +14,13 @@
           </div>
         </div>
       {{else}}
-        <div class="container-fluid sp-bidder-losing-holder fade">
-          <div class="container">
-            <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
+        {{#if (user-has-bid sortedBids)}}
+          <div class="container-fluid sp-bidder-losing-holder fade">
+            <div class="container">
+              <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
+            </div>
           </div>
-        </div>
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/each}}
