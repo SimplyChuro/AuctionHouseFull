@@ -1,4 +1,4 @@
-name := """play-java-starter-example"""
+name := """auction"""
 
 version := "1.0-SNAPSHOT"
 
@@ -16,9 +16,10 @@ libraryDependencies += "org.awaitility" % "awaitility" % "2.0.0" % Test
 
 lazy val myProject = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
-// Database configuration
+// Database
 libraryDependencies += javaJdbc
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.5"
+libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 
 // Make verbose tests
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))

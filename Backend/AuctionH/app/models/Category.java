@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.validation.Constraints.Required;
 import play.libs.Json;
 
 @Entity
@@ -28,9 +29,15 @@ public class Category extends Model{
  	public Long parent_id;
 	
     //Foreign Keys
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="category") 
-    public List<ProductCategory> products;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="category") @JsonIgnore
+    public List<ProductCategory> productcategory;
     
 	public static final Finder<Long, Category> find = new Finder<>(Category.class);
-	
+
+	public Category(@Required String name, @Required Long parent_id, List<ProductCategory> products) {
+		this.name = name;
+		this.parent_id = parent_id;
+		this.productcategory = products;
+	}
+		
 }

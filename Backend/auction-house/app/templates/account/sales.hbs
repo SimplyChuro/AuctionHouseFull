@@ -1,0 +1,99 @@
+<div class="container-fluid current-route-background bottom-margin-50">
+  <div class="container">
+    <p class="form-title-text">SALES<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   SALES</span></p>
+  </div>
+</div>
+
+<div class="container-fluid bottom-margin-62">
+  <div class="container">
+    <div>
+      {{#link-to 'account.profile' class="account-navigation-link"}}
+        {{material-icon "person"}} Profile
+      {{/link-to}}
+      {{#link-to 'account.sales' class="account-navigation-link-active"}}
+        {{material-icon "view_list"}} Sales
+      {{/link-to}}
+      {{#link-to 'account.bids' class="account-navigation-link"}}
+        {{material-icon "gavel"}} Bids
+      {{/link-to}}
+      {{#link-to 'account.wishlist' class="account-navigation-link"}}
+        {{material-icon "card_giftcard"}} Wishlist
+      {{/link-to}}
+      {{#link-to 'account.settings' class="account-navigation-link"}}
+        {{material-icon "settings"}} Settings
+      {{/link-to}}
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bottom-margin-200">
+  <div class="container fade">
+     <div class="account-sales-route-holder">
+      {{#if (eq saleStatus 'active')}}
+        <span class="account-sales-navigation-link-active account-profile-pointer">
+          Active
+        </span>
+        <span class="account-sales-navigation-link account-profile-pointer" {{action 'setSaleStatus' 'sold'}}>
+          Sold
+        </span>
+      {{else}}
+        <span class="account-sales-navigation-link account-profile-pointer" {{action 'setSaleStatus' 'active'}}>
+          Active
+        </span>
+        <span class="account-sales-navigation-link-active account-profile-pointer">
+          Sold
+        </span>
+      {{/if}}
+    </div>
+    <table class="account-bids-table">
+      <tr class="account-bids-table-header">
+        <th class="account-header-text account-bids-table-item text-center">Item</th>
+        <th class="account-header-text account-bids-table-name">Name</th>
+        <th class="account-header-text account-bids-table-time text-center">Time Left</th>
+        <th class="account-header-text account-bids-table-price text-center">Your Price</th>
+        <th class="account-header-text account-bids-table-bids text-center">No. Bids</th>
+        <th class="account-header-text account-bids-table-highest-bid text-center">Highest Bid</th>
+        <th class="account-header-text account-bids-table-button-view text-center"></th>
+      </tr>
+      <div class="mb-2"></div>
+      {{#each model.saleList as |sale|}}
+        {{#unless (eq sale.id null)}}
+          {{#if (eq sale.status saleStatus)}}
+            <tr class="fade">
+              <td class="m-0 p-0">
+                <div class="accout-bids-image-holder">
+                  {{#each bid.product.pictures as |picture index|}}
+                    {{#if (is-main picture null index)}}
+                      <img src="{{picture.url}}" class="account-bid-image">
+                    {{/if}}
+                  {{/each}}
+                </div>
+              </td>
+              <td class="account-header-text account-bids-table-name"> 
+                <span class="account-product-name">{{sale.product.name}}</span>
+                <br>
+                <span class="account-product-id">#{{sale.product.id}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{duration sale.product.publishDate sale.product.expireDate}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{format-bid sale.amount}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{sale.product.bidCount}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{format-bid sale.product.mainBid}}</span>
+              </td>
+              <td>
+                {{#link-to 'shop.single-product' sale.product.id class="account-bids-button"}}VIEW{{/link-to}}
+              </td>
+            </tr>
+          {{/if}}
+        {{/unless}}
+      {{/each}}
+      <div class="mb-4"></div>
+    </table>
+  </div>
+</div>

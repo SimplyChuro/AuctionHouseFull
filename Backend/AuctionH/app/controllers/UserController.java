@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Iterator;
+import play.data.validation.*;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import jdk.nashorn.internal.objects.annotations.Where;
 import models.Products;
@@ -19,74 +21,71 @@ import models.Bids;
 import models.Sales;
 import models.Wishlists;
 import models.Users;
-
-import play.mvc.Controller;
-import play.mvc.Result;
 import play.data.Form;
 import play.data.FormFactory;
+import play.data.validation.Constraints;
 import play.libs.Json;
+import play.mvc.*;
 
 public class UserController extends Controller {
 	
 	//API GET all users  ------ Testing only
-	public Result users() {
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
 		try {
 			List<Users> users = Users.find.all();
 			return ok(Json.toJson(users));
-		}catch(Exception e) {
+		} catch(Exception e) {
+			return notFound();
+		}
+	}
+
+	//get user
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
+		try {
+			Users user = LoginController.getUser();
+			return ok(Json.toJson(user));
+		} catch(Exception e) {
 			return notFound();
 		}
 	}
 	
-	//Create user
+	//create user	
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			try {
-				Users userChecker = Users.find.query().where().conjunction().eq("email", jsonNode.findPath("email").textValue()).endJunction().findList().get(0);
+			JsonNode objectNode = request().body().asJson().get("user");
+			
+			Users userChecker = Users.find.query().where()
+					.conjunction()
+					.eq("email", objectNode.findPath("email").textValue())
+					.endJunction()
+					.findUnique();
+			
+			if(userChecker != null) {
 				return badRequest();
-			}catch(Exception e) {
-				Users user = Json.fromJson(jsonNode, Users.class);
-				user.emailVerified = false;
-				user.save();
-				user.address = new Address();
-				user.address.user = user;
-				user.address.save();
-				return ok();
+			} else {
+				Users user = Json.fromJson(objectNode, Users.class);
+				user.setPassword(objectNode.findValue("password").asText());
+				user.setBase();
+				return ok(Json.toJson(user));
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
 	//Update user
-	public Result update() {
+	@Security.Authenticated(Secured.class)
+	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			try {
-				Users userChecker = Users.find.query().where().conjunction().eq("email", jsonNode.findPath("email").textValue()).endJunction().findList().get(0);
-				userChecker = Json.fromJson(jsonNode, Users.class);
-				userChecker.address.update();
-				userChecker.update();
-				return ok();
-			}catch(Exception e) {
-				return badRequest();
-			}
-		}catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
-	//Verify Login, return user
-	public Result login() {
-		try {
-			JsonNode jsonNode = request().body().asJson();
-			Users user = Users.find.query().where().conjunction().eq("email", jsonNode.findPath("email").textValue()).eq("password", jsonNode.findPath("password").textValue()).endJunction().findList().get(0);
-			
+			JsonNode objectNode = request().body().asJson().get("user");
+			Users user = LoginController.getUser();
+			user.updateUser(objectNode);
 			return ok(Json.toJson(user));
-		}catch(Exception e){
-			return notFound();
+			
+		} catch(Exception e) {
+			return badRequest();
 		}
 	}
 
@@ -95,17 +94,44 @@ public class UserController extends Controller {
 		try {
 			Users user = Users.find.byId(id);
 		
-			if(!user.emailVerified) {
-				user.emailVerified = true;
+			if(!user.getEmailVerified()) {
+				user.setEmailVerified(true);
 				user.update();
 				
 				return ok();
-			}else {
+			} else {
 				return notFound();
+			}
+		} catch(Exception e) {
+			return badRequest();
+		}
+	} 	
+	
+	//reset password not finished
+	public Result reset() {
+		try {
+			JsonNode objectNode = request().body().asJson();
+			Users userChecker = Users.find.query().where()
+					.conjunction()
+					.eq("email", objectNode.findPath("email").textValue())
+					.endJunction()
+					.findUnique();
+			
+			if(userChecker != null) {
+//
+//				Email email = new Email()
+//				        .setSubject("Simple email")
+//				        .setFrom("t***f@gmail.com")
+//				        .addTo("d****i@gmail.com")
+//				        .setBodyText("A text message");
+//				Mail.send(email); 
+				return ok();
+			} else {
+				return badRequest();
 			}
 		}catch(Exception e) {
 			return badRequest();
 		}
-	} 		
+	} 
 	
 }

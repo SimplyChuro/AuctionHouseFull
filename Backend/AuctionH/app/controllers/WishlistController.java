@@ -1,70 +1,122 @@
 package controllers;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
+import models.Bids;
 import models.Products;
+import models.Sales;
 import models.Users;
 import models.Wishlists;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 
 public class WishlistController extends Controller{
 
-	//Create wishlist
+	//Get sale not in usage
+	@Security.Authenticated(Secured.class)
+	public Result get(Long id) {
+		try {
+			Users user = LoginController.getUser();
+			Wishlists wishlist = Wishlists.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", id)
+					.endJunction()
+					.findUnique();
+			
+			return ok(Json.toJson(wishlist));
+		} catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Get sales
+	@Security.Authenticated(Secured.class)
+	public Result getAll() {
+		try {
+			Users user = LoginController.getUser();
+			List<Wishlists> wishlist = user.wishlists;
+			return ok(Json.toJson(wishlist));
+		} catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Create or Update wishlist
+	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
+			JsonNode objectNode = request().body().asJson().get("wishlist");
+			Users user = LoginController.getUser();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
-				return badRequest();
-			}catch(Exception e) {
-				Wishlists wishlistItem = Json.fromJson(jsonNode, Wishlists.class);
-				wishlistItem.user = Users.find.byId(jsonNode.findPath("user_id").asLong());
-				wishlistItem.product = Products.find.byId(jsonNode.findPath("product_id").asLong());
-				wishlistItem.save();
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", user.id)
+					.eq("product_id", objectNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
+			if(wishlistChecker != null) {
+				wishlistChecker.updateWishlist(objectNode);
+				return ok();
+			} else {
+				wishlistChecker = Json.fromJson(objectNode, Wishlists.class);
+				wishlistChecker.createWishlist(user, objectNode);
 				return ok();
 			}
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}	
 	
 	//Update wishlist
-	public Result update() {
+	@Security.Authenticated(Secured.class)
+	public Result update(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();
+			
+			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.update();
 				return ok();
-			}catch(Exception e) {
+			} else {
 				return badRequest();
 			}
 			
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
 	//Delete wishlist
-	public Result delete() {
+	@Security.Authenticated(Secured.class)
+	public Result delete(Long id) {
 		try {
 			JsonNode jsonNode = request().body().asJson();
 			
-			try {
-				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction().eq("user_id", jsonNode.findPath("user_id").asLong()).eq("product_id", jsonNode.findPath("product_id").asLong()).endJunction().findList().get(0);
+			Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
+					.eq("user_id", jsonNode.findPath("user_id").asLong())
+					.eq("product_id", jsonNode.findPath("product_id").asLong())
+					.endJunction()
+					.findUnique();	
+			
+			if(wishlistChecker != null) {
 				wishlistChecker = Json.fromJson(jsonNode, Wishlists.class);
 				wishlistChecker.delete();
 				return ok();
-			}catch(Exception e) {
+			} else {
 				return badRequest();
 			}
 			
-		}catch(Exception e){
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

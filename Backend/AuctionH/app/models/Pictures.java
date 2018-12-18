@@ -21,15 +21,19 @@ public class Pictures extends Model{
 	public Long id;
 		
     @Constraints.Required
-	public String name;
-    
-    @Constraints.Required
-  	public String directory;
+	public String url;
     
     //Foreign Keys
     @ManyToOne @JsonIgnore
     public Products product;
     
 	public static final Finder<Long, Pictures> find = new Finder<>(Pictures.class);
+
+	public Pictures() {}
+	
+	public Pictures(@Required String url, Products product) {
+		this.url = url;
+		this.product = product;
+	}
 	
 }
