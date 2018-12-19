@@ -80,6 +80,7 @@ create table sales (
   status                        varchar(255),
   user_id                       bigint,
   product_id                    bigint,
+  constraint uq_sales_product_id unique (product_id),
   constraint pk_sales primary key (id)
 );
 
@@ -137,7 +138,6 @@ alter table sales add constraint fk_sales_user_id foreign key (user_id) referenc
 create index ix_sales_user_id on sales (user_id);
 
 alter table sales add constraint fk_sales_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
-create index ix_sales_product_id on sales (product_id);
 
 alter table wishlists add constraint fk_wishlists_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
 create index ix_wishlists_user_id on wishlists (user_id);
@@ -175,7 +175,6 @@ alter table if exists sales drop constraint if exists fk_sales_user_id;
 drop index if exists ix_sales_user_id;
 
 alter table if exists sales drop constraint if exists fk_sales_product_id;
-drop index if exists ix_sales_product_id;
 
 alter table if exists wishlists drop constraint if exists fk_wishlists_user_id;
 drop index if exists ix_wishlists_user_id;

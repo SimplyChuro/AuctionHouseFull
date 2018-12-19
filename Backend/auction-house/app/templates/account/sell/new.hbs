@@ -8,14 +8,14 @@
             <h1 class="card-title">Detailed Information about the Product</h1>
             <div class="card-body mr-4 ml-4">
               <form autocomplete="off" method="POST">
-                <div class="form-group mt-4">
+                <div class="form-group mt-4 mb-0 pb-0">
                   <label class="sale-item-label-text">What do you sell?</label>
-                  {{input type="text" value=name class="form-control form-background-color p-4"}}
-                  <span class="sale-item-product-name-guide-text mt-1">2-5 words (60 characters)</span>
+                  {{input type="text" value=nameInput class="form-control form-background-color p-4 mb-0"}}
                 </div>
-                {{#if nameHasError}}
-                  <div class="validation-error-message fade">
-                    {{nameErrorMessage}}
+                <span class="sale-item-product-name-guide-text mt-1 pt-0">2-5 words (60 characters)</span>
+                {{#if productNameHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{productNameErrorMessage}}
                   </div>
                 {{/if}}
                 
@@ -26,13 +26,24 @@
                         <option disabled selected> Select Category </option>
                         {{#each model.categoryList as |cat|}}
                           {{#if (eq cat.parent_id null)}}
-                            <option value={{cat.id}}>
-                              {{cat.name}}
-                            </option>
+                            {{#if (eq cat.id category)}}
+                              <option value={{cat.id}} selected>
+                                {{cat.name}}
+                              </option>
+                            {{else}}
+                              <option value={{cat.id}}>
+                                {{cat.name}}
+                              </option>
+                            {{/if}}
                           {{/if}}
                         {{/each}}
                       </select>
                     </div>
+                    {{#if categoryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{categoryErrorMessage}}
+                      </div>
+                    {{/if}}         
                   </div>
                   <div class="sale-item-category-holder">
                     <select onchange={{action "setSubCategory" value="target.value"}} class="sale-item-select">
@@ -42,29 +53,45 @@
                         {{else}}
                           {{#each model.categoryList as |cat|}}
                             {{#if (eq category cat.parent_id)}}
-                              <option value={{cat}}>
-                                {{cat.name}}
-                              </option>
+                              {{#if (eq cat.id subCategory)}}
+                                <option value={{cat.id}} selected>
+                                  {{cat.name}}
+                                </option>
+                              {{else}}
+                                <option value={{cat.id}}>
+                                  {{cat.name}}
+                                </option>
+                              {{/if}}
                             {{/if}}
                           {{/each}}
                         {{/if}}
                     </select>
+                    {{#if subCategoryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{subCategoryErrorMessage}}
+                      </div>
+                    {{/if}}
                   </div>
                 </div>
                 <div class="full-width">
                   <label class="mb-1 sale-item-label-text">Description?</label>
-                  <textarea rows="4" cols="50" value=description class="full-width sale-item-description-text-area"></textarea>
+                  {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3"}}
                   <span class="sale-item-product-name-guide-text mt-1">100 words (700 characters)</span>
+                  {{#if descriptionHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{descriptionErrorMessage}}
+                    </div>
+                  {{/if}}
                 </div>
                 <div class="mt-5 bottom-margin-150">
                   {{#link-to "account.sell.entry" class="sale-item-back-button"}}
                     <i class="material-icons">
                       keyboard_arrow_left
                     </i> 
-                    Back
+                    BACK
                   {{/link-to}}
                   <button class="sale-item-next-button" {{action 'setPage' 2}}>
-                    Next
+                    NEXT
                     <i class="material-icons">
                       keyboard_arrow_right
                     </i> 
@@ -89,21 +116,35 @@
             <h1 class="card-title">SET PRICES</h1>
             <div class="card-body mr-4 ml-4">
               <form autocomplete="off" method="POST">
-                <div class="form-group mt-4">
+                <div class="form-group mt-4 mb-0">
                   <label class="sale-item-label-text">Your starting price</label>
-                  {{input type="text" value=startingPrice class="form-control form-background-color p-4"}}
+                  {{input type="text" value=startingPriceInput class="form-control form-background-color mb-0 p-4"}}
                 </div>
-                
+                {{#if startingPriceHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{startingPriceErrorMessage}}
+                  </div>
+                {{/if}}
                 <div class="row p-0 m-0 mt-5 mb-1 full-width">
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
                       <label class="mb-1 sale-item-label-text">Start date</label>
-                      {{bootstrap-datepicker value=startDate placeholder="14/04/2018" class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
                     </div>
+                    {{#if publishDateHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{publishDateErrorMessage}}
+                      </div>
+                    {{/if}}
                   </div>
                   <div class="sale-item-category-holder">
                     <label class="mb-1 sale-item-label-text">End date</label>
-                    {{bootstrap-datepicker value=endDate placeholder="14/04/2025" class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                    {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                    {{#if expiryDateHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{expiryDateErrorMessage}}
+                      </div>
+                    {{/if}}
                   </div>
                 </div>
                 <div class="full-width bottom-margin-100">
@@ -114,10 +155,10 @@
                     <i class="material-icons">
                       keyboard_arrow_left
                     </i> 
-                    Back
+                    BACK
                   </button>
                   <button class="sale-item-next-button"  {{action 'setPage' 3}}>
-                    Next
+                    NEXT
                     <i class="material-icons">
                       keyboard_arrow_right
                     </i> 
@@ -144,60 +185,52 @@
               <form autocomplete="off" method="POST">
                 <div class="form-group mt-4">
                   <label class="sale-item-label-text">Address</label>
-                  {{input type="text" value=address class="form-control form-background-color p-4"}}
+                  {{input type="text" value=addressInput class="form-control form-background-color p-4"}}
                 </div>
-        
+                {{#if addressHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{addressErrorMessage}}
+                  </div>
+                {{/if}}
                 <div class="row p-0 m-0 mt-5 mb-5 full-width">
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
-                      <select onchange={{action "setCategory" value="target.value"}} class="sale-item-select">
-                        <option disabled selected> Select Category </option>
-                     
-                        <option value="female">
-                          Female
-                        </option>
-                      
-                        <!-- {{#if (is-equal model.user.gender 'other')}}
-                          <option value="other" selected>
-                            Other
-                          </option>
-                        {{else}}
-                          <option value="other">
-                            Other
-                          </option>
-                        {{/if}} -->
-
-                      </select>
+                      <label class="sale-item-label-text">City</label>
+                      {{input type="text" value=cityInput class="form-control form-background-color p-4"}}
                     </div>
+                    {{#if cityHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{cityErrorMessage}}
+                      </div>
+                    {{/if}}
                   </div>
                   <div class="sale-item-category-holder">
-                    <select onchange={{action "setCategory" value="target.value"}} class="sale-item-select">
-                      <option disabled selected> Select Category </option>
-                   
-                      <option value="female">
-                        Female
-                      </option>
-                    
-                      <!-- {{#if (is-equal model.user.gender 'other')}}
-                        <option value="other" selected>
-                          Other
-                        </option>
-                      {{else}}
-                        <option value="other">
-                          Other
-                        </option>
-                      {{/if}} -->
-
-                    </select>
+                    <label class="sale-item-label-text">Country</label>
+                    {{input type="text" value=countryInput class="form-control form-background-color p-4"}}
+                    {{#if countryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{countryErrorMessage}}
+                      </div>
+                    {{/if}}
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="sale-item-label-text">Zip Code</label>
-                  {{input type="text" value=zipCode class="form-control form-background-color p-4"}}
+                  {{input type="text" value=zipCodeInput class="form-control form-background-color p-4"}}
+                  {{#if zipCodeHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{zipCodeErrorMessage}}
+                    </div>
+                  {{/if}}
                 </div>
                 <div class="form-group mt-4">
                   <label class="sale-item-label-text">Phone</label>
-                  {{input type="text" value=phone class="form-control form-background-color p-4"}}
+                  {{input type="text" value=phoneInput class="form-control form-background-color p-4"}}
+                  {{#if phoneHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{phoneErrorMessage}}
+                    </div>
+                  {{/if}}
                 </div>
                 <div class="mt-4 bottom-margin-150">
                   <div class="p-0 m-0">
@@ -214,13 +247,10 @@
                     <i class="material-icons">
                       keyboard_arrow_left
                     </i> 
-                    Back
+                    BACK
                   </button>
-                  <button class="sale-item-next-button">
-                    Next
-                    <i class="material-icons">
-                      keyboard_arrow_right
-                    </i> 
+                  <button class="sale-item-done-button" {{action 'create'}}>
+                    DONE
                   </button>
                 </div>
               </form>

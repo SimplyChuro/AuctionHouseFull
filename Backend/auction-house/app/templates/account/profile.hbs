@@ -110,7 +110,7 @@
               <br>
               <label class="account-profile-form-text mt-3">Date of Birth</label>
               <br>
-                {{bootstrap-datepicker value=dateOfBirth class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                {{bootstrap-datepicker value=dateOfBirth autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
               <br>
               {{#if dateOfBirthHasError}}
                 <div class="validation-error-message mb-2 fade">

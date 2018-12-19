@@ -1636,6 +1636,19 @@ select {
   color: #8367D8;
 }
 
+.sale-item-done-button{
+  background: #8367D8;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  padding: 10px 45px 10px 45px;
+  float: right;
+  font-size: 18px;
+  color: #FFFFFF;
+  font-weight: bold;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
 .sale-item-product-name-guide-text{
   font-size: 16px;
   float: right;

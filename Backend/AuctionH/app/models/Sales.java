@@ -44,7 +44,7 @@ public class Sales extends Model{
     @ManyToOne  @JsonIgnore
     public Users user;
     
-    @ManyToOne 
+    @OneToOne 
     public Products product;
 	
 	public static final Finder<Long, Sales> find = new Finder<>(Sales.class);

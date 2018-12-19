@@ -75,7 +75,7 @@ public class Products extends Model{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Wishlists> wishlists; 
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Sales> sales;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")

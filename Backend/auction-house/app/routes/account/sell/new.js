@@ -6,5 +6,11 @@ export default Route.extend({
     return hash({
       categoryList: this.store.findAll('category'),
     })
+  },
+
+  actions: { 
+    willTransition: function() {
+      this.controllerFor('account/sell/new').send('clearFields');
+    }
   }
 });

@@ -56,7 +56,7 @@ public class SaleController extends Controller {
 		try {		
 			JsonNode jsonNode = request().body().asJson().get("sale");	
 			JsonNode productNode = jsonNode.get("product");
-			List<String> categories = productNode.findValuesAsText("categories");
+			Long cat_id = productNode.get("category_id").asLong();
 			Products product = Json.fromJson(productNode, Products.class);
 			product.save();
 			
@@ -68,30 +68,20 @@ public class SaleController extends Controller {
 			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
 			saleItem.user = LoginController.getUser();
 			saleItem.product = product;
-
 			
-			for (String category : categories) {
-				String categorySpliter[] = category.split("/");
-				
-				Category parentCategory = Category.find.query().where()
-						.conjunction()
-						.eq("parent_id", null)
-						.eq("name", categorySpliter[0])
-						.endJunction()
-						.findUnique();
-				
-				Category childCategory = Category.find.query().where()
-						.conjunction()
-						.eq("parent_id", parentCategory.id)
-						.eq("name", categorySpliter[1])
-						.endJunction()
-						.findUnique();
-				
-				ProductCategory categoryConnection = new ProductCategory();
-				categoryConnection.product = saleItem.product;
-				categoryConnection.category = childCategory;
-				categoryConnection.save();
-			}
+			Category childCategory = Category.find.byId(cat_id);
+			Category parentCategory = Category.find.byId(childCategory.parent_id);
+			
+			ProductCategory categoryConnectionChild = new ProductCategory();
+			categoryConnectionChild.product = saleItem.product;
+			categoryConnectionChild.category = childCategory;
+			categoryConnectionChild.save();
+			
+			ProductCategory categoryConnectionParent = new ProductCategory();
+			categoryConnectionParent.product = saleItem.product;
+			categoryConnectionParent.category = parentCategory;
+			categoryConnectionParent.save();
+		
 
 			saleItem.save();
 
