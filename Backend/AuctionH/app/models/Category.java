@@ -36,6 +36,10 @@ public class Category extends Model{
 
 	
 	//Constructor	
+	public Category() {
+		
+	}
+	
 	public Category(String name, Long parent_id, List<ProductCategory> products) {
 		this.name = name;
 		this.parent_id = parent_id;

@@ -3,5 +3,6 @@ import Cookies from 'ember-cli-js-cookie';
 
 export default Service.extend({
   authToken: Cookies.get('auth-token'),
-  userID: Cookies.get('user-id')
+  userID: Cookies.get('user-id'),
+  adminChecker: Cookies.get('admin-checker')
 });

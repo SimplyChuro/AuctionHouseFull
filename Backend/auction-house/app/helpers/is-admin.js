@@ -1,16 +1,14 @@
 import { helper } from '@ember/component/helper';
+import { isEqual } from '@ember/utils';
 
 export default Ember.Helper.extend({
-  
   compute(params) {
-    var firstValue = params[0];
-    var secondValue = params[1];
-    
-    if(firstValue == secondValue) {
+    let token = params[0];
+    if(isEqual(token, true) || isEqual(token, 'true')) {
       return true;
     } else {
       return false;
     }
   }
-
 });
+

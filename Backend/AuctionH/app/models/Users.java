@@ -71,7 +71,7 @@ public class Users extends Model{
 	@Constraints.Required
   	public Date dateOfBirth;
 	
-	@Column(length = 256, unique = true)
+	@Column(length = 256)
   	@Constraints.Required
   	public String phoneNumber;
       

@@ -23,8 +23,10 @@ export default Controller.extend({
         success: function(data){
           Cookies.set('auth-token', data[0].authToken);
           Cookies.set('user-id', data[1].userID);
+          Cookies.set('admin-checker', data[2].adminChecker);
           _this.set('session.authToken', data[0].authToken);
           _this.set('session.userID', data[1].userID);
+          _this.set('session.adminChecker', data[2].adminChecker);
         }
       }).then(function(){
         _this.set('loginHasError', false);

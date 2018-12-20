@@ -70,9 +70,9 @@ export default DS.Model.extend(Validations, {
   dateOfBirth: DS.attr('date'),
   phoneNumber: DS.attr('string'),
   phoneVerified: DS.attr('boolean'),
-  address: DS.belongsTo('address', { async: false }),
-  wishlist: DS.hasMany('wishlist', { async: false }),
-  bids: DS.hasMany('bid', { async: false }),
-  sales: DS.hasMany('sale', { async: false }),
-  reviews: DS.hasMany('review', { async: false })
+  address: DS.belongsTo('address'),
+  wishlist: DS.hasMany('wishlist'),
+  bids: DS.hasMany('bid'),
+  sales: DS.hasMany('sale'),
+  reviews: DS.hasMany('review')
 });

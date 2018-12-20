@@ -22,6 +22,7 @@ import models.Pictures;
 import models.ProductCategory;
 import models.Bids;
 import models.Users;
+import models.Wishlists;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -187,17 +188,37 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			product.save();
+			Users userChecker = LoginController.getUser();
 			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.save();
+			if(userChecker.admin) {
+				JsonNode jsonNode = request().body().asJson().get("product");
+				Long cat_id = jsonNode.get("category_id").asLong();
+				
+				Products product = Json.fromJson(jsonNode, Products.class);
+				product.save();
+				
+				for(Pictures picture : product.pictures) {
+					picture.product = product;
+					picture.save();
+				}
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				ProductCategory categoryConnectionChild = new ProductCategory();
+				categoryConnectionChild.product = product;
+				categoryConnectionChild.category = childCategory;
+				categoryConnectionChild.save();
+				
+				ProductCategory categoryConnectionParent = new ProductCategory();
+				categoryConnectionParent.product = product;
+				categoryConnectionParent.category = parentCategory;
+				categoryConnectionParent.save();
+				
+				return ok(Json.toJson(product));
+			} else {
+				return forbidden();
 			}
-			
-			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -207,17 +228,38 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			product.update();
+			Users userChecker = LoginController.getUser();
 			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.update();
+			if(userChecker.admin) {
+				JsonNode jsonNode = request().body().asJson().get("product");
+				Long cat_id = jsonNode.get("category_id").asLong();
+				
+				Products product = Products.find.byId(id);
+				product = Json.fromJson(jsonNode, Products.class);
+				product.update();
+				
+				for(Pictures picture : product.pictures) {
+					picture.product = product;
+					picture.save();
+				}
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				ProductCategory categoryConnectionChild = new ProductCategory();
+				categoryConnectionChild.product = product;
+				categoryConnectionChild.category = childCategory;
+				categoryConnectionChild.save();
+				
+				ProductCategory categoryConnectionParent = new ProductCategory();
+				categoryConnectionParent.product = product;
+				categoryConnectionParent.category = parentCategory;
+				categoryConnectionParent.save();
+				
+				return ok(Json.toJson(product));
+			} else {
+				return forbidden();
 			}
-			
-			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -227,17 +269,41 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			for(Pictures picture : product.pictures) {
-				picture.delete();
+			Users userChecker = LoginController.getUser();
+			if(userChecker.admin) {
+				
+				Products product = Products.find.byId(id);
+				for(Pictures picture : product.pictures) {
+					picture.delete();
+				}
+				
+				for(Bids bid : product.bids) {
+					bid.delete();
+				}
+				
+				for(Wishlists wish : product.wishlists) {
+					wish.delete();
+				}
+				
+				for(Reviews review : product.reviews) {
+					review.delete();
+				}
+				
+				for(ProductCategory cat : product.productcategory) {
+					cat.delete();
+				}
+				
+				if(product.sale != null) {
+					product.sale.delete();
+				}
+				product.delete();
+						
+				return ok(Json.toJson(""));
+			} else {
+				return forbidden();
 			}
-			
-			product.delete();
-					
-			return ok(Json.toJson(""));
 		} catch(Exception e) {
+			e.printStackTrace();
 			return badRequest();
 		}
 	}

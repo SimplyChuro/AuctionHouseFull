@@ -39,6 +39,7 @@ public class LoginController extends Controller {
 	    		
 		    	ObjectNode authTokenJson;
 		    	ObjectNode userNode;
+		    	ObjectNode adminNode;
 		    	
 		    	if(user.hasAuthToken()) {
 		    		authTokenJson = Json.newObject();
@@ -47,9 +48,13 @@ public class LoginController extends Controller {
 		    		userNode = Json.newObject();
 		    		userNode.put("userID", user.id);
 		    		
+		    		adminNode = Json.newObject();
+		    		adminNode.put("adminChecker", user.admin);
+		    		
 		    		response = Json.newArray();
 		    		response.add(authTokenJson);
 		    		response.add(userNode);
+		    		response.add(adminNode);
 		    		
 		    		return ok(response);
 		    	} else {
@@ -61,9 +66,13 @@ public class LoginController extends Controller {
 		    		userNode = Json.newObject();
 		    		userNode.put("userID", user.id);
 		    		
+		    		adminNode = Json.newObject();
+		    		adminNode.put("adminChecker", user.admin);
+		    		
 		    		response = Json.newArray();
 		    		response.add(authTokenJson);
 		    		response.add(userNode);
+		    		response.add(adminNode);
 		    		
 			        return ok(response);
 		        }

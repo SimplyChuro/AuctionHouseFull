@@ -14,6 +14,7 @@ import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
+import models.Users;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -49,12 +50,22 @@ public class CategoryController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Category category = Json.fromJson(jsonNode, Category.class);
-			category.save();
-	
-			return ok(Json.toJson(category));
+			Users userChecker = LoginController.getUser();
+			JsonNode jsonNode = request().body().asJson().get("category");
+			if(userChecker.admin) {
+				Category category = new Category();
+				if(jsonNode.findValue("parent_id") == null || jsonNode.findValue("parent_id").asText().equals("null")) {
+					category.parent_id = null;
+				} else {
+					category.parent_id = jsonNode.findValue("parent_id").asLong();
+				}
+				category.name = jsonNode.findValue("name").asText();
+				
+				category.save();
+				return ok(Json.toJson(category));
+			} else {
+				return forbidden();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -64,12 +75,22 @@ public class CategoryController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Category category = Json.fromJson(jsonNode, Category.class);
-			category.update();
-	
-			return ok(Json.toJson(category));
+			Users userChecker = LoginController.getUser();
+			JsonNode jsonNode = request().body().asJson().get("category");
+			if(userChecker.admin) {
+				Category category = Category.find.byId(id);
+				if(jsonNode.findValue("parent_id") == null || jsonNode.findValue("parent_id").asText().equals("null")) {
+					category.parent_id = null;
+				} else {
+					category.parent_id = jsonNode.findValue("parent_id").asLong();
+				}
+				category.name = jsonNode.findValue("name").asText();
+				
+				category.update();
+				return ok(Json.toJson(category));
+			} else {
+				return forbidden();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -79,12 +100,19 @@ public class CategoryController extends Controller{
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Category category = Json.fromJson(jsonNode, Category.class);
-			category.delete();
-	
-			return ok(Json.toJson(""));
+			Users userChecker = LoginController.getUser();
+			if(userChecker.admin) {
+				Category category = Category.find.byId(id);
+				
+				for(ProductCategory cat : category.productcategory) {
+					cat.delete();
+				}
+				
+				category.delete();
+				return ok(Json.toJson(""));
+			} else {
+				return forbidden();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}

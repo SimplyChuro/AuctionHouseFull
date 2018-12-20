@@ -1,0 +1,58 @@
+<div class="container-fluid current-route-background bottom-margin-50">
+  <div class="container">
+    <p class="form-title-text">ADMIN<span class="current-route-text"><span class="current-route-parent-text">ADMIN /</span>   CATEGORIES</span></p>
+  </div>
+</div>
+
+<div class="container-fluid mb-5">
+  <div class="container">
+    <div>
+      {{#link-to 'account.admin.users' class="account-navigation-link"}}
+        <i class="material-icons">
+          group
+        </i>
+        Users
+      {{/link-to}}
+
+      {{#link-to 'account.admin.products' class="account-navigation-link"}}
+        <i class="material-icons">
+          card_giftcard
+        </i>
+        Products
+      {{/link-to}}
+
+      {{#link-to 'account.admin.categories' class="account-navigation-link-active"}}
+        <i class="material-icons">
+          view_list
+        </i>
+        Categories
+      {{/link-to}}
+
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bottom-margin-300">
+  <div class="container fade">
+    <div class="row">
+      {{#each model.categories as |category|}}
+        {{#if (eq category.parent_id null)}}
+          <div class="col-lg-3 col-xl-3 mt-4 mb-2">
+            {{#link-to "account.admin.single-category" category.id class="category-list-parent-text"}}
+              {{category.name}} #{{category.id}}
+            {{/link-to}}
+            {{#each model.categories as |subcategory|}}
+              {{#if (eq subcategory.parent_id category.id)}}
+                <div>
+                  {{#link-to "account.admin.single-category" subcategory.id class="category-list-child-text"}}
+                    {{subcategory.name}} #{{subcategory.id}}
+                  {{/link-to}}
+                </div>
+              {{/if}}
+            {{/each}}
+          </div>
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
+</div>

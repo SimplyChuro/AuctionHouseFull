@@ -99,7 +99,6 @@ create table users (
   phone_verified                boolean,
   admin                         boolean,
   constraint uq_users_email unique (email),
-  constraint uq_users_phone_number unique (phone_number),
   constraint pk_users primary key (id)
 );
 

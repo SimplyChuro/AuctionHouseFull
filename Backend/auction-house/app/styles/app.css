@@ -1720,6 +1720,12 @@ select {
 
 /**/
 
+/*admin page design*/
+.admin-users-hr{
+  height: 3px;
+}
+/**/
+
 
 /*footer links design*/
 /*about us*/

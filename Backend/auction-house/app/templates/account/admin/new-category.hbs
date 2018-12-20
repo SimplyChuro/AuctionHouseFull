@@ -1,0 +1,73 @@
+<div class="container-fluid current-route-background bottom-margin-50">
+  <div class="container">
+    <p class="form-title-text">ADMIN<span class="current-route-text"><span class="current-route-parent-text">ADMIN /</span>   NEW CATEGORY</span></p>
+  </div>
+</div>
+
+<div class="container-fluid pt-4">
+  <div class="container">
+    <div class="row fade">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <div class="card margin-card">
+          <h1 class="card-title">NEW CATEGORY</h1>
+          <div class="card-body mr-4 ml-4">
+            <form>
+              <div class="row p-0 m-0 mt-5 mb-5 full-width">
+                <div class="sale-item-category-holder">
+                  <div class="mr-2">
+                    <label class="mb-1 ml-1 sale-item-label-text">Category type</label>
+                    <select onchange={{action "setCategoryType" value="target.value"}} class="sale-item-select">
+                      <option value="main" selected>
+                        Main
+                      </option>
+                      <option value="sub">
+                        Sub
+                      </option>
+                    </select>
+                  </div>        
+                </div>
+                <div class="sale-item-category-holder">
+                  <label class="mb-1 ml-1 sale-item-label-text">Parent Category</label>
+                  <select onchange={{action "setParentCategory" value="target.value"}} class="sale-item-select">
+                    {{#if (eq type null)}}
+                      <option disabled selected> Select Parent </option>
+                    {{else}}
+                      {{#if (eq type 'sub')}}
+                        {{#each model.categoryList as |cat index|}}
+                          {{#if (eq cat.parent_id null)}}
+                            {{#if (eq index 0)}}
+                              <option value={{cat.id}} selected>
+                                {{cat.name}}
+                              </option>
+                            {{else}}
+                              <option value={{cat.id}}>
+                                {{cat.name}}
+                              </option>
+                            {{/if}}
+                          {{/if}}
+                        {{/each}}
+                      {{else}}
+                        <option disabled selected> Select Parent </option>
+                      {{/if}}
+                    {{/if}}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group mt-4">
+                <label class="mb-1 sale-item-label-text">Category name</label>
+                {{input type="text" value=name autocomplete="off" class="form-control form-background-color p-4"}}
+                {{#if (eq nameHasError true)}}
+                  <p class="validation-error-message mt-1 fade">{{nameErrorMessage}}</p>
+                {{/if}}
+              </div>
+              <div class="row p-0 m-0 mt-3 full-width">
+                <button type="submit" class="btn btn-purple-outline mt-5 bottom-margin-100" {{action 'saveCategory'}}>SAVE</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
