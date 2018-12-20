@@ -115,7 +115,7 @@ public class UserController extends Controller {
 				      		+ "<p>"
 				      		+ "In order to verify your email click the following link :"
 				      		+ "</p>"
-				      		+ "<a href=http://localhost:4200/verify-email?token="+token+">Verify Email</a>"
+				      		+ "<a href=https://auction-house-frontend.herokuapp.com?token="+token+">Verify Email</a>"
 				      		+ "</body>"
 				      		+ "</html>");
 			    mailerClient.send(email);
@@ -261,7 +261,7 @@ public class UserController extends Controller {
 				      		+ "In order to reset your password click the following link :"
 				      		+ "</p>"
 				      		+"<br>"
-				      		+ "<a href=http://localhost:4200/new-password?token="+token+">Password Reset Link</a>"
+				      		+ "<a href=https://auction-house-frontend.herokuapp.com?token="+token+">Password Reset Link</a>"
 				      		+ "</body>"
 				      		+ "</html>");
 			    mailerClient.send(email);
