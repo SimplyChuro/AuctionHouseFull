@@ -132,10 +132,6 @@ export default Controller.extend({
       }
       
       user.set('phoneNumber', this.get('phoneNumber'));
-      user.set('bids', []);
-      user.set('sales', []);
-      user.set('reviews', []);
-      user.set('wishlist', []);
    
       address.set('street', this.get('street'));
       address.set('city', this.get('city'));

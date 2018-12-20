@@ -20,6 +20,7 @@ export default Controller.extend({
   allWishlistItems: null,
   closestCategory: null,
   nameNotFound: false,
+  listSize: 9,
 
   startRange:[1, 5000],
 
@@ -54,7 +55,7 @@ export default Controller.extend({
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-  filteredProducts: Ember.computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', function(){
+  filteredProducts: Ember.computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
  
     var products = this.get('products');
     var _this = this;
@@ -171,6 +172,12 @@ export default Controller.extend({
       this.set('sorting', type);  
     },
 
+    increaseListSize: function(){
+      var currentListSize = this.get('listSize');
+      currentListSize += 9;
+      this.set('listSize', currentListSize);
+    },
+
     createWishlist: function(productID) {
       var _this = this;
       this.store.createRecord('wishlist', {
@@ -193,12 +200,15 @@ export default Controller.extend({
       this.set('child_category', undefined);
       this.set('sorting', undefined)
       this.set('color', undefined); 
-      this.set('size', undefined); 
+      this.set('size', undefined);
+      this.set('minPrice', undefined); 
+      this.set('maxPrice', undefined);  
       this.set('list_type', undefined); 
       this.set('closestCategory', null); 
       this.set('checker', null);
       this.set('allWishlistItems', null);
       this.set('nameNotFound', false);
+      this.set('listSize', 9);
     }
   }
 });

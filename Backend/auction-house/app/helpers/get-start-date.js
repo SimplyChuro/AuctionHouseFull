@@ -5,7 +5,6 @@ export default Ember.Helper.extend({
   
   compute(params) {
     var startDate = params[0];
-    console.log(startDate);
     var checkerDate;
     if(isEmpty(startDate)) {
       checkerDate = new Date();

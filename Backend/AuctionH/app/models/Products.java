@@ -100,4 +100,56 @@ public class Products extends Model{
 		this.featured = featured;
 	}
 	
+	public void updateProduct(JsonNode objectNode) {
+		
+		this.name = objectNode.findPath("name").asText();
+		this.description = objectNode.findPath("description").asText();
+		this.status = objectNode.findPath("status").asText();
+		this.color = objectNode.findPath("color").asText();
+		this.size = objectNode.findPath("size").asText();
+		this.startingPrice = objectNode.findPath("startingPrice").asDouble();	
+		this.featured = objectNode.findPath("featured").asBoolean();	
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
+			this.publishDate = format.parse(objectNode.findPath("publishDate").asText());
+			this.expireDate = format.parse(objectNode.findPath("expireDate").asText());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		this.update();
+
+	}
+	
+	public void saveProduct(JsonNode objectNode) {
+		
+		this.name = objectNode.findPath("name").asText();
+		this.description = objectNode.findPath("description").asText();
+		this.status = objectNode.findPath("status").asText();
+		this.color = objectNode.findPath("color").asText();
+		this.size = objectNode.findPath("size").asText();
+		this.startingPrice = objectNode.findPath("startingPrice").asDouble();	
+		this.featured = objectNode.findPath("featured").asBoolean();	
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
+			this.publishDate = format.parse(objectNode.findPath("publishDate").asText());
+			this.expireDate = format.parse(objectNode.findPath("expireDate").asText());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		this.save();
+
+	}
+	
 }

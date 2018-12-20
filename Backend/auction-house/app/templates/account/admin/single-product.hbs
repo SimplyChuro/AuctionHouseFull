@@ -17,7 +17,6 @@
                 <label class="sale-item-label-text">What do you sell?</label>
                 {{input type="text" value=nameInput class="form-control form-background-color p-4 mb-0"}}
               </div>
-              <span class="sale-item-product-name-guide-text mt-1 pt-0">2-5 words (60 characters)</span>
               {{#if productNameHasError}}
                 <div class="validation-error-message mt-1 fade">
                   {{productNameErrorMessage}}
@@ -29,9 +28,10 @@
                   <div class="mr-2">
                     <select onchange={{action "setCategory" value="target.value"}} class="sale-item-select">
                       <option disabled selected> Select Category </option>
+
                       {{#each model.categoryList as |cat|}}
                         {{#if (eq cat.parent_id null)}}
-                          {{#if (eq cat.id category)}}
+                          {{#if (eq cat.id (get-product-category model.product 'parent'))}}
                             <option value={{cat.id}} selected>
                               {{cat.name}}
                             </option>
@@ -52,13 +52,11 @@
                 </div>
                 <div class="sale-item-category-holder">
                   <select onchange={{action "setSubCategory" value="target.value"}} class="sale-item-select">
-                    <option disabled selected> Select SubCategory </option>
+                    <option value='null' selected> Select SubCategory </option>
                       {{#if (eq category null)}}
-
-                      {{else}}
                         {{#each model.categoryList as |cat|}}
-                          {{#if (eq category cat.parent_id)}}
-                            {{#if (eq cat.id subCategory)}}
+                          {{#if (eq (get-product-category model.product 'parent') cat.parent_id)}}
+                            {{#if (eq cat.id (get-product-category model.product))}}
                               <option value={{cat.id}} selected>
                                 {{cat.name}}
                               </option>
@@ -67,6 +65,14 @@
                                 {{cat.name}}
                               </option>
                             {{/if}}
+                          {{/if}}
+                        {{/each}}
+                      {{else}}
+                        {{#each model.categoryList as |cat|}}
+                          {{#if (eq category cat.parent_id)}}
+                            <option value={{cat.id}}>
+                              {{cat.name}}
+                            </option>
                           {{/if}}
                         {{/each}}
                       {{/if}}
@@ -79,15 +85,32 @@
                 </div>
               </div>
               <div class="full-width">
-                <label class="mb-1 sale-item-label-text">Description?</label>
+                <label class="mb-1 sale-item-label-text">Description</label>
                 {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3"}}
-                <span class="sale-item-product-name-guide-text mt-1">100 words (700 characters)</span>
                 {{#if descriptionHasError}}
                   <div class="validation-error-message mt-1 fade">
                     {{descriptionErrorMessage}}
                   </div>
                 {{/if}}
               </div>
+              <div class="form-group mt-4 mb-0">
+                <label class="sale-item-label-text">Color</label>
+                {{input type="text" value=colorInput class="form-control form-background-color mb-0 p-4"}}
+              </div>
+              {{#if colorHasError}}
+                <div class="validation-error-message mt-1 fade">
+                  {{colorErrorMessage}}
+                </div>
+              {{/if}}
+              <div class="form-group mt-4 mb-0">
+                <label class="sale-item-label-text">Size</label>
+                {{input type="text" value=sizeInput class="form-control form-background-color mb-0 p-4"}}
+              </div>
+              {{#if sizeHasError}}
+                <div class="validation-error-message mt-1 fade">
+                  {{sizeErrorMessage}}
+                </div>
+              {{/if}}
               <div class="form-group mt-4 mb-0">
                 <label class="sale-item-label-text">Your starting price</label>
                 {{input type="text" value=startingPriceInput class="form-control form-background-color mb-0 p-4"}}
@@ -101,7 +124,7 @@
                 <div class="sale-item-category-holder">
                   <div class="mr-2">
                     <label class="mb-1 sale-item-label-text">Start date</label>
-                    {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                    {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
                   </div>
                   {{#if publishDateHasError}}
                     <div class="validation-error-message mt-1 fade">
@@ -109,7 +132,7 @@
                     </div>
                   {{/if}}
                 </div>
-                <div class="sale-item-category-holder">
+                <div class="sale-item-category-holder mb-2">
                   <label class="mb-1 sale-item-label-text">End date</label>
                   {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
                   {{#if expiryDateHasError}}
@@ -119,10 +142,11 @@
                   {{/if}}
                 </div>
               </div>
-              <div class="full-width bottom-margin-100">
-                <p class="sale-item-text-addition">The auction will be automatically closed when the end time comes. The highest bid will win the auction.</p>
+              <div class="mt-4 ml-1">
+                {{input type="checkbox" checked=isFeatured}}
+                <span class="mb-1 sale-item-label-text">Featured</span>
               </div>
-              <div class="mt-5 bottom-margin-200">
+              <div class="mt-5 bottom-margin-150">
                 <button class="sale-item-done-button" {{action 'saveProduct'}}>
                   UPDATE
                 </button>

@@ -20,7 +20,7 @@ export default Ember.Helper.extend({
     }
 
     if(sorting == 'newest'){
-      return products.sortBy('publishDate');
+      return products.sortBy('publishDate').reverse();
     }
 
     if(sorting == 'oldest'){

@@ -12,6 +12,12 @@ export default Controller.extend({
   descriptionHasError: null,
   descriptionErrorMessage: null,
 
+  colorHasError: null,
+  colorErrorMessage: null,
+
+  sizeHasError: null,
+  sizeErrorMessage: null,
+
   categoryHasError: null,
   categoryErrorMessage: null,
 
@@ -39,7 +45,19 @@ export default Controller.extend({
   customValidation: function(){
     var checker = true;
     var regex;
-    
+    var productCategories = this.get('model.product.productcategory');
+
+    var parentCategory;
+    var childCategory;
+
+    productCategories.forEach((item, index) => {
+      if(item.get('category').get('parent_id') == null) {
+        parentCategory = item.get('category').get('id');
+      } else {
+        childCategory = item.get('category').get('id');
+      }
+    });
+
     if(isEmpty(this.get('nameInput')) || (this.get('nameInput').length != 0 && this.get('nameInput').trim().length == 0)) {
       this.set('productNameHasError', true);
       this.set('productNameErrorMessage', 'Product name can not be blank');
@@ -54,21 +72,21 @@ export default Controller.extend({
       }
     }
 
-    if(!(isEmpty(this.get('category')))) {
-      this.set('categoryHasError', false);
-    } else {
-      this.set('categoryHasError', true);
-      this.set('categoryErrorMessage', 'Category can not be blank');
-      checker = false;
-    }
+    // if(!(isEmpty(this.get('category')))) {
+    //   this.set('categoryHasError', false);
+    // } else {
+    //   this.set('categoryHasError', true);
+    //   this.set('categoryErrorMessage', 'Category can not be blank');
+    //   checker = false;
+    // }
 
-    if(!(isEmpty(this.get('subCategory')))) {
-      this.set('subCategoryHasError', false);
-    } else {
-      this.set('subCategoryHasError', true);
-      this.set('subCategoryErrorMessage', 'SubCategory can not be blank');
-      checker = false;
-    }
+    // if(!(isEmpty(this.get('subCategory')))) {
+    //   this.set('subCategoryHasError', false);
+    // } else {
+    //   this.set('subCategoryHasError', true);
+    //   this.set('subCategoryErrorMessage', 'SubCategory can not be blank');
+    //   checker = false;
+    // }
 
     if(isEmpty(this.get('descriptionInput')) || (this.get('descriptionInput').length != 0 && this.get('descriptionInput').trim().length == 0)) {
       this.set('descriptionHasError', true);
@@ -84,7 +102,35 @@ export default Controller.extend({
       }
     }
 
-    if(isEmpty(this.get('startingPriceInput')) || (this.get('startingPriceInput').length != 0 && this.get('startingPriceInput').trim().length == 0)) {
+    if(isEmpty(this.get('colorInput')) || (this.get('colorInput').length != 0 && this.get('colorInput').trim().length == 0)) {
+      this.set('colorHasError', true);
+      this.set('colorErrorMessage', 'Color can not be blank');
+      checker = false;
+    } else {
+      if(this.get('colorInput').length > 40){
+        this.set('colorHasError', true);
+        this.set('colorErrorMessage', 'The given color is way too big');
+        checker = false;
+      } else {
+        this.set('colorHasError', false);
+      }
+    }
+
+    if(isEmpty(this.get('sizeInput')) || (this.get('sizeInput').length != 0 && this.get('sizeInput').trim().length == 0)) {
+      this.set('sizeHasError', true);
+      this.set('sizeErrorMessage', 'Size can not be blank');
+      checker = false;
+    } else {
+      if(this.get('sizeInput').length > 40){
+        this.set('sizeHasError', true);
+        this.set('sizeErrorMessage', 'The given size is way too big');
+        checker = false;
+      } else {
+        this.set('sizeHasError', false);
+      }
+    }
+
+    if(isEmpty(this.get('startingPriceInput'))) {
       this.set('startingPriceHasError', true);
       this.set('startingPriceErrorMessage', 'Product name can not be blank');
       checker = false;
@@ -134,10 +180,33 @@ export default Controller.extend({
         let product = this.get('model.product');
         product.set('name', this.get('nameInput'));
         product.set('description', this.get('descriptionInput'));
-        product.set('publishDate', this.get('startDateInput'));
-        product.set('expireDate', this.get('endDateInput'));
+        product.set('color', this.get('colorInput'));
+        product.set('size', this.get('sizeInput'));
+        
+        if(!isEmpty(this.get('startDateInput'))){
+          var startDate = new Date(this.get('startDateInput'));
+          startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
+          product.set('publishDate', startDate);  
+        } 
+
+        if(!isEmpty(this.get('endDateInput'))){
+          var endDate = new Date(this.get('endDateInput'));
+          endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
+          product.set('expireDate', endDate);  
+        } 
+
         product.set('startingPrice', this.get('startingPriceInput'));
-        product.set('category_id', this.get('subCategory'));
+
+        if(this.get('subCategory') != null){
+          product.set('category_id', this.get('subCategory'));
+        }
+
+        if(this.get('isFeatured')){
+          product.set('featured', true);
+        } else {
+          product.set('featured', false);
+        }
+        
         product.set('status', 'Active');
 
         product.save().then(function(){
@@ -162,10 +231,15 @@ export default Controller.extend({
 
     setCategory: function(category){
       this.set('category', category);
+      this.set('subCategory', null);
     },
 
     setSubCategory: function(category){
-      this.set('subCategory', category);
+      if(category == null || category == 'null'){
+        this.set('subCategory', null);
+      } else {
+        this.set('subCategory', category);
+      }
     },
     
     changeStartDate: function(date){

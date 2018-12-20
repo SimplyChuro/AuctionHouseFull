@@ -4,7 +4,7 @@ import { hash } from 'rsvp';
 export default Route.extend({
   model(params) {
     return hash({
-      category: this.store.findRecord('category', params.category_id),
+      category: this.store.findRecord('category', params.category_id, { reload: true }),
       categoryList: this.store.findAll('category')
     })
   },

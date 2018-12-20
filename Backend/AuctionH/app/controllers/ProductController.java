@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import models.Bids;
 import models.Users;
 import models.Wishlists;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.data.Form;
@@ -84,7 +86,7 @@ public class ProductController extends Controller {
 							.findList();
 					
 					for(ProductCategory cat : productCategories) {
-						if(cat.product.name.equals(name) && cat.product.expireDate.after(currentDate)) {
+						if(cat.product.name.equals(name) && cat.product.expireDate.after(currentDate) && cat.product.publishDate.before(currentDate)) {
 							products.add(cat.product);
 						}
 					}
@@ -93,7 +95,8 @@ public class ProductController extends Controller {
 					
 					products = Products.find.query().where()
 							.conjunction()
-							.eq("name", name)
+							.contains("name", name)
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
 							.orderBy("name asc")
@@ -109,7 +112,7 @@ public class ProductController extends Controller {
 						.findList();
 				
 				for(ProductCategory cat : productCategories) {
-					if(cat.product.expireDate.after(currentDate)) {
+					if(cat.product.expireDate.after(currentDate) && cat.product.publishDate.before(currentDate)) {
 						products.add(cat.product);
 					}
 				}
@@ -119,6 +122,7 @@ public class ProductController extends Controller {
 				products = Products.find.query().where()
 						.conjunction()
 						.eq("featured", true)
+						.le("publishDate", currentDate)
 						.ge("expireDate", currentDate)
 						.endJunction()
 						.orderBy("name asc")
@@ -129,23 +133,31 @@ public class ProductController extends Controller {
 					
 					products = Products.find.query().where()
 							.conjunction()
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
-							.orderBy("publishDate asc")
+							.orderBy("publishDate desc")
 							.findList();
 					
 				} else if(status.equals("ending")) {
 					products = Products.find.query().where()
 							.conjunction()
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
 							.orderBy("expireDate asc")
 							.findList();
+				} else if(status.equals("all")) {
+					products = Products.find.all();
 				}
 			} else {
-				products = Products.find.all();
+				products = Products.find.query().where()
+						.conjunction()
+						.le("publishDate", currentDate)
+						.ge("expireDate", currentDate)
+						.endJunction()
+						.findList();
 			}
-			
 			
 			
 			
@@ -194,13 +206,13 @@ public class ProductController extends Controller {
 				JsonNode jsonNode = request().body().asJson().get("product");
 				Long cat_id = jsonNode.get("category_id").asLong();
 				
-				Products product = Json.fromJson(jsonNode, Products.class);
-				product.save();
+				Products product = new Products();
+				product.saveProduct(jsonNode);
 				
-				for(Pictures picture : product.pictures) {
-					picture.product = product;
-					picture.save();
-				}
+//				for(Pictures picture : product.pictures) {
+//					picture.product = product;
+//					picture.save();
+//				}
 				
 				Category childCategory = Category.find.byId(cat_id);
 				Category parentCategory = Category.find.byId(childCategory.parent_id);
@@ -232,31 +244,33 @@ public class ProductController extends Controller {
 			
 			if(userChecker.admin) {
 				JsonNode jsonNode = request().body().asJson().get("product");
-				Long cat_id = jsonNode.get("category_id").asLong();
 				
 				Products product = Products.find.byId(id);
-				product = Json.fromJson(jsonNode, Products.class);
-				product.update();
+				product.updateProduct(jsonNode);
 				
-				for(Pictures picture : product.pictures) {
-					picture.product = product;
-					picture.save();
+//				for(Pictures picture : product.pictures) {
+//					picture.product = product;
+//					picture.update();
+//				}
+				try {
+					Long cat_id = jsonNode.get("category_id").asLong();
+					Category childCategory = Category.find.byId(cat_id);
+					Category parentCategory = Category.find.byId(childCategory.parent_id);
+					
+					ProductCategory categoryConnectionChild = new ProductCategory();
+					categoryConnectionChild.product = product;
+					categoryConnectionChild.category = childCategory;
+					categoryConnectionChild.save();
+					
+					ProductCategory categoryConnectionParent = new ProductCategory();
+					categoryConnectionParent.product = product;
+					categoryConnectionParent.category = parentCategory;
+					categoryConnectionParent.save();
+				} catch(Exception e) {
+					
+				} finally {
+					return ok(Json.toJson(product));	
 				}
-				
-				Category childCategory = Category.find.byId(cat_id);
-				Category parentCategory = Category.find.byId(childCategory.parent_id);
-				
-				ProductCategory categoryConnectionChild = new ProductCategory();
-				categoryConnectionChild.product = product;
-				categoryConnectionChild.category = childCategory;
-				categoryConnectionChild.save();
-				
-				ProductCategory categoryConnectionParent = new ProductCategory();
-				categoryConnectionParent.product = product;
-				categoryConnectionParent.category = parentCategory;
-				categoryConnectionParent.save();
-				
-				return ok(Json.toJson(product));
 			} else {
 				return forbidden();
 			}
@@ -303,7 +317,44 @@ public class ProductController extends Controller {
 				return forbidden();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			return badRequest();
+		}
+	}
+	
+	//Upload pictures -- not finished
+	@Security.Authenticated(Secured.class)
+	public Result upload(Long id) {
+		try {
+			Http.MultipartFormData<File> body = request().body().asMultipartFormData();
+		    Http.MultipartFormData.FilePart<File> pictureFile = body.getFile("picture");
+		    
+		    if (pictureFile != null) {
+		        String fileName = pictureFile.getFilename();
+		        String contentType = pictureFile.getContentType();
+		        File file = pictureFile.getFile();
+		        Users userChecker = LoginController.getUser();
+				if(userChecker.admin) {
+					
+					Products product = Products.find.byId(id);
+					for(Pictures picture : product.pictures) {
+						picture.product = product;
+						picture.update();
+					}
+							
+					return ok(Json.toJson(product));
+				} else {
+					Products product = Products.find.byId(id);
+					for(Pictures picture : product.pictures) {
+						picture.product = product;
+						picture.update();
+					}
+							
+					return ok(Json.toJson(product));
+				}
+		    } else {
+		        return badRequest();
+		    }
+		} catch(Exception e) {
 			return badRequest();
 		}
 	}

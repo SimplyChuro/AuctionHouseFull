@@ -9,6 +9,7 @@ export default DS.Model.extend({
   color: DS.attr('string'),
   size: DS.attr('string'),
   description: DS.attr('string'),
+  featured: DS.attr('boolean'),
   category_id: DS.attr('number'),
   pictures: DS.hasMany('picture'),
   productcategory: DS.hasMany('productcategory'),

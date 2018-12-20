@@ -12,6 +12,12 @@ export default Controller.extend({
   descriptionHasError: null,
   descriptionErrorMessage: null,
 
+  colorHasError: null,
+  colorErrorMessage: null,
+
+  sizeHasError: null,
+  sizeErrorMessage: null,
+
   categoryHasError: null,
   categoryErrorMessage: null,
 
@@ -84,6 +90,34 @@ export default Controller.extend({
       }
     }
 
+    if(isEmpty(this.get('colorInput')) || (this.get('colorInput').length != 0 && this.get('colorInput').trim().length == 0)) {
+      this.set('colorHasError', true);
+      this.set('colorErrorMessage', 'Color can not be blank');
+      checker = false;
+    } else {
+      if(this.get('colorInput').length > 40){
+        this.set('colorHasError', true);
+        this.set('colorErrorMessage', 'The given color is way too big');
+        checker = false;
+      } else {
+        this.set('colorHasError', false);
+      }
+    }
+
+    if(isEmpty(this.get('sizeInput')) || (this.get('sizeInput').length != 0 && this.get('sizeInput').trim().length == 0)) {
+      this.set('sizeHasError', true);
+      this.set('sizeErrorMessage', 'Size can not be blank');
+      checker = false;
+    } else {
+      if(this.get('sizeInput').length > 40){
+        this.set('sizeHasError', true);
+        this.set('sizeErrorMessage', 'The given size is way too big');
+        checker = false;
+      } else {
+        this.set('sizeHasError', false);
+      }
+    }
+
     if(isEmpty(this.get('startingPriceInput')) || (this.get('startingPriceInput').length != 0 && this.get('startingPriceInput').trim().length == 0)) {
       this.set('startingPriceHasError', true);
       this.set('startingPriceErrorMessage', 'Product name can not be blank');
@@ -134,10 +168,19 @@ export default Controller.extend({
         let product = this.store.createRecord('product');
         product.set('name', this.get('nameInput'));
         product.set('description', this.get('descriptionInput'));
+        product.set('color', this.get('colorInput'));
+        product.set('size', this.get('sizeInput'));
         product.set('publishDate', this.get('startDateInput'));
         product.set('expireDate', this.get('endDateInput'));
         product.set('startingPrice', this.get('startingPriceInput'));
         product.set('category_id', this.get('subCategory'));
+
+        if(this.get('isFeatured')){
+          product.set('featured', true);
+        } else {
+          product.set('featured', false);
+        }
+
         product.set('status', 'Active');
 
         product.save().then(function(){
