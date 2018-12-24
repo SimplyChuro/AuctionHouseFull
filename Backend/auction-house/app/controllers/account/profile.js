@@ -4,7 +4,7 @@ import { isEmpty } from '@ember/utils';
 export default Controller.extend({ 
   store: Ember.inject.service(),
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
-  
+  currentDatePlaceHolder: 'e.g. ' + moment(new Date()).format("DD/MM/YYYY"),
   selectedOption: null,
 
   hasError: null,

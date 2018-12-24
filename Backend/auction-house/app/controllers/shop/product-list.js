@@ -109,7 +109,7 @@ export default Controller.extend({
   productSearchErrorMessage: Ember.computed('filteredProducts', function(){
 
     var categoryChecker = null;
-    var similarityRate = 0;
+    var similarityRate = 0.75;
     var _this = this;
 
     if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){

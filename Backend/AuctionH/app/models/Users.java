@@ -135,7 +135,7 @@ public class Users extends Model{
 			this.dateOfBirth = null;
 		}
 		
-		if(objectNode.findPath("phoneNumber").asText() != null || !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
+		if(objectNode.findPath("phoneNumber").asText() != null && !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
 			this.phoneNumber = objectNode.findPath("phoneNumber").asText();
 		} else {
 			this.phoneNumber = "";

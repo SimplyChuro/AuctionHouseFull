@@ -110,7 +110,7 @@
               <br>
               <label class="account-profile-form-text mt-3">Date of Birth</label>
               <br>
-                {{bootstrap-datepicker value=dateOfBirth autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
               <br>
               {{#if dateOfBirthHasError}}
                 <div class="validation-error-message mb-2 fade">
@@ -118,7 +118,7 @@
                 </div>
               {{/if}}
               <label class="account-profile-form-text mt-5">Phone Number</label>
-              {{input type="string" value=phoneNumber class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
               {{#if phoneNumberHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{phoneNumberErrorMessage}}
