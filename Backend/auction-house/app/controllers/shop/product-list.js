@@ -1,12 +1,15 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { stringSimilarity } from "string-similarity-js";
 
 export default Controller.extend({
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
-
+  session: service(),
+  store: service(),
+  loadingSlider: service(),
+  
   queryParams: ['name', 'parent_category', 'child_category', 'color', 'size', 'list_type' , 'sorting'],
+  hexColorsArray: ['#8367D8'],
   name: null,
   parent_category: null,
   child_category: null,
@@ -31,12 +34,13 @@ export default Controller.extend({
 
   wishlistItems: Ember.computed('wishlist', function(){
     this.set('allWishlistItems', this.get('wishlist'));
-
     return this.get('allWishlistItems');
   }).volatile(),
 
   products: Ember.computed('name', 'parent_category', 'child_category', function(){
     var categoryChecker;
+
+    this.get('loadingSlider').startLoading();
 
     if(isEmpty(this.get('parent_category'))) {
       categoryChecker = 0;
@@ -90,8 +94,6 @@ export default Controller.extend({
     if(!(isEmpty(this.get('minPrice'))) && !(isEmpty(this.get('maxPrice')))) {
       products = products.filter(
         function(product) { 
-          console.log(_this.get('maxPrice'));
-
           if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
             singleProduct = product;
           } else {
@@ -102,6 +104,8 @@ export default Controller.extend({
       );
     }
 
+
+    this.get('loadingSlider').endLoading();
     return products;
 
   }),
@@ -116,7 +120,7 @@ export default Controller.extend({
       var categories = this.get('model.categoryList');
       _this.set('closestCategory', null);
       categories.forEach((item, index) => {
-        if(stringSimilarity(item.name, this.get('name')) > similarityRate){
+        if(stringSimilarity(item.name, this.get('name')) > similarityRate || stringSimilarity(item.name, this.get('name'), 1) > 0.75){
           similarityRate = stringSimilarity(item.name, this.get('name'));
           _this.set('closestCategory', item);
         }

@@ -95,7 +95,7 @@ public class ProductController extends Controller {
 					
 					products = Products.find.query().where()
 							.conjunction()
-							.contains("name", name)
+							.icontains("name", name)
 							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()

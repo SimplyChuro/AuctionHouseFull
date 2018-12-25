@@ -2,15 +2,22 @@ import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-  session: Ember.inject.service(),
+  session: service(),
+  loadingSlider: service(),
+
+  hexColorsArray: ['#8367D8'],
+
   loginHasError: false,
   loginErrorMessage: 'Incorrect username or password',
 
   actions: {
     login: function() {
       var _this = this;
+      _this.get('loadingSlider').startLoading();
+      
       $.ajax({
         url: ENV.HOST_URL+'/api/v1/login',
         type: 'POST',
@@ -29,9 +36,11 @@ export default Controller.extend({
           _this.set('session.adminChecker', data[2].adminChecker);
         }
       }).then(function(){
+        _this.get('loadingSlider').endLoading();
         _this.set('loginHasError', false);
         _this.transitionToRoute('home');
       }).catch(function(){
+        _this.get('loadingSlider').endLoading();
         _this.set('loginHasError', true);
       });
     },
