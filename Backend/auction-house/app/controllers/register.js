@@ -37,9 +37,9 @@ export default Controller.extend({
       var _this = this;
       user.validate().then(({ validations }) =>{
         if(validations.get('isValid')){
-          user.save().then(function(data) {
+          user.save().then(function() {
             _this.transitionToRoute('register-success')
-          }).catch(function(data) {
+          }).catch(function() {
             _this.set('emailExistsHasError', true);
             _this.set('nameHasError', null); 
             _this.set('nameErrorMessage', null);

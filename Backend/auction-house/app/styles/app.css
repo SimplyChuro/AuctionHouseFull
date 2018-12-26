@@ -59,6 +59,10 @@ select {
 /**/
 
 
+.test{
+  background: #0000;
+}
+
 /*header design*/
 
 .user-navigation-bar{
@@ -80,9 +84,7 @@ select {
 }
 
 .navigation-form{
-	margin-left: 10%;
 	margin-bottom: 4px;	
-	width: 42%;
   border: 1px solid #DDD;
   border-radius: 2px;
 	box-shadow: 2px 2px 2px  #C0C0C0;
@@ -143,8 +145,6 @@ select {
 
 .header-search-input{
   border: none;
-  max-width: 89%;
-  min-width: 88%;
   padding: 5px 0px 5px 15px;
 }
 
@@ -244,6 +244,13 @@ select {
 }
 /**/
 
+
+/*global padding classes*/
+.padding-top-15{
+  padding-top: 12px;
+}
+
+/**/
 
 
 
@@ -1827,7 +1834,7 @@ select {
 
 .footer-input-form{
 	border: none;
-	width: 70%;
+	width: 65%;
 	background-color: #3B3B3B;
 	padding: 15px;
 	color: #696969;
@@ -1836,7 +1843,7 @@ select {
 
 .footer-purple-button{
 	border: 3px solid #8367D8;
-	padding: 15px 20px 15px 30px;
+	padding: 15px 25px 15px 30px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #D8D8D8;

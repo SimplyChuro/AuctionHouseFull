@@ -1,10 +1,13 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 
 export default Controller.extend({ 
-  store: Ember.inject.service(),
+  store: service(),
+  
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
   currentDatePlaceHolder: 'e.g. ' + moment(new Date()).format("DD/MM/YYYY"),
+
   selectedOption: null,
 
   hasError: null,
@@ -108,7 +111,6 @@ export default Controller.extend({
     },
 
     updateUser: function() {
-      let selectedOption = this.get('selectedOption');
       var _this = this;
       var bd;
 

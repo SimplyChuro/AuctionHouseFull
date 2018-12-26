@@ -27,13 +27,10 @@ export default Controller.extend({
               email: this.get('emailAddress')
             }),
             contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function(data){
-              
-            }
-          }).then(function(data){
+            dataType: 'json'
+          }).then(function(){
             swal("Email Sent!", "A reset mail has been sent to your account!", "success");
-          }).catch(function(data){
+          }).catch(function(){
             swal("Ooops!", "It would seem that mail doesn't exist. Please try again!", "error");
           });
         } else {

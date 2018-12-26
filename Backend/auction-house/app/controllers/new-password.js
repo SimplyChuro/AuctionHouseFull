@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
-import ENV from 'auction-house/config/environment';
-import $ from 'jquery';
 import { isEmpty } from '@ember/utils';
 import { isEqual } from '@ember/utils';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import ENV from 'auction-house/config/environment';
 
 export default Controller.extend({
 
@@ -39,13 +39,10 @@ export default Controller.extend({
                   'X-AUTH-TOKEN': _this.get('token')
                 },
                 contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                success: function(data){
-                  
-                }
-              }).then(function(data){
+                dataType: 'json'
+              }).then(function(){
                 swal("Password Reset!", "You have successfully reset your password!", "success");
-              }).catch(function(data){
+              }).catch(function(){
                 swal("Ooops!", "It would seem an error has occurred please try again.", "error");
               });
             } else {

@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { stringSimilarity } from "string-similarity-js";
+import { computed } from '@ember/object';
 
 export default Controller.extend({
   session: service(),
@@ -27,17 +28,16 @@ export default Controller.extend({
 
   startRange:[1, 5000],
 
-  wishlist: Ember.computed(function(){
-    const store = this.get('store');
+  wishlist: computed(function(){
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  wishlistItems: Ember.computed('wishlist', function(){
+  wishlistItems: computed('wishlist', function(){
     this.set('allWishlistItems', this.get('wishlist'));
     return this.get('allWishlistItems');
   }).volatile(),
 
-  products: Ember.computed('name', 'parent_category', 'child_category', function(){
+  products: computed('name', 'parent_category', 'child_category', function(){
     var categoryChecker;
 
     this.get('loadingSlider').startLoading();
@@ -59,7 +59,7 @@ export default Controller.extend({
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-  filteredProducts: Ember.computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
+  filteredProducts: computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
  
     var products = this.get('products');
     var _this = this;
@@ -110,16 +110,15 @@ export default Controller.extend({
 
   }),
 
-  productSearchErrorMessage: Ember.computed('filteredProducts', function(){
+  productSearchErrorMessage: computed('filteredProducts', function(){
 
-    var categoryChecker = null;
     var similarityRate = 0.75;
     var _this = this;
 
     if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){
       var categories = this.get('model.categoryList');
       _this.set('closestCategory', null);
-      categories.forEach((item, index) => {
+      categories.forEach((item) => {
         if(stringSimilarity(item.name, this.get('name')) > similarityRate || stringSimilarity(item.name, this.get('name'), 1) > 0.75){
           similarityRate = stringSimilarity(item.name, this.get('name'));
           _this.set('closestCategory', item);
@@ -183,7 +182,6 @@ export default Controller.extend({
     },
 
     createWishlist: function(productID) {
-      var _this = this;
       this.store.createRecord('wishlist', {
         status: 'active',
         product_id: productID

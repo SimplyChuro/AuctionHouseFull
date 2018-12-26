@@ -1,9 +1,11 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
+  session: service(),
+  store: service(),
   
   amountHasError: null,
   amountErrorMessage: null,
@@ -13,18 +15,17 @@ export default Controller.extend({
   checker: null,
   topBid: null,
 
-  sortedBids: Ember.computed('model.product.bids.[]', function(){
+  sortedBids: computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
-  wishlist: Ember.computed('model.product.bids.[]', function(){
-    const store = this.get('store');
+  wishlist: computed('model.product.bids.[]', function(){
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  userWishlistItem: Ember.computed('checker', function(){
+  userWishlistItem: computed('checker', function(){
     var _this = this;
-    var one = this.get('wishlist').then(resolvedWishlist => {
+    this.get('wishlist').then(resolvedWishlist => {
       resolvedWishlist.forEach(item => {
        if(_this.get('checker') == null) {
           if(_this.get('model.product.id') === item.get('product').get('id')) {
@@ -62,7 +63,7 @@ export default Controller.extend({
             _this.set('amountErrorMessage', null);
             _this.get('flashMessages').success('Bid Created!');
             _this.get('model.product.bids').addObject(bid);
-          }, function(response){
+          }, function(){
             _this.get('flashMessages').warning('An error occoured please try again!');
           });
 
@@ -80,7 +81,7 @@ export default Controller.extend({
 
     createWishlist: function(productID) {
       var _this = this;
-      var wishlistCreate = this.store.createRecord('wishlist', {
+      this.store.createRecord('wishlist', {
         product_id: productID
       }).save().then(function(data){
         _this.set('checker', data);      

@@ -1,4 +1,7 @@
 import DS from 'ember-data';
+import { mapBy } from '@ember/object/computed';
+import { sum } from '@ember/object/computed';
+import { computed } from '@ember/object';
 
 export default DS.Model.extend({
   name: DS.attr('string'),
@@ -13,14 +16,14 @@ export default DS.Model.extend({
   category_id: DS.attr('number'),
   pictures: DS.hasMany('picture'),
   productcategory: DS.hasMany('productcategory'),
-  wishlist: DS.belongsTo('sale'),
+  sale: DS.belongsTo('sale'),
   wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid'),
   reviews: DS.hasMany('review'),
 
-  ratingScores: Ember.computed.mapBy('review', 'rating'),
-  sumOfScores: Ember.computed.sum('ratingScores'),
-  averageScore: Ember.computed('sumOfScores', 'ratingScores.length', function() {
+  ratingScores: mapBy('review', 'rating'),
+  sumOfScores: sum('ratingScores'),
+  averageScore: computed('sumOfScores', 'ratingScores.length', function() {
     return this.get('sumOfScores') / this.get('ratingScores.length');
   })
 });

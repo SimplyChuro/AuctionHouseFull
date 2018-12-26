@@ -30,7 +30,7 @@
 <div class="container-fluid bottom-margin-300">
   <div class="container">
     <div class="row">
-      <div class="col-lg-3 col-xl-3">
+      <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3 col-xl-3">
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">PRODUCT CATEGORIES</p>
           <tbody>
@@ -254,7 +254,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-lg-9 col-xl-9">
+      <div class="col-xs-7 col-sm-7 col-md-8 col-lg-9 col-xl-9">
         <div class="mr-0 ml-0 bottom-margin-100">
           <div class="product-sort-type-holder">
             <select class="product-list-select" onchange={{action "setSortType" value="target.value"}}>
@@ -290,7 +290,37 @@
             </select>
           </div>
 
-          <div class="product-list-type-holder">
+          <div class="product-sort-type-holder pt-1 d-lg-none d-xl-none">
+            {{#if (eq list_type null)}}
+              <button class="product-list-button product-list-button-active" {{action 'setListType' null}}>
+                <i class="material-icons">
+                  view_module
+                </i>
+                Grid
+              </button>
+              <button class="product-list-button" {{action 'setListType' 'List'}}>
+                <i class="material-icons">
+                  view_list
+                </i>
+                List
+              </button>
+            {{else}}
+              <button class="product-list-button" {{action 'setListType' null}}>
+                <i class="material-icons">
+                  view_module
+                </i>
+                Grid
+              </button>
+              <button class="product-list-button product-list-button-active" {{action 'setListType' 'List'}}>
+                <i class="material-icons">
+                  view_list
+                </i>
+                List
+              </button>
+            {{/if}}
+          </div>
+
+          <div class="product-list-type-holder d-none d-lg-block d-xl-block">
             {{#if (eq list_type null)}}
               <button class="product-list-button product-list-button-active" {{action 'setListType' null}}>
                 <i class="material-icons">
@@ -320,6 +350,7 @@
             {{/if}}
           </div>
         </div>
+        <div class="pt-3"></div>
         {{#if filteredProducts}}
           <div class="row">
             {{#each (product-sort filteredProducts sorting) as |product index|}}

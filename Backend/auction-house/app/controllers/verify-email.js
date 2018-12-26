@@ -21,11 +21,8 @@ export default Controller.extend({
             'X-AUTH-TOKEN': _this.get('token')
           },
           contentType: 'application/text;charset=utf-8',
-          dataType: 'text',
-          success: function(data){
-            
-          }
-        }).catch(function(data){
+          dataType: 'text'
+        }).catch(function(){
           _this.transitionToRoute('home');
         });
       }

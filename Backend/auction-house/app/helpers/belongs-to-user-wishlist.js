@@ -7,13 +7,12 @@ export default Ember.Helper.extend({
     var productID = params[1];
     var checker = null;
 
-    wishlist.forEach((item, index) => {
+    wishlist.forEach((item) => {
       if(item.product.get('id') == productID){
         checker = item;
       }
     });
 
-    // console.log(wishlist);
     this.notifyPropertyChange('checker');
     return checker;
   }

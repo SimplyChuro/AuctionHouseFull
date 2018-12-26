@@ -3,38 +3,8 @@ import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
 
-  user: validator('belongs-to'),
-
-  // street: validator('presence', {
-  //   presence: true,
-  //   ignoreBlank: true,
-  //   message: "Street should not be empty"
-  // }),
-
-  // city: validator('presence', {
-  //   presence: false,
-  //   ignoreBlank: true,
-  //   message: "City should not be empty"
-  // }),
-
-  // zipCode: validator('presence', {
-  //   presence: false,
-  //   ignoreBlank: true,
-  //   message: "ZipCode should not be empty"
-  // }),
-
-  // state: validator('presence', {
-  //   presence: false,
-  //   ignoreBlank: true,
-  //   message: "State should not be empty"
-  // }),
-
-  // country: validator('presence', {
-  //   presence: false,
-  //   ignoreBlank: true,
-  //   message: "Country should not be empty"
-  // }),
-
+  user: validator('belongs-to')
+  
 });
 
 export default DS.Model.extend(Validations, {
