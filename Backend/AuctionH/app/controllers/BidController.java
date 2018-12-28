@@ -22,13 +22,13 @@ public class BidController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			Bids bid = Bids.find.query().where().conjunction()
-					.eq("user_id", user.id)
-					.eq("product_id", id)
-					.endJunction()
-					.findUnique();
-			
-			return ok(Json.toJson(bid));
+			if(!user.admin) {
+				Bids bid = Bids.find.byId(id);
+				
+				return ok(Json.toJson(bid));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -39,8 +39,12 @@ public class BidController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			List<Bids> bids = user.bids;
-			return ok(Json.toJson(bids));
+			if(!user.admin) {
+				List<Bids> bids = user.bids;
+				return ok(Json.toJson(bids));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -50,16 +54,18 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode objectNode = request().body().asJson().get("bid");
 			Users user = LoginController.getUser();
-			
-			Bids bidChecker = Json.fromJson(objectNode, Bids.class);
-			if(bidChecker.createBid(user, objectNode)) {
-				return ok(Json.toJson(bidChecker));
+			if(!user.admin) {
+				JsonNode objectNode = request().body().asJson().get("bid");
+				Bids bidChecker = Json.fromJson(objectNode, Bids.class);
+				if(bidChecker.createBid(user, objectNode)) {
+					return ok(Json.toJson(bidChecker));
+				} else {
+					return badRequest();
+				}
 			} else {
-				return badRequest();
+				return badRequest();	
 			}
-				
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -69,21 +75,21 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)	
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
+			Users user = LoginController.getUser();
+			if(!user.admin) {
+				JsonNode objectNode = request().body().asJson().get("bid");
+				Bids bidChecker = Bids.find.byId(id);
 				
-			Bids bidChecker = Bids.find.query().where().conjunction()
-					.eq("user_id", jsonNode.findPath("user_id").asLong())
-					.eq("product_id", jsonNode.findPath("product_id").asLong())
-					.endJunction()
-					.findUnique();
-			
-			if(bidChecker != null) {
-				bidChecker = Json.fromJson(jsonNode, Bids.class);
-				bidChecker.update();
-				return ok(Json.toJson(bidChecker));
+				if(bidChecker != null) {
+					bidChecker = Json.fromJson(objectNode, Bids.class);
+					bidChecker.update();
+					return ok(Json.toJson(bidChecker));
+				} else {
+					return badRequest();
+				}		
 			} else {
 				return badRequest();
-			}		
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -93,18 +99,17 @@ public class BidController extends Controller {
 	@Security.Authenticated(Secured.class)	
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
+			Users user = LoginController.getUser();
 			
-			Bids bidChecker = Bids.find.query().where().conjunction()
-					.eq("user_id", jsonNode.findPath("user_id").asLong())
-					.eq("product_id", jsonNode.findPath("product_id").asLong())
-					.endJunction()
-					.findUnique();
-			
-			if(bidChecker != null) {
-				bidChecker = Json.fromJson(jsonNode, Bids.class);
-				bidChecker.delete();
-				return ok(Json.toJson(""));
+			if(!user.admin) {
+				Bids bidChecker = Bids.find.byId(id);
+				
+				if(bidChecker != null) {
+					bidChecker.delete();
+					return ok(Json.toJson(""));
+				} else {
+					return badRequest();
+				}		
 			} else {
 				return badRequest();
 			}

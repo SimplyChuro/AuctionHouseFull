@@ -26,14 +26,12 @@ public class SaleController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			Sales sale = Sales.find.query().where()
-					.conjunction()
-					.eq("user_id", user.id)
-					.eq("product_id", id)
-					.endJunction()
-					.findUnique();
-			
-			return ok(Json.toJson(sale));
+			if(!user.admin) {
+				Sales sale = Sales.find.byId(id);
+				return ok(Json.toJson(sale));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -44,9 +42,12 @@ public class SaleController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			List<Sales> sales = user.sales;
-			
-			return ok(Json.toJson(sales));
+			if(!user.admin) {
+				List<Sales> sales = user.sales;
+				return ok(Json.toJson(sales));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -55,39 +56,44 @@ public class SaleController extends Controller {
 	//Create sale
 	@Security.Authenticated(Secured.class)
 	public Result create() {
-		try {		
-			JsonNode jsonNode = request().body().asJson().get("sale");	
-			JsonNode productNode = jsonNode.get("product");
-			Long cat_id = productNode.get("category_id").asLong();
-			Products product = Json.fromJson(productNode, Products.class);
-			product.save();
+		try {
+			Users user = LoginController.getUser();
+			if(!user.admin) {
+				JsonNode objectNode = request().body().asJson().get("sale");	
+				JsonNode productNode = objectNode.get("product");
+				Long cat_id = productNode.get("category_id").asLong();
+				Products product = Json.fromJson(productNode, Products.class);
+				product.save();
+				
+				for(Pictures picture : product.pictures) {
+					picture.product = product;
+					picture.save();
+				}
+				
+				Sales saleItem = Json.fromJson(objectNode, Sales.class);
+				saleItem.user = user;
+				saleItem.product = product;
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				ProductCategory categoryConnectionChild = new ProductCategory();
+				categoryConnectionChild.product = saleItem.product;
+				categoryConnectionChild.category = childCategory;
+				categoryConnectionChild.save();
+				
+				ProductCategory categoryConnectionParent = new ProductCategory();
+				categoryConnectionParent.product = saleItem.product;
+				categoryConnectionParent.category = parentCategory;
+				categoryConnectionParent.save();
 			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.save();
+	
+				saleItem.save();
+	
+				return ok(Json.toJson(saleItem));
+			} else {
+				return badRequest();
 			}
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.user = LoginController.getUser();
-			saleItem.product = product;
-			
-			Category childCategory = Category.find.byId(cat_id);
-			Category parentCategory = Category.find.byId(childCategory.parent_id);
-			
-			ProductCategory categoryConnectionChild = new ProductCategory();
-			categoryConnectionChild.product = saleItem.product;
-			categoryConnectionChild.category = childCategory;
-			categoryConnectionChild.save();
-			
-			ProductCategory categoryConnectionParent = new ProductCategory();
-			categoryConnectionParent.product = saleItem.product;
-			categoryConnectionParent.category = parentCategory;
-			categoryConnectionParent.save();
-		
-
-			saleItem.save();
-
-			return ok(Json.toJson(saleItem));	
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -97,13 +103,18 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.product.update();
-			saleItem.update();
-			
-			return ok(Json.toJson(saleItem));
+			Users user = LoginController.getUser();
+			if(!user.admin) {
+				JsonNode jsonNode = request().body().asJson();
+				
+				Sales saleItem = Json.fromJson(jsonNode, Sales.class);
+				saleItem.product.update();
+				saleItem.update();
+				
+				return ok(Json.toJson(saleItem));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -113,54 +124,61 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();	
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.product.delete();
-			saleItem.delete();
-			
-			return ok(Json.toJson(""));
+			Users user = LoginController.getUser();
+			if(!user.admin) {
+				Sales saleItem = Sales.find.byId(id);
+				for(Pictures picture : saleItem.product.pictures) {
+					picture.delete();
+				}
+				saleItem.product.delete();
+				saleItem.delete();
+				
+				return ok(Json.toJson(""));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
 	}
 	
+	
 	//Upload pictures -- not finished
-		@Security.Authenticated(Secured.class)
-		public Result upload(Long id) {
-			try {
-				Http.MultipartFormData<File> body = request().body().asMultipartFormData();
-			    Http.MultipartFormData.FilePart<File> pictureFile = body.getFile("picture");
-			    
-			    if (pictureFile != null) {
-			        String fileName = pictureFile.getFilename();
-			        String contentType = pictureFile.getContentType();
-			        File file = pictureFile.getFile();
-			        Users userChecker = LoginController.getUser();
-					if(userChecker.admin) {
-						
-						Products product = Products.find.byId(id);
-						for(Pictures picture : product.pictures) {
-							picture.product = product;
-							picture.update();
-						}
-								
-						return ok(Json.toJson(product));
-					} else {
-						Products product = Products.find.byId(id);
-						for(Pictures picture : product.pictures) {
-							picture.product = product;
-							picture.update();
-						}
-								
-						return ok(Json.toJson(product));
+	@Security.Authenticated(Secured.class)
+	public Result upload(Long id) {
+		try {
+			Http.MultipartFormData<File> body = request().body().asMultipartFormData();
+		    Http.MultipartFormData.FilePart<File> pictureFile = body.getFile("picture");
+		    
+		    if (pictureFile != null) {
+		        String fileName = pictureFile.getFilename();
+		        String contentType = pictureFile.getContentType();
+		        File file = pictureFile.getFile();
+		        Users userChecker = LoginController.getUser();
+				if(userChecker.admin) {
+					
+					Products product = Products.find.byId(id);
+					for(Pictures picture : product.pictures) {
+						picture.product = product;
+						picture.update();
 					}
-			    } else {
-			        return badRequest();
-			    }
-			} catch(Exception e) {
-				return badRequest();
-			}
+							
+					return ok(Json.toJson(product));
+				} else {
+					Products product = Products.find.byId(id);
+					for(Pictures picture : product.pictures) {
+						picture.product = product;
+						picture.update();
+					}
+							
+					return ok(Json.toJson(product));
+				}
+		    } else {
+		        return badRequest();
+		    }
+		} catch(Exception e) {
+			return badRequest();
 		}
+	}
 		
 }

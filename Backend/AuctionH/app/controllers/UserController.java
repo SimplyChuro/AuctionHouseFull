@@ -131,8 +131,8 @@ public class UserController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode objectNode = request().body().asJson().get("user");
 			Users user = LoginController.getUser();
+			JsonNode objectNode = request().body().asJson().get("user");
 			if(user.admin) {
 				Users userChecker = Users.find.byId(id);
 				userChecker.updateUser(objectNode);
@@ -146,7 +146,7 @@ public class UserController extends Controller {
 		}
 	}
 	
-	//DELETE user
+	//Delete user
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
@@ -183,7 +183,7 @@ public class UserController extends Controller {
 				userChecker.delete();
 				return ok(Json.toJson(""));
 			} else {
-				return ok(Json.toJson(""));
+				return badRequest();
 			}
 		} catch(Exception e) {
 			return badRequest();
@@ -213,10 +213,10 @@ public class UserController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result reset() {
 		try {
-			JsonNode objectNode = request().body().asJson();
 			Users userChecker = LoginController.getUser();
 			
 			if(userChecker != null) {
+				JsonNode objectNode = request().body().asJson();
 				userChecker.updatePassword(objectNode);
 				userChecker.deleteAuthToken();
 				return ok(Json.toJson(""));

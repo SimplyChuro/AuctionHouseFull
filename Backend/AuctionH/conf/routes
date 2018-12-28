@@ -11,12 +11,12 @@ POST	/api/v1/verify					controllers.UserController.verify
 POST	/api/v1/reset					controllers.UserController.sendResetMail
 POST	/api/v1/password/reset			controllers.UserController.reset
 
-# Address API routes
-GET		/api/v1/address					controllers.AddressController.getAll
-GET		/api/v1/address/:id				controllers.AddressController.get(id : Long)
-POST	/api/v1/address					controllers.AddressController.create
-PUT		/api/v1/address/:id				controllers.AddressController.update(id : Long)
-DELETE	/api/v1/address/:id				controllers.AddressController.delete(id : Long)
+# Address API routes -- not in usage
+#GET		/api/v1/address					controllers.AddressController.getAll
+#GET		/api/v1/address/:id				controllers.AddressController.get(id : Long)
+#POST	/api/v1/address					controllers.AddressController.create
+#PUT		/api/v1/address/:id				controllers.AddressController.update(id : Long)
+#DELETE	/api/v1/address/:id				controllers.AddressController.delete(id : Long)
 
 
 # Login/Logout API routes

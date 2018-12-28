@@ -14,7 +14,7 @@ import play.mvc.Security;
 
 public class AddressController extends Controller {
 		
-	//Get bid not in usage
+	//Get address
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -25,7 +25,7 @@ public class AddressController extends Controller {
 		}
 	}
 	
-	//Get bids -- not finished -- needs planning
+	//Get addresses -- not finished -- needs planning
 	@Security.Authenticated(Secured.class)
 	public Result getAll() {
 		try {
@@ -36,7 +36,7 @@ public class AddressController extends Controller {
 		}
 	}
 	
-	//Create or Update bid
+	//Create address
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
@@ -58,7 +58,7 @@ public class AddressController extends Controller {
 		}
 	}	
 	
-	//Update bid	
+	//Update address	
 	@Security.Authenticated(Secured.class)	
 	public Result update(Long id) {
 		try {
@@ -80,7 +80,7 @@ public class AddressController extends Controller {
 		}
 	}	
 	
-	//Delete bid	
+	//Delete address	
 	@Security.Authenticated(Secured.class)	
 	public Result delete(Long id) {
 		try {

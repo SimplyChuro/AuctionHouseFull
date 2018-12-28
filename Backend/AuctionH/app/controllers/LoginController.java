@@ -90,7 +90,7 @@ public class LoginController extends Controller {
 		Users user = getUser();
 		if(user.emailVerified == true) {
 			user.deleteAuthToken();
-		    return ok();
+		    return ok(Json.toJson(""));
 		} else {
             return badRequest();	
 		}
