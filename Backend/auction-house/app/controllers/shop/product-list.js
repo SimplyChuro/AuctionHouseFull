@@ -17,6 +17,7 @@ export default Controller.extend({
   sorting: null,
   minPrice: null,
   maxPrice: null,
+  staticMaxPrice: 1500,
   color: null,
   size: null,
   list_type: null,
@@ -26,7 +27,7 @@ export default Controller.extend({
   nameNotFound: false,
   listSize: 9,
 
-  startRange:[1, 5000],
+  startRange:[0, 1500],
 
   wishlist: computed(function(){
     return this.store.findAll('wishlist', { reload: true });
@@ -39,8 +40,6 @@ export default Controller.extend({
 
   products: computed('name', 'parent_category', 'child_category', function(){
     var categoryChecker;
-
-    this.get('loadingSlider').startLoading();
 
     if(isEmpty(this.get('parent_category'))) {
       categoryChecker = 0;
@@ -56,13 +55,15 @@ export default Controller.extend({
     if(isEmpty(nameChecker)) {
       nameChecker = '';
     }
+
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
   filteredProducts: computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
- 
-    var products = this.get('products');
+    
     var _this = this;
+    let products = this.get('products');
+
     let singleProduct = null;
 
     if(!(isEmpty(this.get('color')))) {
@@ -94,18 +95,24 @@ export default Controller.extend({
     if(!(isEmpty(this.get('minPrice'))) && !(isEmpty(this.get('maxPrice')))) {
       products = products.filter(
         function(product) { 
-          if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
-            singleProduct = product;
+          if(_this.get('maxPrice') == 1500) {
+            if(product.startingPrice >= _this.get('minPrice')) {
+              singleProduct = product;
+            } else {
+              singleProduct = null;
+            }
           } else {
-            singleProduct = null;
+            if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
+              singleProduct = product;
+            } else {
+              singleProduct = null;
+            }
           }
           return singleProduct;
         }
       );
     }
 
-
-    this.get('loadingSlider').endLoading();
     return products;
 
   }),

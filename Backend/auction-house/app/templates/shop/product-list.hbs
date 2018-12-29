@@ -88,13 +88,30 @@
         <table class="table categort-table-v2 pb-0 mb-3">
           <p class="category-table-title-v2 mt-3 mb-3 ml-3">FILTER BY PRICE</p>
           <tbody>          
-            <div class="category-table-link-v4 mr-3 ml-3">
-              {{range-slider start=startRange
+            <div class="category-table-link-v4 mb-1 mr-3 ml-3">
+              {{range-slider
+                start=startRange
                 step=1
                 min=0
-                max=5000
+                max=staticMaxPrice
                 on-set="sliderChanged"
               }}
+            </div>
+            <div class="mr-3 ml-3 mb-2">
+              {{#if (eq minPrice null)}}
+                <span class="float-left pl-slider-text">{{format-slider-price 0}}</span>
+              {{else}}
+                <span class="float-left pl-slider-text">{{format-slider-price minPrice}}</span>
+              {{/if}}
+              {{#if (eq maxPrice null)}}
+                <span class="float-right pl-slider-text">{{format-slider-price 1500}}+</span>
+              {{else}}
+                {{#if (eq maxPrice 1500)}}
+                  <span class="float-right pl-slider-text">{{format-slider-price 1500}}+</span>
+                {{else}}
+                  <span class="float-right pl-slider-text">{{format-slider-price maxPrice}}</span>
+                {{/if}}
+              {{/if}}
             </div>
           </tbody>
         </table> 

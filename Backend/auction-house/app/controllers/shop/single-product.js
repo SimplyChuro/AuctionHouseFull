@@ -64,7 +64,7 @@ export default Controller.extend({
             _this.get('flashMessages').success('Bid Created!');
             _this.get('model.product.bids').addObject(bid);
           }, function(){
-            _this.get('flashMessages').warning('An error occoured please try again!');
+            
           });
 
         } else {

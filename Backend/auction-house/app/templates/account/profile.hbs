@@ -50,15 +50,25 @@
     <form>
       <div class="card fade">
         <p class="account-profile-card-top">REQUIRED</p>
-        <div class="row m-0 p-0">
-          <div class="account-profile-card-left-side">
-            <div class="account-profile-image-holder">
-              <img src="" class="account-profile-image">
+        <div class="profile-card">
+          <div class="row m-0 p-0 mb-4">
+            <div class="col-sm-12 col-md-4 col-lg-3 col-lg-3">
+              <div class="account-profile-image-holder">
+                <img src="" class="account-profile-image">
+              </div>
+              <div class="account-profile-card-image-button-holder full-width mt-3">
+                {{#file-upload 
+                        class="account-profile-card-image-button"
+                        name="photos"
+                        class="full-width"
+                        for="upload-photo"
+                        accept="image/*"
+                        multiple=false}}
+                  <a class="account-profile-card-image-button">CHANGE PHOTO</a>
+                {{/file-upload}}
+              </div>          
             </div>
-            <button class="account-profile-card-image-button">CHANGE PHOTO</button>
-          </div>
-          <div class="account-profile-card-right-side account-profile-card-body-holder">
-            <div>
+            <div class="col-sm-12 col-md-8 col-lg-6 col-lg-6"> 
               <label class="account-profile-form-text">First Name</label>
               {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
               {{#if nameHasError}}
@@ -117,7 +127,7 @@
                   {{dateOfBirthErrorMessage}}
                 </div>
               {{/if}}
-              <label class="account-profile-form-text mt-5">Phone Number</label>
+              <label class="account-profile-form-text mt-3">Phone Number</label>
               {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
               {{#if phoneNumberHasError}}
                 <div class="validation-error-message mb-2 fade">
@@ -132,10 +142,10 @@
       </div>
       <div class="card mt-5">
         <p class="account-profile-card-top">OPTIONAL</p>
-        <div class="row m-0 p-0">
-          <div class="account-profile-card-left-side-address"></div>
-          <div class="account-profile-card-right-side-address account-profile-card-body-holder">
-            <div>
+        <div class="profile-card-address">
+          <div class="row m-0 p-0 mb-5">
+            <div class="col-sm-0 col-md-0 col-lg-3 col-lg-3"></div>
+            <div class="col-sm-12 col-md-12 col-lg-6 col-lg-6"> 
               <h1 class="account-profile-address-title mb-4">Address</h1>
               <label class="account-profile-form-text">Street</label>
               {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
