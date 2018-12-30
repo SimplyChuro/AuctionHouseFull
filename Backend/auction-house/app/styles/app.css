@@ -56,12 +56,12 @@ select {
   padding-bottom: 3px;
 }
 
+.display-none{
+  display: none;
+}
+
 /**/
 
-
-.test{
-  background: #0000;
-}
 
 /*header design*/
 
@@ -150,6 +150,25 @@ select {
 
 .header-logo-link:hover{
   text-decoration: none;
+}
+
+.header-dropdown-holder{
+  background: #ffffff;
+  border: 2px solid #C0C0C0;
+  color: #C0C0C0;
+  border-radius: 2px;
+  text-align: center;
+  width: 60px;
+  padding: 4px 0px 2px 0px;
+  cursor: pointer;
+}
+
+.header-dropdown-holder:hover,
+.header-dropdown-holder:focus,
+.header-dropdown-holder:active:focus,
+.header-dropdown-holder:focus{
+  background: #C0C0C0 !important;
+  border: 2px solid #C0C0C0 !important;
 }
 
 /**/
@@ -1235,17 +1254,18 @@ select {
 }
 
 .account-profile-card-image-button-holder{
+  
+}
+
+.account-profile-card-image-button{
+  width: 100%;
+  padding: 10px 0px;
+  margin: 10px 0px 0px 0px;
   text-align: center;
   background: #FFFFFF;
   border: 3px solid #E3E3E3;
   cursor: pointer;
   box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
-}
-
-.account-profile-card-image-button{
-  width: 100%;
-  padding: 15px 0px 5px 0px;
-  text-align: center;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;

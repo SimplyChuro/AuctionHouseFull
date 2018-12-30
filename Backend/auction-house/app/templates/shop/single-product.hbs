@@ -30,6 +30,9 @@
   <div class="container">
     <div class="row single-product-margin fade">
       <div class="col-lg-5 col-xl-5">
+        <div class="d-lg-none d-xl-none">
+          <h1 class="title-text-links mb-2">{{model.product.name}}</h1>
+        </div>
         {{#each model.product.pictures as |picture index|}}
           {{#if (is-main picture currentPicture index)}}
             <div class="single-product-picture-background single-product-main-picture fade">
@@ -52,7 +55,12 @@
         </div>
       </div>
       <div class="col-lg-7 col-xl-7">
-        <h1 class="title-text-links">{{model.product.name}}</h1>
+        <div class="d-none d-lg-block d-xl-block">
+          <h1 class="title-text-links">{{model.product.name}}</h1>
+        </div>
+        <div class="d-lg-none d-xl-none">
+          <div class="mt-2"></div>
+        </div>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
           {{#if (is-logged-in session.authToken)}}
@@ -142,7 +150,11 @@
             {{else}}
               <p class="single-product-small-text m-0 p-0">Number of Bids: {{sortedBids.length}}</p>
             {{/if}}
-            <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
+            {{#if (is-less (duration model.product.publishDate model.product.expireDate) 2)}}
+              <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Day</p>
+            {{else}}
+              <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Days</p>
+            {{/if}}
           </div>
         {{#if (is-logged-in session.authToken)}}
           {{#unless userWishlistItem}}

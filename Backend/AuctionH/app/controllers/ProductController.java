@@ -321,42 +321,4 @@ public class ProductController extends Controller {
 		}
 	}
 	
-	//Upload pictures -- not finished
-	@Security.Authenticated(Secured.class)
-	public Result upload(Long id) {
-		try {
-			Http.MultipartFormData<File> body = request().body().asMultipartFormData();
-		    Http.MultipartFormData.FilePart<File> pictureFile = body.getFile("picture");
-		    
-		    if (pictureFile != null) {
-		        String fileName = pictureFile.getFilename();
-		        String contentType = pictureFile.getContentType();
-		        File file = pictureFile.getFile();
-		        Users userChecker = LoginController.getUser();
-				if(userChecker.admin) {
-					
-					Products product = Products.find.byId(id);
-					for(Pictures picture : product.pictures) {
-						picture.product = product;
-						picture.update();
-					}
-							
-					return ok(Json.toJson(product));
-				} else {
-					Products product = Products.find.byId(id);
-					for(Pictures picture : product.pictures) {
-						picture.product = product;
-						picture.update();
-					}
-							
-					return ok(Json.toJson(product));
-				}
-		    } else {
-		        return badRequest();
-		    }
-		} catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
 }

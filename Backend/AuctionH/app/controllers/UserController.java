@@ -275,34 +275,16 @@ public class UserController extends Controller {
 		}
 	}
 	
-	//Upload avatar picture -- not finished
+	//Validate upload
 	@Security.Authenticated(Secured.class)
-	public Result upload(Long id) {
+	public Result validate() {
 		try {
-			Http.MultipartFormData<File> body = request().body().asMultipartFormData();
-		    Http.MultipartFormData.FilePart<File> pictureFile = body.getFile("picture");
-		    
-		    if (pictureFile != null) {
-		        String fileName = pictureFile.getFilename();
-		        String contentType = pictureFile.getContentType();
-		        File file = pictureFile.getFile();
-		        
-		        Users userChecker = LoginController.getUser();
-				if(userChecker.admin) {	
-					Users user = Users.find.byId(id);
-							
-					return ok(Json.toJson(user));
-				} else {
-					Users user = Users.find.byId(id);
-					
-					return ok(Json.toJson(user));
-				}
-		    } else {
-		        return badRequest();
-		    }
-		} catch(Exception e) {
+			Users userChecker = LoginController.getUser();
+			
+			return ok();
+		}catch(Exception e) {
 			return badRequest();
 		}
-	}
+	} 
 	
 }

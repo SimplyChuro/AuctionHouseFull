@@ -36,17 +36,17 @@
     <div class="container">
       <div class="row full-width mr-0 ml-0">
 
-        <div class="col-3 mr-0 ml-0 pl-0 pr-0">
+        <div class="col-sm-5 col-md-4 col-lg-3 col-xl-3 mr-0 ml-0 pl-0 pr-0">
           {{#link-to 'home' class="header-logo-link"}}
             <p class="title"><img class="logo" src="https://muffin.ml/maki/churo-images/logo/logo.png">AUCTION</p>
           {{/link-to}}
         </div>
 
-        <div class="col-5 mr-0 ml-0 pl-0 pr-1 padding-top-15">
+        <div class="col-sm-5 col-md-6 col-lg-5 col-xl-5 mr-0 ml-0 pl-0 pr-1 padding-top-15">
           <form class="navbar-form navigation-form full-width">
             <div class="row mr-0 ml-0">
-              {{input type="text" class="header-search-input col-9" value=searchQuery placeholder="Search" autocomplete="off"}}  
-              <button class="header-search-button ml-auto pr-1 col-2" type="submit" {{action 'searchForItem'}}>
+              {{input type="text" class="header-search-input col-sm-8 col-md-9 col-lg-9 col-xl-9" value=searchQuery placeholder="Search" autocomplete="off"}}  
+              <button class="header-search-button ml-auto pr-1 col-sm-3 col-md-2 col-lg-2 col-xl-2" type="submit" {{action 'searchForItem'}}>
                 <i class="material-icons">
                   search
                 </i>
@@ -55,93 +55,172 @@
           </form>
         </div>
 
-        <div class="col-4 mr-0 ml-0 pl-0 pr-0 pt-1">
-          <div class="navbar navbar-expand-md navbar-white bg-white mr-0 ml-0 pl-0 pr-0">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item pr-4">
-                {{#link-to "home" class="nav-link" current-when="index home"}}
-                  HOME
-                {{/link-to}}
-              </li>
-              <li class="nav-item pr-4">
-                {{#link-to "shop.product-list" class="nav-link" current-when="shop shop.product-list"}}
-                  SHOP
-                {{/link-to}}
-              </li>
-              <li class="nav-item dropdown">
-                {{#if (is-logged-in session.authToken)}}
-                  {{#if (is-admin session.adminChecker true)}}
+        <div class="col-sm-2 col-md-2 col-lg-4 col-xl-4 mr-0 ml-0 pl-4 pr-0 pt-1">
+          <div class="d-none d-lg-block d-xl-block">
+            <div class="navbar navbar-expand-md navbar-white bg-white mr-0 ml-0 pl-0 pr-0">
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item pr-4">
+                  {{#link-to "home" class="nav-link" current-when="index home"}}
+                    HOME
+                  {{/link-to}}
+                </li>
+                <li class="nav-item pr-4">
+                  {{#link-to "shop.product-list" class="nav-link" current-when="shop shop.product-list"}}
+                    SHOP
+                  {{/link-to}}
+                </li>
+                <li class="nav-item dropdown">
+                  {{#if (is-logged-in session.authToken)}}
                     {{#bs-dropdown as |dd|}}
                       {{#dd.toggle class="nav-link" current-when="account.admin.categories account.admin.users account.admin.products"}}
-                        ADMIN
-                      {{/dd.toggle}}
-                      {{#dd.menu as |ddm|}}  
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
-                        {{/ddm.item}}
-
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.products" class="header-navigation-dropdown-item"}}Products{{/ddm.link-to}}
-                        {{/ddm.item}}
-                        
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.categories" class="header-navigation-dropdown-item"}}Categories{{/ddm.link-to}}
-                        {{/ddm.item}}
-
-                        <!--
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.new-user" class="header-navigation-dropdown-item"}}Create a New User{{/ddm.link-to}}
-                        {{/ddm.item}} 
-                        -->
-
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.new-product" class="header-navigation-dropdown-item"}}Create a Product{{/ddm.link-to}}
-                        {{/ddm.item}}
-
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.admin.new-category" class="header-navigation-dropdown-item"}}Create a Category{{/ddm.link-to}}
-                        {{/ddm.item}}
-                      {{/dd.menu}}
-                    {{/bs-dropdown}}
-                  {{else}}
-                    {{#bs-dropdown as |dd|}}
-                      {{#dd.toggle class="nav-link" current-when="account.profile account.bids account.wishlist account.sales account.sell account.settings"}}
                         MY ACCOUNT
                       {{/dd.toggle}}
                       {{#dd.menu as |ddm|}}  
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
-                        {{/ddm.item}}
+                        {{#if (is-admin session.adminChecker true)}}
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
+                          {{/ddm.item}}
 
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Become a seller{{/ddm.link-to}}
-                        {{/ddm.item}}
-                        
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
-                        {{/ddm.item}}
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.products" class="header-navigation-dropdown-item"}}Products{{/ddm.link-to}}
+                          {{/ddm.item}}
+                          
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.categories" class="header-navigation-dropdown-item"}}Categories{{/ddm.link-to}}
+                          {{/ddm.item}}
 
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
-                        {{/ddm.item}}
-                        
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
-                        {{/ddm.item}}
-                        
-                        {{#ddm.item}}
-                          {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
-                        {{/ddm.item}}
+                          <!--
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.new-user" class="header-navigation-dropdown-item"}}Create a New User{{/ddm.link-to}}
+                          {{/ddm.item}} 
+                          -->
+
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.new-product" class="header-navigation-dropdown-item"}}Create a Product{{/ddm.link-to}}
+                          {{/ddm.item}}
+
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.admin.new-category" class="header-navigation-dropdown-item"}}Create a Category{{/ddm.link-to}}
+                          {{/ddm.item}}
+
+                        {{else}}
+
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
+                          {{/ddm.item}}
+
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Become a seller{{/ddm.link-to}}
+                          {{/ddm.item}}
+                          
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
+                          {{/ddm.item}}
+
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
+                          {{/ddm.item}}
+                          
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
+                          {{/ddm.item}}
+                          
+                          {{#ddm.item}}
+                            {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
+                          {{/ddm.item}}
+                        {{/if}}
                       {{/dd.menu}}
                     {{/bs-dropdown}}
+                  {{else}}
+                    {{#link-to "login" class="nav-link dropdown-toggle" current-when="account.profile account.bids account.wishlist account.sales account.sell account.settings"}}
+                      MY ACCOUNT
+                    {{/link-to}}
                   {{/if}}
-                {{else}}
-                  {{#link-to "login" class="nav-link dropdown-toggle" current-when="account.profile account.bids account.wishlist account.sales account.sell account.settings"}}
-                    MY ACCOUNT
-                  {{/link-to}}
-                {{/if}}
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="d-lg-none d-xl-none">
+            <div class="mt-2 float-right">
+              {{#bs-dropdown as |dd|}}
+                {{#dd.button class="btn btn-light header-dropdown-holder"}}
+                  <span class="caret">
+                    <i class="material-icons">
+                      reorder
+                    </i>
+                  </span>
+                {{/dd.button}}
+                {{#dd.menu as |ddm|}}
+                  {{#ddm.item}}
+                    {{#ddm.link-to "home" class="header-navigation-dropdown-item"}}Home{{/ddm.link-to}}
+                  {{/ddm.item}}
+
+                  {{#ddm.item}}
+                    {{#ddm.link-to "shop.product-list" class="header-navigation-dropdown-item"}}Shop{{/ddm.link-to}}
+                  {{/ddm.item}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Sell{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Sell{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+
+                  {{#if (is-logged-in session.authToken)}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{else}}
+                    {{#ddm.item}}
+                      {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
+                    {{/ddm.item}}
+                  {{/if}}
+                {{/dd.menu}}
+              {{/bs-dropdown}}
+            </div>
           </div>
         </div>
       </div>

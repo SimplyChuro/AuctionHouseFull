@@ -28,6 +28,10 @@
         Bids
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
@@ -56,19 +60,15 @@
               <div class="account-profile-image-holder">
                 <img src="" class="account-profile-image">
               </div>
-              <div class="account-profile-card-image-button-holder full-width mt-3">
-                {{#file-upload 
-                        class="account-profile-card-image-button"
-                        name="photos"
-                        class="full-width"
-                        for="upload-photo"
-                        accept="image/*"
-                        multiple=false}}
-                  <a class="account-profile-card-image-button">CHANGE PHOTO</a>
-                {{/file-upload}}
-              </div>          
+
+              <label class="account-profile-card-image-button" for="upload-photo">UPLOAD AN IMAGE</label>
+              {{file-upload class="display-none" id="upload-photo"}}    
+
             </div>
-            <div class="col-sm-12 col-md-8 col-lg-6 col-lg-6"> 
+            <div class="col-sm-12 col-md-8 col-lg-6 col-lg-6">
+              <div class="d-md-none d-lg-none d-xl-none">
+                <div class="mt-2"></div>
+              </div> 
               <label class="account-profile-form-text">First Name</label>
               {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
               {{#if nameHasError}}
