@@ -64,7 +64,7 @@
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
           {{#if (is-logged-in session.authToken)}}
-            <form>
+            <form autocomplete="off">
               <div class="row ml-0 mr-0">
                 {{input type="string" value=bidAmount class="single-product-bid-input"}}
                 <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
@@ -199,15 +199,15 @@
         <table class="account-bids-table fade">
           <tbody>
             <tr class="account-bids-table-header row m-0 p-0">
-              <th class="account-header-text col-xl-8 col-lg-8">Bidder</th>
-              <th class="account-header-text col-xl-2 col-lg-2">Date</th>
-              <th class="account-header-text col-xl-2 col-lg-2">Bid</th>
+              <th class="account-header-text col-sm-8 col-md-8 col-lg-8 col-xl-8">Bidder</th>
+              <th class="account-header-text col-sm-2 col-md-2 col-lg-2 col-xl-2">Date</th>
+              <th class="account-header-text col-sm-2 col-md-2 col-lg-2 col-xl-2">Bid</th>
             </tr>
             {{#each sortedBids as |bid index|}}
               {{#if (is-less index bidListSize)}}
                 <tr>
                   <div class="row mt-3 mb-3 ml-1">
-                    <div class="col-xl-8 col-lg-8 sp-margin-auto">
+                    <div class="col-sm-8 col-md-8 col-xl-8 col-lg-8 sp-margin-auto">
                       <div class="single-product-user-holder-v1 row">
                         <div class="single-product-bidder-user-icon">
                           <img src="{{bid.user.avatar}}" class="single-product-bid-user-avatar">
@@ -215,12 +215,12 @@
                         <span class="sp-margin-auto ml-3">{{bid.user.name}} {{bid.user.surname}}</span>
                       </div>
                     </div>
-                    <div class="col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
                       <div class="single-product-user-holder-v2">
                         {{format-date bid.date}}
                       </div>
                     </div>
-                    <div class="col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
                       <div class="single-product-user-holder-v3">
                         {{format-bid bid.amount}}
                       </div>

@@ -14,8 +14,8 @@
           <div class="card-body mr-4 ml-4">
             <form autocomplete="off" method="POST">
               <div class="form-group mt-4">
-                <label>First Name</label>
-                {{input type="text" value=name class="form-control form-background-color p-4"}}
+                <label for="nameInput">First Name</label>
+                {{input type="text" value=name class="form-control form-background-color p-4" id="nameInput"}}
               </div>
               {{#if nameHasError}}
                 <div class="validation-error-message fade">
@@ -24,8 +24,8 @@
               {{/if}}
               
               <div class="form-group mt-5">
-                <label>Last Name</label>
-                {{input type="text" value=surname class="form-control form-background-color p-4"}}
+                <label for="lastNameInput">Last Name</label>
+                {{input type="text" value=surname class="form-control form-background-color p-4" id="lastNameInput"}}
               </div>
               {{#if surnameHasError}}
                 <div class="validation-error-message fade">
@@ -34,8 +34,8 @@
               {{/if}}
               
               <div class="form-group mt-5">
-                <label>Enter Email</label>
-                {{input type="email" autocomplete="off" value=email class="form-control form-background-color p-4"}}
+                <label for="emailInput">Enter Email</label>
+                {{input type="email" autocomplete="off" value=email class="form-control form-background-color p-4" id="emailInput"}}
               </div>
               {{#if emailHasError}}
                 <div class="validation-error-message fade">
@@ -44,8 +44,8 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label>Confirm Email</label>
-                {{input type="email" autocomplete="off"  value=emailConfirmation class="form-control form-background-color p-4"}}
+                <label for="emailRepeatInput">Confirm Email</label>
+                {{input type="email" autocomplete="off"  value=emailConfirmation class="form-control form-background-color p-4" id="emailRepeatInput"}}
               </div>
               {{#if emailConfirmationHasError}}
                 <div class="validation-error-message fade">
@@ -54,8 +54,8 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label>Password</label>
-                {{input type="password" autocomplete="off" value=password  class="form-control form-background-color p-4"}}
+                <label for="passwordInput">Password</label>
+                {{input type="password" autocomplete="off" value=password  class="form-control form-background-color p-4" id="passwordInput"}}
               </div>
               {{#if passwordHasError}}
                 <div class="validation-error-message fade">
@@ -64,8 +64,8 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label>Confirm Password</label>
-                {{input type="password" autocomplete="off" value=passwordConfirmation  class="form-control form-background-color p-4"}}
+                <label for="passwordRepeatInput">Confirm Password</label>
+                {{input type="password" autocomplete="off" value=passwordConfirmation  class="form-control form-background-color p-4" id="passwordRepeatInput"}}
               </div>              
               {{#if passwordConfirmationHasError}}
                 <div class="validation-error-message fade">

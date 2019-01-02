@@ -14,14 +14,14 @@
         <div class="card margin-card">
           <h1 class="card-title">LOGIN</h1>
           <div class="card-body mr-4 ml-4">
-            <form>
+            <form autocomplete="off">
               <div class="form-group mt-4">
-                <label >Enter Email</label>
-                {{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
+                <label for="emailInput">Enter Email</label>
+                {{input type="email" value=emailAddress class="form-control form-background-color p-4" id="emailInput"}}
               </div>
               <div class="form-group mt-5">
-                <label>Password</label>
-                {{input type="password" value=password  class="form-control form-background-color p-4"}}
+                <label for="passwordInput">Password</label>
+                {{input type="password" value=password  class="form-control form-background-color p-4" id="passwordInput"}}
               </div>
               {{#if loginHasError}}
                 <div class="validation-error-message pt-1 fade">

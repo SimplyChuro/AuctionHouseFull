@@ -51,7 +51,7 @@
 
 <div class="container-fluid bottom-margin-400">
   <div class="container">
-    <form>
+    <form autocomplete="off">
       <div class="card fade">
         <p class="account-profile-card-top">REQUIRED</p>
         <div class="profile-card">
@@ -69,16 +69,16 @@
               <div class="d-md-none d-lg-none d-xl-none">
                 <div class="mt-2"></div>
               </div> 
-              <label class="account-profile-form-text">First Name</label>
-              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text" for="nameInput">First Name</label>
+              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="nameInput"}}
               {{#if nameHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{nameErrorMessage}}
                 </div>
               {{/if}}
 
-              <label class="account-profile-form-text mt-3">Last Name</label>
-              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text mt-3" for="lastNameInput">Last Name</label>
+              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="lastNameInput"}}
               {{#if surnameHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{surnameErrorMessage}}
@@ -118,17 +118,17 @@
                 {{/if}}
               </select>
               <br>
-              <label class="account-profile-form-text mt-3">Date of Birth</label>
+              <label class="account-profile-form-text mt-3" for="dateInput">Date of Birth</label>
               <br>
-                {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="dateInput"}}
               <br>
               {{#if dateOfBirthHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{dateOfBirthErrorMessage}}
                 </div>
               {{/if}}
-              <label class="account-profile-form-text mt-3">Phone Number</label>
-              {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text mt-3" for="numberInput">Phone Number</label>
+              {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="numberInput"}}
               {{#if phoneNumberHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{phoneNumberErrorMessage}}
@@ -147,8 +147,8 @@
             <div class="col-sm-0 col-md-0 col-lg-3 col-lg-3"></div>
             <div class="col-sm-12 col-md-12 col-lg-6 col-lg-6"> 
               <h1 class="account-profile-address-title mb-4">Address</h1>
-              <label class="account-profile-form-text">Street</label>
-              {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text" for="streetInput">Street</label>
+              {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="streetInput"}}
               {{#if streetHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{streetErrorMessage}}
@@ -158,9 +158,9 @@
               <div class="row p-0 m-0">
                 <div class="account-profile-input-form-holder">
                   <div class="mr-2">
-                    <label class="account-profile-form-text mt-3">City</label>
+                    <label class="account-profile-form-text mt-3" for="cityInput">City</label>
                     <br>
-                    {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off"}}
+                    {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="cityInput"}}
                     {{#if cityHasError}}
                       <div class="validation-error-message mb-2 fade">
                         {{cityErrorMessage}}
@@ -169,9 +169,9 @@
                   </div>
                 </div>
                 <div class="account-profile-input-form-holder">
-                  <label class="account-profile-form-text mt-3">ZipCode</label>
+                  <label class="account-profile-form-text mt-3" for="zipCodeInput">ZipCode</label>
                   <br>
-                  {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off"}}
+                  {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="zipCodeInput"}}
                   {{#if zipCodeHasError}}
                     <div class="validation-error-message mb-2 fade">
                       {{zipCodeErrorMessage}}
@@ -180,16 +180,16 @@
                 </div>
               </div>
               <br>
-              <label class="account-profile-form-text">State</label>
-              {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text" for="stateInput">State</label>
+              {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="stateInput"}}
               {{#if stateHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{stateErrorMessage}}
                 </div>
               {{/if}}
               <br>
-              <label class="account-profile-form-text mt-3">Country</label>
-              {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              <label class="account-profile-form-text mt-3" for="countryInput">Country</label>
+              {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="countryInput"}}
               {{#if countryHasError}}
                 <div class="validation-error-message mb-2 fade">
                   {{countryErrorMessage}}

@@ -75,7 +75,7 @@
                       {{#dd.toggle class="nav-link" current-when="account.admin.categories account.admin.users account.admin.products"}}
                         MY ACCOUNT
                       {{/dd.toggle}}
-                      {{#dd.menu as |ddm|}}  
+                      {{#dd.menu class="dropdown-menu-right" as |ddm|}}  
                         {{#if (is-admin session.adminChecker true)}}
                           {{#ddm.item}}
                             {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
@@ -150,7 +150,7 @@
                     </i>
                   </span>
                 {{/dd.button}}
-                {{#dd.menu as |ddm|}}
+                {{#dd.menu class="pull-right" as |ddm|}}
                   {{#ddm.item}}
                     {{#ddm.link-to "home" class="header-navigation-dropdown-item"}}Home{{/ddm.link-to}}
                   {{/ddm.item}}
