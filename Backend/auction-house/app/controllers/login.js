@@ -14,7 +14,7 @@ export default Controller.extend({
   loginErrorMessage: 'Incorrect username or password',
 
   actions: {
-    login: function() {
+    async login() {
       var _this = this;
       _this.get('loadingSlider').startLoading();
       

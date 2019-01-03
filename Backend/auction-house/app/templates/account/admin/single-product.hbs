@@ -1,6 +1,6 @@
 <div class="container-fluid current-route-background bottom-margin-50">
   <div class="container">
-    <p class="form-title-text">ADMIN<span class="current-route-text"><span class="current-route-parent-text">ADMIN /</span>   SINGLE PRODUCT</span></p>
+    <p class="form-title-text">MY ACCOUNT<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   SINGLE PRODUCT</span></p>
   </div>
 </div>
 
@@ -14,8 +14,8 @@
           <div class="card-body mr-4 ml-4">
             <form autocomplete="off" method="POST">
               <div class="form-group mt-4 mb-0 pb-0">
-                <label class="sale-item-label-text">What do you sell?</label>
-                {{input type="text" value=nameInput class="form-control form-background-color p-4 mb-0"}}
+                <label class="sale-item-label-text" for="productNameInput">Item Name</label>
+                {{input type="text" value=nameInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="productNameInput"}}
               </div>
               {{#if productNameHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -85,8 +85,8 @@
                 </div>
               </div>
               <div class="full-width">
-                <label class="mb-1 sale-item-label-text">Description</label>
-                {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3"}}
+                <label class="mb-1 sale-item-label-text" for="descriptionInput">Description</label>
+                {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3" id="descriptionInput"}}
                 {{#if descriptionHasError}}
                   <div class="validation-error-message mt-1 fade">
                     {{descriptionErrorMessage}}
@@ -94,8 +94,8 @@
                 {{/if}}
               </div>
               <div class="form-group mt-4 mb-0">
-                <label class="sale-item-label-text">Color</label>
-                {{input type="text" value=colorInput class="form-control form-background-color mb-0 p-4"}}
+                <label class="sale-item-label-text" for="colorInput">Color</label>
+                {{input type="text" value=colorInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="colorInput"}}
               </div>
               {{#if colorHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -103,8 +103,8 @@
                 </div>
               {{/if}}
               <div class="form-group mt-4 mb-0">
-                <label class="sale-item-label-text">Size</label>
-                {{input type="text" value=sizeInput class="form-control form-background-color mb-0 p-4"}}
+                <label class="sale-item-label-text" for="sizeInput">Size</label>
+                {{input type="text" value=sizeInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="sizeInput"}}
               </div>
               {{#if sizeHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -112,8 +112,8 @@
                 </div>
               {{/if}}
               <div class="form-group mt-4 mb-0">
-                <label class="sale-item-label-text">Your starting price</label>
-                {{input type="text" value=startingPriceInput class="form-control form-background-color mb-0 p-4"}}
+                <label class="sale-item-label-text" for="priceInput">Starting price</label>
+                {{input type="text" value=startingPriceInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="priceInput"}}
               </div>
               {{#if startingPriceHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -123,8 +123,8 @@
               <div class="row p-0 m-0 mt-5 mb-1 full-width">
                 <div class="sale-item-category-holder">
                   <div class="mr-2">
-                    <label class="mb-1 sale-item-label-text">Start date</label>
-                    {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                    <label class="mb-1 sale-item-label-text" for="startInput">Start date</label>
+                    {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="startInput"}}
                   </div>
                   {{#if publishDateHasError}}
                     <div class="validation-error-message mt-1 fade">
@@ -133,8 +133,8 @@
                   {{/if}}
                 </div>
                 <div class="sale-item-category-holder mb-2">
-                  <label class="mb-1 sale-item-label-text">End date</label>
-                  {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                  <label class="mb-1 sale-item-label-text" for="endInput">End date</label>
+                  {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="endInput"}}
                   {{#if expiryDateHasError}}
                     <div class="validation-error-message mt-1 fade">
                       {{expiryDateErrorMessage}}
@@ -143,8 +143,8 @@
                 </div>
               </div>
               <div class="mt-4 ml-1">
-                {{input type="checkbox" checked=isFeatured}}
-                <span class="mb-1 sale-item-label-text">Featured</span>
+                {{input type="checkbox" checked=isFeatured id="featuredCheckbox"}}
+                <label class="mb-1 sale-item-label-text" for="featuredCheckbox">Featured</label>
               </div>
               <div class="mt-5 bottom-margin-150">
                 <button class="sale-item-done-button" {{action 'saveProduct'}}>

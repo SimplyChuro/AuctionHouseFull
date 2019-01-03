@@ -1,24 +1,18 @@
 <div class="container-fluid current-route-background bottom-margin-50">
   <div class="container">
-    <p class="form-title-text">ADMIN<span class="current-route-text"><span class="current-route-parent-text">ADMIN /</span>   USERS</span></p>
+    <p class="form-title-text">MY ACCOUNT<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   USERS</span></p>
   </div>
 </div>
 
 <div class="container-fluid mb-4">
   <div class="container">
     <div>
-      {{#link-to 'account.admin.users' class="account-navigation-link-active"}}
-        <i class="material-icons">
-          group
-        </i>
-        Users
-      {{/link-to}}
 
       {{#link-to 'account.admin.products' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
         </i>
-        Products
+        Items
       {{/link-to}}
 
       {{#link-to 'account.admin.categories' class="account-navigation-link"}}
@@ -28,31 +22,99 @@
         Categories
       {{/link-to}}
 
+      {{#link-to 'account.admin.users' class="account-navigation-link-active"}}
+        <i class="material-icons">
+          group
+        </i>
+        Users
+      {{/link-to}}
+
     </div>
   </div>
 </div>
 
-<div class="container-fluid mt-5 bottom-margin-100">
-  <div class="container">
-    <div class="bottom-margin-100">
-      <div class="row fade">
-        {{#each model.users as |user index|}}
-          <div class="col-lg-6 col-xl-4">
-            <div class="mb-5 mt-5">
-              <div class="home-product-card mt-3 mb-3">
-                <div class="mt-2">
-                  <h1 class="home-product-card-name-text">User number {{user.id}}</h1>
-                  <h1 class="home-product-card-name-text">Fullname - {{user.name}} {{user.surname}}</h1>
-                  <h1 class="home-product-card-name-text mb-5">Email - {{user.email}}</h1>
-                  {{#link-to "account.admin.single-user" user.id class="category-table-link pt-5 mt-5"}}
-                    More Info
-                  {{/link-to}}
-                  <hr class="admin-users-hr">
+<div class="container-fluid mt-5 bottom-margin-150">
+  <div class="container fade">
+    <div class="row mr-0 ml-0 pr-0 pl-0">
+      <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mr-0 ml-0 pl-0 pr-0">
+        <div class="card mr-0 ml-0 pl-0 pr-0 card-min-height-600">
+          <h1 class="card-title-category-main-v2">USERS</h1>
+          <div class="card-body mt-0 pt-0 mr-0 ml-0 pl-0 pr-0">  
+            <div class="mt-2"></div>  
+            {{#each model.users as |user|}}
+    
+              {{#if (eq user.id currentUser.id)}}
+                <div {{action 'toggleDetails' user}} class="category-background-active account-profile-pointer full-width">
+
+                  <div class="single-product-user-holder-v1 row mr-0 ml-0">
+                    <div class="single-product-bidder-user-icon">
+                      <img src="{{bid.user.avatar}}" class="single-product-bid-user-avatar">
+                    </div>
+                    <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                  </div>
+                  
+
                 </div>
-              </div>  
+                <br>
+              {{else}}
+                <div {{action 'toggleDetails' user}} class="account-profile-pointer full-width">
+
+                  <div class="single-product-user-holder-v1 row mr-0 ml-0">
+                    <div class="single-product-bidder-user-icon">
+                      <img src="{{bid.user.avatar}}" class="single-product-bid-user-avatar">
+                    </div>
+                    <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                  </div>
+                  
+                  
+                </div>
+                <br>
+              {{/if}}
+              
+            {{/each}}
+            <div class="row mr-0 ml-0 category-form-padding pr-3">
+              {{#if (eq categoryInputEnabled true)}}
+                {{input type="text" value=parentNameInput placeholder="Name the Category" class="category-input-form form-background-color col-10" autocomplete="off"}}
+                {{#if categoryNameHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{categoryNameErrorMessage}}
+                  </div>
+                {{/if}}
+                <span class="col-2 pt-2 pl-2 category-add-button" {{action 'createParentCategory'}}>
+                  <i class="material-icons">
+                    add
+                  </i>
+                </span>
+              {{/if}}
+            </div>
+            <div class="ml-3 mt-2 add-category-text account-profile-pointer" {{action 'toggleUserCreate'}}>
+              <i class="material-icons">
+                add
+              </i>
+              <span class="">ADD A USER</span>
             </div>
           </div>
-        {{/each}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-8 col-lg-9 col-xl-9 mr-0 ml-0 pl-0 pr-0">
+        <div class="card mr-0 ml-3 pl-0 pr-0 card-min-height-600">
+          {{#if (eq currentUser null)}}
+            {{#if (eq userCreateEnabled true)}}
+              <h1 class="card-title-category-additional text-center">ADD A USER</h1>
+            {{else}}              
+              <h1 class="card-title-category-additional text-center">USER INFO</h1>
+            {{/if}}
+          {{else}}
+            {{#if (eq userCreateEnabled true)}}
+              <h1 class="card-title-category-additional text-center">ADD A USER</h1>
+            {{else}}
+              <h1 class="card-title-category-additional text-center">{{currentUser.name}} {{currentUser.surname}}</h1>
+            {{/if}}
+          {{/if}}
+          <div class="card-body mt-0 pt-0 mr-0 ml-0 pl-0 pr-0">      
+            
+          </div>
+        </div>
       </div>
     </div>
   </div>

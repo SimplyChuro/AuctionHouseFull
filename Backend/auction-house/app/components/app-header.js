@@ -2,11 +2,12 @@ import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  session: Ember.inject.service(),
-  router: Ember.inject.service(),
-  store: Ember.inject.service(),
+  session: service(),
+  router: service(),
+  store: service(),
 
   actions: {
     logout: function(){

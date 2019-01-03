@@ -65,8 +65,11 @@ public class WishlistController extends Controller{
 					return badRequest();
 				} else {
 					wishlistChecker = Json.fromJson(objectNode, Wishlists.class);
-					wishlistChecker.createWishlist(user, objectNode);
-					return ok(Json.toJson(wishlistChecker));
+					if(wishlistChecker.createWishlist(user, objectNode)) {
+						return ok(Json.toJson(wishlistChecker));
+					} else {
+						return badRequest();
+					}
 				}
 			} else {
 				return badRequest();

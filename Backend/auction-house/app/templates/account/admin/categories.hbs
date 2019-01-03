@@ -1,24 +1,18 @@
 <div class="container-fluid current-route-background bottom-margin-50">
   <div class="container">
-    <p class="form-title-text">ADMIN<span class="current-route-text"><span class="current-route-parent-text">ADMIN /</span>   CATEGORIES</span></p>
+    <p class="form-title-text">MY ACCOUNT<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   CATEGORIES</span></p>
   </div>
 </div>
 
 <div class="container-fluid mb-5">
   <div class="container">
     <div>
-      {{#link-to 'account.admin.users' class="account-navigation-link"}}
-        <i class="material-icons">
-          group
-        </i>
-        Users
-      {{/link-to}}
 
       {{#link-to 'account.admin.products' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
         </i>
-        Products
+        Items
       {{/link-to}}
 
       {{#link-to 'account.admin.categories' class="account-navigation-link-active"}}
@@ -28,31 +22,131 @@
         Categories
       {{/link-to}}
 
+      {{#link-to 'account.admin.users' class="account-navigation-link"}}
+        <i class="material-icons">
+          group
+        </i>
+        Users
+      {{/link-to}}
+
     </div>
   </div>
 </div>
 
-<div class="container-fluid bottom-margin-300">
+<div class="container-fluid bottom-margin-150">
   <div class="container fade">
-    <div class="row">
-      {{#each model.categories as |category|}}
-        {{#if (eq category.parent_id null)}}
-          <div class="col-lg-3 col-xl-3 mt-4 mb-2">
-            {{#link-to "account.admin.single-category" category.id class="category-list-parent-text"}}
-              {{category.name}} #{{category.id}}
-            {{/link-to}}
-            {{#each model.categories as |subcategory|}}
-              {{#if (eq subcategory.parent_id category.id)}}
-                <div>
-                  {{#link-to "account.admin.single-category" subcategory.id class="category-list-child-text"}}
-                    {{subcategory.name}} #{{subcategory.id}}
-                  {{/link-to}}
-                </div>
+    <div class="row mr-0 ml-0 pr-0 pl-0">
+      <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mr-0 ml-0 pl-0 pr-0">
+        <div class="card mr-0 ml-0 pl-0 pr-0 card-min-height-600">
+          <h1 class="card-title-category-main">PRODUCT CATEGORIES</h1>
+          <div class="card-body mt-0 pt-0 mr-0 ml-0 pl-0 pr-0">    
+            {{#each model.categories as |category|}}
+              {{#if (eq category.parent_id null)}}
+                {{#if (eq category.id currentCategory.id)}}
+                  <div {{action 'toggleDetails' category}} class="category-background-active account-profile-pointer pb-1 pt-1 full-width">
+                    <span class="card-element-text cursor-pointer pb-0 pt-0 mb-0 mt-0">
+                      {{category.name}}
+                    </span>
+                    <span {{action 'deleteParentCategory' category}} class="card-element-text-addition float-right">
+                      <i class="material-icons">
+                        clear
+                      </i>
+                    </span>
+                    <br>
+                  </div>
+                {{else}}
+                  <div {{action 'toggleDetails' category}} class="pb-1 pt-1 account-profile-pointer full-width">
+                    <span class="card-element-text cursor-pointer pb-0 pt-0 mb-0 mt-0">
+                      {{category.name}}
+                    </span>
+                    <br>
+                  </div>
+                {{/if}}
               {{/if}}
             {{/each}}
+            <div class="row mr-0 ml-0 category-form-padding pr-3">
+              {{#if (eq categoryInputEnabled true)}}
+                {{input type="text" value=parentNameInput placeholder="Name the Category" class="category-input-form form-background-color col-10" autocomplete="off"}}
+                {{#if categoryNameHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{categoryNameErrorMessage}}
+                  </div>
+                {{/if}}
+                <span class="col-2 pt-2 pl-2 category-add-button" {{action 'createParentCategory'}}>
+                  <i class="material-icons">
+                    add
+                  </i>
+                </span>
+              {{/if}}
+            </div>
+            <div class="ml-3 mt-2 add-category-text account-profile-pointer" {{action 'toggleCategoryInput'}}>
+              <i class="material-icons">
+                add
+              </i>
+              <span class="">ADD A CATEGORY</span>
+            </div>
           </div>
-        {{/if}}
-      {{/each}}
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-8 col-lg-9 col-xl-9 mr-0 ml-0 pl-0 pr-0">
+        <div class="card mr-0 ml-3 pl-0 pr-0 card-min-height-600">
+          {{#if (eq currentCategory null)}}
+            <h1 class="card-title-category-additional text-center">PRODUCT SUBCATEGORIES</h1>
+          {{else}}
+            <h1 class="card-title-category-additional text-center">{{currentCategory.name}}</h1>
+          {{/if}}
+          <div class="card-body mt-0 pt-0 mr-0 ml-0 pl-0 pr-0">      
+            <div class="row mr-0 ml-0 pr-2 pl-2">
+              {{#each model.categories as |category index|}}
+                {{#unless (eq category.parent_id null)}}
+                  {{#if (eq category.parent_id currentCategory.id)}}
+                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                      <div class="card-element-border mb-2 pb-2 pt-2 full-width">
+                        <span class="card-element-text cursor-pointer pb-0 pt-0 mb-0 mt-0">
+                          {{category.name}}
+                        </span>
+                        <span {{action 'deleteChildCategory' category}} class="card-element-text-addition account-profile-pointer float-right">
+                          <i class="material-icons">
+                            clear
+                          </i>
+                        </span>
+                        <br>
+                      </div>
+                    </div>
+                  {{/if}}
+                {{/unless}}
+              {{/each}}
+            </div>
+            <div class="row mr-0 ml-0 pr-2 pl-2">
+              {{#unless (eq currentCategory null)}}
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                  <div class="row mr-0 ml-0">
+                    {{#if (eq subCategoryInputEnabled true)}}
+                      {{input type="text" value=childNameInput placeholder="Name the Category" class="category-input-form form-background-color col-10 pt-2 pb-2" autocomplete="off" id="childCategory"}}
+                      {{#if subCategoryNameHasError}}
+                        <div class="validation-error-message mt-1 fade">
+                          {{subCategoryNameErrorMessage}}
+                        </div>
+                      {{/if}}
+                      <span class="col-2 category-button-padding text-center category-add-button" {{action 'createChildCategory'}}>
+                        <i class="material-icons">
+                          add
+                        </i>
+                      </span>
+                    {{/if}}
+                  </div>
+                  <div class="mt-2 add-category-text account-profile-pointer" {{action 'toggleSubCategoryInput'}} for="childCategory">
+                    <i class="material-icons">
+                      add
+                    </i>
+                    <span class="">ADD A CATEGORY</span>
+                  </div>
+                </div>
+              {{/unless}}
+            </div> 
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

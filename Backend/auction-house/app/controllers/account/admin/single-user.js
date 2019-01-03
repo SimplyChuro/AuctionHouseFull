@@ -1,9 +1,10 @@
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import swal from 'sweetalert';
 
 export default Controller.extend({
-  store: Ember.inject.service(),
+  store: service(),
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
   
   selectedOption: null,

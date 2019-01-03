@@ -6,5 +6,11 @@ export default Route.extend({
     return hash({
       categories: this.store.findAll('category', { reload: true })
     })
+  },
+
+  actions: {
+    willTransition: function() {
+      this.controllerFor('account/admin/categories').send('clearFields');
+    }
   }
 });

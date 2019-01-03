@@ -77,30 +77,17 @@
                       {{/dd.toggle}}
                       {{#dd.menu class="dropdown-menu-right" as |ddm|}}  
                         {{#if (is-admin session.adminChecker true)}}
-                          {{#ddm.item}}
-                            {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
-                          {{/ddm.item}}
 
                           {{#ddm.item}}
-                            {{#ddm.link-to "account.admin.products" class="header-navigation-dropdown-item"}}Products{{/ddm.link-to}}
+                            {{#ddm.link-to "account.admin.products" class="header-navigation-dropdown-item"}}Items{{/ddm.link-to}}
                           {{/ddm.item}}
                           
                           {{#ddm.item}}
                             {{#ddm.link-to "account.admin.categories" class="header-navigation-dropdown-item"}}Categories{{/ddm.link-to}}
                           {{/ddm.item}}
 
-                          <!--
                           {{#ddm.item}}
-                            {{#ddm.link-to "account.admin.new-user" class="header-navigation-dropdown-item"}}Create a New User{{/ddm.link-to}}
-                          {{/ddm.item}} 
-                          -->
-
-                          {{#ddm.item}}
-                            {{#ddm.link-to "account.admin.new-product" class="header-navigation-dropdown-item"}}Create a Product{{/ddm.link-to}}
-                          {{/ddm.item}}
-
-                          {{#ddm.item}}
-                            {{#ddm.link-to "account.admin.new-category" class="header-navigation-dropdown-item"}}Create a Category{{/ddm.link-to}}
+                            {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
                           {{/ddm.item}}
 
                         {{else}}
@@ -160,63 +147,71 @@
                   {{/ddm.item}}
 
                   {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
-                    {{/ddm.item}}
+                    {{#if (is-admin session.adminChecker true)}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.admin.products" class="header-navigation-dropdown-item"}}Items{{/ddm.link-to}}
+                      {{/ddm.item}}
+                      
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.admin.categories" class="header-navigation-dropdown-item"}}Categories{{/ddm.link-to}}
+                      {{/ddm.item}}              
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.admin.users" class="header-navigation-dropdown-item"}}Users{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                    {{else}}
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.profile" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Sell{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                      {{#ddm.item}}
+                        {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
+                      {{/ddm.item}}
+
+                    {{/if}}
                   {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Profile{{/ddm.link-to}}
                     {{/ddm.item}}
-                  {{/if}}
 
-                  {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.sell.entry" class="header-navigation-dropdown-item"}}Sell{{/ddm.link-to}}
-                    {{/ddm.item}}
-                  {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Sell{{/ddm.link-to}}
                     {{/ddm.item}}
-                  {{/if}}
 
-                  {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.sales" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
-                    {{/ddm.item}}
-                  {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Your Sales{{/ddm.link-to}}
                     {{/ddm.item}}
-                  {{/if}}
 
-                  {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.bids" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
-                    {{/ddm.item}}
-                  {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Your Bids{{/ddm.link-to}}
                     {{/ddm.item}}
-                  {{/if}}
 
-                  {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.wishlist" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
-                    {{/ddm.item}}
-                  {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Wishlist{{/ddm.link-to}}
                     {{/ddm.item}}
-                  {{/if}}
 
-                  {{#if (is-logged-in session.authToken)}}
-                    {{#ddm.item}}
-                      {{#ddm.link-to "account.settings" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
-                    {{/ddm.item}}
-                  {{else}}
                     {{#ddm.item}}
                       {{#ddm.link-to "login" class="header-navigation-dropdown-item"}}Settings{{/ddm.link-to}}
                     {{/ddm.item}}
+
                   {{/if}}
                 {{/dd.menu}}
               {{/bs-dropdown}}

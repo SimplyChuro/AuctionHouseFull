@@ -104,6 +104,23 @@ public class CategoryController extends Controller{
 			if(userChecker.admin) {
 				Category category = Category.find.byId(id);
 				
+				if(!(category.parent_id == null)) {
+					List<Category> categories = Category.find.query().where()
+							.conjunction()
+							.eq("parent_id", id)
+							.endJunction()
+							.findList();
+					
+					for(Category cat : categories) {
+						for(ProductCategory productCat : cat.productcategory) {
+							productCat.delete();
+						}
+						
+						cat.delete();
+						
+					}
+				}
+				
 				for(ProductCategory cat : category.productcategory) {
 					cat.delete();
 				}

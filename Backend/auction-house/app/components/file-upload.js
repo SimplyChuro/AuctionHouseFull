@@ -9,9 +9,7 @@ export default FileField.extend({
     const uploader = S3Uploader.create({
       signingUrl: this.get('signingUrl'),
       signingAjaxSettings: {
-        headers: {
-          'X-Application-Name': 'Uploader Test'
-        }
+       
       }
     });
 
@@ -25,7 +23,7 @@ export default FileField.extend({
     if (!Ember.isEmpty(files)) {
       // Send a sign request then upload to S3
       // this second argument is optional and can to be sent as extra data with the upload
-      uploader.upload(files[0], { whatheverObject });
+      uploader.upload(files[0], {  });
     }
   }
 });

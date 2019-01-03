@@ -7,10 +7,10 @@
           <div class="card margin-card">
             <h1 class="card-title">Detailed Information about the Product</h1>
             <div class="card-body mr-4 ml-4">
-              <form autocomplete="off" method="POST">
+              <form autocomplete="off">
                 <div class="form-group mt-4 mb-0 pb-0">
-                  <label class="sale-item-label-text">What do you sell?</label>
-                  {{input type="text" value=nameInput class="form-control form-background-color p-4 mb-0"}}
+                  <label class="sale-item-label-text" for="name">What do you sell?</label>
+                  {{input type="text" value=nameInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="name"}}
                 </div>
                 <span class="sale-item-product-name-guide-text mt-1 pt-0">2-5 words (60 characters)</span>
                 {{#if productNameHasError}}
@@ -74,8 +74,8 @@
                   </div>
                 </div>
                 <div class="full-width">
-                  <label class="mb-1 sale-item-label-text">Description?</label>
-                  {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3"}}
+                  <label class="mb-1 sale-item-label-text" for="description">Description?</label>
+                  {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3" id="description"}}
                   <span class="sale-item-product-name-guide-text mt-1">100 words (700 characters)</span>
                   {{#if descriptionHasError}}
                     <div class="validation-error-message mt-1 fade">
@@ -115,10 +115,10 @@
           <div class="card margin-card">
             <h1 class="card-title">SET PRICES</h1>
             <div class="card-body mr-4 ml-4">
-              <form autocomplete="off" method="POST">
+              <form autocomplete="off">
                 <div class="form-group mt-4 mb-0">
-                  <label class="sale-item-label-text">Your starting price</label>
-                  {{input type="text" value=startingPriceInput class="form-control form-background-color mb-0 p-4"}}
+                  <label class="sale-item-label-text" for="price">Your starting price</label>
+                  {{input type="text" value=startingPriceInput class="account-profile-input-form-static account-profile-form-text form-background-color mb-0" id="price"}}
                 </div>
                 {{#if startingPriceHasError}}
                   <div class="validation-error-message mt-1 fade">
@@ -128,8 +128,8 @@
                 <div class="row p-0 m-0 mt-5 mb-1 full-width">
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
-                      <label class="mb-1 sale-item-label-text">Start date</label>
-                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                      <label class="mb-1 sale-item-label-text" for="start">Start date</label>
+                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="start"}}
                     </div>
                     {{#if publishDateHasError}}
                       <div class="validation-error-message mt-1 fade">
@@ -138,8 +138,8 @@
                     {{/if}}
                   </div>
                   <div class="sale-item-category-holder">
-                    <label class="mb-1 sale-item-label-text">End date</label>
-                    {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
+                    <label class="mb-1 sale-item-label-text" for="end">End date</label>
+                    {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="end"}}
                     {{#if expiryDateHasError}}
                       <div class="validation-error-message mt-1 fade">
                         {{expiryDateErrorMessage}}
@@ -182,10 +182,10 @@
           <div class="card margin-card">
             <h1 class="card-title">LOCATION & SHIPPING</h1>
             <div class="card-body mr-4 ml-4">
-              <form autocomplete="off" method="POST">
+              <form autocomplete="off">
                 <div class="form-group mt-4">
-                  <label class="sale-item-label-text">Address</label>
-                  {{input type="text" value=addressInput class="form-control form-background-color p-4"}}
+                  <label class="sale-item-label-text" for="address">Address</label>
+                  {{input type="text" value=addressInput class="account-profile-input-form-static account-profile-form-text form-background-color form-background-color" id="address"}}
                 </div>
                 {{#if addressHasError}}
                   <div class="validation-error-message mt-1 fade">
@@ -195,8 +195,8 @@
                 <div class="row p-0 m-0 mt-5 mb-5 full-width">
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
-                      <label class="sale-item-label-text">City</label>
-                      {{input type="text" value=cityInput class="form-control form-background-color p-4"}}
+                      <label class="sale-item-label-text" for="city">City</label>
+                      {{input type="text" value=cityInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="city"}}
                     </div>
                     {{#if cityHasError}}
                       <div class="validation-error-message mt-1 fade">
@@ -205,8 +205,8 @@
                     {{/if}}
                   </div>
                   <div class="sale-item-category-holder">
-                    <label class="sale-item-label-text">Country</label>
-                    {{input type="text" value=countryInput class="form-control form-background-color p-4"}}
+                    <label class="sale-item-label-text" for="country">Country</label>
+                    {{input type="text" value=countryInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="country"}}
                     {{#if countryHasError}}
                       <div class="validation-error-message mt-1 fade">
                         {{countryErrorMessage}}
@@ -215,8 +215,8 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="sale-item-label-text">Zip Code</label>
-                  {{input type="text" value=zipCodeInput class="form-control form-background-color p-4"}}
+                  <label class="sale-item-label-text" for="zipCode">Zip Code</label>
+                  {{input type="text" value=zipCodeInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="zipCode"}}
                   {{#if zipCodeHasError}}
                     <div class="validation-error-message mt-1 fade">
                       {{zipCodeErrorMessage}}
@@ -224,8 +224,8 @@
                   {{/if}}
                 </div>
                 <div class="form-group mt-4">
-                  <label class="sale-item-label-text">Phone</label>
-                  {{input type="text" value=phoneInput class="form-control form-background-color p-4"}}
+                  <label class="sale-item-label-text" for="phone">Phone</label>
+                  {{input type="text" value=phoneInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="phone"}}
                   {{#if phoneHasError}}
                     <div class="validation-error-message mt-1 fade">
                       {{phoneErrorMessage}}

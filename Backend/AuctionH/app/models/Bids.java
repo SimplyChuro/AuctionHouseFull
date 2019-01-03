@@ -59,31 +59,42 @@ public class Bids extends Model{
 	public Boolean createBid(Users user, JsonNode objectNode) {
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
 		
-		Double highestBid = 0.00;
-		if(product.bids.size() != 0) {
-			for(Bids bid : product.bids) {
-				if(bid.amount > highestBid) {
-					highestBid = bid.amount;
-				}
+		Boolean checker = false;
+		
+		for(Sales sale : user.sales) {
+			if(sale.product.id == product.id) {
+				checker = true;
 			}
-		} else {
-			highestBid = product.startingPrice;
 		}
 		
-		if(highestBid >= product.startingPrice) {
-			if(highestBid >= amount) {
-				return false;
+		if(!checker) {
+			Double highestBid = 0.00;
+			if(product.bids.size() != 0) {
+				for(Bids bid : product.bids) {
+					if(bid.amount > highestBid) {
+						highestBid = bid.amount;
+					}
+				}
 			} else {
-				this.user = user;
-				date = new Date();
-				status = "active";
-				save();
-				return true;
+				highestBid = product.startingPrice;
+			}
+			
+			if(highestBid >= product.startingPrice) {
+				if(highestBid >= amount) {
+					return false;
+				} else {
+					this.user = user;
+					date = new Date();
+					status = "active";
+					save();
+					return true;
+				}
+			} else {
+				return false;
 			}
 		} else {
 			return false;
 		}
-		
 	}
 	
 	public Boolean updateBid(JsonNode objectNode) {

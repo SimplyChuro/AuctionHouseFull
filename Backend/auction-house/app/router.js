@@ -35,8 +35,6 @@ Router.map(function() {
       this.route('products');
       this.route('single-user', { path: 'single-user/:user_id' });
       this.route('single-product', { path: 'single-product/:product_id' });
-      this.route('single-category', { path: 'single-category/:category_id' });
-      this.route('new-category');
       this.route('new-product');
     });
   });

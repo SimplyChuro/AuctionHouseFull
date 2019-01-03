@@ -112,7 +112,7 @@ export default Controller.extend({
 
     if(isEmpty(this.get('startingPriceInput')) || (this.get('startingPriceInput').length != 0 && this.get('startingPriceInput').trim().length == 0)) {
       this.set('startingPriceHasError', true);
-      this.set('startingPriceErrorMessage', 'Product name can not be blank');
+      this.set('startingPriceErrorMessage', 'Product price can not be blank');
       checker = false;
     } else {
       regex = new RegExp(/^-?\d*(\.\d+)?$/);
@@ -188,7 +188,7 @@ export default Controller.extend({
 
     if(isEmpty(this.get('phoneInput')) || (this.get('phoneInput').length != 0 && this.get('phoneInput').trim().length == 0)) {
       this.set('phoneHasError', true);
-      this.set('phoneErrorMessage', 'Phone name can not be blank');
+      this.set('phoneErrorMessage', 'Phone can not be blank');
       checker = false;
     } else {
       if(regex.test(this.get('phoneInput'))){  

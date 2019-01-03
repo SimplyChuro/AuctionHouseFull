@@ -29,8 +29,8 @@
                 </div>
               {{/if}}
               <div class="form-check mt-5">
-                {{input type="checkbox" name="remember" checked=remember class="form-check-input"}}
-                <label>Remember me</label>
+                {{input type="checkbox" name="remember" checked=remember class="form-check-input" id="rememberMe"}}
+                <label for="rememberMe">Remember me</label>
               </div>
               <button type="submit" class="btn btn-purple mt-5" {{action "login"}}>LOGIN</button>
               <!-- 	

@@ -35,10 +35,25 @@ public class Wishlists extends Model{
 
 	
 	//Methods	
-	public void createWishlist(Users user, JsonNode objectNode) {
+	public Boolean createWishlist(Users user, JsonNode objectNode) {
 		this.user = user;
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
-		save();
+		
+		Boolean checker = false;
+		
+		for(Sales sale : user.sales) {
+			if(sale.product.id == product.id) {
+				checker = true;
+			}
+		}
+		
+		if(!checker) {
+			save();
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 	
 }
