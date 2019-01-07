@@ -141,6 +141,12 @@ public class Users extends Model{
 			this.phoneNumber = "";
 		}
 		
+		if(objectNode.findPath("avatar").asText() != null && !(objectNode.findPath("avatar").asText().equals("null"))) {	
+			this.avatar = objectNode.findPath("avatar").asText();
+		} else {
+			this.avatar = null;
+		}
+		
 		this.update();
 		this.address.updateAddress(
 				objectNode.findPath("street").asText(),

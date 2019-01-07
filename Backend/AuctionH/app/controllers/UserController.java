@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import play.data.validation.*;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -29,14 +32,25 @@ import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.*;
 
-
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 import javax.inject.Inject;
 import java.io.File;
+
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.mail.EmailAttachment;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+
+
 public class UserController extends Controller {
+	
 	@Inject MailerClient mailerClient;
 	
 	//Get user
@@ -135,6 +149,8 @@ public class UserController extends Controller {
 			JsonNode objectNode = request().body().asJson().get("user");
 			if(user.admin) {
 				Users userChecker = Users.find.byId(id);
+//				userChecker.updateEmail(objectNode);
+//				userChecker.updatePassword(objectNode);
 				userChecker.updateUser(objectNode);
 				return ok(Json.toJson(userChecker));
 			} else {
@@ -213,16 +229,13 @@ public class UserController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result reset() {
 		try {
-			Users userChecker = LoginController.getUser();
+			Users userChecker = LoginController.getUser();	
+		
+			JsonNode objectNode = request().body().asJson();
+			userChecker.updatePassword(objectNode);
+			userChecker.deleteAuthToken();
 			
-			if(userChecker != null) {
-				JsonNode objectNode = request().body().asJson();
-				userChecker.updatePassword(objectNode);
-				userChecker.deleteAuthToken();
-				return ok(Json.toJson(""));
-			} else {
-				return badRequest();
-			}
+			return ok(Json.toJson(""));
 		}catch(Exception e) {
 			return badRequest();
 		}
@@ -277,14 +290,15 @@ public class UserController extends Controller {
 	
 	//Validate upload
 	@Security.Authenticated(Secured.class)
-	public Result validate() {
+	public Result validate(String name, String type, Integer size) {
 		try {
 			Users userChecker = LoginController.getUser();
+			S3Signature s3 = new S3Signature(name, type, size);
 			
-			return ok();
+           	return ok(s3.getS3EmberNode());
 		}catch(Exception e) {
 			return badRequest();
 		}
-	} 
-	
+	}
+    
 }
