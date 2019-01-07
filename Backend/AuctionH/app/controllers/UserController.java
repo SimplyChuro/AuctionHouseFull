@@ -149,7 +149,7 @@ public class UserController extends Controller {
 			JsonNode objectNode = request().body().asJson().get("user");
 			if(user.admin) {
 				Users userChecker = Users.find.byId(id);
-//				userChecker.updateEmail(objectNode);
+//				userChecker.updatePassword(objectNode);
 //				userChecker.updatePassword(objectNode);
 				userChecker.updateUser(objectNode);
 				return ok(Json.toJson(userChecker));
@@ -293,7 +293,7 @@ public class UserController extends Controller {
 	public Result validate(String name, String type, Integer size) {
 		try {
 			Users userChecker = LoginController.getUser();
-			S3Signature s3 = new S3Signature();
+			S3Signature s3 = new S3Signature(name, type, size);
 			
            	return ok(s3.getS3EmberNode());
 		}catch(Exception e) {
