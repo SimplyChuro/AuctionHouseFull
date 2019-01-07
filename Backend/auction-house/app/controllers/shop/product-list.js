@@ -10,7 +10,6 @@ export default Controller.extend({
   loadingSlider: service(),
   
   queryParams: ['name', 'parent_category', 'child_category', 'color', 'size', 'list_type' , 'sorting'],
-  hexColorsArray: ['#8367D8'],
   name: null,
   parent_category: null,
   child_category: null,

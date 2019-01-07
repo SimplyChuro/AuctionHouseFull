@@ -1296,14 +1296,14 @@ select {
 }
 
 .account-profile-image-holder{
-  height: 250px;
-  background: #ECECEC;
+  height: 500px;
+  max-width: 100%;
+  text-align: center;
 }
 
 .account-profile-image{
   max-height: 250px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  max-width: 100%;  
 }
 
 .account-profile-input-form-static{
@@ -1828,6 +1828,10 @@ select {
   min-height: 600px;
 }
 
+.card-min-height-800{
+  min-height: 800px;
+}
+
 .category-background-active{
   background: #FAFAFA;
 }
@@ -1856,6 +1860,105 @@ select {
 .category-button-padding{
   padding-top: 10px;
 }
+
+.users-information-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.admin-users-icon{
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+  background: #ECECEC;
+}
+
+.admin-users-avatar{
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.admin-users-edit-button{
+  background: #FFFFFF;
+  padding: 8px 50px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.admin-upload-picture-button{
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  padding: 10px 29px;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  cursor: pointer;
+}
+
+.admin-delete-picture-button{
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  padding: 15px 90px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
+.admin-picture-text{
+  font-size: 14px;
+  font-weight: bold;
+  color: #9B9B9B;
+  letter-spacing: 0.49px;
+  text-align: center;
+}
+
+.users-profile-cancle-button{
+  background: #FFFFFF;
+  padding: 10px 40px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.users-profile-cancle-button:hover{
+  color: #8367D8;
+}
+
+.users-profile-save-info-button{
+  background: #FFFFFF;
+  padding: 10px 47px;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.users-profile-save-info-button:hover{
+  color: #8367D8;
+}
+
 
 /**/
 

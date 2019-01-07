@@ -7,6 +7,8 @@ export default FileField.extend({
   signingUrl: ENV.HOST_URL+'/api/v1/validate',
   session: service(),
 
+  multiple: true,
+
   filesDidChange(files) {
     const uploader = S3Uploader.create({
       signingUrl: this.get('signingUrl'),
@@ -32,7 +34,7 @@ export default FileField.extend({
     });
 
     if (!Ember.isEmpty(files)) {
-      uploader.upload(files[0]);
+      uploader.upload(files);
     }
   }
 });

@@ -9,7 +9,7 @@ export default Controller.extend({
   token: null,
 
   actions: {
-    verifyUser : function() {
+    async verifyUser() {
       var _this = this;
       if(isEmpty(this.get('token'))){
         _this.transitionToRoute('home');

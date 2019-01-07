@@ -7,6 +7,7 @@ export default Controller.extend({
   
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
   currentDatePlaceHolder: 'e.g. ' + moment(new Date()).format("DD/MM/YYYY"),
+  progress: 0,
 
   selectedOption: null,
 
@@ -189,6 +190,25 @@ export default Controller.extend({
           _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
         }
       });
+    },
+
+    async imageUploadComplete(info) {
+      var _this = this;
+      let user = this.get('model.user');
+      user.set('avatar', info.image)
+      user.save().then(function(){
+        if(_this.get('progress') == 1){
+          _this.set('progress', 0);
+        }
+      });
+    },
+
+    imageUploadLoading: function(value) {
+      var _this = this;
+      Ember.run.once(function(){
+        _this.set('progress', (value.percent/100));
+      });
     }
+
   }
 });

@@ -6,5 +6,11 @@ export default Route.extend({
     return hash({
       users: this.store.findAll('user', { reload: true })
     })
+  },
+ 
+  actions: { 
+    willTransition: function() {
+      this.controllerFor('account/admin/users').send('clearFields');
+    }
   }
 });

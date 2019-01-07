@@ -1,5 +1,3 @@
-{{loading-slider isLoading=loading expanding=true color=hexColorsArray}}
-
 <div class="container-fluid current-route-background">
   <div class="container">
     <p class="form-title-text">REGISTER</p>
@@ -16,7 +14,7 @@
           <div class="card-body mr-4 ml-4">
             <form autocomplete="off" method="POST">
               <div class="form-group mt-4">
-                <label for="nameInput">First Name</label>
+                <label class="account-profile-pointer" for="nameInput">First Name</label>
                 {{input type="text" value=name class="form-control form-background-color p-4" id="nameInput"}}
               </div>
               {{#if nameHasError}}
@@ -26,7 +24,7 @@
               {{/if}}
               
               <div class="form-group mt-5">
-                <label for="lastNameInput">Last Name</label>
+                <label class="account-profile-pointer" for="lastNameInput">Last Name</label>
                 {{input type="text" value=surname class="form-control form-background-color p-4" id="lastNameInput"}}
               </div>
               {{#if surnameHasError}}
@@ -36,7 +34,7 @@
               {{/if}}
               
               <div class="form-group mt-5">
-                <label for="emailInput">Enter Email</label>
+                <label class="account-profile-pointer" for="emailInput">Enter Email</label>
                 {{input type="email" autocomplete="off" value=email class="form-control form-background-color p-4" id="emailInput"}}
               </div>
               {{#if emailHasError}}
@@ -46,7 +44,7 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label for="emailRepeatInput">Confirm Email</label>
+                <label class="account-profile-pointer" for="emailRepeatInput">Confirm Email</label>
                 {{input type="email" autocomplete="off"  value=emailConfirmation class="form-control form-background-color p-4" id="emailRepeatInput"}}
               </div>
               {{#if emailConfirmationHasError}}
@@ -56,7 +54,7 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label for="passwordInput">Password</label>
+                <label class="account-profile-pointer" for="passwordInput">Password</label>
                 {{input type="password" autocomplete="off" value=password  class="form-control form-background-color p-4" id="passwordInput"}}
               </div>
               {{#if passwordHasError}}
@@ -66,7 +64,7 @@
               {{/if}}
 
               <div class="form-group mt-5">
-                <label for="passwordRepeatInput">Confirm Password</label>
+                <label class="account-profile-pointer" for="passwordRepeatInput">Confirm Password</label>
                 {{input type="password" autocomplete="off" value=passwordConfirmation  class="form-control form-background-color p-4" id="passwordRepeatInput"}}
               </div>              
               {{#if passwordConfirmationHasError}}

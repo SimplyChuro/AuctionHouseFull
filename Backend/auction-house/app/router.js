@@ -33,7 +33,6 @@ Router.map(function() {
       this.route('users');
       this.route('categories');
       this.route('products');
-      this.route('single-user', { path: 'single-user/:user_id' });
       this.route('single-product', { path: 'single-product/:product_id' });
       this.route('new-product');
     });

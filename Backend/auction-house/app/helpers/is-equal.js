@@ -1,6 +1,6 @@
-import { helper } from '@ember/component/helper';
+import Helper from '@ember/component/helper';
 
-export default Ember.Helper.extend({
+export default Helper.extend({
   
   compute(params) {
     var firstValue = params[0];

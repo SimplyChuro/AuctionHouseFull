@@ -4,8 +4,6 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
   loadingSlider: service(),
   
-  hexColorsArray: ['#8367D8'],
-  
   nameErrorMessage: null,
   nameHasError: null,
 

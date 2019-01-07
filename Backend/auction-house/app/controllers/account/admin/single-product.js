@@ -50,7 +50,7 @@ export default Controller.extend({
     var parentCategory;
     var childCategory;
 
-    productCategories.forEach((item, index) => {
+    productCategories.forEach((item) => {
       if(item.get('category').get('parent_id') == null) {
         parentCategory = item.get('category').get('id');
       } else {
@@ -175,7 +175,6 @@ export default Controller.extend({
 
     saveProduct: function(){
       if(this.customValidation()){
-        var _this = this;
 
         let product = this.get('model.product');
         product.set('name', this.get('nameInput'));

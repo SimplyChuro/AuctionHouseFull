@@ -8,8 +8,6 @@ export default Controller.extend({
   session: service(),
   loadingSlider: service(),
 
-  hexColorsArray: ['#8367D8'],
-
   loginHasError: false,
   loginErrorMessage: 'Incorrect username or password',
 
