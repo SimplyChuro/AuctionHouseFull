@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -33,7 +34,10 @@ import org.jets3t.service.S3Service;
 import org.jets3t.service.utils.ServiceUtils;
 import org.jets3t.service.Constants;
 
+import play.api.inject.ConfigProvider;
 import play.libs.Json;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigException;
 
 public class S3Signature {
 	
@@ -49,15 +53,50 @@ public class S3Signature {
 	
 	public S3Signature() {}
 
+	
 	public S3Signature(String name, String type, Integer size) {
 		this.name = name;
 		this.type = type;
 		this.size = size;
+//		this.config = ConfigProvider.class;
 	}
+	
+	@Inject Config config;
+
+//    @javax.inject.Inject
+//    public S3Signature(Config config) {
+//        this.config = config;
+//    }
+
+    // The relevant code is here. First use `hasPath` to check if the configuration
+    // exists and, if not, throw an exception.
+    public String getAmazonAccessKey() {
+    	try {
+	        if (config.hasPath(AWS_ACCESS_KEY)) {
+	            return config.getString(AWS_ACCESS_KEY);
+	        } else {
+	        	return "";
+	        }
+    	} catch(Exception e) {
+    		return "";
+    	}
+    }
+    
+    public String getAmazonSecretKey() {
+    	try {
+	        if (config.hasPath(AWS_SECRET_KEY)) {
+	            return config.getString(AWS_SECRET_KEY);
+	        } else {
+	        	return "";
+	        }
+	    } catch(Exception e) {
+	    	return "";
+		}
+    }
 
 	public JsonNode getS3EmberNode() {
-		String accessKey = "AKIAIZL3YXSRACIXOXDA";
-        String secretKey = "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";
+		String accessKey = getAmazonAccessKey();
+        String secretKey = getAmazonSecretKey();
         String s3Bucket = "auction-house-storage";
         String service = "s3";
         String region = "eu-west-2";

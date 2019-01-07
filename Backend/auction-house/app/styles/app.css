@@ -1302,7 +1302,8 @@ select {
 }
 
 .account-profile-image{
-  max-height: 250px;
+  min-height: 150px;
+  max-height: 350px;
   max-width: 100%;  
 }
 

@@ -293,7 +293,7 @@ public class UserController extends Controller {
 	public Result validate(String name, String type, Integer size) {
 		try {
 			Users userChecker = LoginController.getUser();
-			S3Signature s3 = new S3Signature(name, type, size);
+			S3Signature s3 = new S3Signature();
 			
            	return ok(s3.getS3EmberNode());
 		}catch(Exception e) {
