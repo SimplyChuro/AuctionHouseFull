@@ -8,7 +8,6 @@ import java.util.TimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Hex;
 
@@ -34,10 +33,10 @@ import org.jets3t.service.S3Service;
 import org.jets3t.service.utils.ServiceUtils;
 import org.jets3t.service.Constants;
 
-import play.api.inject.ConfigProvider;
 import play.libs.Json;
-import com.typesafe.config.Config;
 import com.typesafe.config.ConfigException;
+import javax.inject.Inject;
+import com.typesafe.config.ConfigFactory;
 
 public class S3Signature {
 	
@@ -46,52 +45,33 @@ public class S3Signature {
     public static final String AWS_SECRET_KEY = "aws.secret.key";
 
     public static AmazonS3 amazonS3;
-	
 	public String name;
 	public String type;
 	public Integer size;
 	
 	public S3Signature() {}
 
-	
 	public S3Signature(String name, String type, Integer size) {
 		this.name = name;
 		this.type = type;
 		this.size = size;
-//		this.config = ConfigProvider.class;
 	}
 	
-	@Inject Config config;
 
-//    @javax.inject.Inject
-//    public S3Signature(Config config) {
-//        this.config = config;
-//    }
-
-    // The relevant code is here. First use `hasPath` to check if the configuration
-    // exists and, if not, throw an exception.
     public String getAmazonAccessKey() {
-    	try {
-	        if (config.hasPath(AWS_ACCESS_KEY)) {
-	            return config.getString(AWS_ACCESS_KEY);
-	        } else {
-	        	return "";
-	        }
-    	} catch(Exception e) {
-    		return "";
-    	}
+        if (ConfigFactory.load().hasPath(AWS_ACCESS_KEY)) {
+            return ConfigFactory.load().getString(AWS_ACCESS_KEY);
+        } else {
+            throw new ConfigException.Missing(AWS_ACCESS_KEY);    
+        }
     }
     
     public String getAmazonSecretKey() {
-    	try {
-	        if (config.hasPath(AWS_SECRET_KEY)) {
-	            return config.getString(AWS_SECRET_KEY);
-	        } else {
-	        	return "";
-	        }
-	    } catch(Exception e) {
-	    	return "";
-		}
+        if (ConfigFactory.load().hasPath(AWS_SECRET_KEY)) {
+            return ConfigFactory.load().getString(AWS_SECRET_KEY);
+        } else {
+        	throw new ConfigException.Missing(AWS_SECRET_KEY);    
+        }
     }
 
 	public JsonNode getS3EmberNode() {
