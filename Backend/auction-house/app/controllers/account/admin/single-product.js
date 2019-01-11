@@ -1,8 +1,10 @@
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import swal from 'sweetalert';
 
 export default Controller.extend({
+  loadingSlider: service(),
 
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
 
@@ -71,22 +73,6 @@ export default Controller.extend({
         this.set('productNameHasError', false);
       }
     }
-
-    // if(!(isEmpty(this.get('category')))) {
-    //   this.set('categoryHasError', false);
-    // } else {
-    //   this.set('categoryHasError', true);
-    //   this.set('categoryErrorMessage', 'Category can not be blank');
-    //   checker = false;
-    // }
-
-    // if(!(isEmpty(this.get('subCategory')))) {
-    //   this.set('subCategoryHasError', false);
-    // } else {
-    //   this.set('subCategoryHasError', true);
-    //   this.set('subCategoryErrorMessage', 'SubCategory can not be blank');
-    //   checker = false;
-    // }
 
     if(isEmpty(this.get('descriptionInput')) || (this.get('descriptionInput').length != 0 && this.get('descriptionInput').trim().length == 0)) {
       this.set('descriptionHasError', true);
@@ -173,8 +159,12 @@ export default Controller.extend({
 
   actions : {
 
-    saveProduct: function(){
+    async saveProduct(){
       if(this.customValidation()){
+        var _this = this;
+        
+        _this.get('loadingSlider').endLoading();
+        _this.get('loadingSlider').startLoading();
 
         let product = this.get('model.product');
         product.set('name', this.get('nameInput'));
@@ -209,8 +199,11 @@ export default Controller.extend({
         product.set('status', 'Active');
 
         product.save().then(function(){
+          _this.get('loadingSlider').endLoading();
+          _this.transitionToRoute('account.admin.products');
           swal("Success!", "You have successfully updated this product!", "success");
         }).catch(function(){
+          _this.get('loadingSlider').endLoading();
           swal("Ooops!", "It would seem an error has occurred please try again.", "error");
         });
       }

@@ -1,8 +1,10 @@
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import swal from 'sweetalert';
 
 export default Controller.extend({
+  loadingSlider: service(),
 
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
 
@@ -164,6 +166,9 @@ export default Controller.extend({
     saveProduct: function(){
       if(this.customValidation()){
         var _this = this;
+        
+        _this.get('loadingSlider').endLoading();
+        _this.get('loadingSlider').startLoading();
 
         let product = this.store.createRecord('product');
         product.set('name', this.get('nameInput'));
@@ -184,9 +189,11 @@ export default Controller.extend({
         product.set('status', 'Active');
 
         product.save().then(function(){
+          _this.get('loadingSlider').endLoading();
           _this.transitionToRoute('account.admin.products');
           swal("Sale Succesfully Posted!", "You have successfully posted your product!", "success");
         }).catch(function(){
+          _this.get('loadingSlider').endLoading();
           swal("Ooops!", "It would seem an error has occurred please try again.", "error");
         });
       }

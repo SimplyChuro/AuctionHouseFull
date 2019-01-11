@@ -58,11 +58,15 @@
           <div class="row m-0 p-0 mb-4">
             <div class="col-sm-12 col-md-4 col-lg-3 col-lg-3">
               <div class="account-profile-image-holder">
-                <img src="{{model.user.avatar}}" class="account-profile-image">
-                {{ember-progress-bar progress=progress}}
-                <label class="account-profile-card-image-button" for="upload-photo">UPLOAD AN IMAGE</label>
-                {{file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
+                {{#if (eq model.user.avatar null)}}
+                  <div class="account-profile-blank"></div>
+                {{else}}
+                  <img src="{{model.user.avatar}}" class="account-profile-image">
+                  {{ember-progress-bar progress=progress}}
+                {{/if}}
               </div>
+              <label class="account-profile-card-image-button" for="upload-photo">UPLOAD AN IMAGE</label>
+              {{s3-file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
 
             </div>
             <div class="col-sm-12 col-md-8 col-lg-6 col-lg-6">
@@ -88,7 +92,7 @@
               <label class="account-profile-form-text mt-3">I am</label>
               <br>
               <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
-                <option disabled selected> -- Gender? -- </option>
+                <option disabled selected>Gender</option>
                 {{#if (is-equal model.user.gender 'male')}}
                   <option value="male" selected>
                     Male

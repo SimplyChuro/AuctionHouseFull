@@ -65,6 +65,7 @@ export default Controller.extend({
   phone: null,
 
   pictureFiles: [],
+  picture_urls: [],
 
   customValidationPageOne: function(){
     var checker = true;
@@ -120,7 +121,7 @@ export default Controller.extend({
     var checker = true;
     var regex;
 
-    if(isEmpty(this.get('startingPriceInput')) || (this.get('startingPriceInput').length != 0 && this.get('startingPriceInput').trim().length == 0)) {
+    if(isEmpty(this.get('startingPriceInput'))) {
       this.set('startingPriceHasError', true);
       this.set('startingPriceErrorMessage', 'Product price can not be blank');
       checker = false;
@@ -218,20 +219,19 @@ export default Controller.extend({
     var _this = this;
     return function(file) {
       _this.get('pictureFiles').addObject(file);
-      console.log(file);
     };
   }),
 
   removedFileEvent: Ember.computed(function() {
     var _this = this;
     return function(file) {
-      // console.log(file.name);
-      // _this.get('picture_urls').forEach((item, index) => {
-      //   console.log(item);
-      //   if(item.includes(file.name)){
-      //     this.removeAt(index);
-      //   }
-      // });
+      console.log(file.name);
+      _this.get('picture_urls').forEach((item, index) => {
+        console.log(item);
+        if(item.includes(file.name)){
+          this.removeAt(index);
+        }
+      });
     };
   }),
 
@@ -255,7 +255,8 @@ export default Controller.extend({
         var _this = this;
         _this.get('loadingSlider').startLoading();
 
-        let product = this.store.createRecord('product');
+        let sale = this.get('model.saleItem');
+        let product = sale.get('product');
         product.set('name', this.get('name'));
         product.set('description', this.get('description'));
         product.set('publishDate', this.get('startDate'));
@@ -264,7 +265,6 @@ export default Controller.extend({
         product.set('category_id', this.get('subCategory'));
         product.set('status', 'Active');
 
-        let sale = this.store.createRecord('sale');
         sale.set('address', this.get('addressInput'));
         sale.set('city', this.get('cityInput'));
         sale.set('zipCode', this.get('zipCodeInput'));
@@ -311,13 +311,29 @@ export default Controller.extend({
           sale.save().then(function(){
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.sell.entry');
-            swal("Sale Succesfully Posted!", "You have successfully posted your product!", "success");
+            swal("Sale Succesfully Updated!", "You have successfully updated your product!", "success");
           }).catch(function(){
+            _this.get('loadingSlider').endLoading();
             swal("Ooops!", "It would seem an error has occurred please try again.", "error");
           });
         });
        
       }
+    },
+
+    delete: function(){
+       var _this = this;
+        _this.get('loadingSlider').startLoading();
+
+        let sale = this.get('model.saleItem');
+        sale.destroyRecord().then(function(){
+          _this.get('loadingSlider').endLoading();
+          _this.transitionToRoute('account.sell.entry');
+          swal("Sale Succesfully Deleted!", "You have successfully deleted your product!", "success");
+        }).catch(function(){
+          _this.get('loadingSlider').endLoading();
+          swal("Ooops!", "It would seem an error has occurred please try again.", "error");
+        });
     },
 
     setCategory: function(category){

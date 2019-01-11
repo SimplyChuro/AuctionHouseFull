@@ -667,6 +667,13 @@ select {
   color: #008000;
 }
 
+.dropdown-menu-style{
+  width: 100%;
+  height: 400px;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8; 
+}
+
 /**/
 
 
@@ -1296,14 +1303,19 @@ select {
 }
 
 .account-profile-image-holder{
-  height: 500px;
+  height: 250px;
   max-width: 100%;
   text-align: center;
 }
 
+.account-profile-blank{
+  width: 100%;
+  height: 250px;
+  background: #ECECEC;
+}
+
 .account-profile-image{
-  min-height: 150px;
-  max-height: 350px;
+  height: 250px;
   max-width: 100%;  
 }
 

@@ -11,8 +11,10 @@ import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
+import models.Reviews;
 import models.Sales;
 import models.Users;
+import models.Wishlists;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -105,10 +107,36 @@ public class SaleController extends Controller {
 		try {
 			Users user = LoginController.getUser();
 			if(!user.admin) {
-				JsonNode jsonNode = request().body().asJson();
+				JsonNode objectNode = request().body().asJson().get("sale");	
+				JsonNode productNode = objectNode.get("product");
 				
-				Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-				saleItem.product.update();
+				Long cat_id = productNode.get("category_id").asLong();
+				
+				
+				Sales saleItem = Sales.find.byId(id);
+				saleItem = Json.fromJson(objectNode, Sales.class);
+				Products product = saleItem.product;
+				product = Json.fromJson(productNode, Products.class);
+				product.update();
+				
+				for(Pictures picture : product.pictures) {
+					picture.product = product;
+					picture.update();
+				}
+		
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				for(ProductCategory category : product.productcategory) {
+					if(category.category.parent_id == null) {
+						category.category = childCategory;
+						category.update();
+					} else {
+						category.category = parentCategory;
+						category.update();
+					}
+				}
+	
 				saleItem.update();
 				
 				return ok(Json.toJson(saleItem));
@@ -127,11 +155,33 @@ public class SaleController extends Controller {
 			Users user = LoginController.getUser();
 			if(!user.admin) {
 				Sales saleItem = Sales.find.byId(id);
-				for(Pictures picture : saleItem.product.pictures) {
+				Products product = saleItem.product;
+				
+				for(Pictures picture : product.pictures) {
 					picture.delete();
 				}
-				saleItem.product.delete();
-				saleItem.delete();
+				
+				for(Bids bid : product.bids) {
+					bid.delete();
+				}
+				
+				for(Wishlists wish : product.wishlists) {
+					wish.delete();
+				}
+				
+				for(Reviews review : product.reviews) {
+					review.delete();
+				}
+				
+				for(ProductCategory cat : product.productcategory) {
+					cat.delete();
+				}
+				
+				if(product.sale != null) {
+					product.sale.delete();
+				}
+				
+				product.delete();
 				
 				return ok(Json.toJson(""));
 			} else {

@@ -116,12 +116,11 @@
                   -->
 
                   {{drop-zone url="http://example.com/example" addedfile=addedFileEvent removedfile=removedFileEvent addRemoveLinks=true autoProcessQueue=false acceptedFiles=".jpeg,.jpg,.png" keepLocal=true maxFilesize=4 maxFiles=5}}
-                  {{#each pictureFiles as |picture|}}
-                    
-                  {{/each}}
+                 
+
                 </div>
                 <div class="mt-5 bottom-margin-150">
-                  {{#link-to "account.sell.entry" class="sale-item-back-button"}}
+                  {{#link-to "account.sales" class="sale-item-back-button"}}
                     <i class="material-icons">
                       keyboard_arrow_left
                     </i> 
@@ -166,7 +165,7 @@
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
                       <label class="mb-1 sale-item-label-text" for="start">Start date</label>
-                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="start"}}
+                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="start"}}
                     </div>
                     {{#if publishDateHasError}}
                       <div class="validation-error-message mt-1 fade">
@@ -286,8 +285,11 @@
                     </i> 
                     BACK
                   </button>
-                  <button class="sale-item-done-button" {{action 'create'}}>
-                    DONE
+                  <button class="sale-item-done-button ml-2" {{action 'create'}}>
+                    UPDATE
+                  </button>
+                  <button class="sale-item-done-button" {{action 'delete'}}>
+                    DELETE
                   </button>
                 </div>
               </form>

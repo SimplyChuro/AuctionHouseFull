@@ -1,6 +1,8 @@
 import ENV from 'auction-house/config/environment';
-import FileField from 'ember-uploader/components/file-field';
+import $ from 'jquery';
 import S3Uploader from 'ember-uploader/uploaders/s3';
+import FileField from 'ember-uploader/components/file-field';
+import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 
 export default FileField.extend({
@@ -33,7 +35,7 @@ export default FileField.extend({
 
     });
 
-    if (!Ember.isEmpty(files)) {
+    if (!isEmpty(files)) {
       uploader.upload(files);
     }
   }

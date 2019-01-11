@@ -176,7 +176,7 @@
                         <div class="ml-5 mt-auto">
                           <div class="mb-3">
                             <label class="admin-upload-picture-button" for="upload-photo">UPLOAD NEW PHOTO</label>
-                            {{file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
+                            {{s3-file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
                           </div>
                           <div class="mb-5">
                             <span class="admin-delete-picture-button" {{action 'deleteUserPicture'}}>REMOVE</span>

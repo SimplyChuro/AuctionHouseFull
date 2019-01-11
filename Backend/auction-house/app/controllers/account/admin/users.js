@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 export default Controller.extend({
   store: service(),
   loadingSlider: service(),
+  
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
   currentDatePlaceHolder: 'e.g. ' + moment(new Date()).format("DD/MM/YYYY"),
 
@@ -155,7 +156,7 @@ export default Controller.extend({
             _this.set('userCreateEnabled', false);
             _this.get('loadingSlider').endLoading();
             swal("Success!", "User Successfully Made", "success");
-          }).catch(function(data) {
+          }).catch(function() {
             _this.set('emailExistsHasError', true);
             _this.set('nameHasError', null); 
             _this.set('nameErrorMessage', null);
@@ -168,8 +169,8 @@ export default Controller.extend({
 
             _this.set('passwordHasError', null); 
             _this.set('passwordErrorMessage', null);
-            _this.destroyRecord();
             _this.get('loadingSlider').endLoading();
+            user.destroyRecord();
             swal("Ooops!", "It would seem an error has occurred please try again.", "error");
           });
         } else {
@@ -200,7 +201,7 @@ export default Controller.extend({
       })
     },
 
-    updateUser: function(){
+    async updateUser(){
       var _this = this;
       var bd;
 
@@ -209,11 +210,14 @@ export default Controller.extend({
 
       user.set('name', this.get('name'));
       user.set('surname', this.get('surname'));
-      user.set('password', this.get('password'));
-      user.set('passwordConfirmation', this.get('password'));
+      user.set('password', "PlaceHolder123!@#");
+      user.set('passwordConfirmation', "PlaceHolder123!@#");
+      user.set('email', user.get('email'));
       user.set('emailConfirmation', user.get('email'));
-      user.set('gender', this.get('selectedOption'));
-
+      
+      if(!isEmpty(this.get('selectedOption'))){
+        user.set('gender', this.get('selectedOption'));
+      }
 
       if(!isEmpty(this.get('dateOfBirth'))){
         bd = new Date(this.get('dateOfBirth'));
@@ -232,6 +236,7 @@ export default Controller.extend({
       address.set('country', this.get('country'));
 
       user.validate().then(({ validations }) => {
+        console.log(validations.get('errors'));
         if(validations.get('isValid')) {
           if(_this.customValidation()){
             _this.get('loadingSlider').endLoading();
@@ -279,7 +284,7 @@ export default Controller.extend({
     },
 
 
-    deleteUser: function() {
+    async deleteUser() {
       var _this = this;
       let user = this.get('currentUser');
       user.destroyRecord().then(function(){
@@ -300,7 +305,7 @@ export default Controller.extend({
       });
     },
 
-    imageUploadLoading: function(value) {
+    async imageUploadLoading(value) {
       var _this = this;
       Ember.run.once(function(){
         _this.set('progress', (value.percent/100));

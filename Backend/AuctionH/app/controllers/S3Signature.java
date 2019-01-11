@@ -1,5 +1,6 @@
 package controllers;
 
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,6 +30,14 @@ import com.amazonaws.services.ec2.util.S3UploadPolicy;
 import com.typesafe.config.Config;
 import sun.misc.BASE64Encoder;
 
+
+
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.regions.Regions; 
+import com.amazonaws.regions.Region; 
+
+
+
 import org.jets3t.service.S3Service;
 import org.jets3t.service.utils.ServiceUtils;
 import org.jets3t.service.Constants;
@@ -43,11 +52,12 @@ public class S3Signature {
 	public static final String AWS_S3_BUCKET = "aws.s3.bucket";
     public static final String AWS_ACCESS_KEY = "aws.access.key";
     public static final String AWS_SECRET_KEY = "aws.secret.key";
-
-    public static AmazonS3 amazonS3;
+    
 	public String name;
 	public String type;
 	public Integer size;
+	
+	public AmazonS3 AWSClient;
 	
 	public S3Signature() {}
 
@@ -57,7 +67,6 @@ public class S3Signature {
 		this.size = size;
 	}
 	
-
     public String getAmazonAccessKey() {
         if (ConfigFactory.load().hasPath(AWS_ACCESS_KEY)) {
             return ConfigFactory.load().getString(AWS_ACCESS_KEY);
@@ -73,51 +82,96 @@ public class S3Signature {
         	throw new ConfigException.Missing(AWS_SECRET_KEY);    
         }
     }
+    
+    public String getAmazonBucket() {
+        if (ConfigFactory.load().hasPath(AWS_S3_BUCKET)) {
+            return ConfigFactory.load().getString(AWS_S3_BUCKET);
+        } else {
+        	throw new ConfigException.Missing(AWS_S3_BUCKET);    
+        }
+    }
 
-	public JsonNode getS3EmberNode() {
-		String accessKey = getAmazonAccessKey();
+    public JsonNode getS3SignedUrlNode() {             
+        String accessKey = getAmazonAccessKey();
         String secretKey = getAmazonSecretKey();
-        String s3Bucket = "auction-house-storage";
+        String s3Bucket = getAmazonBucket();
+        
         String service = "s3";
         String region = "eu-west-2";
         String requestType = "aws4_request";
-             
+        
         ObjectNode response = Json.newObject();
         
         try {
-	        Date expiryTime = createExpireTime();
-	
-	        TimeZone tz = TimeZone.getTimeZone("UTC");
+        	ClientConfiguration clientConfiguration = new ClientConfiguration();
+        	clientConfiguration.setSignerOverride("AWSS3V4SignerType");
+        	
+        	AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+        	AmazonS3Client s3client = new AmazonS3Client(credentials, clientConfiguration);
+        	s3client.setRegion(Region.getRegion(Regions.EU_WEST_2));
+	       
+            GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(s3Bucket, "random.jpg", HttpMethod.POST);
+            
+            URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
+    
+            response.put("url", url.toString());
+            
 	        
-	        DateFormat dateFormatISO = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-	        DateFormat dateFormatStamp = new SimpleDateFormat("yyyyMMdd");
-	        dateFormatISO.setTimeZone(tz);
-	        
-	        String currentDateISO = dateFormatISO.format(new Date());
-	        String dateStamp = dateFormatStamp.format(new Date());
-	        String policy = createPolicy(s3Bucket, name, type, expiryTime);
-	
+	        return response;
+        } catch(Exception e) {
+        	return null;
+        }
+	}
+    
+    
+    
+	public JsonNode getS3EmberNode() {         
+        Date expiryTime = createExpireTime();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        
+        DateFormat dateFormatISO = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+        DateFormat dateFormatStamp = new SimpleDateFormat("yyyyMMdd");
+        dateFormatISO.setTimeZone(tz);
+        
+        String accessKey = getAmazonAccessKey();
+        String secretKey = getAmazonSecretKey();
+        String s3Bucket = getAmazonBucket();
+        
+        String service = "s3";
+        String region = "eu-west-2";
+        String requestType = "aws4_request";
+        
+        String currentDateISO = dateFormatISO.format(new Date());
+        String dateStamp = dateFormatStamp.format(new Date());
+        
+        String key = "images/users/" + name;
+        String algorythm = "AWS4-HMAC-SHA256";
+        String status = "201";
+        String credential = accessKey+"/"+dateStamp+"/"+region+"/"+service+"/"+requestType;
+        String policy = createPolicy(s3Bucket, key, expiryTime, status, credential, algorythm);
+        
+        ObjectNode response = Json.newObject();
+        
+        try {
 	        response.put("acl", "public-read");
 	        response.put("Content-Type", type);
 	        response.put("Cache-Control", "max-age=630720000, public");
 	        response.put("Content-Disposition", "attachment");
-	        response.put("key", "images/users/"+name);
+	        response.put("key", key);
 	        response.put("policy", policy);
 	        response.put("expires", expiryTime.toString());
-	        response.put("success_action_status", "201");
+	        response.put("success_action_status", status);
 	        response.put("bucket", s3Bucket);
-	        response.put("x-amz-credential", accessKey+"/"+dateStamp+"/"+region+"/"+service+"/"+requestType);
-	        response.put("x-amz-algorithm", "AWS4-HMAC-SHA256");
+	        response.put("x-amz-credential", credential);
+	        response.put("x-amz-algorithm", algorythm);
 	        response.put("x-amz-date", currentDateISO);
 	        response.put("x-amz-signature", getSignatureKey(secretKey, dateStamp, region, service, policy));
 	        
+	        return response;
         } catch(Exception e) {
-        	e.printStackTrace();
-        } finally {
-        	return response;
+        	return null;
         }
 	}
-	
 	
 	static byte[] HmacSHA256(String data, byte[] key) throws Exception {
 	    String algorithm="HmacSHA256";
@@ -136,20 +190,20 @@ public class S3Signature {
 	    return signature;
 	}
 	
-	private String createPolicy(String bucket, String name, String contentType, Date expiry) {
+	private String createPolicy(String bucket, String key, Date expiry, String status, String credential, String algorythm) {
         try {
             String[] conditions = {
-            	S3Service.generatePostPolicyCondition_Equality("bucket", bucket),
                 S3Service.generatePostPolicyCondition_Equality("acl", "public-read"),
+                S3Service.generatePostPolicyCondition_Equality("key", key),
+            	S3Service.generatePostPolicyCondition_Equality("bucket", bucket),
                 S3Service.generatePostPolicyCondition_Equality("expires", expiry.toString()),
-                S3Service.generatePostPolicyCondition_Equality("success_action_status", "201"),
-                S3Service.generatePostPolicyCondition_AllowAnyValue("key"),
-                S3Service.generatePostPolicyCondition_AllowAnyValue("Content-Type"),
+                S3Service.generatePostPolicyCondition_Equality("success_action_status", status),
+                S3Service.generatePostPolicyCondition_Equality("x-amz-credential", credential),
+                S3Service.generatePostPolicyCondition_Equality("x-amz-algorithm", algorythm),
                 S3Service.generatePostPolicyCondition_AllowAnyValue("Content-Disposition"),
-                S3Service.generatePostPolicyCondition_AllowAnyValue("x-amz-credential"),
-                S3Service.generatePostPolicyCondition_AllowAnyValue("x-amz-algorithm"),
                 S3Service.generatePostPolicyCondition_AllowAnyValue("x-amz-date"),
                 S3Service.generatePostPolicyCondition_AllowAnyValue("Cache-Control"),
+                S3Service.generatePostPolicyCondition("starts-with", "Content-Type", "image/"),
                 S3Service.generatePostPolicyCondition_Range(0, 524288000)
             };
             
@@ -168,8 +222,6 @@ public class S3Signature {
         cal.add(Calendar.HOUR, 24);
 
         return cal.getTime();
-    }
-    
-    
+    } 
 
 }

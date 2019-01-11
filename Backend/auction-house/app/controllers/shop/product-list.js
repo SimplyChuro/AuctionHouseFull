@@ -161,16 +161,28 @@ export default Controller.extend({
         this.set('child_category', selected);  
         this.set('parent_category', selected);  
       } else {
-        this.set('child_category', selected.id);  
+        if(this.get('child_category') == selected.id){
+          this.set('child_category', null);
+        } else {
+          this.set('child_category', selected.id); 
+        } 
       }
     },
 
     setColor: function(color) {
-      this.set('color', color);
+      if(this.get('color') == color){
+        this.set('color', null);
+      } else {
+        this.set('color', color);
+      }
     },
 
     setSize: function(size) {
-      this.set('size', size);  
+      if(this.get('size') == size){
+        this.set('size', null);
+      } else {
+        this.set('size', size);  
+      }
     },
 
     setListType: function(type) {

@@ -15,7 +15,7 @@
             <form autocomplete="off" method="POST">
               <div class="form-group mt-4 mb-0 pb-0">
                 <label class="sale-item-label-text" for="productNameInput">Item Name</label>
-                {{input type="text" value=nameInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="productNameInput"}}
+                {{input type="text" value=nameInput placeholder="e.g. New White Dress" class="account-profile-input-form-static account-profile-form-text form-background-color" id="productNameInput"}}
               </div>
               {{#if productNameHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -23,7 +23,7 @@
                 </div>
               {{/if}}
               
-              <div class="row p-0 m-0 mt-5 mb-5 full-width">
+              <div class="row p-0 m-0 mt-5 mb-4 full-width">
                 <div class="sale-item-category-holder">
                   <div class="mr-2">
                     <select onchange={{action "setCategory" value="target.value"}} class="sale-item-select">
@@ -79,7 +79,7 @@
               </div>
               <div class="full-width">
                 <label class="mb-1 sale-item-label-text" for="descriptionInput">Description</label>
-                {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3" id="descriptionInput"}}
+                {{textarea rows="4" cols="50" value=descriptionInput placeholder="e.g. Fancy dress made from 100% silk" class="full-width sale-item-description-text-area pt-2 pr-3 pb-2 pl-3 account-profile-form-text" id="descriptionInput"}}
                 {{#if descriptionHasError}}
                   <div class="validation-error-message mt-1 fade">
                     {{descriptionErrorMessage}}
@@ -88,7 +88,7 @@
               </div>
               <div class="form-group mt-4 mb-0">
                 <label class="sale-item-label-text" for="colorInput">Color</label>
-                {{input type="text" value=colorInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="colorInput"}}
+                {{input type="text" value=colorInput placeholder="e.g. White" class="account-profile-input-form-static account-profile-form-text form-background-color" id="colorInput"}}
               </div>
               {{#if colorHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -97,7 +97,7 @@
               {{/if}}
               <div class="form-group mt-4 mb-0">
                 <label class="sale-item-label-text" for="sizeInput">Size</label>
-                {{input type="text" value=sizeInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="sizeInput"}}
+                {{input type="text" value=sizeInput placeholder="e.g. Small" class="account-profile-input-form-static account-profile-form-text form-background-color" id="sizeInput"}}
               </div>
               {{#if sizeHasError}}
                 <div class="validation-error-message mt-1 fade">
@@ -106,14 +106,14 @@
               {{/if}}
               <div class="form-group mt-4 mb-0">
                 <label class="sale-item-label-text" for="priceInput">Starting price</label>
-                {{input type="text" value=startingPriceInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="priceInput"}}
+                {{input type="text" value=startingPriceInput placeholder="e.g. $254.99" class="account-profile-input-form-static account-profile-form-text form-background-color" id="priceInput"}}
               </div>
               {{#if startingPriceHasError}}
                 <div class="validation-error-message mt-1 fade">
                   {{startingPriceErrorMessage}}
                 </div>
               {{/if}}
-              <div class="row p-0 m-0 mt-5 mb-1 full-width">
+              <div class="row p-0 m-0 mt-4 mb-1 full-width">
                 <div class="sale-item-category-holder">
                   <div class="mr-2">
                     <label class="mb-1 sale-item-label-text" for="startInput">Start date</label>

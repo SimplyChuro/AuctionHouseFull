@@ -27,6 +27,7 @@ Router.map(function() {
     this.route('sell', function() {
       this.route('new');
       this.route('entry');
+      this.route('sale-item', { path: 'sale-item/:sale_id' });
     });
 
     this.route('admin', function() {

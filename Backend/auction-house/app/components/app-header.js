@@ -10,8 +10,18 @@ export default Component.extend({
   store: service(),
 
   actions: {
-    logout: function(){
+    async logout(){
       var _this = this;
+
+      Cookies.remove('auth-token');
+      Cookies.remove('user-id');
+      Cookies.remove('admin-checker');
+      _this.set('session.authToken', null);
+      _this.set('session.userID', null);
+      _this.set('session.adminChecker', null);
+      _this.get('router').transitionTo('index');
+      _this.get('store').unloadAll('wishlist');
+      _this.get('store').unloadAll('user');
 
       $.ajax({
         url: ENV.HOST_URL+'/api/v1/logout',
@@ -20,16 +30,6 @@ export default Component.extend({
           'X-AUTH-TOKEN': _this.get('session').authToken
         },
         contentType: 'application/text'
-      }).then(function(){
-        Cookies.remove('auth-token');
-        Cookies.remove('user-id');
-        Cookies.remove('admin-checker');
-        _this.set('session.authToken', null);
-        _this.set('session.userID', null);
-        _this.set('session.adminChecker', null);
-        _this.get('router').transitionTo('index');
-        _this.get('store').unloadAll('wishlist');
-        _this.get('store').unloadAll('user');
       });
     },
 

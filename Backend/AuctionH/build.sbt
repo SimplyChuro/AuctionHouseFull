@@ -22,7 +22,7 @@ libraryDependencies += "com.typesafe.play" %% "play-mailer" % "6.0.1"
 libraryDependencies += "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
 
 // Amazon Web Services
-libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.3.11"
+libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.11.475"
 libraryDependencies += "net.java.dev.jets3t" % "jets3t" % "0.9.4"
 
 // Make verbose tests
