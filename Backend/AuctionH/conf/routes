@@ -10,8 +10,7 @@ DELETE	/api/v1/users/:id				controllers.UserController.delete(id : Long)
 POST	/api/v1/verify					controllers.UserController.verify
 POST	/api/v1/reset					controllers.UserController.sendResetMail
 POST	/api/v1/password/reset			controllers.UserController.reset
-GET 	/api/v1/validate				controllers.UserController.validate(name: String, type: String, size: Integer)
-GET 	/api/v1/dropzone-url			controllers.UserController.getDropzoneUrl
+GET 	/api/v1/validate/user/image		controllers.UserController.validate(name: String, type: String, size: Integer)
 
 
 # Login/Logout API routes
@@ -57,6 +56,7 @@ GET		/api/v1/products/:id			controllers.ProductController.get(id : Long)
 POST	/api/v1/products				controllers.ProductController.create
 PUT		/api/v1/products/:id			controllers.ProductController.update(id : Long)
 DELETE	/api/v1/products/:id			controllers.ProductController.delete(id : Long)
+GET 	/api/v1/validate/product/image	controllers.ProductController.validate(name: String, type: String, size: Integer)
 
 
 # Category API routes

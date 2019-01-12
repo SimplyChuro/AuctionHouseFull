@@ -296,25 +296,12 @@ public class UserController extends Controller {
 			int maxSize = 2097152;
 			int minSize = 4096;
 			if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
-				S3Signature s3 = new S3Signature(name, type, size);
+				S3Signature s3 = new S3Signature(name, type, size, "images/users/");
 				
 	           	return ok(s3.getS3EmberNode());
 			} else {
 				return badRequest();	
 			}
-		}catch(Exception e) {
-			return badRequest();
-		}
-	}
-	
-	//Get Presigned Url
-	@Security.Authenticated(Secured.class)
-	public Result getDropzoneUrl() {
-		try {
-			Users userChecker = LoginController.getUser();
-			S3Signature s3 = new S3Signature();
-				
-			return ok(s3.getS3SignedUrlNode());
 		}catch(Exception e) {
 			return badRequest();
 		}

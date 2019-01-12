@@ -667,11 +667,45 @@ select {
   color: #008000;
 }
 
-.dropdown-menu-style{
+.dropdown-menu-style-default{
   width: 100%;
-  height: 400px;
   background: #FCFCFC;
   border: 1px solid #D8D8D8; 
+}
+
+.dropdown-menu-style{
+  width: 100%;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8; 
+  height: 200px;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/*.dropdown-menu-style:first-child {
+  width: 100%;
+text-align: center;
+  vertical-align: middle;
+} */
+
+.dropdown-image{
+  width: 100%;
+  height: 175px;
+  border-top: 1px solid #D8D8D8; 
+  border-right: 1px solid #D8D8D8; 
+  border-left: 1px solid #D8D8D8; 
+}
+
+.dropdown-remove-button{
+  padding: 5px 0px;
+  cursor: pointer;
+  border-bottom: 1px solid #D8D8D8; 
+  border-right: 1px solid #D8D8D8; 
+  border-left: 1px solid #D8D8D8; 
+
 }
 
 /**/
@@ -809,15 +843,13 @@ select {
 
 .single-product-main-picture{
 	height: 375px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 10px;
 }
 
 .single-product-side-picture{
 	padding: 5px;
 	max-height: 75px;
+  max-width: 100%;
 }
 
 .single-product-margin{
@@ -853,7 +885,7 @@ select {
 }
 
 .single-product-secondary-image{
-	
+	max-width: 100%;
 	max-height: 75px;
 	background-repeat: no-repeat;
   background-size: contain;

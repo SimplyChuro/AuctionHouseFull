@@ -5,7 +5,7 @@ export default Route.extend({
   model(params){
     return hash({
       categoryList: this.store.findAll('category'),
-      saleItem: this.store.findRecord('sale', params.sale_id),
+      saleItem: this.store.findRecord('sale', params.sale_id, { reload: true }),
     })
   },
 
@@ -13,7 +13,8 @@ export default Route.extend({
     this._super(controller, model);
     this.controllerFor('account/sell/sale-item').set('nameInput', model.saleItem.product.get('name'));
     this.controllerFor('account/sell/sale-item').set('descriptionInput', model.saleItem.product.get('description'));
-    this.controllerFor('account/sell/sale-item').set('startingPriceInput', model.saleItem.product.get('startingPrice'));
+    this.controllerFor('account/sell/sale-item').set('colorInput', model.saleItem.product.get('color'));
+    this.controllerFor('account/sell/sale-item').set('sizeInput', model.saleItem.product.get('size'));
 
     model.saleItem.product.get('productcategory').forEach((item, index) => {
       if(item.category.get('parent_id') == null){
@@ -22,7 +23,8 @@ export default Route.extend({
         this.controllerFor('account/sell/sale-item').set('subCategory', item.category.get('id'));
       }
     });
-    
+
+    this.controllerFor('account/sell/sale-item').set('startingPriceInput', model.saleItem.product.get('startingPrice'));
     this.controllerFor('account/sell/sale-item').set('startDateInput', model.saleItem.product.get('publishDate'));
     this.controllerFor('account/sell/sale-item').set('endDateInput', model.saleItem.product.get('expireDate'));
     this.controllerFor('account/sell/sale-item').set('addressInput', model.saleItem.get('address'));

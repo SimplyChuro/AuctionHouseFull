@@ -108,7 +108,7 @@ public class Products extends Model{
 		this.color = objectNode.findPath("color").asText();
 		this.size = objectNode.findPath("size").asText();
 		this.startingPrice = objectNode.findPath("startingPrice").asDouble();	
-		this.featured = objectNode.findPath("featured").asBoolean();	
+		this.featured = objectNode.findPath("featured").asBoolean();
 		
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		
@@ -121,6 +121,41 @@ public class Products extends Model{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		for(Pictures picture : pictures) {	
+			Boolean checker = false;
+			try {
+				for(JsonNode pictureNode : objectNode.get("pictures")) {
+
+					if(picture.id == pictureNode.findPath("id").asLong()) {
+						checker = true;
+					}
+				}
+				
+				if(!(checker == true)) {
+					picture.delete();
+				}
+				
+			} catch(Exception e) {
+				
+			}
+		}
+		
+		for(JsonNode pictureNode : objectNode.get("pictures")) {
+			try {
+				if(pictureNode.findPath("id").asLong() > 0) {
+					
+				} else {
+					Pictures picture = new Pictures();
+					picture.url = pictureNode.findPath("url").asText();
+					picture.product = this;
+					picture.save();
+				}
+			} catch(Exception e) {
+				
+			}
+		}
+		
 		
 		this.update();
 
@@ -147,8 +182,18 @@ public class Products extends Model{
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.save();
+		
+		for(JsonNode pictureNode : objectNode.get("pictures")) {
+
+			System.out.println(pictureNode);
+			Pictures picture = new Pictures();
+			picture.url = pictureNode.findPath("url").asText();
+			picture.product = this;
+			picture.save();
+			
+		}
 
 	}
 	

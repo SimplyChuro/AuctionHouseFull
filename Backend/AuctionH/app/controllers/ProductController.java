@@ -209,11 +209,6 @@ public class ProductController extends Controller {
 				Products product = new Products();
 				product.saveProduct(jsonNode);
 				
-//				for(Pictures picture : product.pictures) {
-//					picture.product = product;
-//					picture.save();
-//				}
-				
 				Category childCategory = Category.find.byId(cat_id);
 				Category parentCategory = Category.find.byId(childCategory.parent_id);
 				
@@ -247,25 +242,24 @@ public class ProductController extends Controller {
 				
 				Products product = Products.find.byId(id);
 				product.updateProduct(jsonNode);
-				
-//				for(Pictures picture : product.pictures) {
-//					picture.product = product;
-//					picture.update();
-//				}
+					
 				try {
 					Long cat_id = jsonNode.get("category_id").asLong();
 					Category childCategory = Category.find.byId(cat_id);
 					Category parentCategory = Category.find.byId(childCategory.parent_id);
 					
-					ProductCategory categoryConnectionChild = new ProductCategory();
-					categoryConnectionChild.product = product;
-					categoryConnectionChild.category = childCategory;
-					categoryConnectionChild.save();
+					for(ProductCategory category : product.productcategory) {
+						if(category.category.parent_id == null && category.category.id != childCategory.id) {
+							category.category = childCategory;
+							category.update();
+						} else {
+							if(category.category.id != parentCategory.id) {
+								category.category = parentCategory;					
+								category.update();
+							}
+						}
+					}
 					
-					ProductCategory categoryConnectionParent = new ProductCategory();
-					categoryConnectionParent.product = product;
-					categoryConnectionParent.category = parentCategory;
-					categoryConnectionParent.save();
 				} catch(Exception e) {
 					
 				} finally {
@@ -317,6 +311,25 @@ public class ProductController extends Controller {
 				return forbidden();
 			}
 		} catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Validate upload
+	@Security.Authenticated(Secured.class)
+	public Result validate(String name, String type, Integer size) {
+		try {
+			Users userChecker = LoginController.getUser();
+			int maxSize = 2097152;
+			int minSize = 4096;
+			if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
+				S3Signature s3 = new S3Signature(name, type, size, "images/products/");
+				
+	           	return ok(s3.getS3EmberNode());
+			} else {
+				return badRequest();	
+			}
+		}catch(Exception e) {
 			return badRequest();
 		}
 	}

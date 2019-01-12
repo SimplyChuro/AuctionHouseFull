@@ -6,7 +6,7 @@ import { isEmpty } from '@ember/utils';
 import { inject as service } from '@ember/service';
 
 export default FileField.extend({
-  signingUrl: ENV.HOST_URL+'/api/v1/validate',
+  signingUrl: ENV.HOST_URL+'/api/v1/validate/user/image',
   session: service(),
 
   filesDidChange(files) {

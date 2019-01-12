@@ -64,17 +64,10 @@ public class SaleController extends Controller {
 				JsonNode objectNode = request().body().asJson().get("sale");	
 				JsonNode productNode = objectNode.get("product");
 				Long cat_id = productNode.get("category_id").asLong();
-				Products product = Json.fromJson(productNode, Products.class);
-				product.save();
 				
-				for(Pictures picture : product.pictures) {
-					picture.product = product;
-					picture.save();
-				}
-				
-				Sales saleItem = Json.fromJson(objectNode, Sales.class);
+				Sales saleItem = new Sales();
 				saleItem.user = user;
-				saleItem.product = product;
+				saleItem.saveSale(objectNode);
 				
 				Category childCategory = Category.find.byId(cat_id);
 				Category parentCategory = Category.find.byId(childCategory.parent_id);
@@ -88,9 +81,6 @@ public class SaleController extends Controller {
 				categoryConnectionParent.product = saleItem.product;
 				categoryConnectionParent.category = parentCategory;
 				categoryConnectionParent.save();
-			
-	
-				saleItem.save();
 	
 				return ok(Json.toJson(saleItem));
 			} else {
@@ -112,32 +102,23 @@ public class SaleController extends Controller {
 				
 				Long cat_id = productNode.get("category_id").asLong();
 				
-				
 				Sales saleItem = Sales.find.byId(id);
-				saleItem = Json.fromJson(objectNode, Sales.class);
-				Products product = saleItem.product;
-				product = Json.fromJson(productNode, Products.class);
-				product.update();
+				saleItem.updateSale(objectNode);
 				
-				for(Pictures picture : product.pictures) {
-					picture.product = product;
-					picture.update();
-				}
-		
 				Category childCategory = Category.find.byId(cat_id);
 				Category parentCategory = Category.find.byId(childCategory.parent_id);
 				
-				for(ProductCategory category : product.productcategory) {
-					if(category.category.parent_id == null) {
+				for(ProductCategory category : saleItem.product.productcategory) {
+					if(category.category.parent_id == null && category.category.id != childCategory.id) {
 						category.category = childCategory;
 						category.update();
 					} else {
-						category.category = parentCategory;
-						category.update();
+						if(category.category.id != parentCategory.id) {
+							category.category = parentCategory;					
+							category.update();
+						}
 					}
 				}
-	
-				saleItem.update();
 				
 				return ok(Json.toJson(saleItem));
 			} else {

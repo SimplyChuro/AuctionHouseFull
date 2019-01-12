@@ -15,6 +15,13 @@ export default Route.extend({
     this.controllerFor('account/admin/single-product').set('descriptionInput', model.product.description);
     this.controllerFor('account/admin/single-product').set('colorInput', model.product.color);
     this.controllerFor('account/admin/single-product').set('sizeInput', model.product.size);
+    model.product.get('productcategory').forEach((item, index) => {
+      if(item.category.get('parent_id') == null){
+        this.controllerFor('account/admin/single-product').set('category', item.category.get('id'));
+      } else {
+        this.controllerFor('account/admin/single-product').set('subCategory', item.category.get('id'));
+      }
+    });
     this.controllerFor('account/admin/single-product').set('startingPriceInput', model.product.startingPrice);
     this.controllerFor('account/admin/single-product').set('startDateInput', model.product.publishDate);
     this.controllerFor('account/admin/single-product').set('endDateInput', model.product.expireDate);

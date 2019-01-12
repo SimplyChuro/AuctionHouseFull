@@ -1,14 +1,15 @@
 import Controller from '@ember/controller';
 import { isEmpty } from '@ember/utils';
+import EmberObject, { computed, observer } from '@ember/object';
 import { inject as service } from '@ember/service';
+import $ from 'jquery';
 import S3Uploader from 'ember-uploader/uploaders/s3';
-import FileField from 'ember-uploader/components/file-field';
 import ENV from 'auction-house/config/environment';
 import swal from 'sweetalert';
 import RSVP from 'rsvp';
 
 export default Controller.extend({
-  signingUrl: ENV.HOST_URL+'/api/v1/validate',
+  signingUrl: ENV.HOST_URL+'/api/v1/validate/product/image',
   loadingSlider: service(),
   session: service(),
 
@@ -20,11 +21,20 @@ export default Controller.extend({
   descriptionHasError: null,
   descriptionErrorMessage: null,
 
+  picturesHaveError: null,
+  picturesErrorMessage: null,
+  
   categoryHasError: null,
   categoryErrorMessage: null,
 
   subCategoryHasError: null,
   subCategoryErrorMessage: null,
+
+  colorHasError: null,
+  colorErrorMessage: null,
+
+  sizeHasError: null,
+  sizeErrorMessage: null,
 
   startingPriceHasError: null,
   startingPriceErrorMessage: null,
@@ -55,6 +65,8 @@ export default Controller.extend({
   subCategory: null,
   name: null,
   description: null,
+  color: null,
+  size: null,
   startingPrice: null,
   startDate: null,
   endDate: null,
@@ -65,7 +77,6 @@ export default Controller.extend({
   phone: null,
 
   pictureFiles: [],
-  picture_urls: [],
 
   customValidationPageOne: function(){
     var checker = true;
@@ -105,12 +116,55 @@ export default Controller.extend({
       this.set('descriptionErrorMessage', 'Description can not be blank');
       checker = false;
     } else {
-      if(this.get('descriptionInput').length > 700){
+      if(this.get('descriptionInput').length > 700) {
         this.set('descriptionHasError', true);
         this.set('descriptionErrorMessage', 'The given description is way too big');
         checker = false;
       } else {
         this.set('descriptionHasError', false);
+      }
+    }
+
+    if(isEmpty(this.get('colorInput')) || (this.get('colorInput').length != 0 && this.get('colorInput').trim().length == 0)) {
+      this.set('colorHasError', true);
+      this.set('colorErrorMessage', 'Color can not be blank');
+      checker = false;
+    } else {
+      if(this.get('colorInput').length > 40){
+        this.set('colorHasError', true);
+        this.set('colorErrorMessage', 'The given color is way too big');
+        checker = false;
+      } else {
+        this.set('colorHasError', false);
+      }
+    }
+
+    if(isEmpty(this.get('sizeInput')) || (this.get('sizeInput').length != 0 && this.get('sizeInput').trim().length == 0)) {
+      this.set('sizeHasError', true);
+      this.set('sizeErrorMessage', 'Size can not be blank');
+      checker = false;
+    } else {
+      if(this.get('sizeInput').length > 40){
+        this.set('sizeHasError', true);
+        this.set('sizeErrorMessage', 'The given size is way too big');
+        checker = false;
+      } else {
+        this.set('sizeHasError', false);
+      }
+    }
+
+    if((this.get('pictureFiles').length + this.get('model.saleItem.product.pictures').length) >= 3 
+      && (this.get('pictureFiles').length + this.get('model.saleItem.product.pictures').length) <= 5) {
+      this.set('picturesHaveError', false);
+    } else {
+      if((this.get('pictureFiles').length + this.get('model.saleItem.product.pictures').length) >= 3) {
+        this.set('picturesHaveError', true);
+        this.set('picturesErrorMessage', 'Too many images, max amount is 5 images');
+        checker = false;
+      } else {
+        this.set('picturesHaveError', true);
+        this.set('picturesErrorMessage', 'You need to add atleast 3 images');
+        checker = false;
       }
     }
 
@@ -215,40 +269,30 @@ export default Controller.extend({
     return checker;
   },
 
-  addedFileEvent: Ember.computed(function() {
+  addedFileEvent: computed(function() {
     var _this = this;
     return function(file) {
+      var myDropzone = Dropzone.forElement("#dropzone-id");
+      myDropzone.removeAllFiles(true);
+
       _this.get('pictureFiles').addObject(file);
     };
   }),
 
-  removedFileEvent: Ember.computed(function() {
-    var _this = this;
-    return function(file) {
-      console.log(file.name);
-      _this.get('picture_urls').forEach((item, index) => {
-        console.log(item);
-        if(item.includes(file.name)){
-          this.removeAt(index);
-        }
-      });
-    };
+  previewImages: observer('page', 'pictureFiles.[]', function(){ 
+    this.get('pictureFiles').forEach((item, index) => {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('#preview-image-' + index).attr('src', e.target.result);
+      }
+
+      reader.readAsDataURL(item);
+    });
   }),
 
 
-
-
   actions : {
-
-    remove: function(arr, what) {
-      var found = arr.indexOf(what);
-
-      while (found !== -1) {
-          arr.splice(found, 1);
-          found = arr.indexOf(what);
-      }
-    },
-
 
     async create(){
       if(this.customValidationPageThree()){
@@ -259,8 +303,21 @@ export default Controller.extend({
         let product = sale.get('product');
         product.set('name', this.get('name'));
         product.set('description', this.get('description'));
-        product.set('publishDate', this.get('startDate'));
-        product.set('expireDate', this.get('endDate'));
+        
+        if(!isEmpty(this.get('startDate'))){
+          var startDate = new Date(this.get('startDateInput'));
+          startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
+          product.set('publishDate', startDate);  
+        } 
+
+        if(!isEmpty(this.get('endDate'))){
+          var endDate = new Date(this.get('endDateInput'));
+          endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
+          product.set('expireDate', endDate);  
+        } 
+
+        product.set('color', this.get('color'));
+        product.set('size', this.get('size'));
         product.set('startingPrice', this.get('startingPrice'));
         product.set('category_id', this.get('subCategory'));
         product.set('status', 'Active');
@@ -277,7 +334,6 @@ export default Controller.extend({
   
         this.get('pictureFiles').forEach((file, index) => {
           var promise = new RSVP.Promise(function(resolve, reject){
-            var p_this = this;
             const uploader = S3Uploader.create({
               signingUrl: _this.get('signingUrl'),
               signingAjaxSettings: {
@@ -304,13 +360,12 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-    
-
-
         RSVP.all(promises).then(function(){
           sale.save().then(function(){
+            _this.store.unloadAll('sale');
+            _this.store.unloadAll('product');
             _this.get('loadingSlider').endLoading();
-            _this.transitionToRoute('account.sell.entry');
+          _this.transitionToRoute('account.sales');
             swal("Sale Succesfully Updated!", "You have successfully updated your product!", "success");
           }).catch(function(){
             _this.get('loadingSlider').endLoading();
@@ -328,12 +383,20 @@ export default Controller.extend({
         let sale = this.get('model.saleItem');
         sale.destroyRecord().then(function(){
           _this.get('loadingSlider').endLoading();
-          _this.transitionToRoute('account.sell.entry');
+          _this.transitionToRoute('account.sales');
           swal("Sale Succesfully Deleted!", "You have successfully deleted your product!", "success");
         }).catch(function(){
           _this.get('loadingSlider').endLoading();
           swal("Ooops!", "It would seem an error has occurred please try again.", "error");
         });
+    },
+
+    removePicture: function(picture){
+      this.get('pictureFiles').removeObject(picture);
+    },
+
+    removeOldPicture: function(picture){
+      this.get('model.saleItem.product.pictures').removeObject(picture);
     },
 
     setCategory: function(category){
@@ -361,6 +424,8 @@ export default Controller.extend({
           if(this.customValidationPageOne()){
             this.set('name', this.get('nameInput'));
             this.set('description', this.get('descriptionInput'));
+            this.set('color', this.get('colorInput'));
+            this.set('size', this.get('sizeInput'));
             this.set('page', page);
           }
         }
@@ -393,6 +458,8 @@ export default Controller.extend({
       this.set('subCategory', null);
       this.set('name', null);
       this.set('description', null);
+      this.set('color', null);
+      this.set('size', null);
       this.set('startingPrice', null);
       this.set('startDate', null);
       this.set('endDate', null);
@@ -403,6 +470,8 @@ export default Controller.extend({
       this.set('phone', null);
       this.set('nameInput', null);
       this.set('descriptionInput', null);
+      this.set('colorInput', null);
+      this.set('sizeInput', null);
       this.set('startingPriceInput', null);
       this.set('publishDate', null);
       this.set('expiryDate', null);
@@ -411,11 +480,15 @@ export default Controller.extend({
       this.set('countryInput', null);
       this.set('zipCodeInput', null);
       this.set('phoneInput', null);
+      this.set('pictureFiles', []);
+
 
       this.set('productNameHasError', null);
       this.set('productNameErrorMessage', null);
       this.set('descriptionHasError', null);
       this.set('descriptionErrorMessage', null);
+      this.set('picturesHaveError', null);
+      this.set('picturesErrorMessage', null);
       this.set('categoryHasError', null);
       this.set('categoryErrorMessage', null);
       this.set('subCategoryHasError', null);

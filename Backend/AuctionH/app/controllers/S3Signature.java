@@ -56,15 +56,17 @@ public class S3Signature {
 	public String name;
 	public String type;
 	public Integer size;
+	public String path;
 	
 	public AmazonS3 AWSClient;
 	
 	public S3Signature() {}
 
-	public S3Signature(String name, String type, Integer size) {
+	public S3Signature(String name, String type, Integer size, String path) {
 		this.name = name;
 		this.type = type;
 		this.size = size;
+		this.path = path;
 	}
 	
     public String getAmazonAccessKey() {
@@ -89,41 +91,7 @@ public class S3Signature {
         } else {
         	throw new ConfigException.Missing(AWS_S3_BUCKET);    
         }
-    }
-
-    public JsonNode getS3SignedUrlNode() {             
-        String accessKey = getAmazonAccessKey();
-        String secretKey = getAmazonSecretKey();
-        String s3Bucket = getAmazonBucket();
-        
-        String service = "s3";
-        String region = "eu-west-2";
-        String requestType = "aws4_request";
-        
-        ObjectNode response = Json.newObject();
-        
-        try {
-        	ClientConfiguration clientConfiguration = new ClientConfiguration();
-        	clientConfiguration.setSignerOverride("AWSS3V4SignerType");
-        	
-        	AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        	AmazonS3Client s3client = new AmazonS3Client(credentials, clientConfiguration);
-        	s3client.setRegion(Region.getRegion(Regions.EU_WEST_2));
-	       
-            GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(s3Bucket, "random.jpg", HttpMethod.POST);
-            
-            URL url = s3client.generatePresignedUrl(generatePresignedUrlRequest);
-    
-            response.put("url", url.toString());
-            
-	        
-	        return response;
-        } catch(Exception e) {
-        	return null;
-        }
-	}
-    
-    
+    } 
     
 	public JsonNode getS3EmberNode() {         
         Date expiryTime = createExpireTime();
@@ -144,7 +112,7 @@ public class S3Signature {
         String currentDateISO = dateFormatISO.format(new Date());
         String dateStamp = dateFormatStamp.format(new Date());
         
-        String key = "images/users/" + name;
+        String key = path + name;
         String algorythm = "AWS4-HMAC-SHA256";
         String status = "201";
         String credential = accessKey+"/"+dateStamp+"/"+region+"/"+service+"/"+requestType;

@@ -85,7 +85,7 @@
       <div class="row fade">
         {{#each model.productListFeatured as |product index|}}
           {{#if (is-less index 3)}}
-            <div class="col-lg-6 col-xl-4">
+            <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
               {{#link-to "shop.single-product" product.id class="category-table-link"}}	
                 <div class="mb-5 mt-5">
                   <div class="home-product-card m-3">
@@ -125,7 +125,7 @@
         </div>
         {{#each model.productListNew as |product index|}}
           {{#if (is-less index 8)}}
-            <div class="col-lg-3 col-xl-3">
+            <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
               {{#link-to "shop.single-product" product.id class="category-table-link"}} 
                 <div class="mb-5 mt-5">
                   <div class="home-product-card m-3">
@@ -162,7 +162,7 @@
           </div>
           {{#each model.productListEnding as |product index|}}
             {{#if (is-less index 8)}}
-              <div class="col-lg-3 col-xl-3">
+              <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
                 {{#link-to "shop.single-product" product.id class="category-table-link"}} 
                   <div class="mb-5 mt-5">
                     <div class="home-product-card m-3">

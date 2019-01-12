@@ -10,7 +10,7 @@
               <form autocomplete="off">
                 <div class="form-group mt-4 mb-0 pb-0">
                   <label class="sale-item-label-text" for="name">What do you sell?</label>
-                  {{input type="text" value=nameInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="name"}}
+                  {{input type="text" value=nameInput placeholder="e.g. New White Dress" class="account-profile-input-form-static account-profile-form-text form-background-color" id="name"}}
                 </div>
                 <span class="sale-item-product-name-guide-text mt-1 pt-0">2-5 words (60 characters)</span>
                 {{#if productNameHasError}}
@@ -75,7 +75,7 @@
                 </div>
                 <div class="full-width">
                   <label class="mb-1 sale-item-label-text" for="description">Description?</label>
-                  {{textarea rows="4" cols="50" value=descriptionInput class="full-width sale-item-description-text-area account-profile-form-text pt-2 pr-3 pb-2 pl-3" id="description"}}
+                  {{textarea rows="4" cols="50" value=descriptionInput placeholder="e.g. Fancy dress made from 100% silk" class="full-width sale-item-description-text-area account-profile-form-text pt-2 pr-3 pb-2 pl-3" id="description"}}
                   <span class="sale-item-product-name-guide-text mt-1">100 words (700 characters)</span>
                   {{#if descriptionHasError}}
                     <div class="validation-error-message mt-1 fade">
@@ -83,42 +83,49 @@
                     </div>
                   {{/if}}
                 </div>
-                <div class="full-width mt-5">
-                  <!-- 
-                  {{#file-dropzone name="photos" as |dropzone queue|}}
-                    {{#if dropzone.active}}
-                      {{#if dropzone.valid}}
-                        <div class="dropdown-menu-style">
-                         <p class="text-center mt-auto mb-auto">Drop to upload</p>
-                        </div>
-                      {{else}}
-                        Invalid
-                      {{/if}}
-                    {{else if queue.files.length}}
-                      Uploading {{queue.files.length}} files. ({{queue.progress}}%)
-                    {{else}}
-                      <p>
-                        {{#if dropzone.supported}}
-                          <div class="dropdown-menu-style">
-                            <p class="text-center mt-auto mb-auto">Drag and drop images onto this area to upload them or</p>
-                          </div> 
-                        {{/if}}
-                        {{#file-upload name="photos"
-                                       for="upload-photo"
-                                       accept="image/*"
-                                       multiple=true
-                                       onfileadd=(action "uploadImage")}}
-                          <a tabindex=0>Add an Image.</a>
-                        {{/file-upload}}
-                      </p>
-                    {{/if}}
-                  {{/file-dropzone}}
-                  -->
 
-                  {{drop-zone url="http://example.com/example" addedfile=addedFileEvent removedfile=removedFileEvent addRemoveLinks=true autoProcessQueue=false acceptedFiles=".jpeg,.jpg,.png" keepLocal=true maxFilesize=4 maxFiles=5}}
-                  {{#each pictureFiles as |picture|}}
-                    
-                  {{/each}}
+                <div class="form-group mt-4 mb-0">
+                  <label class="sale-item-label-text" for="colorInput">Color</label>
+                  {{input type="text" value=colorInput placeholder="e.g. White" class="account-profile-input-form-static account-profile-form-text form-background-color" id="colorInput"}}
+                </div>
+                {{#if colorHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{colorErrorMessage}}
+                  </div>
+                {{/if}}
+                <div class="form-group mt-4 mb-0">
+                  <label class="sale-item-label-text" for="sizeInput">Size</label>
+                  {{input type="text" value=sizeInput placeholder="e.g. Small" class="account-profile-input-form-static account-profile-form-text form-background-color" id="sizeInput"}}
+                </div>
+                {{#if sizeHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{sizeErrorMessage}}
+                  </div>
+                {{/if}}
+
+                <div class="full-width mt-5">
+
+                  {{drop-zone id="dropzone-id" class="dropdown-menu-style" url="http://example.com/example" addedfile=addedFileEvent autoProcessQueue=false acceptedFiles=".jpeg,.jpg,.png" keepLocal=true maxFilesize=4 maxFiles=5}}
+                
+                  {{#if pictureFiles}}
+                    <div class="mt-3"></div>
+                    <div class="row m-0 p-0 dropdown-menu-style-default">
+                      {{#each pictureFiles as |picture index|}}
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 m-0 p-0">
+                          <div class="p-2">
+                            <img class="dropdown-image" id={{get-image-id index}} />
+                            <p {{action 'removePicture' picture}} class="dropdown-remove-button text-center mb-0">Remove</p>
+                          </div>
+                        </div>
+
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                  {{#if picturesHaveError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{picturesErrorMessage}}
+                    </div>
+                  {{/if}}
                 </div>
                 <div class="mt-5 bottom-margin-150">
                   {{#link-to "account.sell.entry" class="sale-item-back-button"}}
@@ -155,7 +162,7 @@
               <form autocomplete="off">
                 <div class="form-group mt-4 mb-0">
                   <label class="sale-item-label-text" for="price">Your starting price</label>
-                  {{input type="text" value=startingPriceInput class="account-profile-input-form-static account-profile-form-text form-background-color mb-0" id="price"}}
+                  {{input type="text" value=startingPriceInput placeholder="e.g. $254.99" class="account-profile-input-form-static account-profile-form-text form-background-color mb-0" id="price"}}
                 </div>
                 {{#if startingPriceHasError}}
                   <div class="validation-error-message mt-1 fade">
@@ -222,7 +229,7 @@
               <form autocomplete="off">
                 <div class="form-group mt-4">
                   <label class="sale-item-label-text" for="address">Address</label>
-                  {{input type="text" value=addressInput class="account-profile-input-form-static account-profile-form-text form-background-color form-background-color" id="address"}}
+                  {{input type="text" value=addressInput placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text form-background-color form-background-color" id="address"}}
                 </div>
                 {{#if addressHasError}}
                   <div class="validation-error-message mt-1 fade">
@@ -233,7 +240,7 @@
                   <div class="sale-item-category-holder">
                     <div class="mr-2">
                       <label class="sale-item-label-text" for="city">City</label>
-                      {{input type="text" value=cityInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="city"}}
+                      {{input type="text" value=cityInput placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text form-background-color" id="city"}}
                     </div>
                     {{#if cityHasError}}
                       <div class="validation-error-message mt-1 fade">
@@ -243,7 +250,7 @@
                   </div>
                   <div class="sale-item-category-holder">
                     <label class="sale-item-label-text" for="country">Country</label>
-                    {{input type="text" value=countryInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="country"}}
+                    {{input type="text" value=countryInput placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text form-background-color" id="country"}}
                     {{#if countryHasError}}
                       <div class="validation-error-message mt-1 fade">
                         {{countryErrorMessage}}
@@ -253,7 +260,7 @@
                 </div>
                 <div class="form-group">
                   <label class="sale-item-label-text" for="zipCode">Zip Code</label>
-                  {{input type="text" value=zipCodeInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="zipCode"}}
+                  {{input type="text" value=zipCodeInput placeholder="e.g. 10065" class="account-profile-input-form-static account-profile-form-text form-background-color" id="zipCode"}}
                   {{#if zipCodeHasError}}
                     <div class="validation-error-message mt-1 fade">
                       {{zipCodeErrorMessage}}
@@ -262,7 +269,7 @@
                 </div>
                 <div class="form-group mt-4">
                   <label class="sale-item-label-text" for="phone">Phone</label>
-                  {{input type="text" value=phoneInput class="account-profile-input-form-static account-profile-form-text form-background-color" id="phone"}}
+                  {{input type="text" value=phoneInput placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text form-background-color" id="phone"}}
                   {{#if phoneHasError}}
                     <div class="validation-error-message mt-1 fade">
                       {{phoneErrorMessage}}
