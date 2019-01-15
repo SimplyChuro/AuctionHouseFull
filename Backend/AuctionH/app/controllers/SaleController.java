@@ -28,7 +28,7 @@ public class SaleController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Sales sale = Sales.find.byId(id);
 				return ok(Json.toJson(sale));
 			} else {
@@ -44,7 +44,7 @@ public class SaleController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				List<Sales> sales = user.sales;
 				return ok(Json.toJson(sales));
 			} else {
@@ -60,7 +60,7 @@ public class SaleController extends Controller {
 	public Result create() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("sale");	
 				JsonNode productNode = objectNode.get("product");
 				Long cat_id = productNode.get("category_id").asLong();
@@ -96,7 +96,7 @@ public class SaleController extends Controller {
 	public Result update(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("sale");	
 				JsonNode productNode = objectNode.get("product");
 				
@@ -134,7 +134,7 @@ public class SaleController extends Controller {
 	public Result delete(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Sales saleItem = Sales.find.byId(id);
 				Products product = saleItem.product;
 				

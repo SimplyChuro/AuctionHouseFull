@@ -23,15 +23,16 @@ public class MockData {
 		Users admin = new Users();
 		
 		try {
-			admin.name = "supremeleader";
-			admin.surname= "best";
+			admin.name = "administrator";
+			admin.surname= "default";
 			admin.setEmail(ConfigFactory.load().getString("custom.admin.email"));
 			admin.setPassword(ConfigFactory.load().getString("custom.admin.password"));
 			admin.setEmailVerified(true);
 			admin.admin = true;
+			admin.active = true;
 			admin.save();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		//Base objects		

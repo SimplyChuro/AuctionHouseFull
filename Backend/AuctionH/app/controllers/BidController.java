@@ -22,7 +22,7 @@ public class BidController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Bids bid = Bids.find.byId(id);
 				
 				return ok(Json.toJson(bid));
@@ -39,7 +39,7 @@ public class BidController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				List<Bids> bids = user.bids;
 				return ok(Json.toJson(bids));
 			} else {
@@ -55,7 +55,7 @@ public class BidController extends Controller {
 	public Result create() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("bid");
 				Bids bidChecker = Json.fromJson(objectNode, Bids.class);
 				if(bidChecker.createBid(user, objectNode)) {
@@ -76,7 +76,7 @@ public class BidController extends Controller {
 	public Result update(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("bid");
 				Bids bidChecker = Bids.find.byId(id);
 				
@@ -101,7 +101,7 @@ public class BidController extends Controller {
 		try {
 			Users user = LoginController.getUser();
 			
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Bids bidChecker = Bids.find.byId(id);
 				
 				if(bidChecker != null) {

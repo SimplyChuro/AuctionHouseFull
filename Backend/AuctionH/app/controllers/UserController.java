@@ -309,6 +309,7 @@ public class UserController extends Controller {
 			Users userChecker = LoginController.getUser();
 			
 			userChecker.active = true;
+			userChecker.deleteAuthToken();
 			userChecker.update();
 			
 			return ok(Json.toJson(""));
@@ -322,12 +323,16 @@ public class UserController extends Controller {
 	public Result validate(String name, String type, Integer size) {
 		try {
 			Users userChecker = LoginController.getUser();
-			int maxSize = 2097152;
-			int minSize = 4096;
-			if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
-				S3Signature s3 = new S3Signature(name, type, size, "images/users/");
-				
-	           	return ok(s3.getS3EmberNode());
+			if(userChecker.active) {
+				int maxSize = 2097152;
+				int minSize = 4096;
+				if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
+					S3Signature s3 = new S3Signature(name, type, size, "images/users/");
+					
+		           	return ok(s3.getS3EmberNode());
+				} else {
+					return badRequest();	
+				}
 			} else {
 				return badRequest();	
 			}

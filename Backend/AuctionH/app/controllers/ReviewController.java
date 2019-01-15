@@ -19,7 +19,7 @@ public class ReviewController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Reviews review = Reviews.find.byId(id);
 				
 				return ok(Json.toJson(review));
@@ -36,7 +36,7 @@ public class ReviewController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				List<Reviews> reviews = user.reviews;
 				return ok(Json.toJson(reviews));
 			} else {
@@ -52,7 +52,7 @@ public class ReviewController extends Controller {
 	public Result create() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("review");
 				Reviews review = Json.fromJson(objectNode, Reviews.class);
 				review.createReview(user, objectNode);	
@@ -71,7 +71,7 @@ public class ReviewController extends Controller {
 	public Result update(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("review");	
 				Reviews review = Reviews.find.byId(id);
 				
@@ -95,7 +95,7 @@ public class ReviewController extends Controller {
 	public Result delete(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {	
+			if(!user.admin && user.active) {	
 				Reviews review = Reviews.find.byId(id);
 				
 				if(review != null) {

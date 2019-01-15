@@ -37,7 +37,7 @@ public class WishlistController extends Controller{
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				List<Wishlists> wishlist = user.wishlists;
 				return ok(Json.toJson(wishlist));
 			} else {
@@ -53,7 +53,7 @@ public class WishlistController extends Controller{
 	public Result create() {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				JsonNode objectNode = request().body().asJson().get("wishlist");
 				Wishlists wishlistChecker = Wishlists.find.query().where().conjunction()
 						.eq("user_id", user.id)
@@ -84,7 +84,7 @@ public class WishlistController extends Controller{
 	public Result update(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Wishlists wishlistChecker = Wishlists.find.byId(id);
 				JsonNode objectNode = request().body().asJson().get("wishlist");
 				
@@ -108,7 +108,7 @@ public class WishlistController extends Controller{
 	public Result delete(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			if(!user.admin) {
+			if(!user.admin && user.active) {
 				Wishlists wishlistChecker = Wishlists.find.byId(id);
 				
 				if(wishlistChecker != null) {
