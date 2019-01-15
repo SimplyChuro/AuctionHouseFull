@@ -25,7 +25,7 @@ public class MockData {
 		try {
 			admin.name = "administrator";
 			admin.surname= "default";
-			admin.setEmail(ConfigFactory.load().getString("custom.admin.email"));
+			admin.setEmail(ConfigFactory.load().getString("custom.admin.mail"));
 			admin.setPassword(ConfigFactory.load().getString("custom.admin.password"));
 			admin.setEmailVerified(true);
 			admin.admin = true;
