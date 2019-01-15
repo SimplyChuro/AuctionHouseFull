@@ -81,6 +81,9 @@ public class Users extends Model{
     @Constraints.Required
    	public Boolean admin;
     
+    @Constraints.Required
+   	public Boolean active;
+    
 	//Foreign Keys
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="user")
@@ -106,6 +109,7 @@ public class Users extends Model{
 	public void setBase() {
 		emailVerified = false;
 		admin = false;
+		active = true;
 		save();
 		address = new Address("", "", "", "", "");
 		address.user = this;

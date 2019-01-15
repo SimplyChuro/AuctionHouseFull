@@ -38,7 +38,7 @@ export default Controller.extend({
 
   actions: {
 
-    createBid: function(productID) {
+    async createBid(productID) {
       var _this = this;
 
       let bid = this.store.createRecord('bid');
@@ -54,7 +54,7 @@ export default Controller.extend({
       var userBid = this.get('bidAmount');
 
 
-      bid.validate().then(({ validations }) => {
+      await bid.validate().then(({ validations }) => {
         if(validations.get('isValid') && (userBid > _this.get('topBid')) && (userBid != _this.get('topBid'))){
           
           bid.save().then(function() {
@@ -79,9 +79,9 @@ export default Controller.extend({
     },
 
 
-    createWishlist: function(productID) {
+    async createWishlist(productID) {
       var _this = this;
-      this.store.createRecord('wishlist', {
+      await this.store.createRecord('wishlist', {
         product_id: productID
       }).save().then(function(data){
         _this.set('checker', data);      
@@ -91,10 +91,10 @@ export default Controller.extend({
     },
 
 
-    deleteWishlist: function() {
+    async deleteWishlist() {
       var _this = this;
       var currentWishlistItem = _this.get('checker');
-      currentWishlistItem.destroyRecord().then(function(){
+      await currentWishlistItem.destroyRecord().then(function(){
         _this.set('checker', null);  
       });
     },

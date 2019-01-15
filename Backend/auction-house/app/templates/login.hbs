@@ -20,12 +20,12 @@
               <div class="form-group mt-5">
                 <label class="account-profile-pointer" for="passwordInput">Password</label>
                 {{input type="password" value=password  class="form-control form-background-color p-4" id="passwordInput"}}
+                {{#if loginHasError}}
+                  <div class="validation-error-message pt-1 fade">
+                    {{loginErrorMessage}}
+                  </div>
+                {{/if}}
               </div>
-              {{#if loginHasError}}
-                <div class="validation-error-message pt-1 fade">
-                  {{loginErrorMessage}}
-                </div>
-              {{/if}}
               <div class="form-check mt-5">
                 {{input type="checkbox" name="remember" checked=remember class="form-check-input account-profile-pointer" id="rememberMe"}}
                 <label class="account-profile-pointer" for="rememberMe">Remember me</label>

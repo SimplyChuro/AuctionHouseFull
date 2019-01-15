@@ -111,7 +111,7 @@ export default Controller.extend({
       this.set('selectedOption', selected)
     },
 
-    updateUser: function() {
+    async updateUser() {
       var _this = this;
       var bd;
 
@@ -142,7 +142,7 @@ export default Controller.extend({
       address.set('state', this.get('state'));
       address.set('country', this.get('country'));
 
-      user.validate().then(({ validations }) => {
+      await user.validate().then(({ validations }) => {
         if(validations.get('isValid')) {
           if(_this.customValidation()){
             user.save().then(function(){
@@ -195,8 +195,8 @@ export default Controller.extend({
     async imageUploadComplete(info) {
       var _this = this;
       let user = this.get('model.user');
-      user.set('avatar', info.image)
-      user.save().then(function(){
+      user.set('avatar', info.image);
+      await user.save().then(function(){
         if(_this.get('progress') == 1){
           _this.set('progress', 0);
         }

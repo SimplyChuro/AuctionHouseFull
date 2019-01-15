@@ -10,6 +10,8 @@ DELETE	/api/v1/users/:id				controllers.UserController.delete(id : Long)
 POST	/api/v1/verify					controllers.UserController.verify
 POST	/api/v1/reset					controllers.UserController.sendResetMail
 POST	/api/v1/password/reset			controllers.UserController.reset
+POST	/api/v1/activate				controllers.UserController.activate
+POST	/api/v1/deactivate				controllers.UserController.deactivate
 GET 	/api/v1/validate/user/image		controllers.UserController.validate(name: String, type: String, size: Integer)
 
 

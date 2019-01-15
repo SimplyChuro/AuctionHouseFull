@@ -54,36 +54,56 @@
     <div class="row fade">
       <div class="col-lg-6 col-xl-6 card-group">
         <div class="card mt-5">
-          <h1 class="account-settings-card-title">Policy and Community</h1>
+          <h1 class="account-settings-card-title-v2">Policy and Community</h1>
           <p class="account-settings-card-text">Receive updates on bids and seller's offers.
           <br>Stay informed through:</p>
           <div class="account-settings-checkbox-holder">
-            {{input type="checkbox" name="mail" checked=remember class="account-settings-card-checkbox"}}
-            <label class="account-settings-card-checkbox-label">Email</label>
+            {{input type="checkbox" checked=mailNotification id="mailNotifiactionInput" class="account-settings-card-checkbox"}}
+            <label class="account-settings-card-checkbox-label" for="mailNotifiactionInput">Email</label>
           </div>
           <div class="account-settings-checkbox-holder">
-            {{input type="checkbox" name="notifications" checked=remember class="account-settings-card-checkbox"}}
-            <label class="account-settings-card-checkbox-label">Push Notifications</label>
+            {{input type="checkbox" checked=pushNotification id="pushNotifiactionInput" class="account-settings-card-checkbox"}}
+            <label class="account-settings-card-checkbox-label" for="pushNotifiactionInput">Push Notifications</label>
           </div>
           <div class="account-settings-checkbox-holder mb-4">
-            {{input type="checkbox" name="messages" checked=remember class="account-settings-card-checkbox"}}
-            <label class="account-settings-card-checkbox-label">Text Messages</label>
+            {{input type="checkbox" checked=textNotification id="textNotifiactionInput" class="account-settings-card-checkbox"}}
+            <label class="account-settings-card-checkbox-label" for="textNotifiactionInput">Text Messages</label>
           </div>
         </div>
       </div>
       <div class="col-lg-6 col-xl-6 card-group">
         <div class="card mt-5">
-          <h1 class="account-settings-card-title">Contact Information</h1>
+          <h1 class="account-settings-card-title-v2">Contact Information</h1>
           <p class="account-settings-card-text">This information can be found and edited on your account profile.</p>
-          <label class="account-settings-card-text">Email: <span class="account-settings-card-text-special">Placeholder</span></label>
-          <label class="account-settings-card-text">Phone:<span class="account-settings-card-text-special">Placeholder</span></label>
+          <div class="row mr-0 ml-0">
+            <div>
+              <label class="account-settings-card-text">Email:</label>
+              <br>
+              <label class="account-settings-card-text">Phone:</label>
+            </div>
+            <div>
+              <label class="account-settings-card-text-special">{{model.user.email}}</label>
+              <br>
+              {{#if (eq model.user.phoneNumber null)}}
+                <label class="account-settings-card-text-special">Not Added</label>
+              {{else}}
+                {{#if (eq model.user.phoneNumber '')}}
+                  <label class="account-settings-card-text-special">Not Added</label>
+                {{else}}
+                  <label class="account-settings-card-text-special">{{model.user.phoneNumber}}</label>
+                {{/if}}
+              {{/if}}
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-lg-6 col-xl-6">
         <div class="card margin-card mt-5">
-          <h1 class="account-settings-card-title">Account</h1>
+          <h1 class="account-settings-card-title-v2">Account</h1>
           <p class="account-settings-card-text">Do you want to deativate account?</p>
-          <button class="account-settings-button-deactivate">DEACTIVATE</button>
+          <div>
+            <button class="account-settings-button-deactivate" {{action 'deactivateAccount'}}>DEACTIVATE</button>
+          </div>
         </div>
       </div>
     </div>

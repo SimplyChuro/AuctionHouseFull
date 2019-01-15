@@ -16,7 +16,7 @@ export default Controller.extend({
   emailErrorText: null,
 
   actions: {
-    reset: function() {
+    async reset() {
       var _this = this;
       var regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
       
@@ -24,7 +24,7 @@ export default Controller.extend({
         if(regex.test(this.get('emailAddress'))) {
           _this.set('emailIsValid', true);
           _this.get('loadingSlider').startLoading();
-          $.ajax({
+          await $.ajax({
             url: ENV.HOST_URL+'/api/v1/reset',
             type: 'POST',
             data: JSON.stringify({

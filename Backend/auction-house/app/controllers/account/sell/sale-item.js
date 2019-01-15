@@ -350,7 +350,7 @@ export default Controller.extend({
               let picture = _this.store.createRecord('picture');
               picture.set('url', uploadedUrl);
               product.get('pictures').pushObject(picture);
-              
+
               resolve();
             });
 
@@ -360,12 +360,11 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-        RSVP.all(promises).then(function(){
+        await RSVP.all(promises).then(function(){
           sale.save().then(function(){
             _this.store.unloadAll('sale');
-            _this.store.unloadAll('product');
             _this.get('loadingSlider').endLoading();
-          _this.transitionToRoute('account.sales');
+            _this.transitionToRoute('account.sales');
             swal("Sale Succesfully Updated!", "You have successfully updated your product!", "success");
           }).catch(function(){
             _this.get('loadingSlider').endLoading();
@@ -376,12 +375,12 @@ export default Controller.extend({
       }
     },
 
-    delete: function(){
+    async delete(){
        var _this = this;
         _this.get('loadingSlider').startLoading();
 
         let sale = this.get('model.saleItem');
-        sale.destroyRecord().then(function(){
+        await sale.destroyRecord().then(function(){
           _this.get('loadingSlider').endLoading();
           _this.transitionToRoute('account.sales');
           swal("Sale Succesfully Deleted!", "You have successfully deleted your product!", "success");
@@ -453,6 +452,7 @@ export default Controller.extend({
     },
 
     clearFields: function(){
+      this.store.unloadAll('sale');
       this.set('page', 1);
       this.set('category', null);
       this.set('subCategory', null);

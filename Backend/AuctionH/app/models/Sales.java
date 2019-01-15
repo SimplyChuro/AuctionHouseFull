@@ -33,10 +33,10 @@ public class Sales extends Model{
 	public String zipCode;
     
     @Constraints.Required
-	public String phone;
+   	public String country;
     
     @Constraints.Required
-	public String country;
+	public String phone;
     
     @Constraints.Required
 	public String status;

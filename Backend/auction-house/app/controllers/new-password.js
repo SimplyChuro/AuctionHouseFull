@@ -22,7 +22,7 @@ export default Controller.extend({
   token: null,
 
   actions: {
-    reset: function() {
+    async reset() {
       var _this = this;
       var regex = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/);
       if(!(isEmpty(this.get('password')))){
@@ -32,7 +32,7 @@ export default Controller.extend({
             if(isEqual(this.get('password'), this.get('confirmPassword'))){
               this.set('passwordMatches', true);
               _this.get('loadingSlider').startLoading();
-              $.ajax({
+              await $.ajax({
                 url: ENV.HOST_URL+'/api/v1/password/reset',
                 type: 'POST',
                 data: JSON.stringify({

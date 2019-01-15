@@ -35,7 +35,6 @@ import play.mvc.*;
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
 import javax.inject.Inject;
-import java.io.File;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.mail.EmailAttachment;
@@ -283,6 +282,36 @@ public class UserController extends Controller {
 			} else {
 				return badRequest();
 			}
+		}catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Deactivate Account
+	@Security.Authenticated(Secured.class)
+	public Result deactivate() {
+		try {
+			Users userChecker = LoginController.getUser();
+			if(userChecker.active) {
+				userChecker.active = false;
+				userChecker.update();
+			}
+			return ok(Json.toJson(""));
+		}catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Reactivate Account
+	@Security.Authenticated(Secured.class)
+	public Result activate() {
+		try {
+			Users userChecker = LoginController.getUser();
+			
+			userChecker.active = true;
+			userChecker.update();
+			
+			return ok(Json.toJson(""));
 		}catch(Exception e) {
 			return badRequest();
 		}

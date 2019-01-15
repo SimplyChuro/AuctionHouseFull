@@ -9,14 +9,14 @@ export default Controller.extend({
   loadingSlider: service(),
 
   loginHasError: false,
-  loginErrorMessage: 'Incorrect username or password',
+  loginErrorMessage: '',
 
-  actions: {
+   actions: {
     async login() {
       var _this = this;
       _this.get('loadingSlider').startLoading();
       
-      $.ajax({
+      await $.ajax({
         url: ENV.HOST_URL+'/api/v1/login',
         type: 'POST',
         data: JSON.stringify({
@@ -32,6 +32,11 @@ export default Controller.extend({
           _this.set('session.authToken', data[0].authToken);
           _this.set('session.userID', data[1].userID);
           _this.set('session.adminChecker', data[2].adminChecker);
+        },
+        error: function (data) {
+          var msg = $.parseJSON(data.responseText);
+          _this.set('loginHasError', true);
+          _this.set('loginErrorMessage', msg.error_message);
         }
       }).then(function(){
         _this.get('loadingSlider').endLoading();

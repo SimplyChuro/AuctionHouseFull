@@ -16,9 +16,6 @@ export default Component.extend({
       Cookies.remove('auth-token');
       Cookies.remove('user-id');
       Cookies.remove('admin-checker');
-      _this.set('session.authToken', null);
-      _this.set('session.userID', null);
-      _this.set('session.adminChecker', null);
       _this.get('router').transitionTo('index');
       _this.get('store').unloadAll('wishlist');
       _this.get('store').unloadAll('user');
@@ -30,6 +27,10 @@ export default Component.extend({
           'X-AUTH-TOKEN': _this.get('session').authToken
         },
         contentType: 'application/text'
+      }).then(function(){
+        _this.set('session.authToken', null);
+        _this.set('session.userID', null);
+        _this.set('session.adminChecker', null);
       });
     },
 

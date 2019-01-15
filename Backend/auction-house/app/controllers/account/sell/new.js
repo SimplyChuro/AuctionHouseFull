@@ -359,7 +359,7 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-        RSVP.all(promises).then(function(){
+        await RSVP.all(promises).then(function(){
           sale.save().then(function(){
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.sell.entry');

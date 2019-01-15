@@ -33,36 +33,36 @@ export default Controller.extend({
       this.set('subCategoryInputEnabled', true);
     },
 
-    createParentCategory: function() {
+    async createParentCategory() {
       var _this = this;
 
       let category = this.store.createRecord('category');
       category.set('name', this.get('parentNameInput'));
       category.set('parent_id', null);
-      category.save().then(function(){
+      await category.save().then(function(){
         _this.set('parentNameInput', '');
         _this.set('categoryInputEnabled', false);
       });
     },
 
-    createChildCategory: function() {
+    async createChildCategory() {
       var _this = this;
 
       let category = this.store.createRecord('category');
       category.set('name', this.get('childNameInput'));
       category.set('parent_id', this.get('currentCategory').id);
-      category.save().then(function(){
+      await category.save().then(function(){
         _this.set('childNameInput', '');
         _this.set('subCategoryInputEnabled', false);
       });
     },
 
-    deleteParentCategory: function(category) {
-      category.destroyRecord();
+    async deleteParentCategory(category) {
+      await category.destroyRecord();
     },
 
-    deleteChildCategory: function(category) {
-      category.destroyRecord();
+    async deleteChildCategory(category) {
+      await category.destroyRecord();
     },
 
     clearFields: function(){

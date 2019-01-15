@@ -235,7 +235,7 @@ export default Controller.extend({
       address.set('state', this.get('state'));
       address.set('country', this.get('country'));
 
-      user.validate().then(({ validations }) => {
+      await user.validate().then(({ validations }) => {
         console.log(validations.get('errors'));
         if(validations.get('isValid')) {
           if(_this.customValidation()){
@@ -287,7 +287,7 @@ export default Controller.extend({
     async deleteUser() {
       var _this = this;
       let user = this.get('currentUser');
-      user.destroyRecord().then(function(){
+      await user.destroyRecord().then(function(){
         _this.set('currentUser', null);
         _this.set('userCreateEnabled', false);
         _this.set('userEditEnabled', false);
@@ -297,8 +297,8 @@ export default Controller.extend({
     async imageUploadComplete(info) {
       var _this = this;
       let user = this.get('currentUser');
-      user.set('avatar', info.image)
-      user.save().then(function(){
+      user.set('avatar', info.image);
+      await user.save().then(function(){
         if(_this.get('progress') == 1){
           _this.set('progress', 0);
         }
@@ -316,9 +316,7 @@ export default Controller.extend({
       var _this = this;
       let user = this.get('currentUser');
       user.set('avatar', null);
-      user.save().then(function(){
-        
-      });
+      await user.save();
     },
 
     toggleDetails: function(user) {

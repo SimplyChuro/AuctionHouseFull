@@ -247,7 +247,7 @@ export default Controller.extend({
       }
     },
 
-    saveProduct: function(){
+    async saveProduct(){
       if(this.customValidationPageTwo()){
         var _this = this;
         
@@ -313,7 +313,7 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-        RSVP.all(promises).then(function() {
+       await RSVP.all(promises).then(function() {
           product.save().then(function(){
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.admin.products');

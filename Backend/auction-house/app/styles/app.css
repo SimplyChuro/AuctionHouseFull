@@ -1083,6 +1083,14 @@ text-align: center;
 	letter-spacing: 0.63px;
 }
 
+.account-settings-card-title-v2{
+  background: #F0F0F0;;
+  padding: 15px 0px 15px 35px;
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
 .account-settings-card-text{
 	padding: 15px 0px 0px 35px;
 	font-size: 18px;
@@ -1114,13 +1122,13 @@ text-align: center;
 }
 
 .account-settings-button-deactivate{
-	width: 40%;
 	margin: 15px 0px 75px 35px;
 	padding: 12px 40px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #252525;
-	letter-spacing: 0.63px;
+	cursor: pointer;
+  letter-spacing: 0.63px;
 	background: #FFFFFF;
 	border: 3px solid #E3E3E3;
 	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);

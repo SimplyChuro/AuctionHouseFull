@@ -30,13 +30,9 @@ import com.amazonaws.services.ec2.util.S3UploadPolicy;
 import com.typesafe.config.Config;
 import sun.misc.BASE64Encoder;
 
-
-
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.regions.Regions; 
 import com.amazonaws.regions.Region; 
-
-
 
 import org.jets3t.service.S3Service;
 import org.jets3t.service.utils.ServiceUtils;
@@ -44,7 +40,6 @@ import org.jets3t.service.Constants;
 
 import play.libs.Json;
 import com.typesafe.config.ConfigException;
-import javax.inject.Inject;
 import com.typesafe.config.ConfigFactory;
 
 public class S3Signature {

@@ -75,8 +75,8 @@ create table sales (
   address                       varchar(255),
   city                          varchar(255),
   zip_code                      varchar(255),
-  phone                         varchar(255),
   country                       varchar(255),
+  phone                         varchar(255),
   status                        varchar(255),
   user_id                       bigint,
   product_id                    bigint,
@@ -98,6 +98,7 @@ create table users (
   phone_number                  varchar(256),
   phone_verified                boolean,
   admin                         boolean,
+  active                        boolean,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id)
 );

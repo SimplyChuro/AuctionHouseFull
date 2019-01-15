@@ -199,17 +199,17 @@ export default Controller.extend({
       this.set('listSize', currentListSize);
     },
 
-    createWishlist: function(productID) {
-      this.store.createRecord('wishlist', {
+    async createWishlist(productID) {
+      await this.store.createRecord('wishlist', {
         status: 'active',
         product_id: productID
       }).save();
     },
 
-    deleteWishlist: function(wishlistItem) {
+    async deleteWishlist(wishlistItem) {
       var _this = this;
       var currentWishlistItem = wishlistItem;
-      currentWishlistItem.destroyRecord().then(function(){
+      await currentWishlistItem.destroyRecord().then(function(){
         _this.get('allWishlistItems').removeObject(wishlistItem);
       });
     },

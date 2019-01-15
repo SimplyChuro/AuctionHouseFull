@@ -316,9 +316,8 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-        RSVP.all(promises).then(function() {
+        await RSVP.all(promises).then(function() {
           product.save().then(function(){
-            _this.store.unloadAll('product');
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.admin.products');
             swal("Success!", "You have successfully updated this product!", "success");
@@ -330,11 +329,11 @@ export default Controller.extend({
       }
     },
 
-    deleteProduct: function(){ 
+    async deleteProduct(){ 
       var _this = this;
       let product = this.get('model.product');
 
-      product.destroyRecord().then(function(){
+      await product.destroyRecord().then(function(){
         _this.transitionToRoute('account.admin.products');
         swal("Success!", "You have successfully deleted this product!", "success");
       }).catch(function(){

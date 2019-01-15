@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
+import { isEmpty } from '@ember/utils'
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
-import { isEmpty } from '@ember/utils';
+import swal from 'sweetalert';;
 
 export default Controller.extend({
 
@@ -9,13 +10,13 @@ export default Controller.extend({
   token: null,
 
   actions: {
-    async verifyUser() {
+    async reactivateUser() {
       var _this = this;
       if(isEmpty(this.get('token'))){
         _this.transitionToRoute('home');
       } else {
         $.ajax({
-          url: ENV.HOST_URL+'/api/v1/verify',
+          url: ENV.HOST_URL+'/api/v1/activate',
           type: 'POST',
           headers: {
             'X-AUTH-TOKEN': _this.get('token')
