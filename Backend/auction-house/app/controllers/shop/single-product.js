@@ -4,7 +4,7 @@ import { isEmpty } from '@ember/utils';
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: service(),
+  customSession: service(),
   store: service(),
   
   amountHasError: null,

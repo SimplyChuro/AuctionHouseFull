@@ -6,7 +6,7 @@ import Cookies from 'ember-cli-js-cookie';
 import swal from 'sweetalert';
 
 export default Controller.extend({
-  session: service(),
+  customSession: service(),
   router: service(),
 
   actions: {
@@ -14,23 +14,28 @@ export default Controller.extend({
     async deactivateAccount() {
       var _this = this;
 
+      var token = _this.get('customSession').getAuthToken();
+
+      Cookies.remove('auth-token');
+      Cookies.remove('user-id');
+      Cookies.remove('admin-checker');
+      window.localStorage.clear();
+      _this.get('router').transitionTo('index');
+      _this.get('store').unloadAll('wishlist');
+      _this.get('store').unloadAll('user');
+      _this.set('customSession.authToken', null);
+      _this.set('customSession.userID', null);
+      _this.set('customSession.adminChecker', null);
+      _this.set('currentDate', moment(new Date()));
+
       $.ajax({
         url: ENV.HOST_URL+'/api/v1/deactivate',
         type: 'POST',
         headers: {
-          'X-AUTH-TOKEN': _this.get('session').authToken
+          'X-AUTH-TOKEN': token
         },
         contentType: 'application/text'
       }).then(function(){
-        Cookies.remove('auth-token');
-        Cookies.remove('user-id');
-        Cookies.remove('admin-checker');
-        _this.transitionToRoute('home');
-        _this.store.unloadAll('wishlist');
-        _this.store.unloadAll('user');
-        _this.set('session.authToken', null);
-        _this.set('session.userID', null);
-        _this.set('session.adminChecker', null);
         swal("Success!", "You have successfully deactivated your account!", "success");
       });
 

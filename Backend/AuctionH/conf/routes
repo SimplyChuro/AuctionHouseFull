@@ -18,6 +18,8 @@ GET 	/api/v1/validate/user/image		controllers.UserController.validate(name: Stri
 # Login/Logout API routes
 POST	/api/v1/login					controllers.LoginController.login
 POST	/api/v1/logout					controllers.LoginController.logout
+POST	/api/v1/login/google			controllers.LoginController.googleLogin
+POST	/api/v1/login/facebook			controllers.LoginController.facebookLogin
 
 
 # Bid API routes

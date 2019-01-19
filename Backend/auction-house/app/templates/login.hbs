@@ -27,16 +27,14 @@
                 {{/if}}
               </div>
               <div class="form-check mt-5">
-                {{input type="checkbox" name="remember" checked=remember class="form-check-input account-profile-pointer" id="rememberMe"}}
+                {{input type="checkbox" name="remember" checked=rememberMe class="form-check-input account-profile-pointer" id="rememberMe"}}
                 <label class="account-profile-pointer" for="rememberMe">Remember me</label>
               </div>
               <button type="submit" class="btn btn-purple mt-5" {{action "login"}}>LOGIN</button>
-              <!-- 	
-                <div class="mt-5">
-                  <button type="submit" class="btn btn-blue">LOGIN WITH FACEBOOK</button>
-                  <button type="submit" class="btn btn-red">LOGIN WITH GMAIL</button>
-                </div> 
-              -->
+              <div class="mt-5">
+                <button type="submit" class="btn btn-blue" {{action "loginFacebook"}}>LOGIN WITH FACEBOOK</button>
+                <button type="submit" class="btn btn-red" {{action "loginGmail"}}>LOGIN WITH GMAIL</button>
+              </div>
               <div class="text-center mt-5 mb-4">
                 {{#link-to "password-reset" class="nav-link"}}
                   Forgot Password?

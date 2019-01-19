@@ -7,14 +7,14 @@ import { inject as service } from '@ember/service';
 
 export default FileField.extend({
   signingUrl: ENV.HOST_URL+'/api/v1/validate/user/image',
-  session: service(),
+  customSession: service(),
 
   filesDidChange(files) {
     const uploader = S3Uploader.create({
       signingUrl: this.get('signingUrl'),
       signingAjaxSettings: {
         headers: {
-          'X-AUTH-TOKEN': this.get('session').authToken
+          'X-AUTH-TOKEN': this.get('customSession').getAuthToken()
         }
       }
     });

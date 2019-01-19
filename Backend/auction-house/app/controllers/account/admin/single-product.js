@@ -11,7 +11,7 @@ import RSVP from 'rsvp';
 export default Controller.extend({
   signingUrl: ENV.HOST_URL+'/api/v1/validate/product/image',
   loadingSlider: service(),
-  session: service(),
+  customSession: service(),
 
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
 
@@ -294,7 +294,7 @@ export default Controller.extend({
               signingUrl: _this.get('signingUrl'),
               signingAjaxSettings: {
                 headers: {
-                  'X-AUTH-TOKEN': _this.get('session').authToken
+                  'X-AUTH-TOKEN': _this.get('customSession').getAuthToken()
                 }
               }
             });

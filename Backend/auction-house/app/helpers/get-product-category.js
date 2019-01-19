@@ -21,4 +21,5 @@ export default Helper.extend({
 
     return product_category;
   }
+  
 });

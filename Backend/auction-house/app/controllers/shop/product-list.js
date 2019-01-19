@@ -5,7 +5,7 @@ import { stringSimilarity } from "string-similarity-js";
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: service(),
+  customSession: service(),
   store: service(),
   loadingSlider: service(),
   

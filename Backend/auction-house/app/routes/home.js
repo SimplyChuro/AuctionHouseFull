@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  model(){
+  model() {
     return hash({
       categoryList: this.store.findAll('category'),
       productListFeatured: this.store.query('product', { name: '', category: 0, featured: 'fav', status: '', rating: '' }),

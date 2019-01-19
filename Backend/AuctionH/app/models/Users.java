@@ -116,6 +116,35 @@ public class Users extends Model{
 		address.save();
 	}
 	
+	public void setBaseGoogle(JsonNode objectNode) {
+		name = objectNode.findPath("given_name").asText();
+		surname = objectNode.findPath("family_name").asText();
+		email = objectNode.findPath("email").asText();
+		avatar = objectNode.findPath("picture").asText();
+		gender = objectNode.findPath("gender").asText();
+		emailVerified = true;
+		admin = false;
+		active = true;
+		save();
+		address = new Address("", "", "", "", "");
+		address.user = this;
+		address.save();
+	}
+	
+	public void setBaseFacebook(JsonNode objectNode) {
+		name = objectNode.findPath("first_name").asText();
+		surname = objectNode.findPath("last_name").asText();
+		email = objectNode.findPath("email").asText();
+		avatar = objectNode.get("picture").get("data").findPath("url").asText();
+		emailVerified = true;
+		admin = false;
+		active = true;
+		save();
+		address = new Address("", "", "", "", "");
+		address.user = this;
+		address.save();
+	}
+	
 	public void updateUser(JsonNode objectNode) {
 		this.name = objectNode.findPath("name").asText();
 		this.surname = objectNode.findPath("surname").asText();
