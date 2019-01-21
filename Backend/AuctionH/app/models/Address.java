@@ -59,35 +59,46 @@ public class Address extends Model{
 		
 	public void updateAddress(String street, String city, String zipCode, String state, String country) {
 		
-		if(street != null || !(street.equals("null"))) {
+		if(street != null && !(street.equals("null"))) {
 			if(!(street.trim().isEmpty())){
 				this.street = street;
 			}
+		} else {
+			this.street = "";
 		}
 		
-		if(city != null || !(city.equals("null"))) {
+		if(city != null && !(city.equals("null"))) {
 			if(!(city.trim().isEmpty())){
 				this.city = city;
 			}
+		} else {
+			this.city = "";
 		}
 		
-		if(zipCode != null || !(zipCode.equals("null"))) {
+		if(zipCode != null && !(zipCode.equals("null"))) {
 			if(!(zipCode.trim().isEmpty())){
 				this.zipCode = zipCode;
 			}
+		} else {
+			this.zipCode = "";
 		}
 		
-		if(state != null || !(state.equals("null"))) {
+		if(state != null && !(state.equals("null"))) {
 			if(!(state.trim().isEmpty())){
 				this.state = state;
 			}
+		} else {
+			this.state = "";
 		}
 		
-		if(country != null || !(country.equals("null"))) {
+		if(country != null && !(country.equals("null"))) {
 			if(!(country.trim().isEmpty())){
 				this.country = country;
 			}
+		} else {
+			this.country = "";
 		}
+		
 		update();
 	}
 	

@@ -2,15 +2,23 @@ import Component from '@ember/component';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
-  session: Ember.inject.service(),
-  router: Ember.inject.service(),
-  store: Ember.inject.service(),
+  session: service(),
+  router: service(),
+  store: service(),
 
   actions: {
-    logout: function(){
+    async logout(){
       var _this = this;
+
+      Cookies.remove('auth-token');
+      Cookies.remove('user-id');
+      Cookies.remove('admin-checker');
+      _this.get('router').transitionTo('index');
+      _this.get('store').unloadAll('wishlist');
+      _this.get('store').unloadAll('user');
 
       $.ajax({
         url: ENV.HOST_URL+'/api/v1/logout',
@@ -20,13 +28,9 @@ export default Component.extend({
         },
         contentType: 'application/text'
       }).then(function(){
-        Cookies.remove('auth-token');
-        Cookies.remove('user-id');
         _this.set('session.authToken', null);
         _this.set('session.userID', null);
-        _this.get('router').transitionTo('index');
-        _this.get('store').unloadAll('wishlist');
-        _this.get('store').unloadAll('user');
+        _this.set('session.adminChecker', null);
       });
     },
 

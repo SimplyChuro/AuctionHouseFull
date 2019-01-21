@@ -2,9 +2,12 @@ import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import { isEmpty } from '@ember/utils';
+import { inject as service } from '@ember/service';
 import swal from 'sweetalert';
 
 export default Controller.extend({
+
+  loadingSlider: service(),
 
   resetSuccess: null,
   resetText: null,
@@ -13,28 +16,30 @@ export default Controller.extend({
   emailErrorText: null,
 
   actions: {
-    reset: function() {
+    async reset() {
       var _this = this;
       var regex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
       
       if(!(isEmpty(this.get('emailAddress')))) {
         if(regex.test(this.get('emailAddress'))) {
           _this.set('emailIsValid', true);
-          $.ajax({
+          _this.get('loadingSlider').startLoading();
+          await $.ajax({
             url: ENV.HOST_URL+'/api/v1/reset',
             type: 'POST',
             data: JSON.stringify({
               email: this.get('emailAddress')
             }),
             contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            success: function(data){
-              
-            }
-          }).then(function(data){
+            dataType: 'json'
+          }).then(function(){
+            _this.get('loadingSlider').endLoading();
             swal("Email Sent!", "A reset mail has been sent to your account!", "success");
-          }).catch(function(data){
+            _this.transitionToRoute('home');
+          }).catch(function(){
+            _this.get('loadingSlider').endLoading();
             swal("Ooops!", "It would seem that mail doesn't exist. Please try again!", "error");
+            _this.transitionToRoute('home');
           });
         } else {
           _this.set('emailIsValid', false);

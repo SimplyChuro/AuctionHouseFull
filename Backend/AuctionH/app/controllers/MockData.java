@@ -5,11 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.typesafe.config.ConfigFactory;
+
 import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
 import models.Users;
+
+import com.typesafe.config.ConfigException;
+import com.typesafe.config.ConfigFactory;
 
 public class MockData {
 	
@@ -17,13 +22,18 @@ public class MockData {
 		
 		Users admin = new Users();
 		
-		admin.name = "supremeleader";
-		admin.surname= "best";
-		admin.setEmail("supreme@leader.com");
-		admin.setPassword("SupremeLeader123!@#");
-		admin.setEmailVerified(true);
-		admin.admin = true;
-		admin.save();
+		try {
+			admin.name = "administrator";
+			admin.surname= "default";
+			admin.setEmail(ConfigFactory.load().getString("custom.admin.mail"));
+			admin.setPassword(ConfigFactory.load().getString("custom.admin.password"));
+			admin.setEmailVerified(true);
+			admin.admin = true;
+			admin.active = true;
+			admin.save();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		//Base objects		
 		Category category, childCategory;
@@ -82,7 +92,7 @@ public class MockData {
 		};
 		
 		String endDate [] = {
-				"2019-01-01", 
+				"2019-02-01", 
 				"2019-09-23", 
 				"2019-12-05", 
 				"2019-06-11", 

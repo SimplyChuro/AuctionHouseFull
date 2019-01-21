@@ -1,0 +1,307 @@
+{{#if (eq page 1)}}
+  <div class="container-fluid pt-4">
+    <div class="container">
+      <div class="row fade">
+        <div class="col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+          <div class="card margin-card">
+            <h1 class="card-title">Detailed Information about the Product</h1>
+            <div class="card-body mr-4 ml-4">
+              <form autocomplete="off">
+                <div class="form-group mt-4 mb-0 pb-0">
+                  <label class="sale-item-label-text" for="name">What do you sell?</label>
+                  {{input type="text" value=nameInput placeholder="e.g. New White Dress" class="account-profile-input-form-static account-profile-form-text form-background-color" id="name"}}
+                </div>
+                <span class="sale-item-product-name-guide-text mt-1 pt-0">2-5 words (60 characters)</span>
+                {{#if productNameHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{productNameErrorMessage}}
+                  </div>
+                {{/if}}
+                
+                <div class="row p-0 m-0 mt-5 mb-5 full-width">
+                  <div class="sale-item-category-holder">
+                    <div class="mr-2">
+                      <select onchange={{action "setCategory" value="target.value"}} class="sale-item-select">
+                        <option disabled selected> Select Category </option>
+                        {{#each model.categoryList as |cat|}}
+                          {{#if (eq cat.parent_id null)}}
+                            {{#if (eq cat.id category)}}
+                              <option value={{cat.id}} selected>
+                                {{cat.name}}
+                              </option>
+                            {{else}}
+                              <option value={{cat.id}}>
+                                {{cat.name}}
+                              </option>
+                            {{/if}}
+                          {{/if}}
+                        {{/each}}
+                      </select>
+                    </div>
+                    {{#if categoryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{categoryErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                  <div class="sale-item-category-holder">
+                    <select onchange={{action "setSubCategory" value="target.value"}} class="sale-item-select">
+                      <option disabled selected> Select SubCategory </option>
+                        {{#if (eq category null)}}
+
+                        {{else}}
+                          {{#each model.categoryList as |cat|}}
+                            {{#if (eq category cat.parent_id)}}
+                              {{#if (eq cat.id subCategory)}}
+                                <option value={{cat.id}} selected>
+                                  {{cat.name}}
+                                </option>
+                              {{else}}
+                                <option value={{cat.id}}>
+                                  {{cat.name}}
+                                </option>
+                              {{/if}}
+                            {{/if}}
+                          {{/each}}
+                        {{/if}}
+                    </select>
+                    {{#if subCategoryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{subCategoryErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="full-width">
+                  <label class="mb-1 sale-item-label-text" for="description">Description?</label>
+                  {{textarea rows="4" cols="50" value=descriptionInput placeholder="e.g. Fancy dress made from 100% silk" class="full-width sale-item-description-text-area account-profile-form-text pt-2 pr-3 pb-2 pl-3" id="description"}}
+                  <span class="sale-item-product-name-guide-text mt-1">100 words (700 characters)</span>
+                  {{#if descriptionHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{descriptionErrorMessage}}
+                    </div>
+                  {{/if}}
+                </div>
+
+                <div class="form-group mt-4 mb-0">
+                  <label class="sale-item-label-text" for="colorInput">Color</label>
+                  {{input type="text" value=colorInput placeholder="e.g. White" class="account-profile-input-form-static account-profile-form-text form-background-color" id="colorInput"}}
+                </div>
+                {{#if colorHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{colorErrorMessage}}
+                  </div>
+                {{/if}}
+                <div class="form-group mt-4 mb-0">
+                  <label class="sale-item-label-text" for="sizeInput">Size</label>
+                  {{input type="text" value=sizeInput placeholder="e.g. Small" class="account-profile-input-form-static account-profile-form-text form-background-color" id="sizeInput"}}
+                </div>
+                {{#if sizeHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{sizeErrorMessage}}
+                  </div>
+                {{/if}}
+
+                <div class="full-width mt-5">
+
+                  {{drop-zone id="dropzone-id" class="dropdown-menu-style" url="http://example.com/example" addedfile=addedFileEvent autoProcessQueue=false acceptedFiles=".jpeg,.jpg,.png" keepLocal=true maxFilesize=4 maxFiles=5}}
+                
+                  {{#if pictureFiles}}
+                    <div class="mt-3"></div>
+                    <div class="row m-0 p-0 dropdown-menu-style-default">
+                      {{#each pictureFiles as |picture index|}}
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 m-0 p-0">
+                          <div class="p-2">
+                            <img class="dropdown-image" id={{get-image-id index}} />
+                            <p {{action 'removePicture' picture}} class="dropdown-remove-button text-center mb-0">Remove</p>
+                          </div>
+                        </div>
+
+                      {{/each}}
+                    </div>
+                  {{/if}}
+                  {{#if picturesHaveError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{picturesErrorMessage}}
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="mt-5 bottom-margin-150">
+                  {{#link-to "account.sell.entry" class="sale-item-back-button"}}
+                    <i class="material-icons">
+                      keyboard_arrow_left
+                    </i> 
+                    BACK
+                  {{/link-to}}
+                  <button class="sale-item-next-button" {{action 'setPage' 2}}>
+                    NEXT
+                    <i class="material-icons">
+                      keyboard_arrow_right
+                    </i> 
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq page 2)}}
+  <div class="container-fluid pt-4">
+    <div class="container">
+      <div class="row fade">
+        <div class="col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+          <div class="card margin-card">
+            <h1 class="card-title">SET PRICES</h1>
+            <div class="card-body mr-4 ml-4">
+              <form autocomplete="off">
+                <div class="form-group mt-4 mb-0">
+                  <label class="sale-item-label-text" for="price">Your starting price</label>
+                  {{input type="text" value=startingPriceInput placeholder="e.g. $254.99" class="account-profile-input-form-static account-profile-form-text form-background-color mb-0" id="price"}}
+                </div>
+                {{#if startingPriceHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{startingPriceErrorMessage}}
+                  </div>
+                {{/if}}
+                <div class="row p-0 m-0 mt-5 mb-1 full-width">
+                  <div class="sale-item-category-holder">
+                    <div class="mr-2">
+                      <label class="mb-1 sale-item-label-text" for="start">Start date</label>
+                      {{bootstrap-datepicker changeDate="changeStartDate" value=startDateInput placeholder=currentDate todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="start"}}
+                    </div>
+                    {{#if publishDateHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{publishDateErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                  <div class="sale-item-category-holder">
+                    <label class="mb-1 sale-item-label-text" for="end">End date</label>
+                    {{bootstrap-datepicker changeDate="changeEndDate" value=endDateInput placeholder="14/04/2025" todayHighlight=true format="dd/mm/yyyy" autoclose=true startDate=(get-start-date startDate) class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="end"}}
+                    {{#if expiryDateHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{expiryDateErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="full-width bottom-margin-100">
+                  <p class="sale-item-text-addition">The auction will be automatically closed when the end time comes. The highest bid will win the auction.</p>
+                </div>
+                <div class="bottom-margin-200">
+                  <button class="sale-item-back-button" {{action 'setPage' 1}}>
+                    <i class="material-icons">
+                      keyboard_arrow_left
+                    </i> 
+                    BACK
+                  </button>
+                  <button class="sale-item-next-button"  {{action 'setPage' 3}}>
+                    NEXT
+                    <i class="material-icons">
+                      keyboard_arrow_right
+                    </i> 
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq page 3)}}
+  <div class="container-fluid pt-4">
+    <div class="container">
+      <div class="row fade">
+        <div class="col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+          <div class="card margin-card">
+            <h1 class="card-title">LOCATION & SHIPPING</h1>
+            <div class="card-body mr-4 ml-4">
+              <form autocomplete="off">
+                <div class="form-group mt-4">
+                  <label class="sale-item-label-text" for="address">Address</label>
+                  {{input type="text" value=addressInput placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text form-background-color form-background-color" id="address"}}
+                </div>
+                {{#if addressHasError}}
+                  <div class="validation-error-message mt-1 fade">
+                    {{addressErrorMessage}}
+                  </div>
+                {{/if}}
+                <div class="row p-0 m-0 mt-5 mb-5 full-width">
+                  <div class="sale-item-category-holder">
+                    <div class="mr-2">
+                      <label class="sale-item-label-text" for="city">City</label>
+                      {{input type="text" value=cityInput placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text form-background-color" id="city"}}
+                    </div>
+                    {{#if cityHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{cityErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                  <div class="sale-item-category-holder">
+                    <label class="sale-item-label-text" for="country">Country</label>
+                    {{input type="text" value=countryInput placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text form-background-color" id="country"}}
+                    {{#if countryHasError}}
+                      <div class="validation-error-message mt-1 fade">
+                        {{countryErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="sale-item-label-text" for="zipCode">Zip Code</label>
+                  {{input type="text" value=zipCodeInput placeholder="e.g. 10065" class="account-profile-input-form-static account-profile-form-text form-background-color" id="zipCode"}}
+                  {{#if zipCodeHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{zipCodeErrorMessage}}
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="form-group mt-4">
+                  <label class="sale-item-label-text" for="phone">Phone</label>
+                  {{input type="text" value=phoneInput placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text form-background-color" id="phone"}}
+                  {{#if phoneHasError}}
+                    <div class="validation-error-message mt-1 fade">
+                      {{phoneErrorMessage}}
+                    </div>
+                  {{/if}}
+                </div>
+                <div class="mt-4 bottom-margin-150">
+                  <div class="p-0 m-0">
+                    {{input type="checkbox" checked=shippingCost class="p-0 m-0 form-background-color"}}
+                    <span class="sale-item-checkbox-text pl-1">Do you want to bear shipping cost?</span>
+                  </div>
+                  <p class="sale-item-checkbox-additional-text">
+                    The average priece of shipping cost is $10.00.
+                    You have to provide us payment infromations.
+                  </p>
+                </div>
+                <div class="mt-5 bottom-margin-255">
+                  <button class="sale-item-back-button" {{action 'setPage' 2}}>
+                    <i class="material-icons">
+                      keyboard_arrow_left
+                    </i> 
+                    BACK
+                  </button>
+                  <button class="sale-item-done-button" {{action 'create'}}>
+                    DONE
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}

@@ -56,6 +56,10 @@ select {
   padding-bottom: 3px;
 }
 
+.display-none{
+  display: none;
+}
+
 /**/
 
 
@@ -80,9 +84,7 @@ select {
 }
 
 .navigation-form{
-	margin-left: 10%;
 	margin-bottom: 4px;	
-	width: 42%;
   border: 1px solid #DDD;
   border-radius: 2px;
 	box-shadow: 2px 2px 2px  #C0C0C0;
@@ -143,13 +145,30 @@ select {
 
 .header-search-input{
   border: none;
-  max-width: 89%;
-  min-width: 88%;
   padding: 5px 0px 5px 15px;
 }
 
 .header-logo-link:hover{
   text-decoration: none;
+}
+
+.header-dropdown-holder{
+  background: #ffffff;
+  border: 2px solid #C0C0C0;
+  color: #C0C0C0;
+  border-radius: 2px;
+  text-align: center;
+  width: 60px;
+  padding: 4px 0px 2px 0px;
+  cursor: pointer;
+}
+
+.header-dropdown-holder:hover,
+.header-dropdown-holder:focus,
+.header-dropdown-holder:active:focus,
+.header-dropdown-holder:focus{
+  background: #C0C0C0 !important;
+  border: 2px solid #C0C0C0 !important;
 }
 
 /**/
@@ -215,6 +234,17 @@ select {
 	margin-bottom: 200px;
 }
 
+.bottom-margin-255{
+  margin-bottom: 255px;
+}
+
+.bottom-margin-265{
+  margin-bottom: 265px;
+}
+
+.bottom-margin-275{
+  margin-bottom: 275px;
+}
 
 .bottom-margin-300{
 	margin-bottom: 300px;
@@ -222,6 +252,10 @@ select {
 
 .bottom-margin-400{
   margin-bottom: 400px;
+}
+
+.top-margin-50{
+  margin-top: 50px;  
 }
 
 .top-margin-100{
@@ -233,6 +267,13 @@ select {
 }
 /**/
 
+
+/*global padding classes*/
+.padding-top-15{
+  padding-top: 12px;
+}
+
+/**/
 
 
 
@@ -626,6 +667,47 @@ select {
   color: #008000;
 }
 
+.dropdown-menu-style-default{
+  width: 100%;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8; 
+}
+
+.dropdown-menu-style{
+  width: 100%;
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8; 
+  height: 200px;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/*.dropdown-menu-style:first-child {
+  width: 100%;
+text-align: center;
+  vertical-align: middle;
+} */
+
+.dropdown-image{
+  width: 100%;
+  height: 175px;
+  border-top: 1px solid #D8D8D8; 
+  border-right: 1px solid #D8D8D8; 
+  border-left: 1px solid #D8D8D8; 
+}
+
+.dropdown-remove-button{
+  padding: 5px 0px;
+  cursor: pointer;
+  border-bottom: 1px solid #D8D8D8; 
+  border-right: 1px solid #D8D8D8; 
+  border-left: 1px solid #D8D8D8; 
+
+}
+
 /**/
 
 
@@ -761,15 +843,13 @@ select {
 
 .single-product-main-picture{
 	height: 375px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin-bottom: 10px;
 }
 
 .single-product-side-picture{
 	padding: 5px;
 	max-height: 75px;
+  max-width: 100%;
 }
 
 .single-product-margin{
@@ -805,7 +885,7 @@ select {
 }
 
 .single-product-secondary-image{
-	
+	max-width: 100%;
 	max-height: 75px;
 	background-repeat: no-repeat;
   background-size: contain;
@@ -979,12 +1059,36 @@ select {
 	text-decoration: none;
 }
 
+.account-navigation-link-active-v2{
+  background: #8367D8;;
+  padding: 15px 30px 15px 25px;
+  margin-right: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #FFFFFF;
+  letter-spacing: 0.56px;
+}
+
+
+.account-navigation-link-active-v2:hover{
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
 .account-settings-card-title{
 	background: #F0F0F0;;
 	padding: 15px 0px 15px 25px;
 	font-size: 18px;
 	color: #252525;
 	letter-spacing: 0.63px;
+}
+
+.account-settings-card-title-v2{
+  background: #F0F0F0;;
+  padding: 15px 0px 15px 35px;
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
 }
 
 .account-settings-card-text{
@@ -1018,13 +1122,13 @@ select {
 }
 
 .account-settings-button-deactivate{
-	width: 40%;
 	margin: 15px 0px 75px 35px;
 	padding: 12px 40px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #252525;
-	letter-spacing: 0.63px;
+	cursor: pointer;
+  letter-spacing: 0.63px;
 	background: #FFFFFF;
 	border: 3px solid #E3E3E3;
 	box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
@@ -1191,6 +1295,18 @@ select {
 }
 
 /*account profile*/
+.profile-card{
+  margin: 20px 20px 35px 20px;
+  padding: 0px 20px 0px 20px;
+  overflow: auto;
+}
+
+.profile-card-address{
+  margin: 20px 20px 30px 20px;
+  padding: 0px 20px 0px 20px;
+  overflow: auto;
+}
+
 .account-profile-card-top{
 	background: #FAFAFA;
 	font-size: 20px;
@@ -1200,60 +1316,47 @@ select {
 	padding: 10px 0px 10px 35px;
 }
 
-.account-profile-card-left-side{
-  width: 25%;
-  margin: 20px 20px 30px 20px;
-  padding: 0px 20px 0px 20px;
-  overflow: auto;
-  height: 750px;;
-}
-
-.account-profile-card-right-side{
-  width: 50%;
-  margin: 20px 0px 30px 0px;
-  overflow: auto;
-  height: 750px;;
-}
-
-.account-profile-card-left-side-address{
-  width: 25%;
-  margin: 20px 20px 30px 20px;
-  padding: 0px 20px 0px 20px;
-  overflow: auto;
-  height: 600px;
-}
-
-.account-profile-card-right-side-address{
-  width: 50%;
-  margin: 20px 0px 30px 0px;
-  overflow: auto;
-  height: 600px;
+.account-profile-card-image-button-holder{
+  
 }
 
 .account-profile-card-image-button{
   width: 100%;
-  margin-top: 10px;
   padding: 10px 0px;
+  margin: 10px 0px 0px 0px;
+  text-align: center;
+  background: #FFFFFF;
+  border: 3px solid #E3E3E3;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   color: #252525;
   letter-spacing: 0.56px;
-  text-align: center;
-  background: #FFFFFF;
-  border: 3px solid #E3E3E3;
-  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  
+}
+
+.account-profile-card-image-button:hover{
+  text-decoration: none;
+  color: #8367D8;
 }
 
 .account-profile-image-holder{
+  height: 250px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.account-profile-blank{
+  width: 100%;
   height: 250px;
   background: #ECECEC;
 }
 
 .account-profile-image{
-  max-height: 250px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 250px;
+  max-width: 100%;  
 }
 
 .account-profile-input-form-static{
@@ -1578,8 +1681,339 @@ select {
   letter-spacing: 0.56px;
 }
 
+.pl-slider-text{
+  font-size: 14px;
+  color: #9B9B9B;
+  letter-spacing: 0.63px;
+}
+
 /**/
 
+
+
+/*Sale Item*/
+.sale-item-label-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.sale-item-next-button{
+  background: #FFFFFF;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  padding: 10px 35px 10px 45px;
+  float: right;
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.sale-item-next-button:hover{
+  text-decoration: none;
+  color: #8367D8;
+}
+
+.sale-item-back-button{
+  background: #FFFFFF;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  padding: 10px 45px 10px 35px;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.sale-item-back-button:hover{
+  text-decoration: none;
+  color: #8367D8;
+}
+
+.sale-item-done-button{
+  background: #8367D8;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  padding: 10px 45px 10px 45px;
+  float: right;
+  font-size: 18px;
+  color: #FFFFFF;
+  font-weight: bold;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.sale-item-product-name-guide-text{
+  font-size: 16px;
+  float: right;
+  color: #9B9B9B;
+  letter-spacing: 0.56px;
+  text-align: right;
+}
+
+.sale-item-category-holder{
+  width: 50%;
+}
+
+.sale-item-select{
+  background: #FFFFFF;
+  border: 3px solid #ECECEC;
+  padding: 10px 35px 10px 15px;
+  width: 100%;
+  background: url('https://material.io/tools/icons/static/icons/baseline-keyboard_arrow_down-24px.svg') 96% / 13% no-repeat #ffff;
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.sale-item-description-text-area{
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8;
+}
+
+.sale-item-price-input-holder{
+  background: #FFFFFF;
+  border: 1px solid #D8D8D8;
+  border-radius: 5px;
+}
+
+.sale-item-price-input{
+  border: none;
+  width: 100%;
+}
+
+.sale-item-text-addition{
+  font-size: 16px;
+  color: #9B9B9B;
+  letter-spacing: 0.56px;
+  line-height: 30px;
+}
+
+.sale-item-checkbox-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+  line-height: 26px;
+}
+.sale-item-checkbox-additional-text{
+  width: 65%;
+  padding: 0px 0px 0px 20px;
+  font-size: 18px;
+  color: #9B9B9B;
+  letter-spacing: 0.63px;
+  line-height: 26px;
+}
+
+.sale-item-checkbox{
+  float: left;
+}
+
+.full-width{
+  width: 100%;
+}
+
+/**/
+
+/*admin page design*/
+.admin-users-hr{
+  height: 3px;
+}
+
+.card-title-category-main{
+  background: #FAFAFA;
+  padding: 15px 0px 15px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.49px;
+  text-align: left;
+}
+
+.card-title-category-additional{
+  background: #FAFAFA;
+  padding: 15px 0px 15px 15px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.7px;
+  text-align: center;
+ 
+}
+
+.card-title-category-main-v2{
+  padding: 15px 0px 15px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #8367D8;
+  letter-spacing: 0.49px;
+}
+
+.card-element-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+  padding-left: 15px;
+}
+
+.card-element-text-addition{
+  margin-right: 15px;
+  font-size: 12px;
+  color: #D8D8D8;
+}
+
+.add-category-text{
+  font-size: 16px;
+  font-weight: bold;
+  color: #8367D8;
+  letter-spacing: 0.56px;
+}
+
+
+.card-element-border{
+  border: 1px solid #D8D8D8;
+}
+
+.card-min-height-600{
+  min-height: 600px;
+}
+
+.card-min-height-800{
+  min-height: 800px;
+}
+
+.category-background-active{
+  background: #FAFAFA;
+}
+
+.category-input-form{
+  background: #FCFCFC;
+  border: 1px solid #D8D8D8;
+  padding: 5px 5px 5px 10px;
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.category-add-button{
+  color: #8367D8;
+  border-right: 1px solid #D8D8D8;
+  border-top: 1px solid #D8D8D8;
+  border-bottom: 1px solid #D8D8D8;
+  cursor: pointer;
+}
+
+.category-form-padding{
+  padding-left: 15px;
+}
+
+.category-button-padding{
+  padding-top: 10px;
+}
+
+.users-information-text{
+  font-size: 18px;
+  color: #252525;
+  letter-spacing: 0.63px;
+}
+
+.admin-users-icon{
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+  background: #ECECEC;
+}
+
+.admin-users-avatar{
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.admin-users-edit-button{
+  background: #FFFFFF;
+  padding: 8px 50px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.admin-upload-picture-button{
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  padding: 10px 29px;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  cursor: pointer;
+}
+
+.admin-delete-picture-button{
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  text-align: center;
+  padding: 15px 90px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
+.admin-picture-text{
+  font-size: 14px;
+  font-weight: bold;
+  color: #9B9B9B;
+  letter-spacing: 0.49px;
+  text-align: center;
+}
+
+.users-profile-cancle-button{
+  background: #FFFFFF;
+  padding: 10px 40px;
+  border: 3px solid #E3E3E3;
+  box-shadow: 3px 3px 0 0 rgba(0,0,0,0.05);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.users-profile-cancle-button:hover{
+  color: #8367D8;
+}
+
+.users-profile-save-info-button{
+  background: #FFFFFF;
+  padding: 10px 47px;
+  border: 3px solid #8367D8;
+  box-shadow: 3px 3px 0 0 rgba(131,103,216,0.31);
+  font-size: 18px;
+  font-weight: bold;
+  color: #252525;
+  letter-spacing: 0.63px;
+  cursor: pointer;
+}
+
+.users-profile-save-info-button:hover{
+  color: #8367D8;
+}
+
+
+/**/
 
 
 /*footer links design*/
@@ -1682,7 +2116,7 @@ select {
 
 .footer-input-form{
 	border: none;
-	width: 70%;
+	width: 65%;
 	background-color: #3B3B3B;
 	padding: 15px;
 	color: #696969;
@@ -1691,7 +2125,7 @@ select {
 
 .footer-purple-button{
 	border: 3px solid #8367D8;
-	padding: 15px 20px 15px 30px;
+	padding: 15px 25px 15px 30px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #D8D8D8;

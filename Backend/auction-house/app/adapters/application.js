@@ -1,10 +1,9 @@
 import DS from 'ember-data';
 import ENV from 'auction-house/config/environment';
-import config from '../config/environment';
-import Cookies from 'ember-cli-js-cookie';
+import { inject as service } from '@ember/service';
 
 export default DS.RESTAdapter.extend({
-  session: Ember.inject.service(),
+  session: service(),
   host: ENV.HOST_URL,
   namespace: 'api/v1',
   headers: function() {

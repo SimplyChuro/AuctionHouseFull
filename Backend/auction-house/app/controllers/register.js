@@ -1,7 +1,9 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-
+  loadingSlider: service(),
+  
   nameErrorMessage: null,
   nameHasError: null,
 
@@ -25,8 +27,8 @@ export default Controller.extend({
 
 
   actions: {
-    createUser: function() {		
-      let user = this.get('model.user');
+    async createUser() {		
+      let user = this.store.createRecord('user');
       user.set('name', this.get('name'));
       user.set('surname', this.get('surname'));
       user.set('email', this.get('email'));
@@ -35,11 +37,24 @@ export default Controller.extend({
       user.set('passwordConfirmation', this.get('passwordConfirmation'));
 
       var _this = this;
-      user.validate().then(({ validations }) =>{
+      await user.validate().then(({ validations }) =>{
         if(validations.get('isValid')){
-          user.save().then(function(data) {
-            _this.transitionToRoute('register-success')
-          }).catch(function(data) {
+          _this.get('loadingSlider').endLoading();
+          _this.get('loadingSlider').startLoading();
+          _this.set('emailExistsHasError', null);
+          _this.set('nameHasError', null);
+          _this.set('surnameHasError', null);
+          _this.set('emailHasError', null);
+          _this.set('emailConfirmationHasError', null);
+          _this.set('passwordHasError', null);
+          _this.set('passwordConfirmationHasError', null);
+
+          user.set('address', null);
+
+          user.save().then(function() {
+            _this.get('loadingSlider').endLoading();
+            _this.transitionToRoute('register-success');
+          }).catch(function() {
             _this.set('emailExistsHasError', true);
             _this.set('nameHasError', null); 
             _this.set('nameErrorMessage', null);
@@ -52,36 +67,48 @@ export default Controller.extend({
 
             _this.set('passwordHasError', null); 
             _this.set('passwordErrorMessage', null);
+            _this.get('loadingSlider').endLoading();
           });
         } else {
 
-          if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null){
+          if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null) {
             this.set('nameHasError', true);
             this.set('nameErrorMessage', user.get('validations.attrs.name.messages'));
           }
           
-          if(user.get('validations.attrs.surname.messages') !== '' && user.get('validations.attrs.surname.messages') !== null){
+          if(user.get('validations.attrs.surname.messages') !== '' && user.get('validations.attrs.surname.messages') !== null) {
             this.set('surnameHasError', true);
             this.set('surnameErrorMessage', user.get('validations.attrs.surname.messages'));
           }
           
-          if(user.get('validations.attrs.email.messages') !== '' && user.get('validations.attrs.email.messages') !== null){
+          if(user.get('validations.attrs.email.messages') !== '' && user.get('validations.attrs.email.messages') !== null) {
             this.set('emailHasError', true);
             this.set('emailErrorMessage', user.get('validations.attrs.email.messages'));
+          } else {
+            if(user.get('validations.attrs.emailConfirmation.messages') !== '' && user.get('validations.attrs.emailConfirmation.messages') !== null) {
+              this.set('emailConfirmationHasError', true);
+              this.set('emailConfirmationErrorMessage', user.get('validations.attrs.emailConfirmation.messages'));
+            }
           }
 
-          if(user.get('validations.attrs.password.messages') !== '' && user.get('validations.attrs.password.messages') !== null){
+          if(user.get('validations.attrs.password.messages') !== '' && user.get('validations.attrs.password.messages') !== null) {
             this.set('passwordHasError', true);
             this.set('passwordErrorMessage', user.get('validations.attrs.password.messages'));
+          } else {
+            if(user.get('validations.attrs.passwordConfirmation.messages') !== '' && 
+              user.get('validations.attrs.passwordConfirmation.messages') !== null) {
+              this.set('passwordConfirmationHasError', true);
+              this.set('passwordConfirmationErrorMessage', user.get('validations.attrs.passwordConfirmation.messages'));
+            }
           }
 
-          if(user.get('validations.attrs.emailConfirmation.messages') !== '' && user.get('validations.attrs.emailConfirmation.messages') !== null){
+          if(user.get('validations.attrs.emailConfirmation.messages') !== '' && user.get('validations.attrs.emailConfirmation.messages') !== null) {
             this.set('emailConfirmationHasError', true);
             this.set('emailConfirmationErrorMessage', user.get('validations.attrs.emailConfirmation.messages'));
           }
 
           if(user.get('validations.attrs.passwordConfirmation.messages') !== '' && 
-            user.get('validations.attrs.passwordConfirmation.messages') !== null){
+            user.get('validations.attrs.passwordConfirmation.messages') !== null) {
             this.set('passwordConfirmationHasError', true);
             this.set('passwordConfirmationErrorMessage', user.get('validations.attrs.passwordConfirmation.messages'));
           }
@@ -95,6 +122,8 @@ export default Controller.extend({
       this.set('surname', '');
       this.set('email', '');
       this.set('password', '');
+      this.set('emailConfirmation', '');
+      this.set('passwordConfirmation', '');
 
       this.set('nameHasError', null); 
       this.set('nameErrorMessage', null);

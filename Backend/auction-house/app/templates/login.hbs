@@ -6,29 +6,29 @@
 
 <div class="container-fluid pt-4">
   <div class="container">
-    <div class="row fade">
-      <div class="col-2"></div>
-      <div class="col-8">
+    <div class="row">
+      <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 fade">
         <div class="card margin-card">
           <h1 class="card-title">LOGIN</h1>
           <div class="card-body mr-4 ml-4">
-            <form>
+            <form autocomplete="off">
               <div class="form-group mt-4">
-                <label >Enter Email</label>
-                {{input type="email" value=emailAddress class="form-control form-background-color p-4"}}
+                <label class="account-profile-pointer" for="emailInput">Enter Email</label>
+                {{input type="email" value=emailAddress class="form-control form-background-color p-4" id="emailInput"}}
               </div>
               <div class="form-group mt-5">
-                <label>Password</label>
-                {{input type="password" value=password  class="form-control form-background-color p-4"}}
+                <label class="account-profile-pointer" for="passwordInput">Password</label>
+                {{input type="password" value=password  class="form-control form-background-color p-4" id="passwordInput"}}
+                {{#if loginHasError}}
+                  <div class="validation-error-message pt-1 fade">
+                    {{loginErrorMessage}}
+                  </div>
+                {{/if}}
               </div>
-              {{#if loginHasError}}
-                <div class="validation-error-message pt-1 fade">
-                  {{loginErrorMessage}}
-                </div>
-              {{/if}}
               <div class="form-check mt-5">
-                {{input type="checkbox" name="remember" checked=remember class="form-check-input"}}
-                <label>Remember me</label>
+                {{input type="checkbox" name="remember" checked=remember class="form-check-input account-profile-pointer" id="rememberMe"}}
+                <label class="account-profile-pointer" for="rememberMe">Remember me</label>
               </div>
               <button type="submit" class="btn btn-purple mt-5" {{action "login"}}>LOGIN</button>
               <!-- 	

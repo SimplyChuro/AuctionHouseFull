@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import models.Pictures;
 import models.ProductCategory;
 import models.Bids;
 import models.Users;
+import models.Wishlists;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 import play.data.Form;
@@ -83,7 +86,7 @@ public class ProductController extends Controller {
 							.findList();
 					
 					for(ProductCategory cat : productCategories) {
-						if(cat.product.name.equals(name) && cat.product.expireDate.after(currentDate)) {
+						if(cat.product.name.equals(name) && cat.product.expireDate.after(currentDate) && cat.product.publishDate.before(currentDate)) {
 							products.add(cat.product);
 						}
 					}
@@ -92,7 +95,8 @@ public class ProductController extends Controller {
 					
 					products = Products.find.query().where()
 							.conjunction()
-							.eq("name", name)
+							.icontains("name", name)
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
 							.orderBy("name asc")
@@ -108,7 +112,7 @@ public class ProductController extends Controller {
 						.findList();
 				
 				for(ProductCategory cat : productCategories) {
-					if(cat.product.expireDate.after(currentDate)) {
+					if(cat.product.expireDate.after(currentDate) && cat.product.publishDate.before(currentDate)) {
 						products.add(cat.product);
 					}
 				}
@@ -118,6 +122,7 @@ public class ProductController extends Controller {
 				products = Products.find.query().where()
 						.conjunction()
 						.eq("featured", true)
+						.le("publishDate", currentDate)
 						.ge("expireDate", currentDate)
 						.endJunction()
 						.orderBy("name asc")
@@ -128,23 +133,31 @@ public class ProductController extends Controller {
 					
 					products = Products.find.query().where()
 							.conjunction()
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
-							.orderBy("publishDate asc")
+							.orderBy("publishDate desc")
 							.findList();
 					
 				} else if(status.equals("ending")) {
 					products = Products.find.query().where()
 							.conjunction()
+							.le("publishDate", currentDate)
 							.ge("expireDate", currentDate)
 							.endJunction()
 							.orderBy("expireDate asc")
 							.findList();
+				} else if(status.equals("all")) {
+					products = Products.find.all();
 				}
 			} else {
-				products = Products.find.all();
+				products = Products.find.query().where()
+						.conjunction()
+						.le("publishDate", currentDate)
+						.ge("expireDate", currentDate)
+						.endJunction()
+						.findList();
 			}
-			
 			
 			
 			
@@ -187,17 +200,32 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			product.save();
+			Users userChecker = LoginController.getUser();
 			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.save();
+			if(userChecker.admin) {
+				JsonNode jsonNode = request().body().asJson().get("product");
+				Long cat_id = jsonNode.get("category_id").asLong();
+				
+				Products product = new Products();
+				product.saveProduct(jsonNode);
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				ProductCategory categoryConnectionChild = new ProductCategory();
+				categoryConnectionChild.product = product;
+				categoryConnectionChild.category = childCategory;
+				categoryConnectionChild.save();
+				
+				ProductCategory categoryConnectionParent = new ProductCategory();
+				categoryConnectionParent.product = product;
+				categoryConnectionParent.category = parentCategory;
+				categoryConnectionParent.save();
+				
+				return ok(Json.toJson(product));
+			} else {
+				return forbidden();
 			}
-			
-			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -207,17 +235,39 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			product.update();
+			Users userChecker = LoginController.getUser();
 			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.update();
+			if(userChecker.admin) {
+				JsonNode jsonNode = request().body().asJson().get("product");
+				
+				Products product = Products.find.byId(id);
+				product.updateProduct(jsonNode);
+					
+				try {
+					Long cat_id = jsonNode.get("category_id").asLong();
+					Category childCategory = Category.find.byId(cat_id);
+					Category parentCategory = Category.find.byId(childCategory.parent_id);
+					
+					for(ProductCategory category : product.productcategory) {
+						if(category.category.parent_id == null && category.category.id != childCategory.id) {
+							category.category = childCategory;
+							category.update();
+						} else {
+							if(category.category.id != parentCategory.id) {
+								category.category = parentCategory;					
+								category.update();
+							}
+						}
+					}
+					
+				} catch(Exception e) {
+					
+				} finally {
+					return ok(Json.toJson(product));	
+				}
+			} else {
+				return forbidden();
 			}
-			
-			return ok(Json.toJson(product));
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -227,17 +277,59 @@ public class ProductController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-	
-			Products product = Json.fromJson(jsonNode, Products.class);
-			for(Pictures picture : product.pictures) {
-				picture.delete();
+			Users userChecker = LoginController.getUser();
+			if(userChecker.admin) {
+				
+				Products product = Products.find.byId(id);
+				for(Pictures picture : product.pictures) {
+					picture.delete();
+				}
+				
+				for(Bids bid : product.bids) {
+					bid.delete();
+				}
+				
+				for(Wishlists wish : product.wishlists) {
+					wish.delete();
+				}
+				
+				for(Reviews review : product.reviews) {
+					review.delete();
+				}
+				
+				for(ProductCategory cat : product.productcategory) {
+					cat.delete();
+				}
+				
+				if(product.sale != null) {
+					product.sale.delete();
+				}
+				product.delete();
+						
+				return ok(Json.toJson(""));
+			} else {
+				return forbidden();
 			}
-			
-			product.delete();
-					
-			return ok(Json.toJson(""));
 		} catch(Exception e) {
+			return badRequest();
+		}
+	}
+	
+	//Validate upload
+	@Security.Authenticated(Secured.class)
+	public Result validate(String name, String type, Integer size) {
+		try {
+			Users userChecker = LoginController.getUser();
+			int maxSize = 2097152;
+			int minSize = 4096;
+			if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
+				S3Signature s3 = new S3Signature(name, type, size, "images/products/");
+				
+	           	return ok(s3.getS3EmberNode());
+			} else {
+				return badRequest();	
+			}
+		}catch(Exception e) {
 			return badRequest();
 		}
 	}

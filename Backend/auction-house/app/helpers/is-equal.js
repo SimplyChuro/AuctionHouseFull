@@ -1,5 +1,16 @@
-import { helper } from '@ember/component/helper';
+import Helper from '@ember/component/helper';
 
-const isEqual = (params) => params[0] === params[1];
+export default Helper.extend({
+  
+  compute(params) {
+    var firstValue = params[0];
+    var secondValue = params[1];
+    
+    if(firstValue == secondValue) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-export default helper(isEqual);
+});

@@ -2,16 +2,21 @@ import Controller from '@ember/controller';
 import ENV from 'auction-house/config/environment';
 import $ from 'jquery';
 import Cookies from 'ember-cli-js-cookie';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-  session: Ember.inject.service(),
-  loginHasError: false,
-  loginErrorMessage: 'Incorrect username or password',
+  session: service(),
+  loadingSlider: service(),
 
-  actions: {
-    login: function() {
+  loginHasError: false,
+  loginErrorMessage: '',
+
+   actions: {
+    async login() {
       var _this = this;
-      $.ajax({
+      _this.get('loadingSlider').startLoading();
+      
+      await $.ajax({
         url: ENV.HOST_URL+'/api/v1/login',
         type: 'POST',
         data: JSON.stringify({
@@ -23,13 +28,22 @@ export default Controller.extend({
         success: function(data){
           Cookies.set('auth-token', data[0].authToken);
           Cookies.set('user-id', data[1].userID);
+          Cookies.set('admin-checker', data[2].adminChecker);
           _this.set('session.authToken', data[0].authToken);
           _this.set('session.userID', data[1].userID);
+          _this.set('session.adminChecker', data[2].adminChecker);
+        },
+        error: function (data) {
+          var msg = $.parseJSON(data.responseText);
+          _this.set('loginHasError', true);
+          _this.set('loginErrorMessage', msg.error_message);
         }
       }).then(function(){
+        _this.get('loadingSlider').endLoading();
         _this.set('loginHasError', false);
         _this.transitionToRoute('home');
       }).catch(function(){
+        _this.get('loadingSlider').endLoading();
         _this.set('loginHasError', true);
       });
     },

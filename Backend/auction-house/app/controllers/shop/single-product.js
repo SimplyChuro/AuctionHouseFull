@@ -1,9 +1,11 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
+  session: service(),
+  store: service(),
   
   amountHasError: null,
   amountErrorMessage: null,
@@ -13,18 +15,17 @@ export default Controller.extend({
   checker: null,
   topBid: null,
 
-  sortedBids: Ember.computed('model.product.bids.[]', function(){
+  sortedBids: computed('model.product.bids.[]', function(){
     return this.get('model.product.bids').sortBy('amount').reverse();
   }),
 
-  wishlist: Ember.computed('model.product.bids.[]', function(){
-    const store = this.get('store');
+  wishlist: computed('model.product.bids.[]', function(){
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  userWishlistItem: Ember.computed('checker', function(){
+  userWishlistItem: computed('checker', function(){
     var _this = this;
-    var one = this.get('wishlist').then(resolvedWishlist => {
+    this.get('wishlist').then(resolvedWishlist => {
       resolvedWishlist.forEach(item => {
        if(_this.get('checker') == null) {
           if(_this.get('model.product.id') === item.get('product').get('id')) {
@@ -37,7 +38,7 @@ export default Controller.extend({
 
   actions: {
 
-    createBid: function(productID) {
+    async createBid(productID) {
       var _this = this;
 
       let bid = this.store.createRecord('bid');
@@ -53,7 +54,7 @@ export default Controller.extend({
       var userBid = this.get('bidAmount');
 
 
-      bid.validate().then(({ validations }) => {
+      await bid.validate().then(({ validations }) => {
         if(validations.get('isValid') && (userBid > _this.get('topBid')) && (userBid != _this.get('topBid'))){
           
           bid.save().then(function() {
@@ -62,8 +63,8 @@ export default Controller.extend({
             _this.set('amountErrorMessage', null);
             _this.get('flashMessages').success('Bid Created!');
             _this.get('model.product.bids').addObject(bid);
-          }, function(response){
-            _this.get('flashMessages').warning('An error occoured please try again!');
+          }, function(){
+            
           });
 
         } else {
@@ -78,9 +79,9 @@ export default Controller.extend({
     },
 
 
-    createWishlist: function(productID) {
+    async createWishlist(productID) {
       var _this = this;
-      var wishlistCreate = this.store.createRecord('wishlist', {
+      await this.store.createRecord('wishlist', {
         product_id: productID
       }).save().then(function(data){
         _this.set('checker', data);      
@@ -90,10 +91,10 @@ export default Controller.extend({
     },
 
 
-    deleteWishlist: function() {
+    async deleteWishlist() {
       var _this = this;
       var currentWishlistItem = _this.get('checker');
-      currentWishlistItem.destroyRecord().then(function(){
+      await currentWishlistItem.destroyRecord().then(function(){
         _this.set('checker', null);  
       });
     },

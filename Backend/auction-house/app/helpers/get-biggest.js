@@ -1,12 +1,12 @@
-import { helper } from '@ember/component/helper';
+import Helper from '@ember/component/helper';
 
-export default Ember.Helper.extend({
+export default Helper.extend({
   
   compute(params) {
     let bids = params[0];
     var highestBid = 0.00;
     
-    bids.forEach((item, index) => {
+    bids.forEach((item) => {
       if(item.amount > highestBid){
         highestBid = item.amount;
       }

@@ -1,0 +1,100 @@
+<div class="container-fluid current-route-background bottom-margin-50">
+  <div class="container">
+    <p class="form-title-text">MY ACCOUNT<span class="current-route-text"><span class="current-route-parent-text">MY ACCOUNT /</span>   ITEMS</span></p>
+  </div>
+</div>
+
+<div class="container-fluid mb-4">
+  <div class="container">
+    <div>
+
+      <div class="float-right">
+        {{#link-to 'account.admin.new-product' class="account-navigation-link-active-v2"}}
+          <i class="material-icons">
+            add
+          </i>
+          ADD ITEM
+        {{/link-to}}
+      </div>
+
+      {{#link-to 'account.admin.products' class="account-navigation-link-active"}}
+        <i class="material-icons">
+          card_giftcard
+        </i>
+        Items
+      {{/link-to}}
+
+      {{#link-to 'account.admin.categories' class="account-navigation-link"}}
+        <i class="material-icons">
+          view_list
+        </i>
+        Categories
+      {{/link-to}}
+
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
+      {{#link-to 'account.admin.users' class="account-navigation-link"}}
+        <i class="material-icons">
+          group
+        </i>
+        Users
+      {{/link-to}}
+
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-5 bottom-margin-150">
+  <div class="container">
+    <div class="bottom-margin-100">
+      <table class="account-bids-table fade">
+        <tr class="account-bids-table-header">
+          <th class="account-header-text account-bids-table-item text-center">Item</th>
+          <th class="account-header-text account-bids-table-name">Name</th>
+          <th class="account-header-text account-bids-table-time text-center">Time Left</th>
+          <th class="account-header-text account-bids-table-price text-center">Price</th>
+          <th class="account-header-text account-bids-table-bids text-center">No. Bids</th>
+          <th class="account-header-text account-bids-table-highest-bid text-center">Highest Bid</th>
+          <th class="account-header-text account-bids-table-button-view text-center"></th>
+        </tr>
+        <div class="mb-2"></div>
+          {{#each model.products as |product|}} 
+            <tr>
+              <td class="m-0 p-0">
+                <div class="accout-bids-image-holder">
+                  {{#each product.pictures as |picture index|}}
+                    {{#if (is-main picture null index)}}
+                      <img src="{{picture.url}}" class="account-bid-image">
+                    {{/if}}
+                  {{/each}}
+                </div>
+              </td>
+              <td class="account-header-text account-bids-table-name"> 
+                <span class="account-product-name">{{product.name}}</span>
+                <br>
+                <span class="account-product-id">#{{product.id}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{duration product.publishDate product.expireDate}} Days</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{format-bid product.startingPrice}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{product.bids.length}}</span>
+              </td>
+              <td class="text-center">
+                <span class="account-product-plain-text">{{format-bid (get-biggest product.bids)}}</span>
+              </td>
+              <td>
+                {{#link-to 'account.admin.single-product' product.id class="account-bids-button"}}VIEW{{/link-to}}
+              </td>
+            </tr>
+          {{/each}}
+        <div class="mb-4"></div>
+      </table>
+    </div>
+  </div>
+</div>

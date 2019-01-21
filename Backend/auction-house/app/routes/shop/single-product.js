@@ -8,11 +8,7 @@ export default Route.extend({
     })
   },
  
-  actions: {
-    refresh: function() {
-      this.refresh();
-    },
-    
+  actions: { 
     willTransition: function() {
       this.controllerFor('shop/single-product').send('clearFields');
     }

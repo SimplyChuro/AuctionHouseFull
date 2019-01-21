@@ -75,8 +75,8 @@ public class Products extends Model{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Wishlists> wishlists; 
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
-    public List<Sales> sales;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
+    public Sales sale;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
     public List<Reviews> reviews;
@@ -98,6 +98,103 @@ public class Products extends Model{
 		this.size = size;
 		this.description = description;
 		this.featured = featured;
+	}
+	
+	public void updateProduct(JsonNode objectNode) {
+		
+		this.name = objectNode.findPath("name").asText();
+		this.description = objectNode.findPath("description").asText();
+		this.status = objectNode.findPath("status").asText();
+		this.color = objectNode.findPath("color").asText();
+		this.size = objectNode.findPath("size").asText();
+		this.startingPrice = objectNode.findPath("startingPrice").asDouble();	
+		this.featured = objectNode.findPath("featured").asBoolean();
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
+			this.publishDate = format.parse(objectNode.findPath("publishDate").asText());
+			this.expireDate = format.parse(objectNode.findPath("expireDate").asText());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		for(Pictures picture : pictures) {	
+			Boolean checker = false;
+			try {
+				for(JsonNode pictureNode : objectNode.get("pictures")) {
+
+					if(picture.id == pictureNode.findPath("id").asLong()) {
+						checker = true;
+					}
+				}
+				
+				if(!(checker == true)) {
+					picture.delete();
+				}
+				
+			} catch(Exception e) {
+				
+			}
+		}
+		
+		for(JsonNode pictureNode : objectNode.get("pictures")) {
+			try {
+				if(pictureNode.findPath("id").asLong() > 0) {
+					
+				} else {
+					Pictures picture = new Pictures();
+					picture.url = pictureNode.findPath("url").asText();
+					picture.product = this;
+					picture.save();
+				}
+			} catch(Exception e) {
+				
+			}
+		}
+		
+		
+		this.update();
+
+	}
+	
+	public void saveProduct(JsonNode objectNode) {
+		
+		this.name = objectNode.findPath("name").asText();
+		this.description = objectNode.findPath("description").asText();
+		this.status = objectNode.findPath("status").asText();
+		this.color = objectNode.findPath("color").asText();
+		this.size = objectNode.findPath("size").asText();
+		this.startingPrice = objectNode.findPath("startingPrice").asDouble();	
+		this.featured = objectNode.findPath("featured").asBoolean();	
+		
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		
+		try {
+			TimeZone timeZone;
+			timeZone = TimeZone.getTimeZone("GMT+0:00");
+			TimeZone.setDefault(timeZone);
+			this.publishDate = format.parse(objectNode.findPath("publishDate").asText());
+			this.expireDate = format.parse(objectNode.findPath("expireDate").asText());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		this.save();
+		
+		for(JsonNode pictureNode : objectNode.get("pictures")) {
+
+			System.out.println(pictureNode);
+			Pictures picture = new Pictures();
+			picture.url = pictureNode.findPath("url").asText();
+			picture.product = this;
+			picture.save();
+			
+		}
+
 	}
 	
 }

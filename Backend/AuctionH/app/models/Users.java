@@ -71,7 +71,7 @@ public class Users extends Model{
 	@Constraints.Required
   	public Date dateOfBirth;
 	
-	@Column(length = 256, unique = true)
+	@Column(length = 256)
   	@Constraints.Required
   	public String phoneNumber;
       
@@ -80,6 +80,9 @@ public class Users extends Model{
     
     @Constraints.Required
    	public Boolean admin;
+    
+    @Constraints.Required
+   	public Boolean active;
     
 	//Foreign Keys
 
@@ -106,6 +109,7 @@ public class Users extends Model{
 	public void setBase() {
 		emailVerified = false;
 		admin = false;
+		active = true;
 		save();
 		address = new Address("", "", "", "", "");
 		address.user = this;
@@ -135,10 +139,16 @@ public class Users extends Model{
 			this.dateOfBirth = null;
 		}
 		
-		if(objectNode.findPath("phoneNumber").asText() != null || !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
+		if(objectNode.findPath("phoneNumber").asText() != null && !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
 			this.phoneNumber = objectNode.findPath("phoneNumber").asText();
 		} else {
 			this.phoneNumber = "";
+		}
+		
+		if(objectNode.findPath("avatar").asText() != null && !(objectNode.findPath("avatar").asText().equals("null"))) {	
+			this.avatar = objectNode.findPath("avatar").asText();
+		} else {
+			this.avatar = null;
 		}
 		
 		this.update();

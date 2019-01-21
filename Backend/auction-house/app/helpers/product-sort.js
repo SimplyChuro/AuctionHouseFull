@@ -1,7 +1,7 @@
-import { helper } from '@ember/component/helper';
+import Helper from '@ember/component/helper';
 import { isEmpty } from '@ember/utils';
 
-export default Ember.Helper.extend({
+export default Helper.extend({
   
   compute(params) {
     let products = params[0];
@@ -20,7 +20,7 @@ export default Ember.Helper.extend({
     }
 
     if(sorting == 'newest'){
-      return products.sortBy('publishDate');
+      return products.sortBy('publishDate').reverse();
     }
 
     if(sorting == 'oldest'){

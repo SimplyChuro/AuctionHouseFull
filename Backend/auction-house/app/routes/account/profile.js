@@ -1,9 +1,9 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
+  session: service(),
 
   model(){
     return hash({

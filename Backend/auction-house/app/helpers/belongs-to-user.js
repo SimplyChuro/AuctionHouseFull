@@ -1,7 +1,8 @@
-import { helper } from '@ember/component/helper';
+import Helper from '@ember/component/helper';
+import { inject as service } from '@ember/service';
 
-export default Ember.Helper.extend({
-  session: Ember.inject.service(),
+export default Helper.extend({
+  session: service(),
   
   compute(params) {
     let session = this.get('session');

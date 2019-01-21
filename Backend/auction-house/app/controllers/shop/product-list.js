@@ -1,11 +1,14 @@
 import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import { stringSimilarity } from "string-similarity-js";
+import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: Ember.inject.service(),
-  store: Ember.inject.service(),
-
+  session: service(),
+  store: service(),
+  loadingSlider: service(),
+  
   queryParams: ['name', 'parent_category', 'child_category', 'color', 'size', 'list_type' , 'sorting'],
   name: null,
   parent_category: null,
@@ -13,6 +16,7 @@ export default Controller.extend({
   sorting: null,
   minPrice: null,
   maxPrice: null,
+  staticMaxPrice: 1500,
   color: null,
   size: null,
   list_type: null,
@@ -20,21 +24,20 @@ export default Controller.extend({
   allWishlistItems: null,
   closestCategory: null,
   nameNotFound: false,
+  listSize: 9,
 
-  startRange:[1, 5000],
+  startRange:[0, 1500],
 
-  wishlist: Ember.computed(function(){
-    const store = this.get('store');
+  wishlist: computed(function(){
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  wishlistItems: Ember.computed('wishlist', function(){
+  wishlistItems: computed('wishlist', function(){
     this.set('allWishlistItems', this.get('wishlist'));
-
     return this.get('allWishlistItems');
   }).volatile(),
 
-  products: Ember.computed('name', 'parent_category', 'child_category', function(){
+  products: computed('name', 'parent_category', 'child_category', function(){
     var categoryChecker;
 
     if(isEmpty(this.get('parent_category'))) {
@@ -51,13 +54,15 @@ export default Controller.extend({
     if(isEmpty(nameChecker)) {
       nameChecker = '';
     }
+
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-  filteredProducts: Ember.computed('name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', function(){
- 
-    var products = this.get('products');
+  filteredProducts: computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
+    
     var _this = this;
+    let products = this.get('products');
+
     let singleProduct = null;
 
     if(!(isEmpty(this.get('color')))) {
@@ -89,12 +94,18 @@ export default Controller.extend({
     if(!(isEmpty(this.get('minPrice'))) && !(isEmpty(this.get('maxPrice')))) {
       products = products.filter(
         function(product) { 
-          console.log(_this.get('maxPrice'));
-
-          if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
-            singleProduct = product;
+          if(_this.get('maxPrice') == 1500) {
+            if(product.startingPrice >= _this.get('minPrice')) {
+              singleProduct = product;
+            } else {
+              singleProduct = null;
+            }
           } else {
-            singleProduct = null;
+            if((_this.get('maxPrice') >= product.startingPrice) && (product.startingPrice >= _this.get('minPrice'))) {
+              singleProduct = product;
+            } else {
+              singleProduct = null;
+            }
           }
           return singleProduct;
         }
@@ -105,17 +116,16 @@ export default Controller.extend({
 
   }),
 
-  productSearchErrorMessage: Ember.computed('filteredProducts', function(){
+  productSearchErrorMessage: computed('filteredProducts', function(){
 
-    var categoryChecker = null;
-    var similarityRate = 0;
+    var similarityRate = 0.75;
     var _this = this;
 
     if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){
       var categories = this.get('model.categoryList');
       _this.set('closestCategory', null);
-      categories.forEach((item, index) => {
-        if(stringSimilarity(item.name, this.get('name')) > similarityRate){
+      categories.forEach((item) => {
+        if(stringSimilarity(item.name, this.get('name')) > similarityRate || stringSimilarity(item.name, this.get('name'), 1) > 0.75){
           similarityRate = stringSimilarity(item.name, this.get('name'));
           _this.set('closestCategory', item);
         }
@@ -151,16 +161,28 @@ export default Controller.extend({
         this.set('child_category', selected);  
         this.set('parent_category', selected);  
       } else {
-        this.set('child_category', selected.id);  
+        if(this.get('child_category') == selected.id){
+          this.set('child_category', null);
+        } else {
+          this.set('child_category', selected.id); 
+        } 
       }
     },
 
     setColor: function(color) {
-      this.set('color', color);
+      if(this.get('color') == color){
+        this.set('color', null);
+      } else {
+        this.set('color', color);
+      }
     },
 
     setSize: function(size) {
-      this.set('size', size);  
+      if(this.get('size') == size){
+        this.set('size', null);
+      } else {
+        this.set('size', size);  
+      }
     },
 
     setListType: function(type) {
@@ -171,18 +193,23 @@ export default Controller.extend({
       this.set('sorting', type);  
     },
 
-    createWishlist: function(productID) {
-      var _this = this;
-      this.store.createRecord('wishlist', {
+    increaseListSize: function(){
+      var currentListSize = this.get('listSize');
+      currentListSize += 9;
+      this.set('listSize', currentListSize);
+    },
+
+    async createWishlist(productID) {
+      await this.store.createRecord('wishlist', {
         status: 'active',
         product_id: productID
       }).save();
     },
 
-    deleteWishlist: function(wishlistItem) {
+    async deleteWishlist(wishlistItem) {
       var _this = this;
       var currentWishlistItem = wishlistItem;
-      currentWishlistItem.destroyRecord().then(function(){
+      await currentWishlistItem.destroyRecord().then(function(){
         _this.get('allWishlistItems').removeObject(wishlistItem);
       });
     },
@@ -193,12 +220,15 @@ export default Controller.extend({
       this.set('child_category', undefined);
       this.set('sorting', undefined)
       this.set('color', undefined); 
-      this.set('size', undefined); 
+      this.set('size', undefined);
+      this.set('minPrice', undefined); 
+      this.set('maxPrice', undefined);  
       this.set('list_type', undefined); 
       this.set('closestCategory', null); 
       this.set('checker', null);
       this.set('allWishlistItems', null);
       this.set('nameNotFound', false);
+      this.set('listSize', 9);
     }
   }
 });

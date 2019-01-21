@@ -1,13 +1,15 @@
 import Controller from '@ember/controller';
-import ENV from 'auction-house/config/environment';
-import $ from 'jquery';
 import { isEmpty } from '@ember/utils';
 import { isEqual } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import $ from 'jquery';
 import swal from 'sweetalert';
+import ENV from 'auction-house/config/environment';
 
 export default Controller.extend({
 
-  queryParams: ['token'],
+  loadingSlider: service(),
+
   resetSuccess: null,
   resetText: null,
 
@@ -20,7 +22,7 @@ export default Controller.extend({
   token: null,
 
   actions: {
-    reset: function() {
+    async reset() {
       var _this = this;
       var regex = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/);
       if(!(isEmpty(this.get('password')))){
@@ -29,7 +31,8 @@ export default Controller.extend({
             this.set('passwordIsValid', true);
             if(isEqual(this.get('password'), this.get('confirmPassword'))){
               this.set('passwordMatches', true);
-              $.ajax({
+              _this.get('loadingSlider').startLoading();
+              await $.ajax({
                 url: ENV.HOST_URL+'/api/v1/password/reset',
                 type: 'POST',
                 data: JSON.stringify({
@@ -39,14 +42,15 @@ export default Controller.extend({
                   'X-AUTH-TOKEN': _this.get('token')
                 },
                 contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                success: function(data){
-                  
-                }
-              }).then(function(data){
+                dataType: 'json'
+              }).then(function(){
+                _this.get('loadingSlider').endLoading();
                 swal("Password Reset!", "You have successfully reset your password!", "success");
-              }).catch(function(data){
+                _this.transitionToRoute('login');
+              }).catch(function(){
+                _this.get('loadingSlider').endLoading();
                 swal("Ooops!", "It would seem an error has occurred please try again.", "error");
+                _this.transitionToRoute('home');
               });
             } else {
               this.set('passwordMatches', false);

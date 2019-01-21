@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.File;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,10 +11,13 @@ import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
+import models.Reviews;
 import models.Sales;
 import models.Users;
+import models.Wishlists;
 import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -24,14 +28,12 @@ public class SaleController extends Controller {
 	public Result get(Long id) {
 		try {
 			Users user = LoginController.getUser();
-			Sales sale = Sales.find.query().where()
-					.conjunction()
-					.eq("user_id", user.id)
-					.eq("product_id", id)
-					.endJunction()
-					.findUnique();
-			
-			return ok(Json.toJson(sale));
+			if(!user.admin && user.active) {
+				Sales sale = Sales.find.byId(id);
+				return ok(Json.toJson(sale));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -42,9 +44,12 @@ public class SaleController extends Controller {
 	public Result getAll() {
 		try {
 			Users user = LoginController.getUser();
-			List<Sales> sales = user.sales;
-			
-			return ok(Json.toJson(sales));
+			if(!user.admin && user.active) {
+				List<Sales> sales = user.sales;
+				return ok(Json.toJson(sales));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -53,49 +58,34 @@ public class SaleController extends Controller {
 	//Create sale
 	@Security.Authenticated(Secured.class)
 	public Result create() {
-		try {		
-			JsonNode jsonNode = request().body().asJson().get("sale");	
-			JsonNode productNode = jsonNode.get("product");
-			List<String> categories = productNode.findValuesAsText("categories");
-			Products product = Json.fromJson(productNode, Products.class);
-			product.save();
-			
-			for(Pictures picture : product.pictures) {
-				picture.product = product;
-				picture.save();
+		try {
+			Users user = LoginController.getUser();
+			if(!user.admin && user.active) {
+				JsonNode objectNode = request().body().asJson().get("sale");	
+				JsonNode productNode = objectNode.get("product");
+				Long cat_id = productNode.get("category_id").asLong();
+				
+				Sales saleItem = new Sales();
+				saleItem.user = user;
+				saleItem.saveSale(objectNode);
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				ProductCategory categoryConnectionChild = new ProductCategory();
+				categoryConnectionChild.product = saleItem.product;
+				categoryConnectionChild.category = childCategory;
+				categoryConnectionChild.save();
+				
+				ProductCategory categoryConnectionParent = new ProductCategory();
+				categoryConnectionParent.product = saleItem.product;
+				categoryConnectionParent.category = parentCategory;
+				categoryConnectionParent.save();
+	
+				return ok(Json.toJson(saleItem));
+			} else {
+				return badRequest();
 			}
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.user = LoginController.getUser();
-			saleItem.product = product;
-
-			
-			for (String category : categories) {
-				String categorySpliter[] = category.split("/");
-				
-				Category parentCategory = Category.find.query().where()
-						.conjunction()
-						.eq("parent_id", null)
-						.eq("name", categorySpliter[0])
-						.endJunction()
-						.findUnique();
-				
-				Category childCategory = Category.find.query().where()
-						.conjunction()
-						.eq("parent_id", parentCategory.id)
-						.eq("name", categorySpliter[1])
-						.endJunction()
-						.findUnique();
-				
-				ProductCategory categoryConnection = new ProductCategory();
-				categoryConnection.product = saleItem.product;
-				categoryConnection.category = childCategory;
-				categoryConnection.save();
-			}
-
-			saleItem.save();
-
-			return ok(Json.toJson(saleItem));	
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -105,13 +95,35 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result update(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.product.update();
-			saleItem.update();
-			
-			return ok(Json.toJson(saleItem));
+			Users user = LoginController.getUser();
+			if(!user.admin && user.active) {
+				JsonNode objectNode = request().body().asJson().get("sale");	
+				JsonNode productNode = objectNode.get("product");
+				
+				Long cat_id = productNode.get("category_id").asLong();
+				
+				Sales saleItem = Sales.find.byId(id);
+				saleItem.updateSale(objectNode);
+				
+				Category childCategory = Category.find.byId(cat_id);
+				Category parentCategory = Category.find.byId(childCategory.parent_id);
+				
+				for(ProductCategory category : saleItem.product.productcategory) {
+					if(category.category.parent_id == null && category.category.id != childCategory.id) {
+						category.category = childCategory;
+						category.update();
+					} else {
+						if(category.category.id != parentCategory.id) {
+							category.category = parentCategory;					
+							category.update();
+						}
+					}
+				}
+				
+				return ok(Json.toJson(saleItem));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}
@@ -121,13 +133,41 @@ public class SaleController extends Controller {
 	@Security.Authenticated(Secured.class)
 	public Result delete(Long id) {
 		try {
-			JsonNode jsonNode = request().body().asJson();	
-			
-			Sales saleItem = Json.fromJson(jsonNode, Sales.class);
-			saleItem.product.delete();
-			saleItem.delete();
-			
-			return ok(Json.toJson(""));
+			Users user = LoginController.getUser();
+			if(!user.admin && user.active) {
+				Sales saleItem = Sales.find.byId(id);
+				Products product = saleItem.product;
+				
+				for(Pictures picture : product.pictures) {
+					picture.delete();
+				}
+				
+				for(Bids bid : product.bids) {
+					bid.delete();
+				}
+				
+				for(Wishlists wish : product.wishlists) {
+					wish.delete();
+				}
+				
+				for(Reviews review : product.reviews) {
+					review.delete();
+				}
+				
+				for(ProductCategory cat : product.productcategory) {
+					cat.delete();
+				}
+				
+				if(product.sale != null) {
+					product.sale.delete();
+				}
+				
+				product.delete();
+				
+				return ok(Json.toJson(""));
+			} else {
+				return badRequest();
+			}
 		} catch(Exception e) {
 			return badRequest();
 		}

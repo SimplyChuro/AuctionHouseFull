@@ -28,6 +28,10 @@
         Bids
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+      
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
@@ -77,11 +81,11 @@
       <div class="mb-2"></div>
       {{#each model.saleList as |sale|}}
         {{#unless (eq sale.id null)}}
-          {{#if (eq sale.status saleStatus)}}
+          {{#if (eq (to-lower-case sale.status) saleStatus)}}
             <tr class="fade">
               <td class="m-0 p-0">
                 <div class="accout-bids-image-holder">
-                  {{#each bid.product.pictures as |picture index|}}
+                  {{#each sale.product.pictures as |picture index|}}
                     {{#if (is-main picture null index)}}
                       <img src="{{picture.url}}" class="account-bid-image">
                     {{/if}}
@@ -97,16 +101,16 @@
                 <span class="account-product-plain-text">{{duration sale.product.publishDate sale.product.expireDate}}</span>
               </td>
               <td class="text-center">
-                <span class="account-product-plain-text">{{format-bid sale.amount}}</span>
+                <span class="account-product-plain-text">{{format-bid sale.product.startingPrice}}</span>
               </td>
               <td class="text-center">
-                <span class="account-product-plain-text">{{sale.product.bidCount}}</span>
+                <span class="account-product-plain-text">{{sale.product.bids.length}}</span>
               </td>
               <td class="text-center">
-                <span class="account-product-plain-text">{{format-bid sale.product.mainBid}}</span>
+                <span class="account-product-plain-text">{{format-bid (get-biggest sale.product.bids)}}</span>
               </td>
               <td>
-                {{#link-to 'shop.single-product' sale.product.id class="account-bids-button"}}VIEW{{/link-to}}
+                {{#link-to 'account.sell.sale-item' sale.id class="account-bids-button"}}VIEW{{/link-to}}
               </td>
             </tr>
           {{/if}}

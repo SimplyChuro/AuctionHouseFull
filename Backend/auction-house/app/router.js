@@ -27,6 +27,15 @@ Router.map(function() {
     this.route('sell', function() {
       this.route('new');
       this.route('entry');
+      this.route('sale-item', { path: 'sale-item/:sale_id' });
+    });
+
+    this.route('admin', function() {
+      this.route('users');
+      this.route('categories');
+      this.route('products');
+      this.route('single-product', { path: 'single-product/:product_id' });
+      this.route('new-product');
     });
   });
   this.route('password-reset');
@@ -34,6 +43,7 @@ Router.map(function() {
   this.route('register-success');
   this.route('new-password');
   this.route('verify-email');
+  this.route('reactivate-account');
 });
 
 export default Router;
