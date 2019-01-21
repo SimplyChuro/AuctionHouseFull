@@ -1,9 +1,10 @@
 import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
 export default Route.extend({
   model(params) {
-    return Ember.RSVP.hash({
-      product: this.store.findRecord('product', params.product_id),
+    return hash({
+      product: this.store.findRecord('product', params.product_id)
     })
   },
  
@@ -11,7 +12,8 @@ export default Route.extend({
     refresh: function() {
       this.refresh();
     },
-    willTransition: function(transition) {
+    
+    willTransition: function() {
       this.controllerFor('shop/single-product').send('clearFields');
     }
   }

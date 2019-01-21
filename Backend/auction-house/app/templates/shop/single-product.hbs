@@ -4,16 +4,15 @@
   </div>
 </div>
 
-{{#each sortedBids as |bid index|}}
-  {{#if (eq index 0)}}
-    {{#if (belongs-to-user bid.user.id)}}
-      {{#if (eq bid.amount (get-biggest model.product.bids))}}
+{{#if (is-logged-in session.authToken)}}
+  {{#each sortedBids as |bid index|}}
+    {{#if (eq index 0)}}
+      {{#if (belongs-to-user bid.user.id)}}
         <div class="container-fluid sp-bidder-highest-holder fade">
           <div class="container">
             <p class="sp-highest-bid-text mt-0">Congrats! you are the higest bider!</p>
           </div>
         </div>
-
       {{else}}
         <div class="container-fluid sp-bidder-losing-holder fade">
           <div class="container">
@@ -22,8 +21,8 @@
         </div>
       {{/if}}
     {{/if}}
-  {{/if}}
-{{/each}}
+  {{/each}}
+{{/if}}
 
 <div class="container-fluid bottom-margin-150 mt-5">
   <div class="container">
@@ -41,7 +40,7 @@
         <div class="row single-product-margin-small"> 
           {{#each model.product.pictures as |picture index|}}
             {{#unless (is-main picture currentPicture index)}}
-              <div class="col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
+              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
                 <div class="single-product-picture-background single-product-side-picture m-1 p-0">	
                   <img class="single-product-secondary-image m-0 p-0" src="{{picture.url}}">
                 </div>
@@ -54,26 +53,39 @@
         <h1 class="title-text-links">{{model.product.name}}</h1>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
-          {{#if (is-logged-in)}}
+          {{#if (is-logged-in session.authToken)}}
             <form>
-              {{input type="string" value=bidAmount class="single-product-bid-input"}}
-              <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
-                PLACE BID {{material-icon "keyboard_arrow_right"}}
-              </button>
-              <br>
+              <div class="row ml-0 mr-0">
+                {{input type="string" value=bidAmount class="single-product-bid-input"}}
+                <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                  PLACE BID 
+                  <i class="material-icons">
+                    keyboard_arrow_right
+                  </i>
+                </button>
+                {{#each flashMessages.queue as |flash index|}}
+                  {{#if (eq index 0)}}
+                    <p class="checkmarker-v1 fade">
+                      <i class="material-icons">
+                        done
+                      </i>
+                    </p>
+                  {{/if}}
+                {{/each}}
+              </div>
               {{#if amountHasError}}
                 <div class="validation-error-message mt-1 fade">
                   {{amountErrorMessage}}
                 </div>
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                  {{#if (is-less bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest model.product.bids))}}
+                  {{#if (eq bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -81,14 +93,14 @@
                 {{/if}}
               {{else}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (is-less bidAmount (get-biggest model.product.bids))}}
+                  {{#if (is-less bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
                   {{/if}}
                 {{/if}}
                 {{#if (eq amountErrorMessage '')}}
-                  {{#if (eq bidAmount (get-biggest model.product.bids))}}
+                  {{#if (eq bidAmount topBid)}}
                     <div class="validation-error-message mt-1 fade">
                       The input amount is insufficient.
                     </div>
@@ -99,47 +111,62 @@
           {{else}}
             {{input type="string" value=bidAmount class="single-product-bid-input"}}
             {{#link-to "login" class="single-product-featured-button"}}
-              PLACE BID {{material-icon "keyboard_arrow_right"}}
+              PLACE BID 
+              <i class="material-icons">
+                keyboard_arrow_right
+              </i>
             {{/link-to}}
           {{/if}}
           <p class="single-product-small-text mt-1">Enter more than -
-            {{#if (eq model.product.bids.length 0)}}
+            {{#if (eq sortedBids.length 0)}}
               {{format-bid model.product.startingPrice}}
             {{else}}
-              {{format-bid (get-biggest model.product.bids)}}
+              {{format-bid (get-biggest sortedBids)}}
             {{/if}}    
           </p>
-          <div class="sp-notification-holder">
-            {{#each flashMessages.queue as |flash|}}
-              <p class="fade">{{flash-message flash=flash}}</p>
-            {{/each}}
-          </div>
         </div>
           <div class="mt-5">
             <p class="single-product-small-text m-0 p-0">Highest Bid: 
               <span class="single-product-highest-bid-amount ml-2">
-                {{#if (eq model.product.bids.length 0)}}
-                  {{format-bid model.product.startingPrice}}
+                {{#if (eq sortedBids.length 0)}}
+                  {{format-bid 0}}
                 {{else}}
-                  {{format-bid (get-biggest model.product.bids)}}
+                  {{format-bid (get-biggest sortedBids)}}
                 {{/if}}
               </span>
             </p>
-            {{#if (eq model.product.bids.length 0)}}
+            {{#if (eq sortedBids.length 0)}}
               <p class="single-product-small-text m-0 p-0">Number of Bids: 0</p>
             {{else}}
-              <p class="single-product-small-text m-0 p-0">Number of Bids: {{model.product.bids.length}}</p>
+              <p class="single-product-small-text m-0 p-0">Number of Bids: {{sortedBids.length}}</p>
             {{/if}}
             <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}}</p>
           </div>
-        {{#if (is-logged-in)}}
-          <button type="submit" class="single-product-watchlist-btn mt-4" {{action "createWishlist" model.product.id}}>
-            Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
-          </button>
+        {{#if (is-logged-in session.authToken)}}
+          {{#unless userWishlistItem}}
+            {{#unless (eq checker null)}}
+              <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>
+                Wishlist <span class="pl-1 single-product-heart-active">
+                <i class="material-icons">
+                  favorite
+                </i></span>
+              </button>
+            {{else}}
+              <button type="submit" class="single-product-watchlist-btn mt-4 fade" {{action "createWishlist" model.product.id}}>
+                Wishlist <span class="pl-1 single-product-heart">
+                <i class="material-icons">
+                  favorite
+                </i></span>
+              </button>            
+            {{/unless}}
+          {{/unless}}
         {{else}}
           <div class="single-product-watchlist-holder">
             {{#link-to "login" class="single-product-watchlist-btn-v2"}}
-              Wishlist <span class="pl-1 single-product-heart">{{material-icon "favorite"}}</span>
+              Wishlist <span class="pl-1 single-product-heart">
+              <i class="material-icons">
+                favorite
+              </i></span>
             {{/link-to}}
           </div>
         {{/if}}
@@ -151,7 +178,7 @@
   </div>
 </div>
 
-{{#unless (eq model.product.bids.length 0)}}
+{{#unless (eq sortedBids.length 0)}}
   <div class="container-fluid mt-5 bottom-margin-150">
     <div class="container">
       <div class="row">
@@ -163,7 +190,7 @@
               <th class="account-header-text col-xl-2 col-lg-2">Bid</th>
             </tr>
             {{#each sortedBids as |bid index|}}
-              {{#if (is-less index 5)}}
+              {{#if (is-less index bidListSize)}}
                 <tr>
                   <div class="row mt-3 mb-3 ml-1">
                     <div class="col-xl-8 col-lg-8 sp-margin-auto">
@@ -188,6 +215,13 @@
                 </tr>
               {{/if}}
             {{/each}}
+            {{#unless (is-less sortedBids.length bidListSize)}}
+              {{#unless (eq sortedBids.length bidListSize)}}
+                <div class="sp-load-more-holder">
+                  <button class="sp-load-more-button" {{action 'loadMore'}}>LOAD MORE</button>
+                </div>
+              {{/unless}}
+            {{/unless}}
           </tbody>
         </table>
       </div>

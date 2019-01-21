@@ -11,8 +11,14 @@ export default Controller.extend({
   emailErrorMessage: null,
   emailHasError: null,
 
+  emailConfirmationErrorMessage: null,
+  emailConfirmationHasError: null,
+
   passwordErrorMessage: null,
   passwordHasError: null,
+
+  passwordConfirmationErrorMessage: null,
+  passwordConfirmationHasError: null,
   
   emailExistsErrorMessage: 'The input email is in usage',
   emailExistsHasError: null,
@@ -23,8 +29,11 @@ export default Controller.extend({
       let user = this.get('model.user');
       user.set('name', this.get('name'));
       user.set('surname', this.get('surname'));
-      user.set('email', this.get('emailAddress'));
+      user.set('email', this.get('email'));
       user.set('password', this.get('password'));
+      user.set('emailConfirmation', this.get('emailConfirmation'));
+      user.set('passwordConfirmation', this.get('passwordConfirmation'));
+
       var _this = this;
       user.validate().then(({ validations }) =>{
         if(validations.get('isValid')){
@@ -66,6 +75,17 @@ export default Controller.extend({
             this.set('passwordErrorMessage', user.get('validations.attrs.password.messages'));
           }
 
+          if(user.get('validations.attrs.emailConfirmation.messages') !== '' && user.get('validations.attrs.emailConfirmation.messages') !== null){
+            this.set('emailConfirmationHasError', true);
+            this.set('emailConfirmationErrorMessage', user.get('validations.attrs.emailConfirmation.messages'));
+          }
+
+          if(user.get('validations.attrs.passwordConfirmation.messages') !== '' && 
+            user.get('validations.attrs.passwordConfirmation.messages') !== null){
+            this.set('passwordConfirmationHasError', true);
+            this.set('passwordConfirmationErrorMessage', user.get('validations.attrs.passwordConfirmation.messages'));
+          }
+
         }
       })
     },
@@ -87,6 +107,12 @@ export default Controller.extend({
 
       this.set('passwordHasError', null); 
       this.set('passwordErrorMessage', null);
+
+      this.set('emailConfirmationHasError', null); 
+      this.set('emailConfirmationErrorMessage', null);
+
+      this.set('passwordConfirmationHasError', null); 
+      this.set('passwordConfirmationErrorMessage', null);
 
       this.set('emailExistsHasError', null);
     }

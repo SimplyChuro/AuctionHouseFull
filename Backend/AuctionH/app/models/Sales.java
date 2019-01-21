@@ -39,7 +39,7 @@ public class Sales extends Model{
     @Constraints.Required
 	public String status;
     
-    
+   
     //Foreign Keys
     @ManyToOne  @JsonIgnore
     public Users user;

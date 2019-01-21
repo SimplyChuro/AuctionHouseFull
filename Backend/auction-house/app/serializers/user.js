@@ -2,7 +2,7 @@ import DS from 'ember-data';
 
 export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
   attrs: {
-    bids: { embedded: 'always' },
+    reviews: { embedded: 'always' },
     wishlist: { embedded: 'always' },
     sales: { embedded: 'always' },
     address: { embedded: 'always' }

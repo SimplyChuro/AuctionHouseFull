@@ -17,7 +17,7 @@ import play.mvc.Security;
 
 public class BidController extends Controller {
 	
-	//Get bid not in usage right now
+	//Get bid
 	@Security.Authenticated(Secured.class)
 	public Result get(Long id) {
 		try {
@@ -46,7 +46,7 @@ public class BidController extends Controller {
 		}
 	}
 	
-	//Create or Update bid
+	//Create bid
 	@Security.Authenticated(Secured.class)
 	public Result create() {
 		try {
@@ -80,7 +80,7 @@ public class BidController extends Controller {
 			if(bidChecker != null) {
 				bidChecker = Json.fromJson(jsonNode, Bids.class);
 				bidChecker.update();
-				return ok();
+				return ok(Json.toJson(bidChecker));
 			} else {
 				return badRequest();
 			}		
@@ -104,7 +104,7 @@ public class BidController extends Controller {
 			if(bidChecker != null) {
 				bidChecker = Json.fromJson(jsonNode, Bids.class);
 				bidChecker.delete();
-				return ok();
+				return ok(Json.toJson(""));
 			} else {
 				return badRequest();
 			}

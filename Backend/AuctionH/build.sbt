@@ -21,5 +21,9 @@ libraryDependencies += javaJdbc
 libraryDependencies += "org.postgresql" % "postgresql" % "42.2.5"
 libraryDependencies += "org.mindrot" % "jbcrypt" % "0.3m"
 
+// Mail
+libraryDependencies += "com.typesafe.play" %% "play-mailer" % "6.0.1"
+libraryDependencies += "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
+
 // Make verbose tests
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))

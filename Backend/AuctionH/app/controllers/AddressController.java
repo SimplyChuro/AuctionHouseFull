@@ -92,7 +92,7 @@ public class AddressController extends Controller {
 			if(addressChecker != null) {
 				addressChecker = Json.fromJson(jsonNode, Address.class);
 				addressChecker.delete();
-				return ok();
+				return ok(Json.toJson(""));
 			} else {
 				return badRequest();
 			}

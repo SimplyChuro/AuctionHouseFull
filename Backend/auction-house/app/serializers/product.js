@@ -4,6 +4,7 @@ export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
   attrs: {
     pictures: { embedded: 'always' },
     productcategory: { embedded: 'always' },
+    reviews: { embedded: 'always' },
     bids: { embedded: 'always' }
   }, 
   normalizeResponse(store, primaryModelClass, payload, id, requestType){

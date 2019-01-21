@@ -1,14 +1,10 @@
 import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
 export default Route.extend({
   model(){
-    return Ember.RSVP.hash({
-      categoryList: this.store.findAll('category'),
-      productList: this.store.findAll('product'),
-      productRandom: this.store.findAll('product').then((list) => {
-        const rand = Math.floor(Math.random() * list.get('length'));
-        return list.objectAt(rand);
-      })
+    return hash({
+      categoryList: this.store.findAll('category')
     })
   },
 
@@ -16,7 +12,8 @@ export default Route.extend({
     refresh: function() {
       this.refresh();
     },
-    willTransition: function(transition) {
+    
+    willTransition: function() {
       this.controllerFor('shop/product-list').send('clearFields');
     }
   }

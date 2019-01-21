@@ -20,7 +20,7 @@ public class Address extends Model{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
-	
+
     @Constraints.Required
 	public String street;
     
@@ -42,12 +42,52 @@ public class Address extends Model{
 	
 	public static final Finder<Long, Address> find = new Finder<>(Address.class);
 
-	public void updateAddress(String street, String city, String zipCode, String state, String country) {
+	
+	//Constructor
+	
+	public Address() {
+		
+	}
+	
+	public Address(String street, String city, String zipCode, String state, String country) {
 		this.street = street;
 		this.city = city;
 		this.zipCode = zipCode;
 		this.state = state;
 		this.country = country;
+	}
+		
+	public void updateAddress(String street, String city, String zipCode, String state, String country) {
+		
+		if(street != null || !(street.equals("null"))) {
+			if(!(street.trim().isEmpty())){
+				this.street = street;
+			}
+		}
+		
+		if(city != null || !(city.equals("null"))) {
+			if(!(city.trim().isEmpty())){
+				this.city = city;
+			}
+		}
+		
+		if(zipCode != null || !(zipCode.equals("null"))) {
+			if(!(zipCode.trim().isEmpty())){
+				this.zipCode = zipCode;
+			}
+		}
+		
+		if(state != null || !(state.equals("null"))) {
+			if(!(state.trim().isEmpty())){
+				this.state = state;
+			}
+		}
+		
+		if(country != null || !(country.equals("null"))) {
+			if(!(country.trim().isEmpty())){
+				this.country = country;
+			}
+		}
 		update();
 	}
 	

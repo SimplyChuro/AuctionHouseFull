@@ -8,28 +8,41 @@
   <div class="container">
     <div>
       {{#link-to 'account.profile' class="account-navigation-link-active"}}
-        {{material-icon "person"}} Profile
+        <i class="material-icons">
+          person
+        </i>
+        Profile
       {{/link-to}}
+
       {{#link-to 'account.sales' class="account-navigation-link"}}
-        {{material-icon "view_list"}} Sales
+        <i class="material-icons">
+          view_list
+        </i>
+        Sales
       {{/link-to}}
+
       {{#link-to 'account.bids' class="account-navigation-link"}}
-        {{material-icon "gavel"}} Bids
+        <i class="material-icons">
+          gavel
+        </i>
+        Bids
       {{/link-to}}
+
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
-        {{material-icon "card_giftcard"}} Wishlist
+        <i class="material-icons">
+          card_giftcard
+        </i>
+        Wishlist
       {{/link-to}}
+
       {{#link-to 'account.settings' class="account-navigation-link"}}
-        {{material-icon "settings"}} Settings
+        <i class="material-icons">
+          settings
+        </i>
+        Settings
       {{/link-to}}
     </div>
   </div>
-</div>
-
-<div class="container">
-  {{#each flashMessages.queue as |flash|}}
-    <p class="fade">{{flash-message flash=flash}}</p>
-  {{/each}}
 </div>
 
 <div class="container-fluid bottom-margin-400">
@@ -47,12 +60,24 @@
           <div class="account-profile-card-right-side account-profile-card-body-holder">
             <div>
               <label class="account-profile-form-text">First Name</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.name}}</p>
-              <label class="account-profile-form-text">Last Name</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.surname}}</p>
-              <label class="account-profile-form-text">I am</label>
+              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if nameHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{nameErrorMessage}}
+                </div>
+              {{/if}}
+
+              <label class="account-profile-form-text mt-3">Last Name</label>
+              {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if surnameHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{surnameErrorMessage}}
+                </div>
+              {{/if}}
+
+              <label class="account-profile-form-text mt-3">I am</label>
               <br>
-              <select onchange={{action "setSelection" value="target.value"}} class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer">
+              <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
                 <option disabled selected> -- Gender? -- </option>
                 {{#if (is-equal model.user.gender 'male')}}
                   <option value="male" selected>
@@ -87,10 +112,20 @@
               <br>
                 {{bootstrap-datepicker value=dateOfBirth class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer"}}
               <br>
+              {{#if dateOfBirthHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{dateOfBirthErrorMessage}}
+                </div>
+              {{/if}}
               <label class="account-profile-form-text mt-5">Phone Number</label>
-              {{input type="string" value=phoneNumber class="account-profile-input-form-static account-profile-form-text"}}
+              {{input type="string" value=phoneNumber class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if phoneNumberHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{phoneNumberErrorMessage}}
+                </div>
+              {{/if}}
               <label class="account-profile-form-text mt-3">Email Address</label>
-              <p class="account-profile-input-form-static account-profile-form-text">{{model.user.email}}</p>
+              <p class="account-profile-input-form-static account-profile-form-text cursor-not-allowed">{{model.user.email}}</p>
             </div>
           </div>
         </div>
@@ -103,33 +138,83 @@
             <div>
               <h1 class="account-profile-address-title mb-4">Address</h1>
               <label class="account-profile-form-text">Street</label>
-              {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text"}}
+              {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if streetHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{streetErrorMessage}}
+                </div>
+              {{/if}}
               <br>
               <div class="row p-0 m-0">
-                <div class="account-profile-input-form-holder account-profile-holder-margin">
-                  <label class="account-profile-form-text mt-3">City</label>
-                  {{input type="string" value=city name="{{model.user.address.city}}" placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text"}}
+                <div class="account-profile-input-form-holder">
+                  <div class="mr-2">
+                    <label class="account-profile-form-text mt-3">City</label>
+                    <br>
+                    {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off"}}
+                    {{#if cityHasError}}
+                      <div class="validation-error-message mb-2 fade">
+                        {{cityErrorMessage}}
+                      </div>
+                    {{/if}}
+                  </div>
                 </div>
                 <div class="account-profile-input-form-holder">
                   <label class="account-profile-form-text mt-3">ZipCode</label>
-                  {{input type="string" value=zipCode name="{{model.user.street}}" placeholder="e.g. 10065" class="account-profile-input-form-static account-profile-form-text"}}
+                  <br>
+                  {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off"}}
+                  {{#if zipCodeHasError}}
+                    <div class="validation-error-message mb-2 fade">
+                      {{zipCodeErrorMessage}}
+                    </div>
+                  {{/if}}
                 </div>
               </div>
               <br>
               <label class="account-profile-form-text">State</label>
-              {{input type="string" value=state name="{{model.user.street}}" placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text"}}
+              {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if stateHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{stateErrorMessage}}
+                </div>
+              {{/if}}
               <br>
               <label class="account-profile-form-text mt-3">Country</label>
-              {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text"}}
+              {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off"}}
+              {{#if countryHasError}}
+                <div class="validation-error-message mb-2 fade">
+                  {{countryErrorMessage}}
+                </div>
+              {{/if}}
               <br>
             </div>
           </div>
         </div>
       </div>
-      <div class="mt-4">
-        <button class="account-profile-save-info-button" {{action "updateUser"}}>SAVE INFO {{material-icon "keyboard_arrow_right"}}</button>
+      <div class="account-profile-save-holder row mt-4 p-0 mr-0 ml-0">
+        <button class="account-profile-save-info-button" {{action "updateUser"}}>
+          SAVE INFO 
+          <i class="material-icons">
+            keyboard_arrow_right
+          </i>
+        </button>
+        {{#each flashMessages.queue as |flash index|}}
+          {{#if (eq index 0)}}
+            {{#if hasError}}
+              <p class="errormarker fade">
+                <i class="material-icons">
+                  error_outline
+                </i>
+              </p>
+            {{else}}
+              <p class="checkmarker fade">
+                <i class="material-icons">
+                  done
+                </i>
+              </p>
+            {{/if}}
+          {{/if}}
+        {{/each}}
       </div>
     </form>
   </div>
 </div>
-

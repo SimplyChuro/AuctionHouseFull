@@ -2,25 +2,32 @@ import DS from 'ember-data';
 import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
+
+  address: validator('belongs-to'),
+
   name: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Name should not be empty or contain any empty spaces"
+    message: "First Name can not be empty"
   }),
 
   surname: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Surname should not be empty or contain any empty spaces"
+    message: "Last Name can not be empty"
   }),
 
   email: [ 
-    validator('presence', true),
+    validator('presence', {
+      presence: true,
+      ignoreBlank: true,
+      message: "E-mail can not be empty"
+    }),
+    
     validator('format', { type: 'email' })
   ],
 
   password: [ 
-  
     validator('presence', true),
     validator('length', { 
       min: 4 
@@ -32,10 +39,21 @@ const Validations = buildValidations({
     })
   ],
 
+  passwordConfirmation: validator('confirmation', {
+    on: 'password',
+    message: 'Passwords do not match'
+  }),
+
+  emailConfirmation: validator('confirmation', {
+    on: 'email',
+    message: 'Email addresses do not match'
+  }),
+
   phoneNumber: [ 
     validator('format', { 
       allowBlank: true,
-      type: 'phone'
+      regex: /^\+{0,1}[0-9, ]*$/,
+      message: 'Phone number can not contain alphabet letters'
     })
   ]
 
@@ -45,15 +63,16 @@ export default DS.Model.extend(Validations, {
   name: DS.attr('string'),
   surname: DS.attr('string'),
   email: DS.attr('string'),
-  password: DS.attr('string'),
+  password: DS.attr('string'),  
   emailVerified: DS.attr('boolean'),
   avatar: DS.attr('string'),
   gender: DS.attr('string'),
   dateOfBirth: DS.attr('date'),
   phoneNumber: DS.attr('string'),
   phoneVerified: DS.attr('boolean'),
-  address: DS.belongsTo('address'),
-  wishlist: DS.hasMany('wishlist'),
-  bids: DS.hasMany('bid'),
-  sales: DS.hasMany('sale')
+  address: DS.belongsTo('address', { async: false }),
+  wishlist: DS.hasMany('wishlist', { async: false }),
+  bids: DS.hasMany('bid', { async: false }),
+  sales: DS.hasMany('sale', { async: false }),
+  reviews: DS.hasMany('review', { async: false })
 });

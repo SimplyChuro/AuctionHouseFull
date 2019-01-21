@@ -23,7 +23,6 @@ import play.libs.Json;
 
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Products extends Model{
 	
 	@Id
@@ -58,7 +57,9 @@ public class Products extends Model{
 	@Column(columnDefinition = "varchar(2048)")
 	@Constraints.Required
 	public String description;
-	
+
+	@Constraints.Required
+	public Boolean featured;
 	
 	//Foreign Keys
 	
@@ -76,16 +77,18 @@ public class Products extends Model{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public List<Sales> sales;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
+    public List<Reviews> reviews;
 
 	public static final Finder<Long, Products> find = new Finder<>(Products.class);
 
 	
-	
+	//Constructor	
 	public Products() {}
 	
-	public Products(@Required String name, @Required Date publishDate, @Required Date expireDate,
-			@Required String status, @Required String color, @Required String size,
-			@Required String description, @Required Double startingPrice) {
+	public Products(String name, Date publishDate, Date expireDate,
+			String status, String color, String size, String description, Double startingPrice, Boolean featured) {
 		this.name = name;
 		this.publishDate = publishDate;
 		this.expireDate = expireDate;
@@ -94,7 +97,7 @@ public class Products extends Model{
 		this.color = color;
 		this.size = size;
 		this.description = description;
-		
+		this.featured = featured;
 	}
 	
 }

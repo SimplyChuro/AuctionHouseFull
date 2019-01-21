@@ -29,9 +29,11 @@ public class Pictures extends Model{
     
 	public static final Finder<Long, Pictures> find = new Finder<>(Pictures.class);
 
+	
+	//Constructors	
 	public Pictures() {}
 	
-	public Pictures(@Required String url, Products product) {
+	public Pictures(String url, Products product) {
 		this.url = url;
 		this.product = product;
 	}

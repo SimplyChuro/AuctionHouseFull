@@ -9,10 +9,21 @@ import models.Category;
 import models.Pictures;
 import models.ProductCategory;
 import models.Products;
+import models.Users;
 
 public class MockData {
 	
 	public void create() {
+		
+		Users admin = new Users();
+		
+		admin.name = "supremeleader";
+		admin.surname= "best";
+		admin.setEmail("supreme@leader.com");
+		admin.setPassword("SupremeLeader123!@#");
+		admin.setEmailVerified(true);
+		admin.admin = true;
+		admin.save();
 		
 		//Base objects		
 		Category category, childCategory;
@@ -73,7 +84,7 @@ public class MockData {
 		String endDate [] = {
 				"2019-01-01", 
 				"2019-09-23", 
-				"2018-12-05", 
+				"2019-12-05", 
 				"2019-06-11", 
 				"2019-05-17", 
 				"2019-05-17", 
@@ -246,7 +257,7 @@ public class MockData {
 				end = new Date();
 			}
 			
-			product = new Products(name[i], start, end, status[i], color[i], size[i], description[i], startingPrice[i]);
+			product = new Products(name[i], start, end, status[i], color[i], size[i], description[i], startingPrice[i], true);
 			product.save();
 			
 			for(String pic : pictureUrl[i]) {
@@ -267,10 +278,16 @@ public class MockData {
 					.endJunction()
 			        .findUnique();
 			
-			ProductCategory productCategoryLink = new ProductCategory();
-			productCategoryLink.category = childCategory;
-			productCategoryLink.product = product;
-			productCategoryLink.save();
+			ProductCategory productCategoryLinkParent = new ProductCategory();
+			ProductCategory productCategoryLinkChild = new ProductCategory();
+			
+			productCategoryLinkChild.category = childCategory;
+			productCategoryLinkChild.product = product;
+			productCategoryLinkChild.save();
+			
+			productCategoryLinkParent.category = category;
+			productCategoryLinkParent.product = product;
+			productCategoryLinkParent.save();
 		}
 		
 	}

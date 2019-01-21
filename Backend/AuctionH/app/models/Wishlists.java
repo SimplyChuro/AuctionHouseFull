@@ -33,15 +33,12 @@ public class Wishlists extends Model{
     
 	public static final Finder<Long, Wishlists> find = new Finder<>(Wishlists.class);
 
+	
+	//Methods	
 	public void createWishlist(Users user, JsonNode objectNode) {
 		this.user = user;
 		product = Products.find.byId(objectNode.findPath("product_id").asLong());
 		save();
-	}
-	
-	public void updateWishlist(JsonNode objectNode) {
-		status = objectNode.findPath("status").asText();
-		update();
 	}
 	
 }

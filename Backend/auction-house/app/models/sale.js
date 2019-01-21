@@ -2,29 +2,30 @@ import DS from 'ember-data';
 import { buildValidations, validator } from 'ember-cp-validations';
 
 const Validations = buildValidations({
+  
   address: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Address should not be empty"
+    message: "Address can not be empty"
   }),
 
   city: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "City should not be empty"
+    message: "City can not be empty"
   }),
 
   zipCode: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "ZipCode should not be empty"
+    message: "ZipCode can not be empty"
   }),
 
   phone: [
     validator('presence', {
       presence: true,
       ignoreBlank: true,
-      message: "Phone should not be empty"
+      message: "Phone can not be empty"
     }),
     
     validator('format', { 
@@ -36,7 +37,7 @@ const Validations = buildValidations({
   country: validator('presence', {
     presence: true,
     ignoreBlank: true,
-    message: "Country should not be empty"
+    message: "Country can not be empty"
   }),
 
 });

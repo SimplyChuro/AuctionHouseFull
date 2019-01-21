@@ -12,5 +12,12 @@ export default DS.Model.extend({
   pictures: DS.hasMany('picture'),
   productcategory: DS.hasMany('productcategory'),
   wishlist: DS.hasMany('wishlist'),
-  bids: DS.hasMany('bid')
+  bids: DS.hasMany('bid'),
+  reviews: DS.hasMany('review'),
+
+  ratingScores: Ember.computed.mapBy('review', 'rating'),
+  sumOfScores: Ember.computed.sum('ratingScores'),
+  averageScore: Ember.computed('sumOfScores', 'ratingScores.length', function() {
+    return this.get('sumOfScores') / this.get('ratingScores.length');
+  })
 });
