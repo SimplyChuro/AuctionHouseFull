@@ -129,6 +129,14 @@
                       </i>
                     </button>
                   {{/if}}
+
+                {{else}}
+                  <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                    PLACE BID 
+                    <i class="material-icons">
+                      keyboard_arrow_right
+                    </i>
+                  </button>
                 {{/if}}
 
                 {{#each flashMessages.queue as |flash index|}}
