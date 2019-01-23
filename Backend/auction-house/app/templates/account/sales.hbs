@@ -21,16 +21,16 @@
         Sales
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
       {{#link-to 'account.bids' class="account-navigation-link"}}
         <i class="material-icons">
           gavel
         </i>
         Bids
       {{/link-to}}
-
-      <div class="d-lg-none d-xl-none">
-        <br>
-      </div>
       
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
         <i class="material-icons">
@@ -38,6 +38,10 @@
         </i>
         Wishlist
       {{/link-to}}
+
+      <div class="d-block d-sm-none">
+        <br>
+      </div>
 
       {{#link-to 'account.settings' class="account-navigation-link"}}
         <i class="material-icons">
@@ -81,38 +85,74 @@
       <div class="mb-2"></div>
       {{#each model.saleList as |sale|}}
         {{#unless (eq sale.id null)}}
-          {{#if (eq (to-lower-case sale.status) saleStatus)}}
-            <tr class="fade">
-              <td class="m-0 p-0">
-                <div class="accout-bids-image-holder">
-                  {{#each sale.product.pictures as |picture index|}}
-                    {{#if (is-main picture null index)}}
-                      <img src="{{picture.url}}" class="account-bid-image">
-                    {{/if}}
-                  {{/each}}
-                </div>
-              </td>
-              <td class="account-header-text account-bids-table-name"> 
-                <span class="account-product-name">{{sale.product.name}}</span>
-                <br>
-                <span class="account-product-id">#{{sale.product.id}}</span>
-              </td>
-              <td class="text-center">
-                <span class="account-product-plain-text">{{duration sale.product.publishDate sale.product.expireDate}}</span>
-              </td>
-              <td class="text-center">
-                <span class="account-product-plain-text">{{format-bid sale.product.startingPrice}}</span>
-              </td>
-              <td class="text-center">
-                <span class="account-product-plain-text">{{sale.product.bids.length}}</span>
-              </td>
-              <td class="text-center">
-                <span class="account-product-plain-text">{{format-bid (get-biggest sale.product.bids)}}</span>
-              </td>
-              <td>
-                {{#link-to 'account.sell.sale-item' sale.id class="account-bids-button"}}VIEW{{/link-to}}
-              </td>
-            </tr>
+          {{#if (eq saleStatus 'active')}}
+            {{#unless (is-less (duration sale.product.publishDate sale.product.expireDate) 1)}}
+              <tr class="fade">
+                <td class="m-0 p-0">
+                  <div class="accout-bids-image-holder">
+                    {{#each sale.product.pictures as |picture index|}}
+                      {{#if (is-main picture null index)}}
+                        <img src="{{picture.url}}" class="account-bid-image">
+                      {{/if}}
+                    {{/each}}
+                  </div>
+                </td>
+                <td class="account-header-text account-bids-table-name"> 
+                  <span class="account-product-name">{{sale.product.name}}</span>
+                  <br>
+                  <span class="account-product-id">#{{sale.product.id}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{duration sale.product.publishDate sale.product.expireDate}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{format-bid sale.product.startingPrice}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{sale.product.bids.length}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{format-bid (get-biggest sale.product.bids)}}</span>
+                </td>
+                <td>
+                  {{#link-to 'account.sell.sale-item' sale.id class="account-bids-button"}}EDIT{{/link-to}}
+                </td>
+              </tr>
+            {{/unless}}
+          {{else}}
+            {{#if (is-less (duration sale.product.publishDate sale.product.expireDate) 1)}}
+              <tr class="fade">
+                <td class="m-0 p-0">
+                  <div class="accout-bids-image-holder">
+                    {{#each sale.product.pictures as |picture index|}}
+                      {{#if (is-main picture null index)}}
+                        <img src="{{picture.url}}" class="account-bid-image">
+                      {{/if}}
+                    {{/each}}
+                  </div>
+                </td>
+                <td class="account-header-text account-bids-table-name"> 
+                  <span class="account-product-name">{{sale.product.name}}</span>
+                  <br>
+                  <span class="account-product-id">#{{sale.product.id}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{duration sale.product.publishDate sale.product.expireDate}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{format-bid sale.product.startingPrice}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{sale.product.bids.length}}</span>
+                </td>
+                <td class="text-center">
+                  <span class="account-product-plain-text">{{format-bid (get-biggest sale.product.bids)}}</span>
+                </td>
+                <td>
+                  {{#link-to 'account.sell.sale-item' sale.id class="account-bids-button"}}EDIT{{/link-to}}
+                </td>
+              </tr>
+            {{/if}}
           {{/if}}
         {{/unless}}
       {{/each}}

@@ -7,6 +7,7 @@ import java.util.concurrent.CompletionStage;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import additions.Secured;
 import models.Bids;
 import models.Products;
 import models.Sales;
@@ -40,7 +41,7 @@ public class WishlistController extends Controller{
 		return calculateResponse().thenApplyAsync(answer -> {
 			try {
 				user = LoginController.getUser();
-				if(!user.admin) {
+				if(!user.admin && user.active) {
 					wishlistChecker = Wishlists.find.byId(id);
 					return ok(Json.toJson(wishlistChecker));
 				} else {

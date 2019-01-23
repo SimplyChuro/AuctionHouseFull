@@ -10,7 +10,7 @@ export default Helper.extend({
     var checker = false;
     
     bids.forEach((item) => {
-      if(item.user.get('id') == session.getUserID()){
+      if(item.user.get('id') == session.getUserID()) {
         checker = true;
       }
     });

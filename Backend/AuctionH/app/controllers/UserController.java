@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import additions.PictureFilter;
+import additions.S3Signature;
+import additions.Secured;
 import jdk.nashorn.internal.objects.annotations.Where;
 import models.Products;
 import models.Reviews;
@@ -54,6 +57,7 @@ public class UserController extends Controller {
 	private Users user;
 	private JsonNode objectNode;
 	private Email email;
+	private PictureFilter filter = new PictureFilter();
 	
 	@Inject MailerClient mailerClient;
 	@Inject
@@ -93,7 +97,8 @@ public class UserController extends Controller {
 				if(user.admin) {
 					List<Users> users = Users.find.query().where()
 							.conjunction()
-							.ge("id", 2)
+							.not()
+							.eq("id", user.id)
 							.endJunction()
 							.findList();
 					
@@ -168,15 +173,17 @@ public class UserController extends Controller {
 				objectNode = request().body().asJson().get("user");
 				if(user.admin) {
 					userChecker = Users.find.byId(id);
-	//				userChecker.updatePassword(objectNode);
-	//				userChecker.updatePassword(objectNode);
-					userChecker.updateUser(objectNode);
+					userChecker.updateMailAdmin(objectNode);
+					userChecker.updatePasswordAdmin(objectNode);
+					userChecker.updateUserAdmin(objectNode);
 					return ok(Json.toJson(userChecker));
 				} else {
 					user.updateUser(objectNode);
+					user.updatePasswordAdmin(objectNode);
 					return ok(Json.toJson(user));
 				}
 			} catch(Exception e) {
+				e.printStackTrace();
 				return badRequest();
 			}
 		}, httpExecutionContext.current());
@@ -358,9 +365,7 @@ public class UserController extends Controller {
 			try {
 				userChecker = LoginController.getUser();
 				if(userChecker.active) {
-					int maxSize = 2097152;
-					int minSize = 4096;
-					if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
+					if(filter.isValidPicture(name, type, size)) {
 						S3Signature s3 = new S3Signature(name, type, size, "images/users/");
 						
 			           	return ok(s3.getS3EmberNode());
@@ -375,5 +380,24 @@ public class UserController extends Controller {
 			}
 		}, httpExecutionContext.current());
 	}
-    
+	
+	//Validate upload
+	@Security.Authenticated(Secured.class)
+	public CompletionStage<Result> productPayment() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+				if(userChecker.active) {
+					
+					return ok(Json.toJson(""));
+				} else {
+					return badRequest();	
+				}
+			}catch(Exception e) {
+				return badRequest();
+			}
+		}, httpExecutionContext.current());
+	}
+	
+	
 }

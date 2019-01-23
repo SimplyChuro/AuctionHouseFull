@@ -1,5 +1,6 @@
-package controllers;
+package additions;
 
+import controllers.LoginController;
 import models.Users;
 import play.mvc.Http.Context;
 import play.mvc.Result;

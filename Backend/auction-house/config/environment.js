@@ -17,6 +17,10 @@ module.exports = function(environment) {
 
     APP: {},
 
+    stripe: {
+      publishableKey: 'pk_test_594FKlw0ndP41UyAWHNWjBpm'
+    },
+
     torii: {
       allowUnsafeRedirect: true,
 

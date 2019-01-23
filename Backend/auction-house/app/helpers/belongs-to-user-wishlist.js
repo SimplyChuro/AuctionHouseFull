@@ -8,7 +8,7 @@ export default Helper.extend({
     var checker = null;
 
     wishlist.forEach((item) => {
-      if(item.product.get('id') == productID){
+      if(item.product.get('id') == productID) {
         checker = item;
       }
     });

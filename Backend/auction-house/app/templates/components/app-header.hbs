@@ -1,16 +1,16 @@
 <header class="container-fuild">
-  <nav class="navbar navbar-expand-sm pt-1 pb-1 user-navigation-bar">
+  <nav class="navbar navbar-expand pt-1 pb-1 user-navigation-bar">
     <div class="container">
-      <div class="navbar-brand text-light">
+      <div class="navbar-brand text-light navbar-padding-left">
         <div class="row mr-0 ml-0">
           <a class="social-media-link" href="https://www.facebook.com/auctionhouse.atlantbh"><i class="fab fa-facebook-f"></i></a>
-          <a class="social-media-link" href="#"><i class="fab fa-instagram"></i></a>
+          <a class="social-media-link" href="https://www.instagram.com/ahouse2019"><i class="fab fa-instagram"></i></a>
           <a class="social-media-link" href="https://twitter.com/AuctionHouse4"><i class="fab fa-twitter"></i></a>
           <a class="social-media-link" href="https://plus.google.com/u/2/103540929625929120932"><i class="fab fa-google-plus-g"></i></a>
         </div>
       </div>
       <div>
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto navbar-padding-right">
           {{#if (is-logged-in customSession.authToken currentDate)}}
             <li class="nav-item pt-2 pb-2">
               <button type="submit" class="header-logout-button" {{action "logout"}}>Logout</button>
@@ -36,17 +36,17 @@
     <div class="container">
       <div class="row full-width mr-0 ml-0">
 
-        <div class="col-sm-5 col-md-4 col-lg-3 col-xl-3 mr-0 ml-0 pl-0 pr-0">
+        <div class="col-5 col-sm-5 col-md-4 col-lg-3 col-xl-3 mr-0 ml-0 pl-0 pr-0">
           {{#link-to 'home' class="header-logo-link"}}
             <p class="title"><img class="logo" src="https://muffin.ml/maki/churo-images/logo/logo.png">AUCTION</p>
           {{/link-to}}
         </div>
 
-        <div class="col-sm-5 col-md-6 col-lg-5 col-xl-5 mr-0 ml-0 pl-0 pr-1 padding-top-15">
+        <div class="col-5 col-sm-5 col-md-6 col-lg-5 col-xl-5 mr-0 ml-0 pl-0 pr-1 padding-top-15">
           <form class="navbar-form navigation-form full-width">
             <div class="row mr-0 ml-0">
-              {{input type="text" class="header-search-input col-sm-8 col-md-9 col-lg-9 col-xl-9" value=searchQuery placeholder="Search" autocomplete="off"}}  
-              <button class="header-search-button ml-auto pr-1 col-sm-3 col-md-2 col-lg-2 col-xl-2" type="submit" {{action 'searchForItem'}}>
+              {{input type="text" class="header-search-input col-8 col-sm-8 col-md-9 col-lg-9 col-xl-9" value=searchQuery placeholder="Search" autocomplete="off"}}  
+              <button class="header-search-button ml-auto pr-1 col-3 col-sm-3 col-md-2 col-lg-2 col-xl-2" type="submit" {{action 'searchForItem'}}>
                 <i class="material-icons">
                   search
                 </i>
@@ -55,7 +55,7 @@
           </form>
         </div>
 
-        <div class="col-sm-2 col-md-2 col-lg-4 col-xl-4 mr-0 ml-0 pl-4 pr-0 pt-1">
+        <div class="col-2 col-sm-2 col-md-2 col-lg-4 col-xl-4 mr-0 ml-0 pl-4 pr-0 pt-1">
           <div class="d-none d-lg-block d-xl-block">
             <div class="navbar navbar-expand-md navbar-white bg-white mr-0 ml-0 pl-0 pr-0">
               <ul class="navbar-nav ml-auto">

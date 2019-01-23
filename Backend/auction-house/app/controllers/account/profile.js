@@ -4,6 +4,7 @@ import { isEmpty } from '@ember/utils';
 
 export default Controller.extend({ 
   store: service(),
+  loadingSlider: service(),
   
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
   currentDatePlaceHolder: 'e.g. ' + moment(new Date()).format("DD/MM/YYYY"),
@@ -12,12 +13,16 @@ export default Controller.extend({
   selectedOption: null,
 
   hasError: null,
+  newPasswordToggled: false,
 
   nameHasError: null,
   nameErrorMessage: null,
 
   surnameHasError: null,
   surnameErrorMessage: null,
+
+  passwordErrorMessage: null,
+  passwordHasError: null,
 
   dateOfBirthHasError: null,
   dateOfBirthErrorMessage: null,
@@ -120,13 +125,21 @@ export default Controller.extend({
 
       user.set('name', this.get('name'));
       user.set('surname', this.get('surname'));
-      user.set('password', "Temporary123!@#");
-      user.set('passwordConfirmation', "Temporary123!@#");
+
+      if(this.get('newPasswordToggled')) {
+        user.set('password', this.get('password'));
+        user.set('passwordConfirmation', this.get('password'));
+        user.set('new_password', true);
+      } else {
+        user.set('password', "PlaceHolder123!@#");
+        user.set('passwordConfirmation', "PlaceHolder123!@#");
+        user.set('new_password', false);
+      }
+
       user.set('emailConfirmation', user.get('email'));
       user.set('gender', this.get('selectedOption'));
 
-
-      if(!isEmpty(this.get('dateOfBirth'))){
+      if(!isEmpty(this.get('dateOfBirth'))) {
         bd = new Date(this.get('dateOfBirth'));
         bd.setMinutes(bd.getMinutes() - bd.getTimezoneOffset());
         user.set('dateOfBirth', bd);  
@@ -144,13 +157,13 @@ export default Controller.extend({
 
       await user.validate().then(({ validations }) => {
         if(validations.get('isValid')) {
-          if(_this.customValidation()){
-            user.save().then(function(){
-              _this.set('hasError', false);
-              _this.get('flashMessages').success('Updated Profile!');
-
+          if(_this.customValidation()) {
+            _this.get('loadingSlider').endLoading();
+            _this.get('loadingSlider').startLoading();
+            user.save().then(function() {
               _this.set('nameHasError', null);
               _this.set('surnameHasError', null);
+              _this.set('passwordHasError', null);
               _this.set('dateOfBirthHasError', null);
               _this.set('phoneNumberHasError', null);
               _this.set('streetHasError', null);
@@ -158,10 +171,11 @@ export default Controller.extend({
               _this.set('zipCodeHasError', null);
               _this.set('stateHasError', null);
               _this.set('countryErrorMessage', null);
-            
+              _this.get('loadingSlider').endLoading();
+              swal("Success!", "You've successfully updated your profile!", "success");
             }).catch(function(){
-              _this.set('hasError', true);
-              _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
+              _this.get('loadingSlider').endLoading();
+              swal("Ooops!", "It would seem an error has occurred please try again.", "error");
             });
           }
         } else {
@@ -175,6 +189,11 @@ export default Controller.extend({
             this.set('surnameHasError', true);
             this.set('surnameErrorMessage', user.get('validations.attrs.surname.messages'));
           }
+
+          if(user.get('validations.attrs.password.messages') !== '' && user.get('validations.attrs.password.messages') !== null) {
+            this.set('passwordHasError', true);
+            this.set('passwordErrorMessage', user.get('validations.attrs.password.messages'));
+          }
           
           if(user.get('validations.attrs.dateOfBirth.messages') !== '' && user.get('validations.attrs.dateOfBirth.messages') !== null){
             this.set('dateOfBirthHasError', true);
@@ -186,8 +205,6 @@ export default Controller.extend({
             this.set('phoneNumberErrorMessage', user.get('validations.attrs.phoneNumber.messages'));
           }
           
-          _this.set('hasError', true); 
-          _this.get('flashMessages').warning('Oops! An unexpected error occoured.');
         }
       });
     },
@@ -208,6 +225,38 @@ export default Controller.extend({
       Ember.run.once(function(){
         _this.set('progress', (value.percent/100));
       });
+    },
+
+    toggleNewPassword: function() {
+      this.set('newPasswordToggled', true);
+      this.set('password', '');
+    },
+
+    clearFields: function() {
+      this.set('newPasswordToggled', false);
+      this.set('password', '');
+      this.set('nameHasError', null);
+      this.set('nameErrorMessage', null);
+      this.set('surnameHasError', null);
+      this.set('surnameErrorMessage', null);
+      this.set('passwordHasError', null);
+      this.set('passwordErrorMessage', null);
+      this.set('dateOfBirthHasError', null);
+      this.set('dateOfBirthErrorMessage', null);
+      this.set('phoneNumberHasError', null);
+      this.set('phoneNumberErrorMessage', null);
+      this.set('streetHasError', null);
+      this.set('streetErrorMessage', null);
+      this.set('cityHasError', null);
+      this.set('cityErrorMessage', null);
+      this.set('zipCodeHasError', null);
+      this.set('zipCodeErrorMessage', null);
+      this.set('nameHasError', null);
+      this.set('nameHasError', null);
+      this.set('stateHasError', null);
+      this.set('stateErrorMessage', null);
+      this.set('countryHasError', null);
+      this.set('countryErrorMessage', null);
     }
 
   }

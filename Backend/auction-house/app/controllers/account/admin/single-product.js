@@ -58,7 +58,7 @@ export default Controller.extend({
   
   pictureFiles: [],
 
-  customValidationPageOne: function(){
+  customValidationPageOne: function() {
     var checker = true;
     var regex;
 
@@ -97,7 +97,7 @@ export default Controller.extend({
       this.set('descriptionErrorMessage', 'Description can not be blank');
       checker = false;
     } else {
-      if(this.get('descriptionInput').length > 700){
+      if(this.get('descriptionInput').length > 700) {
         this.set('descriptionHasError', true);
         this.set('descriptionErrorMessage', 'The given description is way too big');
         checker = false;
@@ -126,7 +126,7 @@ export default Controller.extend({
       this.set('colorErrorMessage', 'Color can not be blank');
       checker = false;
     } else {
-      if(this.get('colorInput').length > 40){
+      if(this.get('colorInput').length > 40) {
         this.set('colorHasError', true);
         this.set('colorErrorMessage', 'The given color is way too big');
         checker = false;
@@ -140,7 +140,7 @@ export default Controller.extend({
       this.set('sizeErrorMessage', 'Size can not be blank');
       checker = false;
     } else {
-      if(this.get('sizeInput').length > 40){
+      if(this.get('sizeInput').length > 40) {
         this.set('sizeHasError', true);
         this.set('sizeErrorMessage', 'The given size is way too big');
         checker = false;
@@ -152,7 +152,7 @@ export default Controller.extend({
     return checker;
   },
 
-  customValidationPageTwo: function(){
+  customValidationPageTwo: function() {
     var checker = true;
     var regex;
 
@@ -162,7 +162,7 @@ export default Controller.extend({
       checker = false;
     } else {
       regex = new RegExp(/^-?\d*(\.\d+)?$/);
-      if(regex.test(this.get('startingPriceInput'))){
+      if(regex.test(this.get('startingPriceInput'))) {
         if(this.get('startingPriceInput') >= 0) {
           this.set('startingPriceHasError', false);
         } else {
@@ -207,7 +207,7 @@ export default Controller.extend({
     };
   }),
 
-  previewImages: observer('page', 'pictureFiles.[]', function(){ 
+  previewImages: observer('page', 'pictureFiles.[]', function() { 
     this.get('pictureFiles').forEach((item, index) => {
       var reader = new FileReader();
 
@@ -225,7 +225,7 @@ export default Controller.extend({
       var currentPage = this.get('page');
       if(page > currentPage) {
         if(page == 2) {
-          if(this.customValidationPageOne()){
+          if(this.customValidationPageOne()) {
             this.set('name', this.get('nameInput'));
             this.set('description', this.get('descriptionInput'));
             this.set('color', this.get('colorInput'));
@@ -248,7 +248,7 @@ export default Controller.extend({
     },
 
     async saveProduct(){
-      if(this.customValidationPageTwo()){
+      if(this.customValidationPageTwo()) {
         var _this = this;
         
         _this.get('loadingSlider').endLoading();
@@ -260,13 +260,13 @@ export default Controller.extend({
         product.set('color', this.get('color'));
         product.set('size', this.get('size'));
         
-        if(!isEmpty(this.get('startDate'))){
+        if(!isEmpty(this.get('startDate'))) {
           var startDate = new Date(this.get('startDateInput'));
           startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
           product.set('publishDate', startDate);  
         } 
 
-        if(!isEmpty(this.get('endDate'))){
+        if(!isEmpty(this.get('endDate'))) {
           var endDate = new Date(this.get('endDateInput'));
           endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
           product.set('expireDate', endDate);  
@@ -289,7 +289,7 @@ export default Controller.extend({
         let promises = [];
 
         this.get('pictureFiles').forEach((file, index) => {
-          var promise = new RSVP.Promise(function(resolve, reject){
+          var promise = new RSVP.Promise(function(resolve, reject) {
             const uploader = S3Uploader.create({
               signingUrl: _this.get('signingUrl'),
               signingAjaxSettings: {
@@ -317,7 +317,7 @@ export default Controller.extend({
         });
 
         await RSVP.all(promises).then(function() {
-          product.save().then(function(){
+          product.save().then(function() {
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.admin.products');
             swal("Success!", "You have successfully updated this product!", "success");
@@ -329,11 +329,11 @@ export default Controller.extend({
       }
     },
 
-    async deleteProduct(){ 
+    async deleteProduct() { 
       var _this = this;
       let product = this.get('model.product');
 
-      await product.destroyRecord().then(function(){
+      await product.destroyRecord().then(function() {
         _this.transitionToRoute('account.admin.products');
         swal("Success!", "You have successfully deleted this product!", "success");
       }).catch(function(){
@@ -341,20 +341,20 @@ export default Controller.extend({
       });
     },
 
-    removePicture: function(picture){
+    removePicture: function(picture) {
       this.get('pictureFiles').removeObject(picture);
     },
 
-    removeOldPicture: function(picture){
+    removeOldPicture: function(picture) {
       this.get('model.product.pictures').removeObject(picture);
     },
 
-    setCategory: function(category){
+    setCategory: function(category) {
       this.set('category', category);
       this.set('subCategory', null);
     },
 
-    setSubCategory: function(category){
+    setSubCategory: function(category) {
       if(category == null || category == 'null'){
         this.set('subCategory', null);
       } else {
@@ -362,17 +362,17 @@ export default Controller.extend({
       }
     },
     
-    changeStartDate: function(date){
+    changeStartDate: function(date) {
       this.set('startDate', date);
       this.set('endDateInput', '');
       this.set('endDate', null);
     },
 
-    changeEndDate: function(date){
+    changeEndDate: function(date) {
       this.set('endDate', date);
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('page', 1);
       this.set('category', null);
       this.set('subCategory', null);

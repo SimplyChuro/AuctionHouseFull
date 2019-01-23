@@ -13,10 +13,13 @@ export default Controller.extend({
   currentUser: null,
   userCreateEnabled: false,
   userEditEnabled: false,
-  
+  newPasswordToggled: false,
+
   selectedOption: null,
 
   hasError: null,
+  adminCheckbox: undefined,
+  defaultCheckbox: undefined,
 
   nameHasError: null,
   nameErrorMessage: null,
@@ -27,14 +30,8 @@ export default Controller.extend({
   emailErrorMessage: null,
   emailHasError: null,
 
-  emailConfirmationErrorMessage: null,
-  emailConfirmationHasError: null,
-
   passwordErrorMessage: null,
   passwordHasError: null,
-
-  passwordConfirmationErrorMessage: null,
-  passwordConfirmationHasError: null,
 
   dateOfBirthHasError: null,
   dateOfBirthErrorMessage: null,
@@ -60,7 +57,7 @@ export default Controller.extend({
   emailExistsErrorMessage: 'The input email is in usage',
   emailExistsHasError: null,
 
-  customValidation: function(){
+  customValidation: function() {
     var checker = true;
     
     if(!(isEmpty(this.get('phoneNumber')))) {
@@ -126,6 +123,22 @@ export default Controller.extend({
 
   },
 
+  adminCheckboxObserver: function() {
+    if(this.get('adminCheckbox') == true) {
+      this.set('defaultCheckbox', false);
+    } else {
+      this.set('defaultCheckbox', true);
+    }
+  }.observes('adminCheckbox'),
+
+  defaultCheckboxObserver: function() {
+    if(this.get('defaultCheckbox') == true) {
+      this.set('adminCheckbox', false);
+    } else {
+      this.set('adminCheckbox', true);
+    }
+  }.observes('defaultCheckbox'),
+
   actions: {
 
     async createUser() {    
@@ -138,8 +151,8 @@ export default Controller.extend({
       user.set('passwordConfirmation', this.get('password'));
 
       var _this = this;
-      await user.validate().then(({ validations }) =>{
-        if(validations.get('isValid')){
+      await user.validate().then(({ validations }) => {
+        if(validations.get('isValid')) {
           _this.get('loadingSlider').endLoading();
           _this.get('loadingSlider').startLoading();
           _this.set('emailExistsHasError', null);
@@ -170,7 +183,6 @@ export default Controller.extend({
             _this.set('passwordHasError', null); 
             _this.set('passwordErrorMessage', null);
             _this.get('loadingSlider').endLoading();
-            user.destroyRecord();
             swal("Ooops!", "It would seem an error has occurred please try again.", "error");
           });
         } else {
@@ -201,7 +213,7 @@ export default Controller.extend({
       })
     },
 
-    async updateUser(){
+    async updateUser() {
       var _this = this;
       var bd;
 
@@ -210,16 +222,37 @@ export default Controller.extend({
 
       user.set('name', this.get('name'));
       user.set('surname', this.get('surname'));
-      user.set('password', "PlaceHolder123!@#");
-      user.set('passwordConfirmation', "PlaceHolder123!@#");
-      user.set('email', user.get('email'));
+
+      if(this.get('email') != user.get('email')) {
+        user.set('email', this.get('email'));
+        user.set('new_email', true);
+      }
+
       user.set('emailConfirmation', user.get('email'));
+
+      if(this.get('newPasswordToggled')) {
+        user.set('password', this.get('password'));
+        user.set('passwordConfirmation', this.get('password'));
+        user.set('new_password', true);
+      } else {
+        user.set('password', "PlaceHolder123!@#");
+        user.set('passwordConfirmation', "PlaceHolder123!@#");
+        user.set('new_password', false);
+      }
       
       if(!isEmpty(this.get('selectedOption'))){
         user.set('gender', this.get('selectedOption'));
       }
 
-      if(!isEmpty(this.get('dateOfBirth'))){
+      if(user.admin && this.get('defaultCheckbox')) {
+        user.set('admin', false);
+      } else if(!user.admin && this.get('adminCheckbox')) {
+        user.set('admin', true);
+      } else {
+        user.set('admin', false);
+      }
+
+      if(!isEmpty(this.get('dateOfBirth'))) {
         bd = new Date(this.get('dateOfBirth'));
         bd.setMinutes(bd.getMinutes() - bd.getTimezoneOffset());
         user.set('dateOfBirth', bd);  
@@ -236,9 +269,8 @@ export default Controller.extend({
       address.set('country', this.get('country'));
 
       await user.validate().then(({ validations }) => {
-        console.log(validations.get('errors'));
         if(validations.get('isValid')) {
-          if(_this.customValidation()){
+          if(_this.customValidation()) {
             _this.get('loadingSlider').endLoading();
             user.save().then(function(){
               _this.get('loadingSlider').endLoading();
@@ -259,22 +291,32 @@ export default Controller.extend({
           }
         } else {
 
-          if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null){
+          if(user.get('validations.attrs.name.messages') !== '' && user.get('validations.attrs.name.messages') !== null) {
             this.set('nameHasError', true);
             this.set('nameErrorMessage', user.get('validations.attrs.name.messages'));
           }
           
-          if(user.get('validations.attrs.surname.messages') !== '' && user.get('validations.attrs.surname.messages') !== null){
+          if(user.get('validations.attrs.surname.messages') !== '' && user.get('validations.attrs.surname.messages') !== null) {
             this.set('surnameHasError', true);
             this.set('surnameErrorMessage', user.get('validations.attrs.surname.messages'));
           }
+
+          if(user.get('validations.attrs.email.messages') !== '' && user.get('validations.attrs.email.messages') !== null) {
+            this.set('emailHasError', true);
+            this.set('emailErrorMessage', user.get('validations.attrs.email.messages'));
+          }
+
+          if(user.get('validations.attrs.password.messages') !== '' && user.get('validations.attrs.password.messages') !== null) {
+            this.set('passwordHasError', true);
+            this.set('passwordErrorMessage', user.get('validations.attrs.password.messages'));
+          }
           
-          if(user.get('validations.attrs.dateOfBirth.messages') !== '' && user.get('validations.attrs.dateOfBirth.messages') !== null){
+          if(user.get('validations.attrs.dateOfBirth.messages') !== '' && user.get('validations.attrs.dateOfBirth.messages') !== null) {
             this.set('dateOfBirthHasError', true);
             this.set('dateOfBirthErrorMessage', user.get('validations.attrs.dateOfBirth.messages'));
           }            
 
-          if(user.get('validations.attrs.phoneNumber.messages') !== '' && user.get('validations.attrs.phoneNumber.messages') !== null){
+          if(user.get('validations.attrs.phoneNumber.messages') !== '' && user.get('validations.attrs.phoneNumber.messages') !== null) {
             this.set('phoneNumberHasError', true);
             this.set('phoneNumberErrorMessage', user.get('validations.attrs.phoneNumber.messages'));
           }
@@ -313,7 +355,6 @@ export default Controller.extend({
     },
 
     async deleteUserPicture() {
-      var _this = this;
       let user = this.get('currentUser');
       user.set('avatar', null);
       await user.save();
@@ -335,9 +376,10 @@ export default Controller.extend({
     toggleUserCreate: function() {
       this.set('userEditEnabled', false);
       this.set('userCreateEnabled', true);
+      this.set('newPasswordToggled', false);
       this.set('currentUser', null);
-      this.set('name', "");
-      this.set('surname', "");
+      this.set('name', '');
+      this.set('surname', '');
       this.set('email', '');
       this.set('password', '');
       this.set('emailConfirmation', '');
@@ -351,23 +393,36 @@ export default Controller.extend({
 
       this.set('userCreateEnabled', false);
       this.set('userEditEnabled', true);
+      this.set('newPasswordToggled', false);
 
       this.set('name', user.name);
       this.set('surname', user.surname);
       this.set('dateOfBirth', user.dateOfBirth);
       this.set('phoneNumber', user.phoneNumber);
       this.set('selectedOption', user.gender);
+      this.set('email', user.email);
+      this.set('password', '');
       this.set('street', address.get('street'));
       this.set('city', address.get('city'));
       this.set('zipCode', address.get('zipCode'));
       this.set('state', address.get('state'));
       this.set('country', address.get('country'));
+
+      if(user.admin) {
+        this.set('adminCheckbox', true);
+      } else {
+        this.set('defaultCheckbox', true);
+      }
      
       this.set('selectedOption', null);
       this.set('nameHasError', null);
       this.set('nameErrorMessage', null);
       this.set('surnameHasError', null);
       this.set('surnameErrorMessage', null);
+      this.set('passwordHasError', null);
+      this.set('passwordErrorMessage', null);
+      this.set('emailHasError', null);
+      this.set('emailErrorMessage', null);
       this.set('dateOfBirthHasError', null);
       this.set('dateOfBirthErrorMessage', null);
       this.set('phoneNumberHasError', null);
@@ -384,6 +439,11 @@ export default Controller.extend({
       this.set('stateErrorMessage', null);
       this.set('countryHasError', null);
       this.set('countryErrorMessage', null);
+    },
+
+    toggleNewPassword: function() {
+      this.set('newPasswordToggled', true);
+      this.set('password', '');
     },
 
     cancle: function() {
@@ -395,11 +455,8 @@ export default Controller.extend({
       this.set('selectedOption', selected)
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('currentUser', null);
-      this.set('userCreateEnabled', false);
-      this.set('userEditEnabled', false);
-      this.set('selectedOption', null);
       this.set('userCreateEnabled', false);
       this.set('userEditEnabled', false);
       this.set('selectedOption', null);
@@ -407,6 +464,10 @@ export default Controller.extend({
       this.set('nameErrorMessage', null);
       this.set('surnameHasError', null);
       this.set('surnameErrorMessage', null);
+      this.set('passwordHasError', null);
+      this.set('passwordErrorMessage', null);
+      this.set('emailHasError', null);
+      this.set('emailErrorMessage', null);
       this.set('dateOfBirthHasError', null);
       this.set('dateOfBirthErrorMessage', null);
       this.set('phoneNumberHasError', null);
@@ -422,7 +483,6 @@ export default Controller.extend({
       this.set('stateHasError', null);
       this.set('stateErrorMessage', null);
       this.set('countryHasError', null);
-      this.set('countryErrorMessage', null);
       this.set('countryErrorMessage', null);
       this.set('name', "");
       this.set('surname', "");

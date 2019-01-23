@@ -38,7 +38,7 @@ export default Controller.extend({
       user.set('passwordConfirmation', this.get('passwordConfirmation'));
 
       var _this = this;
-      await user.validate().then(({ validations }) =>{
+      await user.validate().then(({ validations }) => {
         if(validations.get('isValid')){
           _this.get('loadingSlider').endLoading();
           _this.get('loadingSlider').startLoading();

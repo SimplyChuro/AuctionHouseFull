@@ -21,16 +21,16 @@
         Sales
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
       {{#link-to 'account.bids' class="account-navigation-link"}}
         <i class="material-icons">
           gavel
         </i>
         Bids
       {{/link-to}}
-      
-      <div class="d-lg-none d-xl-none">
-        <br>
-      </div>
 
       {{#link-to 'account.wishlist' class="account-navigation-link-active"}}
         <i class="material-icons">
@@ -38,6 +38,10 @@
         </i>
         Wishlist
       {{/link-to}}
+
+      <div class="d-block d-sm-none">
+        <br>
+      </div>
 
       {{#link-to 'account.settings' class="account-navigation-link"}}
         <i class="material-icons">
@@ -80,16 +84,26 @@
               <span class="account-product-id">#{{wishlist.product.id}}</span>
             </td>
             <td class="text-center">
-              <span class="account-product-plain-text">{{duration wishlist.product.publishDate wishlist.product.expireDate}}</span>
+              <span class="account-product-plain-text">
+                {{#if (is-less (duration wishlist.product.publishDate wishlist.product.expireDate) 1)}}
+                  <p class="account-product-plain-text m-0 p-0">Finished</p>
+                {{else}}
+                  {{#if (is-less (duration product.publishDate product.expireDate) 2)}}
+                    <p class="account-product-plain-text m-0 p-0">{{duration wishlist.product.publishDate wishlist.product.expireDate}} Day</p>
+                  {{else}}
+                    <p class="account-product-plain-text m-0 p-0">{{duration wishlist.product.publishDate wishlist.product.expireDate}} Days</p>
+                  {{/if}}
+                {{/if}}
+              </span>
             </td>
             <td class="text-center">
               <span class="account-product-plain-text">{{format-bid (get-biggest wishlist.product.bids)}}</span>
             </td>
             <td class="text-center">
-              {{#if (eq wishlist.product.status 'Active')}}
-                <span class="account-wishlist-status-text-active">{{wishlist.product.status}}</span>
+              {{#if (is-less (duration wishlist.product.publishDate wishlist.product.expireDate) 1)}}
+                <span class="account-wishlist-status-text-sold">SOLD</span>
               {{else}}
-                <span class="account-wishlist-status-text-sold">{{wishlist.product.status}}</span>
+                <span class="account-wishlist-status-text-active">OPEN</span>
               {{/if}}
             </td>
             <td>

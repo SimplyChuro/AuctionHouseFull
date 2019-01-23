@@ -17,6 +17,7 @@ Router.map(function() {
     this.route('terms-and-conditions');
     this.route('privacy-and-policy');
     this.route('product-list');
+    this.route('product-payment', { path: 'product-payment/:product_id' });
   });
   this.route('account', function() {
     this.route('profile');

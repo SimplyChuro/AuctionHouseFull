@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.config.ConfigFactory;
 
+import additions.Secured;
 import akka.http.javadsl.model.HttpResponse;
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
@@ -51,13 +52,9 @@ public class LoginController extends Controller {
 	
 	private HttpExecutionContext httpExecutionContext;
 	private Users user;
-	private ObjectNode authTokenJson;
-	private ObjectNode userNode;
-	private ObjectNode adminNode;
-	private ObjectNode errorNode;
 	private JsonNode jsonNode;
 	private JsonNode responseNode;
-	private ArrayNode response;
+	private ObjectNode response;
 	private ArrayList<NameValuePair> nameValuePairs;
 	private HttpClient httpClient = new DefaultHttpClient();
 	private ObjectMapper mapper = new ObjectMapper();
@@ -89,7 +86,7 @@ public class LoginController extends Controller {
 	public CompletionStage<Result> login() {
 	    return calculateResponse().thenApplyAsync(answer -> {
 	    jsonNode = request().body().asJson();
-	    errorNode = Json.newObject();
+	    response = Json.newObject();
 		    try {
 			    user = Users.find.query().where()
 			    		.conjunction()
@@ -98,36 +95,26 @@ public class LoginController extends Controller {
 			    		.findUnique();	 
 			    
 			    if (BCrypt.checkpw(jsonNode.findPath("password").textValue(), user.getPassword())) {
-			    	response = Json.newArray();
-			    	authTokenJson = Json.newObject();
-			    	userNode = Json.newObject();
-			    	adminNode = Json.newObject();
 			  
 			    	if(user.active) {
 					    if(user.emailVerified == true) {
 					    	if(user.hasAuthToken()) {
-					    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
-					    		userNode.put("userID", user.id);
-					    		adminNode.put("adminChecker", user.admin);
-					    		response.add(authTokenJson);
-					    		response.add(userNode);
-					    		response.add(adminNode);
-					    		
+					    		response.put(AUTH_TOKEN, user.getAuthToken());
+					    		response.put("userID", user.id);
+					    		response.put("adminChecker", user.admin);
+					    			    		
 					    		return ok(response);
 					    	} else {
 						        String authToken = user.createToken();
-	
-						        authTokenJson.put(AUTH_TOKEN, authToken);
-					    		userNode.put("userID", user.id);
-					    		adminNode.put("adminChecker", user.admin);
-					    		response.add(authTokenJson);
-					    		response.add(userNode);
-					    		response.add(adminNode);
+						        response.put(AUTH_TOKEN, authToken);
+						        response.put("userID", user.id);
+					    		response.put("adminChecker", user.admin);
+					    	
 						        return ok(response);
 					        }
 					    } else {
-					    	errorNode.put("error_message", "The given account has not been verified");
-					    	return badRequest(errorNode);
+					    	response.put("error_message", "The given account has not been verified");
+					    	return badRequest(response);
 					    }
 				    } else {
 				    	Email email = new Email()
@@ -147,16 +134,16 @@ public class LoginController extends Controller {
 							      		+ "</html>");
 					    mailerClient.send(email);
 				    	
-				    	errorNode.put("error_message", "The given account has been deactivated, in order to reactivate the account we have sent you a reactivation mail");
-				    	return badRequest(errorNode);
+					    response.put("error_message", "The given account has been deactivated, in order to reactivate the account we have sent you a reactivation mail");
+				    	return badRequest(response);
 				    }
 		        } else {
-			    	errorNode.put("error_message", "Incorrect email or password");
-			    	return notFound(errorNode);
+		        	response.put("error_message", "Incorrect email or password");
+			    	return notFound(response);
 		    	}
 		    } catch(Exception e) {
-		    	errorNode.put("error_message", "Incorrect email or password");
-		    	return notFound(errorNode);
+		    	response.put("error_message", "Incorrect email or password");
+		    	return notFound(response);
 		    }
 	    }, httpExecutionContext.current());
 	}
@@ -166,12 +153,8 @@ public class LoginController extends Controller {
 	    return calculateResponse().thenApplyAsync(answer -> {
 		    try {
 			    jsonNode = request().body().asJson();
-			    response = Json.newArray();
-		    	
-		    	authTokenJson = Json.newObject();
-		    	userNode = Json.newObject();
-		    	adminNode = Json.newObject();
-			    
+			    response = Json.newObject();
+
 		    	httpPostRequest = new HttpPost("https://accounts.google.com/o/oauth2/token");
 		    	httpPostRequest.setHeader("Content-Type", "application/x-www-form-urlencoded");
 		    	httpPostRequest.setHeader("X-Requested-With", "XMLHttpRequest");
@@ -218,38 +201,40 @@ public class LoginController extends Controller {
 			    		.endJunction()
 			    		.findUnique();
 				
-				if(user != null) {		
-			    	if(user.hasAuthToken()) {
-			    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
-			    		userNode.put("userID", user.id);
-			    		adminNode.put("adminChecker", user.admin);
-			    		response.add(authTokenJson);
-			    		response.add(userNode);
-			    		response.add(adminNode);
-			    		return ok(response);
-			    	} else {
-				        authToken = user.createToken(); 
-				        authTokenJson.put(AUTH_TOKEN, authToken);
-			    		userNode.put("userID", user.id);
-			    		adminNode.put("adminChecker", user.admin);
-			    		response.add(authTokenJson);
-			    		response.add(userNode);
-			    		response.add(adminNode);
+				if(responseNode.findPath("error").asText().isEmpty()) {
+					if(user != null) {
+						if(!user.active) {
+							user.active = true;
+							user.update();
+						}
+				    	if(user.hasAuthToken()) {
+				    		response.put(AUTH_TOKEN, user.getAuthToken());
+				    		response.put("userID", user.id);
+				    		response.put("adminChecker", user.admin);
+				    
+				    		return ok(response);
+				    	} else {
+					        authToken = user.createToken(); 
+					        response.put(AUTH_TOKEN, authToken);
+					        response.put("userID", user.id);
+				    		response.put("adminChecker", user.admin);
+				    	
+					        return ok(response);
+				        }
+					} else {
+						user = new Users();
+						user.setPassword(UUID.randomUUID().toString() + UUID.randomUUID().toString());
+						user.setBaseGoogle(responseNode);
+						
+						authToken = user.createToken();
+						response.put(AUTH_TOKEN, authToken);
+						response.put("userID", user.id);
+						response.put("adminChecker", user.admin);
+			    		
 				        return ok(response);
-			        }
+					}
 				} else {
-					user = new Users();
-					user.setPassword(UUID.randomUUID().toString() + UUID.randomUUID().toString());
-					user.setBaseGoogle(responseNode);
-					
-					authToken = user.createToken();
-			        authTokenJson.put(AUTH_TOKEN, authToken);
-		    		userNode.put("userID", user.id);
-		    		adminNode.put("adminChecker", user.admin);
-		    		response.add(authTokenJson);
-		    		response.add(userNode);
-		    		response.add(adminNode);
-			        return ok(response);
+					return badRequest();
 				}
 		    } catch(Exception e) {
 		    	return badRequest();
@@ -261,11 +246,7 @@ public class LoginController extends Controller {
 	    return calculateResponse().thenApplyAsync(answer -> {
 		    try {
 		    	jsonNode = request().body().asJson();
-			    response = Json.newArray();
-		    	
-		    	authTokenJson = Json.newObject();
-		    	userNode = Json.newObject();
-		    	adminNode = Json.newObject();
+			    response = Json.newObject();
 		    	
 			    httpGetRequest = new HttpGet("https://graph.facebook.com/v3.2/oauth/access_token?"
 		    			+ "client_id="+ConfigFactory.load().getString("custom.oauth2.facebook.clientID")+"&"
@@ -306,39 +287,40 @@ public class LoginController extends Controller {
 			    		.endJunction()
 			    		.findUnique();
 				
-				if(user != null) {		
-			    	if(user.hasAuthToken()) {
-			    		authTokenJson.put(AUTH_TOKEN, user.getAuthToken());
-			    		userNode.put("userID", user.id);
-			    		adminNode.put("adminChecker", user.admin);
-			    		response.add(authTokenJson);
-			    		response.add(userNode);
-			    		response.add(adminNode);
-			    		return ok(response);
-			    	} else {
-				        authToken = user.createToken();
-				        authTokenJson.put(AUTH_TOKEN, authToken);
-			    		userNode.put("userID", user.id);
-			    		adminNode.put("adminChecker", user.admin);
-			    		response.add(authTokenJson);
-			    		response.add(userNode);
-			    		response.add(adminNode);
-			    		
+				if(responseNode.findPath("error").asText().isEmpty()) {
+					if(user != null) {
+						if(!user.active) {
+							user.active = true;
+							user.update();
+						}
+				    	if(user.hasAuthToken()) {
+				    		response.put(AUTH_TOKEN, user.getAuthToken());
+				    		response.put("userID", user.id);
+				    		response.put("adminChecker", user.admin);
+				    	
+				    		return ok(response);
+				    	} else {
+					        authToken = user.createToken();
+					        response.put(AUTH_TOKEN, authToken);
+					        response.put("userID", user.id);
+				    		response.put("adminChecker", user.admin);
+				    		
+					        return ok(response);
+				        }
+					} else {
+						user = new Users();
+						user.setPassword(UUID.randomUUID().toString() + UUID.randomUUID().toString());
+						user.setBaseFacebook(responseNode);
+						
+						authToken = user.createToken();
+						response.put(AUTH_TOKEN, authToken);
+						response.put("userID", user.id);
+						response.put("adminChecker", user.admin);
+			
 				        return ok(response);
-			        }
+					}
 				} else {
-					user = new Users();
-					user.setPassword(UUID.randomUUID().toString() + UUID.randomUUID().toString());
-					user.setBaseFacebook(responseNode);
-					
-					authToken = user.createToken();
-			        authTokenJson.put(AUTH_TOKEN, authToken);
-		    		userNode.put("userID", user.id);
-		    		adminNode.put("adminChecker", user.admin);
-		    		response.add(authTokenJson);
-		    		response.add(userNode);
-		    		response.add(adminNode);
-			        return ok(response);
+					return badRequest();
 				}
 		    } catch(Exception e) {
 		    	return badRequest();

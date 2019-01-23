@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import additions.PictureFilter;
+import additions.S3Signature;
+import additions.Secured;
 import models.Products;
 import models.Reviews;
 import models.Sales;
@@ -38,8 +41,11 @@ public class ProductController extends Controller {
 	
 	private HttpExecutionContext httpExecutionContext;
 	private Users userChecker;
+	private List<Products> products;
 	private Products product;
 	private JsonNode jsonNode;
+	private PictureFilter filter = new PictureFilter();
+	
 	
 	@Inject
     public ProductController(HttpExecutionContext ec) {
@@ -65,6 +71,9 @@ public class ProductController extends Controller {
 	        		currentUser.remove("gender");
 	        		currentUser.remove("dateOfBirth");
 	        		currentUser.remove("phoneNumber");
+	        		currentUser.remove("phoneVerified");
+	        		currentUser.remove("active");
+	        		currentUser.remove("admin");
 	        		currentUser.remove("address");
 	        	}
 	        	
@@ -76,6 +85,8 @@ public class ProductController extends Controller {
 	        		currentUser.remove("dateOfBirth");
 	        		currentUser.remove("phoneNumber");
 	        		currentUser.remove("phoneVerified");
+	        		currentUser.remove("active");
+	        		currentUser.remove("admin");
 	        		currentUser.remove("address");
 	        	}
 		       
@@ -90,8 +101,8 @@ public class ProductController extends Controller {
 	public CompletionStage<Result> getAll(Integer category, String name, String featured, String status, String rating) {
 		return calculateResponse().thenApplyAsync(answer -> {
 			try {
-				List<Products> products = new ArrayList<>();
-				Boolean checker = false;
+				products = new ArrayList<>();
+				boolean checker = false;
 				Date currentDate = new Date();
 				
 				if (name != null && !name.isEmpty()) {
@@ -158,6 +169,7 @@ public class ProductController extends Controller {
 								.endJunction()
 								.orderBy("expireDate asc")
 								.findList();
+						
 					} else if(status.equals("all")) {
 						products = Products.find.all();
 					}
@@ -181,6 +193,8 @@ public class ProductController extends Controller {
 		        		currentUser.remove("dateOfBirth");
 		        		currentUser.remove("phoneNumber");
 		        		currentUser.remove("phoneVerified");
+		        		currentUser.remove("active");
+		        		currentUser.remove("admin");
 		        		currentUser.remove("address");
 		        	}
 		        }
@@ -194,6 +208,8 @@ public class ProductController extends Controller {
 		        		currentUser.remove("dateOfBirth");
 		        		currentUser.remove("phoneNumber");
 		        		currentUser.remove("phoneVerified");
+		        		currentUser.remove("active");
+		        		currentUser.remove("admin");
 		        		currentUser.remove("address");
 		        	}
 		        }
@@ -247,8 +263,7 @@ public class ProductController extends Controller {
 	public CompletionStage<Result> update(Long id) {
 		return calculateResponse().thenApplyAsync(answer -> {
 			try {
-				Users userChecker = LoginController.getUser();
-				
+				userChecker = LoginController.getUser();
 				if(userChecker.admin) {
 					jsonNode = request().body().asJson().get("product");
 					
@@ -336,9 +351,8 @@ public class ProductController extends Controller {
 		return calculateResponse().thenApplyAsync(answer -> {
 			try {
 				userChecker = LoginController.getUser();
-				int maxSize = 2097152;
-				int minSize = 4096;
-				if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
+				
+				if(filter.isValidPicture(name, type, size)) {
 					S3Signature s3 = new S3Signature(name, type, size, "images/products/");
 					
 		           	return ok(s3.getS3EmberNode());

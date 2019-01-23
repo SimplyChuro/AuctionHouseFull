@@ -9,6 +9,7 @@ import java.util.concurrent.CompletionStage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import additions.Secured;
 import models.Bids;
 import models.Category;
 import models.Pictures;
@@ -127,24 +128,27 @@ public class SaleController extends Controller {
 					Long cat_id = productNode.get("category_id").asLong();
 					
 					saleItem = Sales.find.byId(id);
-					saleItem.updateSale(objectNode);
+					if(saleItem.updateSale(objectNode)) {
 					
-					Category childCategory = Category.find.byId(cat_id);
-					Category parentCategory = Category.find.byId(childCategory.parent_id);
-					
-					for(ProductCategory category : saleItem.product.productcategory) {
-						if(category.category.parent_id == null && category.category.id != childCategory.id) {
-							category.category = childCategory;
-							category.update();
-						} else {
-							if(category.category.id != parentCategory.id) {
-								category.category = parentCategory;					
+						Category childCategory = Category.find.byId(cat_id);
+						Category parentCategory = Category.find.byId(childCategory.parent_id);
+						
+						for(ProductCategory category : saleItem.product.productcategory) {
+							if(category.category.parent_id == null && category.category.id != childCategory.id) {
+								category.category = childCategory;
 								category.update();
+							} else {
+								if(category.category.id != parentCategory.id) {
+									category.category = parentCategory;					
+									category.update();
+								}
 							}
 						}
+						
+						return ok(Json.toJson(saleItem));
+					} else {
+						return badRequest();
 					}
-					
-					return ok(Json.toJson(saleItem));
 				} else {
 					return badRequest();
 				}

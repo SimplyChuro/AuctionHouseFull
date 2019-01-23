@@ -276,7 +276,7 @@
                     </div>
                   {{/if}}
                 </div>
-                <div class="mt-4 bottom-margin-150">
+                <div class="mt-4">
                   <div class="p-0 m-0">
                     {{input type="checkbox" checked=shippingCost class="p-0 m-0 form-background-color"}}
                     <span class="sale-item-checkbox-text pl-1">Do you want to bear shipping cost?</span>
@@ -285,6 +285,20 @@
                     The average priece of shipping cost is $10.00.
                     You have to provide us payment infromations.
                   </p>
+                </div>
+                <div class="mt-1">
+                  {{#stripe-card options=options blur="onBlur" class="account-profile-input-form-static account-profile-form-text form-background-color" as |stripeElement stripeError|}}
+                    {{#if stripeError}}
+                      <p class="validation-error-message mt-1 fade">{{stripeError.message}}</p>
+                    {{/if}}
+                    {{#unless (eq token null)}}
+                      {{#if (eq token.id null)}}
+                        <p>Your token: <code>{{token}}</code></p>
+                      {{else}}
+                        <p>Your token: <code>{{token.id}}</code></p>
+                      {{/if}}
+                    {{/unless}}
+                  {{/stripe-card}}
                 </div>
                 <div class="mt-5 bottom-margin-255">
                   <button class="sale-item-back-button" {{action 'setPage' 2}}>

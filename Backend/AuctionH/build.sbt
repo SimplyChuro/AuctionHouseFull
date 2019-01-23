@@ -27,3 +27,23 @@ libraryDependencies += "net.java.dev.jets3t" % "jets3t" % "0.9.4"
 
 // Make verbose tests
 testOptions in Test := Seq(Tests.Argument(TestFrameworks.JUnit, "-a", "-v"))
+
+//Akka
+
+val akkaVersion = "2.5.16"
+
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+  "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
+  // Only if you are using Akka Testkit
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion
+)
+
+val akkaHTTPVersion = "10.1.4"
+
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-http-core" % akkaHTTPVersion,
+  // Add this one if you are using HTTP/2
+  "com.typesafe.akka" %% "akka-http2-support" % akkaHTTPVersion
+)

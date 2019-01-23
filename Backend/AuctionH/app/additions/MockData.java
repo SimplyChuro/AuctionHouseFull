@@ -1,4 +1,4 @@
-package controllers;
+package additions;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,8 +23,8 @@ public class MockData {
 		Users admin = new Users();
 		
 		try {
-			admin.name = "administrator";
-			admin.surname= "default";
+			admin.name = "admin";
+			admin.surname= "admin";
 			admin.setEmail(ConfigFactory.load().getString("custom.admin.mail"));
 			admin.setPassword(ConfigFactory.load().getString("custom.admin.password"));
 			admin.setEmailVerified(true);
@@ -43,7 +43,7 @@ public class MockData {
 		Date start, end;
 		
 		//Category data
-		String parentCategoryName [] = {"Clothes", "Accessories", "Shoes", "Jewlery", "Electronics", "Mobile", "Computer"};
+		String parentCategoryName [] = {"Clothes", "Accessories", "Shoes", "Jewelry", "Electronics", "Mobile", "Computer"};
 		String childCategoryName [][] = {
 				{"Men", "Women", "Boys", "Girls"}, 
 				{"Men", "Women", "Children"}, 
@@ -242,8 +242,6 @@ public class MockData {
 				{"Clothes", "Men"}
 				
 		};
-		
-		
 		
 		
 		//Unit creation		

@@ -7,6 +7,7 @@ import java.util.concurrent.CompletionStage;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import additions.Secured;
 import models.Bids;
 import models.Products;
 import models.Reviews;

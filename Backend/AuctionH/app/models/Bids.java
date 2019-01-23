@@ -68,26 +68,30 @@ public class Bids extends Model{
 		}
 		
 		if(!checker) {
-			Double highestBid = 0.00;
-			if(product.bids.size() != 0) {
-				for(Bids bid : product.bids) {
-					if(bid.amount > highestBid) {
-						highestBid = bid.amount;
+			if(product.expireDate.after(new Date())) {
+				Double highestBid = 0.00;
+				if(product.bids.size() != 0) {
+					for(Bids bid : product.bids) {
+						if(bid.amount > highestBid) {
+							highestBid = bid.amount;
+						}
 					}
-				}
-			} else {
-				highestBid = product.startingPrice;
-			}
-			
-			if(highestBid >= product.startingPrice) {
-				if(highestBid >= amount) {
-					return false;
 				} else {
-					this.user = user;
-					date = new Date();
-					status = "active";
-					save();
-					return true;
+					highestBid = product.startingPrice;
+				}
+				
+				if(highestBid >= product.startingPrice) {
+					if(highestBid >= ((double) Math.round(amount * 100) / 100)) {
+						return false;
+					} else {
+						this.user = user;
+						date = new Date();
+						status = "active";
+						save();
+						return true;
+					}
+				} else {
+					return false;
 				}
 			} else {
 				return false;

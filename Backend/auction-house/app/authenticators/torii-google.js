@@ -23,13 +23,13 @@ export default Torii.extend({
           }),
           contentType: 'application/json;charset=utf-8',
           dataType: 'json',
-          success: function(data){
-            Cookies.set('auth-token', data[0].authToken , { expires: 0.1 });
-            Cookies.set('user-id', data[1].userID , { expires: 0.1 });
-            Cookies.set('admin-checker', data[2].adminChecker , { expires: 0.1 });
-            _this.set('customSession.authToken', data[0].authToken);
-            _this.set('customSession.userID', data[1].userID);
-            _this.set('customSession.adminChecker', data[2].adminChecker);
+          success: function(data) {
+            Cookies.set('auth-token', data.authToken , { expires: 0.1 });
+            Cookies.set('user-id', data.userID , { expires: 0.1 });
+            Cookies.set('admin-checker', data.adminChecker , { expires: 0.1 });
+            _this.set('customSession.authToken', data.authToken);
+            _this.set('customSession.userID', data.userID);
+            _this.set('customSession.adminChecker', data.adminChecker);
             resolve();
           },
           error: function () {

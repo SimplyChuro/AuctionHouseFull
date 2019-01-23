@@ -32,6 +32,16 @@ create table category (
   constraint pk_category primary key (id)
 );
 
+create table notifications (
+  id                            bigserial not null,
+  message                       varchar(255),
+  created                       timestamptz,
+  expires_at                    timestamptz,
+  user_id                       bigint,
+  product_id                    bigint,
+  constraint pk_notifications primary key (id)
+);
+
 create table pictures (
   id                            bigserial not null,
   url                           varchar(255),
@@ -77,6 +87,7 @@ create table sales (
   zip_code                      varchar(255),
   country                       varchar(255),
   phone                         varchar(255),
+  payment_token                 varchar(255),
   status                        varchar(255),
   user_id                       bigint,
   product_id                    bigint,
@@ -99,6 +110,8 @@ create table users (
   phone_verified                boolean,
   admin                         boolean,
   active                        boolean,
+  email_notification            boolean,
+  push_notification             boolean,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id)
 );
@@ -118,6 +131,12 @@ create index ix_bids_user_id on bids (user_id);
 
 alter table bids add constraint fk_bids_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
 create index ix_bids_product_id on bids (product_id);
+
+alter table notifications add constraint fk_notifications_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_notifications_user_id on notifications (user_id);
+
+alter table notifications add constraint fk_notifications_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
+create index ix_notifications_product_id on notifications (product_id);
 
 alter table pictures add constraint fk_pictures_product_id foreign key (product_id) references products (id) on delete restrict on update restrict;
 create index ix_pictures_product_id on pictures (product_id);
@@ -156,6 +175,12 @@ drop index if exists ix_bids_user_id;
 alter table if exists bids drop constraint if exists fk_bids_product_id;
 drop index if exists ix_bids_product_id;
 
+alter table if exists notifications drop constraint if exists fk_notifications_user_id;
+drop index if exists ix_notifications_user_id;
+
+alter table if exists notifications drop constraint if exists fk_notifications_product_id;
+drop index if exists ix_notifications_product_id;
+
 alter table if exists pictures drop constraint if exists fk_pictures_product_id;
 drop index if exists ix_pictures_product_id;
 
@@ -187,6 +212,8 @@ drop table if exists address cascade;
 drop table if exists bids cascade;
 
 drop table if exists category cascade;
+
+drop table if exists notifications cascade;
 
 drop table if exists pictures cascade;
 

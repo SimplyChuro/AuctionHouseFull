@@ -9,6 +9,41 @@ export default Controller.extend({
   customSession: service(),
   router: service(),
 
+  mailNotificationCheckbox: null,
+  pushNotificationCheckbox: null,
+  textNotificationCheckbox: null,
+
+  mailCheckboxObserver: function() {
+    let user = this.get('model.user');
+    if(this.get('mailNotificationCheckbox')) {
+      if(!user.emailNotification) {
+        user.set('emailNotification', true);
+        user.save();
+      }
+    } else {
+      if(user.emailNotification) {
+        user.set('emailNotification', false);
+        user.save();
+      }
+    }
+  }.observes('mailNotificationCheckbox'),
+
+  pushCheckboxObserver: function() {
+    let user = this.get('model.user');
+    if(this.get('pushNotificationCheckbox')) {
+      Notification.requestPermission();
+      if(!user.pushNotification) {
+        user.set('pushNotification', true);
+        user.save();
+      }
+    } else {
+      if(user.pushNotification) {
+        user.set('pushNotification', false);
+        user.save();
+      }
+    }
+  }.observes('pushNotificationCheckbox'),
+
   actions: {
 
     async deactivateAccount() {
@@ -35,14 +70,13 @@ export default Controller.extend({
           'X-AUTH-TOKEN': token
         },
         contentType: 'application/text'
-      }).then(function(){
+      }).then(function() {
         swal("Success!", "You have successfully deactivated your account!", "success");
       });
 
     },
 
-    clearFields: function(){
-      // this.set('currentCategory', null);
+    clearFields: function() {
       
     }
 

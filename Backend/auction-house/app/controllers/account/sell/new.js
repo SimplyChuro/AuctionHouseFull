@@ -1,17 +1,18 @@
 import Controller from '@ember/controller';
-import { isEmpty } from '@ember/utils';
-import EmberObject, { computed, observer } from '@ember/object';
-import { inject as service } from '@ember/service';
 import $ from 'jquery';
 import S3Uploader from 'ember-uploader/uploaders/s3';
 import ENV from 'auction-house/config/environment';
 import swal from 'sweetalert';
 import RSVP from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import EmberObject, { computed, observer } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
   signingUrl: ENV.HOST_URL+'/api/v1/validate/product/image',
   loadingSlider: service(),
   customSession: service(),
+  stripev3: service(),
 
   currentDate: moment(new Date()).format("DD/MM/YYYY"),
 
@@ -75,9 +76,11 @@ export default Controller.extend({
   country: null,
   zipCode: null,
   phone: null,
+  token: null,
+
   pictureFiles: [],
 
-  customValidationPageOne: function(){
+  customValidationPageOne: function() {
     var checker = true;
  
     if(isEmpty(this.get('nameInput')) || (this.get('nameInput').length != 0 && this.get('nameInput').trim().length == 0)) {
@@ -85,7 +88,7 @@ export default Controller.extend({
       this.set('productNameErrorMessage', 'Product name can not be blank');
       checker = false;
     } else {
-      if(this.get('nameInput').length > 60){
+      if(this.get('nameInput').length > 60) {
         this.set('productNameHasError', true);
         this.set('productNameErrorMessage', 'The given name is way too big');
         checker = false;
@@ -115,7 +118,7 @@ export default Controller.extend({
       this.set('descriptionErrorMessage', 'Description can not be blank');
       checker = false;
     } else {
-      if(this.get('descriptionInput').length > 700){
+      if(this.get('descriptionInput').length > 700) {
         this.set('descriptionHasError', true);
         this.set('descriptionErrorMessage', 'The given description is way too big');
         checker = false;
@@ -129,7 +132,7 @@ export default Controller.extend({
       this.set('colorErrorMessage', 'Color can not be blank');
       checker = false;
     } else {
-      if(this.get('colorInput').length > 40){
+      if(this.get('colorInput').length > 40) {
         this.set('colorHasError', true);
         this.set('colorErrorMessage', 'The given color is way too big');
         checker = false;
@@ -143,7 +146,7 @@ export default Controller.extend({
       this.set('sizeErrorMessage', 'Size can not be blank');
       checker = false;
     } else {
-      if(this.get('sizeInput').length > 40){
+      if(this.get('sizeInput').length > 40) {
         this.set('sizeHasError', true);
         this.set('sizeErrorMessage', 'The given size is way too big');
         checker = false;
@@ -169,7 +172,7 @@ export default Controller.extend({
     return checker;
   },
 
-  customValidationPageTwo: function(){
+  customValidationPageTwo: function() {
     var checker = true;
     var regex;
 
@@ -179,7 +182,7 @@ export default Controller.extend({
       checker = false;
     } else {
       regex = new RegExp(/^-?\d*(\.\d+)?$/);
-      if(regex.test(this.get('startingPriceInput'))){
+      if(regex.test(this.get('startingPriceInput'))) {
         if(this.get('startingPriceInput') >= 0) {
           this.set('startingPriceHasError', false);
         } else {
@@ -254,7 +257,7 @@ export default Controller.extend({
       this.set('phoneErrorMessage', 'Phone can not be blank');
       checker = false;
     } else {
-      if(regex.test(this.get('phoneInput'))){  
+      if(regex.test(this.get('phoneInput'))) {  
         this.set('phoneHasError', false);
       } else {
         this.set('phoneHasError', true);
@@ -277,7 +280,7 @@ export default Controller.extend({
     };
   }),
 
-  previewImages: observer('page', 'pictureFiles.[]', function(){ 
+  previewImages: observer('page', 'pictureFiles.[]', function() { 
     this.get('pictureFiles').forEach((item, index) => {
       var reader = new FileReader();
 
@@ -290,10 +293,21 @@ export default Controller.extend({
   }),
 
 
+  options: {
+    hidePostalCode: true,
+    style: {
+      base: {
+        color: '#333',
+        fontSize: '18px',
+        background: '#FCFCFC'
+      }
+    }
+  },
+
   actions : {
 
-    async create(){
-      if(this.customValidationPageThree()){
+    async create() {
+      if(this.customValidationPageThree() && !isEmpty(this.get('token'))) {
         var _this = this;
         _this.get('loadingSlider').startLoading();
 
@@ -303,13 +317,13 @@ export default Controller.extend({
         product.set('color', this.get('color'));
         product.set('size', this.get('size'));
         
-        if(!isEmpty(this.get('startDate'))){
+        if(!isEmpty(this.get('startDate'))) {
           var startDate = new Date(this.get('startDateInput'));
           startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
           product.set('publishDate', startDate);  
         } 
 
-        if(!isEmpty(this.get('endDate'))){
+        if(!isEmpty(this.get('endDate'))) {
           var endDate = new Date(this.get('endDateInput'));
           endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
           product.set('expireDate', endDate);  
@@ -325,13 +339,14 @@ export default Controller.extend({
         sale.set('zipCode', this.get('zipCodeInput'));
         sale.set('country', this.get('countryInput'));
         sale.set('phone', this.get('phoneInput'));
+        sale.set('paymentToken', this.get('token').id);
         sale.set('status', 'Active');
         sale.set('product', product);
         
         let promises = [];
   
         this.get('pictureFiles').forEach((file) => {
-          var promise = new RSVP.Promise(function(resolve){
+          var promise = new RSVP.Promise(function(resolve) {
             
             const uploader = S3Uploader.create({
               signingUrl: _this.get('signingUrl'),
@@ -359,42 +374,51 @@ export default Controller.extend({
           promises.push(promise)
         });
 
-        await RSVP.all(promises).then(function(){
-          sale.save().then(function(){
+        await RSVP.all(promises).then(function() {
+          sale.save().then(function() {
             _this.get('loadingSlider').endLoading();
             _this.transitionToRoute('account.sell.entry');
             swal("Sale Succesfully Posted!", "You have successfully posted your product!", "success");
-          }).catch(function(){
+          }).catch(function() {
             swal("Ooops!", "It would seem an error has occurred please try again.", "error");
           });
         });
        
       }
+      
     },
 
-    removePicture: function(picture){
+    removePicture: function(picture) {
       this.get('pictureFiles').removeObject(picture);
     },
 
-    setCategory: function(category){
+    setCategory: function(category) {
       this.set('category', category);
     },
 
-    setSubCategory: function(category){
+    setSubCategory: function(category) {
       this.set('subCategory', category);
     },
     
-    changeStartDate: function(date){
+    changeStartDate: function(date) {
       this.set('startDate', date);
       this.set('endDateInput', '');
       this.set('endDate', null);
     },
 
-    changeEndDate: function(date){
+    changeEndDate: function(date) {
       this.set('endDate', date);
     },
 
-    setPage: function(page){
+    onBlur: function(stripeElement) {
+      let stripe = this.get('stripev3');
+      stripe.createToken(stripeElement).then(({token}) => {
+        console.log(token);
+        this.set('token', token);
+      });
+    },
+
+    setPage: function(page) {
       var currentPage = this.get('page');
       if(page > currentPage) {
         if(page == 2) {
@@ -429,7 +453,7 @@ export default Controller.extend({
       }
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('page', 1);
       this.set('category', null);
       this.set('subCategory', null);

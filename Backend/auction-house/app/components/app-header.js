@@ -39,7 +39,7 @@ export default Component.extend({
       });
     },
 
-    searchForItem: function(){
+    searchForItem: function() {
       this.get('router').transitionTo('shop.product-list', {queryParams: {name: this.get('searchQuery')}});
     }
   }

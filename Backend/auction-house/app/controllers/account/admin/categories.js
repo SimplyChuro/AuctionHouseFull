@@ -65,14 +65,10 @@ export default Controller.extend({
       await category.destroyRecord();
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('currentCategory', null);
       this.set('categoryInputEnabled', false);
       this.set('subCategoryInputEnabled', false);
-      // this.set('categoryNameHasError', null);
-      // this.set('categoryNameErrorMessage', null);
-      // this.set('subCategoryNameHasError', null);
-      // this.set('subCategoryNameErrorMessage', null);
     }
 
   }

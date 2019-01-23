@@ -9,6 +9,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import play.libs.mailer.Email;
+import play.libs.mailer.MailerClient;
+
+import additions.Secured;
 import models.Bids;
 import models.Products;
 import models.Users;
@@ -23,8 +27,10 @@ public class BidController extends Controller {
 	private HttpExecutionContext httpExecutionContext;
 	private Users user;
 	private Bids bidChecker;
+	private List<Bids> bids;
 	private JsonNode objectNode;
 	
+	@Inject MailerClient mailerClient;
 	@Inject
     public BidController(HttpExecutionContext ec) {
         this.httpExecutionContext = ec;
@@ -60,7 +66,7 @@ public class BidController extends Controller {
 			try {
 				user = LoginController.getUser();
 				if(!user.admin && user.active) {
-					List<Bids> bids = user.bids;
+					bids = user.bids;
 					return ok(Json.toJson(bids));
 				} else {
 					return badRequest();
@@ -81,6 +87,37 @@ public class BidController extends Controller {
 					objectNode = request().body().asJson().get("bid");
 					bidChecker = Json.fromJson(objectNode, Bids.class);
 					if(bidChecker.createBid(user, objectNode)) {
+						bids = Bids.find.query().where()
+								.conjunction()
+								.eq("product_id", objectNode.findPath("product_id").asLong())
+								.endJunction()
+								.orderBy("amount desc")
+								.findList();
+
+						if(bids.size() >= 2) {
+							Bids bidCheckerEmail = bids.get(1);
+							Bids bidCheckerUser = bids.get(0);
+							if(bidCheckerEmail.user.emailNotification != null) {
+								if(bidCheckerEmail.user.emailNotification == true && (bidCheckerEmail.user != bidCheckerUser.user)) {
+									Email email = new Email()
+									      .setSubject("Someone just bid on "+bidCheckerEmail.product.name+" and overtook your bid!")
+									      .setFrom("Auction House <auctionhouse.atlantbh@gmail.com>")
+									      .addTo("Misster/Miss <"+bidCheckerEmail.user.getEmail()+">")
+									      .setBodyText("A text message")
+									      .setBodyHtml(
+									    		  "<html>"
+									      		+ "<body>"
+									      		+ "<p>"
+									      		+ "Reclaim your spot as the number one bidder!"
+									      		+ "</p>"
+									      		+ "<a href=https://auction-house-frontend.herokuapp.com/shop/single-product/"+bidCheckerEmail.product.id+">Bid on "+bidChecker.product.name+"</a>"
+									      		+ "</body>"
+									      		+ "</html>");
+								    mailerClient.send(email);
+								}
+							}
+						}
+						
 						return ok(Json.toJson(bidChecker));
 					} else {
 						return badRequest();
@@ -89,6 +126,7 @@ public class BidController extends Controller {
 					return badRequest();	
 				}
 			} catch(Exception e) {
+				e.printStackTrace();
 				return badRequest();
 			}
 		}, httpExecutionContext.current());

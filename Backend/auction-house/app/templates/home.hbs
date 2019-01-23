@@ -1,7 +1,7 @@
 <div class="container-fluid current-route-background">
   <div class="container">
     <div class="row">
-      <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3 col-xl-3">
+      <div class="col-5 col-sm-5 col-md-4 col-lg-3 col-xl-3">
         <table class="table table-hover category-table pb-0 mb-0">
           <p class="category-table-title mt-3 mb-3">CATEGORIES</p>
           <tbody>
@@ -30,7 +30,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 col-xl-8 center-margin">
+      <div class="col-7 col-sm-7 col-md-8 col-lg-8 col-xl-8 center-margin">
         <div class="ml-5">
           <div class="row fade">
             <div class="col-lg-7 col-xl-7 mb-5">
@@ -82,7 +82,7 @@
     <div class="bottom-margin-100">
       <h1 class="feature-collection-text">Feature Products</h1>
       <hr class="feature-line">
-      <div class="row fade">
+      <div class="row mr-0 ml-0 pr-0 pl-0 fade">
         {{#each model.productListFeatured as |product index|}}
           {{#if (is-less index 3)}}
             <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -109,14 +109,14 @@
       </div>
     </div>
 
-    <div class="row fade">
+    <div class="row  fade">
       {{#if (eq selectedList 'new')}}
         <div class="col-12">
           <div class="row ml-0 mr-0">
-            <span class="feature-collection-text mr-5 home-list-button-active" {{action 'setSelectedListType' 'new'}}>
+            <span class="feature-collection-text mr-4 home-list-button-active" {{action 'setSelectedListType' 'new'}}>
               New Arrivals
             </span>
-            <span class="feature-collection-text mr-5 home-list-button" {{action 'setSelectedListType' 'ending'}}>
+            <span class="feature-collection-text home-list-button" {{action 'setSelectedListType' 'ending'}}>
               Last Chance
             </span>
           </div>
@@ -150,10 +150,10 @@
         {{#if (eq selectedList 'ending')}}
           <div class="col-12">
             <div class="row ml-0 mr-0">
-              <span class="feature-collection-text mr-5 home-list-button" {{action 'setSelectedListType' 'new'}}>
+              <span class="feature-collection-text mr-4 home-list-button" {{action 'setSelectedListType' 'new'}}>
                 New Arrivals
               </span>
-              <span class="feature-collection-text mr-5 home-list-button-active" {{action 'setSelectedListType' 'ending'}}>
+              <span class="feature-collection-text home-list-button-active" {{action 'setSelectedListType' 'ending'}}>
                 Last Chance
               </span>
             </div>

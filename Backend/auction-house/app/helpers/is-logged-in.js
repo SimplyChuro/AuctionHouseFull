@@ -7,7 +7,7 @@ export default Helper.extend({
 
   compute(params) {
     let token = null;
-    if(!isEmpty(params[0])){
+    if(!isEmpty(params[0])) {
       token = params[0];
     } else {
       token = this.get('customSession').getAuthToken();
