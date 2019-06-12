@@ -78,6 +78,9 @@ public class Products extends Model{
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
     public Sales sale;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")@JsonIgnore
+    public List<Notifications> notifications; 
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="product")
     public List<Reviews> reviews;
 
@@ -155,7 +158,6 @@ public class Products extends Model{
 				
 			}
 		}
-		
 		
 		this.update();
 

@@ -8,12 +8,12 @@ export default Helper.extend({
     var product_category = null;
     
     product.get('productcategory').forEach((item) => {
-      if(type == 'parent'){
-        if(item.category.get('parent_id') == null){
+      if(type == 'parent') {
+        if(item.category.get('parent_id') == null) {
           product_category = item.get('category').get('id');
         }
       } else {
-        if(item.category.get('parent_id') != null){
+        if(item.category.get('parent_id') != null) {
           product_category = item.get('category').get('id');
         }
       }
@@ -21,4 +21,5 @@ export default Helper.extend({
 
     return product_category;
   }
+  
 });

@@ -5,7 +5,7 @@ import { stringSimilarity } from "string-similarity-js";
 import { computed } from '@ember/object';
 
 export default Controller.extend({
-  session: service(),
+  customSession: service(),
   store: service(),
   loadingSlider: service(),
   
@@ -28,16 +28,16 @@ export default Controller.extend({
 
   startRange:[0, 1500],
 
-  wishlist: computed(function(){
+  wishlist: computed(function() {
     return this.store.findAll('wishlist', { reload: true });
   }).volatile(),
 
-  wishlistItems: computed('wishlist', function(){
+  wishlistItems: computed('wishlist', function() {
     this.set('allWishlistItems', this.get('wishlist'));
     return this.get('allWishlistItems');
   }).volatile(),
 
-  products: computed('name', 'parent_category', 'child_category', function(){
+  products: computed('name', 'parent_category', 'child_category', function() {
     var categoryChecker;
 
     if(isEmpty(this.get('parent_category'))) {
@@ -58,7 +58,7 @@ export default Controller.extend({
     return this.store.query('product', { name: nameChecker, category: categoryChecker, featured: '', status: '', rating: '' });
   }),
 
-  filteredProducts: computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function(){
+  filteredProducts: computed('products', 'name', 'parent_category', 'child_category', 'minPrice', 'maxPrice', 'color', 'size', 'sorting', 'listSize', function() {
     
     var _this = this;
     let products = this.get('products');
@@ -116,16 +116,16 @@ export default Controller.extend({
 
   }),
 
-  productSearchErrorMessage: computed('filteredProducts', function(){
+  productSearchErrorMessage: computed('filteredProducts', function() {
 
     var similarityRate = 0.75;
     var _this = this;
 
-    if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))){
+    if(isEmpty(this.get('filteredProducts')) && !(isEmpty(this.get('name')))) {
       var categories = this.get('model.categoryList');
       _this.set('closestCategory', null);
       categories.forEach((item) => {
-        if(stringSimilarity(item.name, this.get('name')) > similarityRate || stringSimilarity(item.name, this.get('name'), 1) > 0.75){
+        if(stringSimilarity(item.name, this.get('name')) > similarityRate || stringSimilarity(item.name, this.get('name'), 1) > 0.75) {
           similarityRate = stringSimilarity(item.name, this.get('name'));
           _this.set('closestCategory', item);
         }
@@ -141,7 +141,7 @@ export default Controller.extend({
   actions: {
     toggleDetails: function(category) {
 
-      if(category.id !== this.get('parent_category')){
+      if(category.id !== this.get('parent_category')) {
         this.set('parent_category', category.id);
         this.set('child_category', null);
       } else {
@@ -161,7 +161,7 @@ export default Controller.extend({
         this.set('child_category', selected);  
         this.set('parent_category', selected);  
       } else {
-        if(this.get('child_category') == selected.id){
+        if(this.get('child_category') == selected.id) {
           this.set('child_category', null);
         } else {
           this.set('child_category', selected.id); 
@@ -170,7 +170,7 @@ export default Controller.extend({
     },
 
     setColor: function(color) {
-      if(this.get('color') == color){
+      if(this.get('color') == color) {
         this.set('color', null);
       } else {
         this.set('color', color);
@@ -178,7 +178,7 @@ export default Controller.extend({
     },
 
     setSize: function(size) {
-      if(this.get('size') == size){
+      if(this.get('size') == size) {
         this.set('size', null);
       } else {
         this.set('size', size);  
@@ -189,11 +189,11 @@ export default Controller.extend({
       this.set('list_type', type);  
     },
 
-    setSortType: function(type){
+    setSortType: function(type) {
       this.set('sorting', type);  
     },
 
-    increaseListSize: function(){
+    increaseListSize: function() {
       var currentListSize = this.get('listSize');
       currentListSize += 9;
       this.set('listSize', currentListSize);
@@ -214,7 +214,7 @@ export default Controller.extend({
       });
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('name', undefined);
       this.set('parent_category', undefined);
       this.set('child_category', undefined);

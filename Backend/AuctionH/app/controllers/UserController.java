@@ -7,14 +7,18 @@ import play.data.validation.*;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
-
 import javax.inject.Inject;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import additions.PictureFilter;
+import additions.S3Signature;
+import additions.Secured;
 import jdk.nashorn.internal.objects.annotations.Where;
 import models.Products;
 import models.Reviews;
@@ -30,11 +34,11 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
 import play.libs.Json;
+import play.libs.concurrent.HttpExecutionContext;
 import play.mvc.*;
 
 import play.libs.mailer.Email;
 import play.libs.mailer.MailerClient;
-import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.mail.EmailAttachment;
@@ -46,299 +50,354 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-
-
 public class UserController extends Controller {
 	
+	private HttpExecutionContext httpExecutionContext;
+	private Users userChecker;
+	private Users user;
+	private JsonNode objectNode;
+	private Email email;
+	private PictureFilter filter = new PictureFilter();
+	
 	@Inject MailerClient mailerClient;
+	@Inject
+    public UserController(HttpExecutionContext ec) {
+        this.httpExecutionContext = ec;
+    }
+	
+	private static CompletionStage<String> calculateResponse() {
+        return CompletableFuture.completedFuture("42");
+    }
 	
 	//Get user
 	@Security.Authenticated(Secured.class)
-	public Result get(Long id) {
-		try {
-			Users user = LoginController.getUser();
-			if(user.admin) {
-				Users requestedUser = Users.find.byId(id);
-				return ok(Json.toJson(requestedUser));
-			} else {
-				return ok(Json.toJson(user));
+	public CompletionStage<Result> get(Long id) {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				user = LoginController.getUser();
+				if(user.admin) {
+					Users requestedUser = Users.find.byId(id);
+					return ok(Json.toJson(requestedUser));
+				} else {
+					return ok(Json.toJson(user));
+				}
+			} catch(Exception e) {
+				return notFound();
 			}
-		} catch(Exception e) {
-			return notFound();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Get users
 	@Security.Authenticated(Secured.class)
-	public Result getAll() {
-		try {
-			Users user = LoginController.getUser();
-			
-			if(user.admin) {
-				List<Users> users = Users.find.query().where()
-						.conjunction()
-						.ge("id", 2)
-						.endJunction()
-						.findList();
+	public CompletionStage<Result> getAll() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				user = LoginController.getUser();
 				
-				return ok(Json.toJson(users));	
-			} else {
-				return forbidden();
+				if(user.admin) {
+					List<Users> users = Users.find.query().where()
+							.conjunction()
+							.not()
+							.eq("id", user.id)
+							.endJunction()
+							.findList();
+					
+					return ok(Json.toJson(users));	
+				} else {
+					return forbidden();
+				}
+				
+			} catch(Exception e) {
+				return notFound();
 			}
-			
-		} catch(Exception e) {
-			return notFound();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Create user	
-	public Result create() {
-		try {
-			JsonNode objectNode = request().body().asJson().get("user");
-			
-			Users userChecker = Users.find.query().where()
+	public CompletionStage<Result> create() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				objectNode = request().body().asJson().get("user");
+				
+				userChecker = Users.find.query().where()
 					.conjunction()
-					.eq("email", objectNode.findPath("email").textValue())
-					.endJunction()
-					.findUnique();
-			
-			if(userChecker != null) {
-				return badRequest();
-			} else {
-				Users user = Json.fromJson(objectNode, Users.class);
-				user.setPassword(objectNode.findValue("password").asText());
-				user.setBase();
+						.eq("email", objectNode.findPath("email").textValue())
+						.endJunction()
+						.findUnique();
 				
-				String token;
-				if(user.hasAuthToken()) {
-					token = user.getAuthToken();
+				if(userChecker != null) {
+					return badRequest();
 				} else {
-					user.createToken();
-					token = user.getAuthToken();
+					user = Json.fromJson(objectNode, Users.class);
+					user.setPassword(objectNode.findValue("password").asText());
+					user.setBase();
+					
+					String token;
+					if(user.hasAuthToken()) {
+						token = user.getAuthToken();
+					} else {
+						user.createToken();
+						token = user.getAuthToken();
+					}
+					
+					email = new Email()
+					      .setSubject("Verify your mail!")
+					      .setFrom("Auction House <auctionhouse.atlantbh@gmail.com>")
+					      .addTo("Misster/Miss <"+user.getEmail()+">")
+					      .setBodyText("A text message")
+					      .setBodyHtml(
+					    		  "<html>"
+					      		+ "<body>"
+					      		+ "<p>"
+					      		+ "In order to verify your email click the following link :"
+					      		+ "</p>"
+					      		+ "<a href=https://auction-house-frontend.herokuapp.com/verify-email?token="+token+">Verify Email</a>"
+					      		+ "</body>"
+					      		+ "</html>");
+				    mailerClient.send(email);
+						    
+					return ok(Json.toJson(user));
 				}
-				
-				Email email = new Email()
-				      .setSubject("Verify your mail!")
-				      .setFrom("Auction House <auctionhouse.atlantbh@gmail.com>")
-				      .addTo("Misster/Miss <"+user.getEmail()+">")
-				      .setBodyText("A text message")
-				      .setBodyHtml(
-				    		  "<html>"
-				      		+ "<body>"
-				      		+ "<p>"
-				      		+ "In order to verify your email click the following link :"
-				      		+ "</p>"
-				      		+ "<a href=https://auction-house-frontend.herokuapp.com/verify-email?token="+token+">Verify Email</a>"
-				      		+ "</body>"
-				      		+ "</html>");
-			    mailerClient.send(email);
-					    
-				return ok(Json.toJson(user));
+			} catch(Exception e) {
+				return badRequest();
 			}
-		} catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Update user
 	@Security.Authenticated(Secured.class)
-	public Result update(Long id) {
-		try {
-			Users user = LoginController.getUser();
-			JsonNode objectNode = request().body().asJson().get("user");
-			if(user.admin) {
-				Users userChecker = Users.find.byId(id);
-//				userChecker.updatePassword(objectNode);
-//				userChecker.updatePassword(objectNode);
-				userChecker.updateUser(objectNode);
-				return ok(Json.toJson(userChecker));
-			} else {
-				user.updateUser(objectNode);
-				return ok(Json.toJson(user));
+	public CompletionStage<Result> update(Long id) {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				user = LoginController.getUser();
+				objectNode = request().body().asJson().get("user");
+				if(user.admin) {
+					userChecker = Users.find.byId(id);
+					userChecker.updateMailAdmin(objectNode);
+					userChecker.updatePasswordAdmin(objectNode);
+					userChecker.updateUserAdmin(objectNode);
+					return ok(Json.toJson(userChecker));
+				} else {
+					user.updateUser(objectNode);
+					user.updatePasswordAdmin(objectNode);
+					return ok(Json.toJson(user));
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+				return badRequest();
 			}
-		} catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Delete user
 	@Security.Authenticated(Secured.class)
-	public Result delete(Long id) {
-		try {
-			Users user = LoginController.getUser();
-			if(user.admin) {
-				Users userChecker = Users.find.byId(id);
-				
-				for(Bids bid : userChecker.bids) {
-					bid.delete();
-				}
-				
-				for(Wishlists wish : userChecker.wishlists) {
-					wish.delete();
-				}
-				
-				for(Reviews review : userChecker.reviews) {
-					review.delete();
-				}
-				
-				for(Sales sale : userChecker.sales) {
-					for(Pictures picture : sale.product.pictures) {
-						picture.delete();
+	public CompletionStage<Result> delete(Long id) {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				user = LoginController.getUser();
+				if(user.admin) {
+					userChecker = Users.find.byId(id);
+					
+					for(Bids bid : userChecker.bids) {
+						bid.delete();
 					}
 					
-					for(ProductCategory category : sale.product.productcategory) {
-						category.delete();
+					for(Wishlists wish : userChecker.wishlists) {
+						wish.delete();
 					}
 					
-					sale.product.delete();
-					sale.delete();
+					for(Reviews review : userChecker.reviews) {
+						review.delete();
+					}
+					
+					for(Sales sale : userChecker.sales) {
+						for(Pictures picture : sale.product.pictures) {
+							picture.delete();
+						}
+						
+						for(ProductCategory category : sale.product.productcategory) {
+							category.delete();
+						}
+						
+						sale.product.delete();
+						sale.delete();
+					}
+					
+					userChecker.address.delete();
+					userChecker.delete();
+					return ok(Json.toJson(""));
+				} else {
+					return badRequest();
 				}
-				
-				userChecker.address.delete();
-				userChecker.delete();
-				return ok(Json.toJson(""));
-			} else {
+			} catch(Exception e) {
 				return badRequest();
 			}
-		} catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 
 	//Verify mail
 	@Security.Authenticated(Secured.class)
-	public Result verify() {
-		try {
-			Users userChecker = LoginController.getUser();
-		
-			if(!userChecker.getEmailVerified()) {
-				userChecker.setEmailVerified(true);
-				userChecker.update();
-				
-				return ok(Json.toJson(""));
-			} else {
-				return notFound();
+	public CompletionStage<Result> verify() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+			
+				if(!userChecker.getEmailVerified()) {
+					userChecker.setEmailVerified(true);
+					userChecker.update();
+					
+					return ok(Json.toJson(""));
+				} else {
+					return notFound();
+				}
+			} catch(Exception e) {
+				return badRequest();
 			}
-		} catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Reset password
 	@Security.Authenticated(Secured.class)
-	public Result reset() {
-		try {
-			Users userChecker = LoginController.getUser();	
-		
-			JsonNode objectNode = request().body().asJson();
-			userChecker.updatePassword(objectNode);
-			userChecker.deleteAuthToken();
+	public CompletionStage<Result> reset() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();	
 			
-			return ok(Json.toJson(""));
-		}catch(Exception e) {
-			return badRequest();
-		}
+				objectNode = request().body().asJson();
+				userChecker.updatePassword(objectNode);
+				userChecker.deleteAuthToken();
+				
+				return ok(Json.toJson(""));
+			}catch(Exception e) {
+				return badRequest();
+			}
+		}, httpExecutionContext.current());
 	} 
 	
 	//Reset password mail
-	public Result sendResetMail() {
-		try {
-			JsonNode objectNode = request().body().asJson();
-			
-			Users userChecker = Users.find.query().where()
-					.conjunction()
-					.eq("email", objectNode.findPath("email").textValue())
-					.endJunction()
-					.findUnique();
-			
-			if(userChecker != null) {
+	public CompletionStage<Result> sendResetMail() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				objectNode = request().body().asJson();
 				
-				String token;
-				if(userChecker.hasAuthToken()) {
-					token = userChecker.getAuthToken();
+				userChecker = Users.find.query().where()
+						.conjunction()
+						.eq("email", objectNode.findPath("email").textValue())
+						.endJunction()
+						.findUnique();
+				
+				if(userChecker != null) {
+					
+					String token;
+					if(userChecker.hasAuthToken()) {
+						token = userChecker.getAuthToken();
+					} else {
+						userChecker.createToken();
+						token = userChecker.getAuthToken();
+					}
+					
+					email = new Email()
+						.setSubject("Password reset!")
+						.setFrom("Auction House <auctionhouse.atlantbh@gmail.com>")
+						.addTo("Misster/Miss <"+objectNode.findPath("email").textValue()+">")
+						.setBodyText("Password Reset Guide")
+						.setBodyHtml(
+					    		  "<html>"
+					      		+ "<body>"
+					      		+ "<p>"
+					      		+ "In order to reset your password click the following link :"
+					      		+ "</p>"
+					      		+"<br>"
+					      		+ "<a href=https://auction-house-frontend.herokuapp.com/new-password?token="+token+">Password Reset Link</a>"
+					      		+ "</body>"
+					      		+ "</html>");
+				    mailerClient.send(email);
+				    
+					return ok(Json.toJson(""));
 				} else {
-					userChecker.createToken();
-					token = userChecker.getAuthToken();
+					return badRequest();
 				}
-				
-				Email email = new Email()
-					.setSubject("Password reset!")
-					.setFrom("Auction House <auctionhouse.atlantbh@gmail.com>")
-					.addTo("Misster/Miss <"+objectNode.findPath("email").textValue()+">")
-					.setBodyText("Password Reset Guide")
-					.setBodyHtml(
-				    		  "<html>"
-				      		+ "<body>"
-				      		+ "<p>"
-				      		+ "In order to reset your password click the following link :"
-				      		+ "</p>"
-				      		+"<br>"
-				      		+ "<a href=https://auction-house-frontend.herokuapp.com/new-password?token="+token+">Password Reset Link</a>"
-				      		+ "</body>"
-				      		+ "</html>");
-			    mailerClient.send(email);
-			    
-				return ok(Json.toJson(""));
-			} else {
+			}catch(Exception e) {
 				return badRequest();
 			}
-		}catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Deactivate Account
 	@Security.Authenticated(Secured.class)
-	public Result deactivate() {
-		try {
-			Users userChecker = LoginController.getUser();
-			if(userChecker.active) {
-				userChecker.active = false;
-				userChecker.update();
+	public CompletionStage<Result> deactivate() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+				if(userChecker.active) {
+					userChecker.active = false;
+					userChecker.update();
+				}
+				return ok(Json.toJson(""));
+			}catch(Exception e) {
+				return badRequest();
 			}
-			return ok(Json.toJson(""));
-		}catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
 	
 	//Reactivate Account
 	@Security.Authenticated(Secured.class)
-	public Result activate() {
-		try {
-			Users userChecker = LoginController.getUser();
-			
-			userChecker.active = true;
-			userChecker.deleteAuthToken();
-			userChecker.update();
-			
-			return ok(Json.toJson(""));
-		}catch(Exception e) {
-			return badRequest();
-		}
+	public CompletionStage<Result> activate() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+				
+				userChecker.active = true;
+				userChecker.deleteAuthToken();
+				userChecker.update();
+				
+				return ok(Json.toJson(""));
+			}catch(Exception e) {
+				return badRequest();
+			}
+		}, httpExecutionContext.current());
 	}
 	
 	//Validate upload
 	@Security.Authenticated(Secured.class)
-	public Result validate(String name, String type, Integer size) {
-		try {
-			Users userChecker = LoginController.getUser();
-			if(userChecker.active) {
-				int maxSize = 2097152;
-				int minSize = 4096;
-				if((maxSize >= size && size >= minSize) && type.contains("image") && !(name.isEmpty())) {
-					S3Signature s3 = new S3Signature(name, type, size, "images/users/");
-					
-		           	return ok(s3.getS3EmberNode());
+	public CompletionStage<Result> validate(String name, String type, Integer size) {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+				if(userChecker.active) {
+					if(filter.isValidPicture(name, type, size)) {
+						S3Signature s3 = new S3Signature(name, type, size, "images/users/");
+						
+			           	return ok(s3.getS3EmberNode());
+					} else {
+						return badRequest();	
+					}
 				} else {
 					return badRequest();	
 				}
-			} else {
-				return badRequest();	
+			}catch(Exception e) {
+				return badRequest();
 			}
-		}catch(Exception e) {
-			return badRequest();
-		}
+		}, httpExecutionContext.current());
 	}
-    
+	
+	//Validate upload
+	@Security.Authenticated(Secured.class)
+	public CompletionStage<Result> productPayment() {
+		return calculateResponse().thenApplyAsync(answer -> {
+			try {
+				userChecker = LoginController.getUser();
+				if(userChecker.active) {
+					
+					return ok(Json.toJson(""));
+				} else {
+					return badRequest();	
+				}
+			}catch(Exception e) {
+				return badRequest();
+			}
+		}, httpExecutionContext.current());
+	}
+	
+	
 }

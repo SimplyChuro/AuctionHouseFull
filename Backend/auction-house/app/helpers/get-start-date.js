@@ -6,6 +6,7 @@ export default Helper.extend({
   compute(params) {
     var startDate = params[0];
     var checkerDate;
+    
     if(isEmpty(startDate)) {
       checkerDate = new Date();
       checkerDate.setMinutes(checkerDate.getMinutes() - checkerDate.getTimezoneOffset());

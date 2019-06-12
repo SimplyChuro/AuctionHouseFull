@@ -2,9 +2,9 @@ import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  model(){
+  model() {
     return hash({
-      productList: this.store.query('product', { name: '', category: 0, featured: '', status: '', rating: '' })
+      productList: this.store.query('product', { name: '', category: 0, featured: '', status: 'all', rating: '' })
     })
   }
 });

@@ -1,6 +1,6 @@
 import { helper } from '@ember/component/helper';
 
-export function getImageId(params/*, hash*/) {  
+export function getImageId(params) {  
   return "preview-image-" + params;
 }
 

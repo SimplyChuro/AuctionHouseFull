@@ -84,10 +84,19 @@ public class Users extends Model{
     @Constraints.Required
    	public Boolean active;
     
+    @Constraints.Required
+   	public Boolean emailNotification;
+    
+    @Constraints.Required
+   	public Boolean pushNotification;
+    
 	//Foreign Keys
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy="user")
     public Address address; 
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="user")
+    public List<Notifications> notifications; 
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="user") @JsonIgnore
     public List<Bids> bids; 
@@ -110,6 +119,60 @@ public class Users extends Model{
 		emailVerified = false;
 		admin = false;
 		active = true;
+		emailNotification = false;
+		pushNotification = false;
+		save();
+		address = new Address("", "", "", "", "");
+		address.user = this;
+		address.save();
+	}
+	
+	public void setBaseGoogle(JsonNode objectNode) {
+		if(!objectNode.findPath("given_name").asText().isEmpty()) {
+			this.name = objectNode.findPath("given_name").asText();
+		} else {
+			this.name = "Undefined";
+		}
+		
+		if(!objectNode.findPath("family_name").asText().isEmpty()) {
+			this.surname = objectNode.findPath("family_name").asText();
+		} else {
+			this.surname = "Undefined";
+		}
+		email = objectNode.findPath("email").asText();
+		avatar = objectNode.findPath("picture").asText();
+		gender = objectNode.findPath("gender").asText();
+		emailVerified = true;
+		admin = false;
+		active = true;
+		emailNotification = false;
+		pushNotification = false;
+		save();
+		address = new Address("", "", "", "", "");
+		address.user = this;
+		address.save();
+	}
+	
+	public void setBaseFacebook(JsonNode objectNode) {
+		if(!objectNode.findPath("first_name").asText().isEmpty()) {
+			this.name = objectNode.findPath("first_name").asText();
+		} else {
+			this.name = "Undefined";
+		}
+		
+		if(!objectNode.findPath("last_name").asText().isEmpty()) {
+			this.surname = objectNode.findPath("last_name").asText();
+		} else {
+			this.surname = "Undefined";
+		}
+		
+		email = objectNode.findPath("email").asText();
+		avatar = objectNode.get("picture").get("data").findPath("url").asText();
+		emailVerified = true;
+		admin = false;
+		active = true;
+		emailNotification = false;
+		pushNotification = false;
 		save();
 		address = new Address("", "", "", "", "");
 		address.user = this;
@@ -117,8 +180,17 @@ public class Users extends Model{
 	}
 	
 	public void updateUser(JsonNode objectNode) {
-		this.name = objectNode.findPath("name").asText();
-		this.surname = objectNode.findPath("surname").asText();
+		if(!objectNode.findPath("name").asText().isEmpty()) {
+			this.name = objectNode.findPath("name").asText();
+		} else {
+			this.name = "Undefined";
+		}
+		
+		if(!objectNode.findPath("surname").asText().isEmpty()) {
+			this.surname = objectNode.findPath("surname").asText();
+		} else {
+			this.surname = "Undefined";
+		}
 		
 		if(objectNode.findPath("gender").asText() != null || !(objectNode.findPath("gender").asText().equals("null"))) {
 			this.gender = objectNode.findPath("gender").asText();	
@@ -151,6 +223,65 @@ public class Users extends Model{
 			this.avatar = null;
 		}
 		
+		this.emailNotification = objectNode.findPath("emailNotification").asBoolean();
+		this.pushNotification = objectNode.findPath("pushNotification").asBoolean();
+		
+		this.update();
+		this.address.updateAddress(
+				objectNode.findPath("street").asText(),
+				objectNode.findPath("city").asText(),
+				objectNode.findPath("zipCode").asText(),
+				objectNode.findPath("state").asText(),
+				objectNode.findPath("country").asText()
+			);
+	}
+	
+	public void updateUserAdmin(JsonNode objectNode) {
+		if(!objectNode.findPath("name").asText().isEmpty()) {
+			this.name = objectNode.findPath("name").asText();
+		} else {
+			this.name = "Undifned";
+		}
+		
+		if(!objectNode.findPath("surname").asText().isEmpty()) {
+			this.surname = objectNode.findPath("surname").asText();
+		} else {
+			this.surname = "Undifned";
+		}
+		
+		if(objectNode.findPath("gender").asText() != null || !(objectNode.findPath("gender").asText().equals("null"))) {
+			this.gender = objectNode.findPath("gender").asText();	
+		}
+		
+		if(objectNode.findPath("dateOfBirth").asText() != null || !(objectNode.findPath("dateOfBirth").asText().equals("null"))) {
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+			
+			try {
+				TimeZone timeZone;
+				timeZone = TimeZone.getTimeZone("GMT+0:00");
+				TimeZone.setDefault(timeZone);
+				this.dateOfBirth = format.parse(objectNode.findPath("dateOfBirth").asText());
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.dateOfBirth = null;
+		}
+		
+		if(objectNode.findPath("phoneNumber").asText() != null && !(objectNode.findPath("phoneNumber").asText().equals("null"))) {	
+			this.phoneNumber = objectNode.findPath("phoneNumber").asText();
+		} else {
+			this.phoneNumber = "";
+		}
+		
+		if(objectNode.findPath("avatar").asText() != null && !(objectNode.findPath("avatar").asText().equals("null"))) {	
+			this.avatar = objectNode.findPath("avatar").asText();
+		} else {
+			this.avatar = null;
+		}
+		
+		this.admin = objectNode.findPath("admin").asBoolean();
+		
 		this.update();
 		this.address.updateAddress(
 				objectNode.findPath("street").asText(),
@@ -164,6 +295,20 @@ public class Users extends Model{
 	public void updatePassword(JsonNode objectNode) {
 		this.setPassword(objectNode.findValue("password").asText());
 		this.update();
+	}
+	
+	public void updatePasswordAdmin(JsonNode objectNode) {
+		if(objectNode.findValue("new_password").asBoolean()) {
+			this.setPassword(objectNode.findValue("password").asText());
+			this.update();
+		}
+	}
+	
+	public void updateMailAdmin(JsonNode objectNode) {
+		if(objectNode.findValue("new_email").asBoolean()) {
+			this.email = objectNode.findValue("email").asText();
+			this.update();
+		}
 	}
 	
 	

@@ -1,0 +1,77 @@
+{{#if (eq (duration model.product.publishDate model.product.expireDate) 0)}}
+  {{#if (is-logged-in customSession.authToken)}}
+    {{#each sortedBids as |bid index|}}
+      {{#if (eq index 0)}}
+        {{#if (belongs-to-user bid.user.id)}}  
+          <div class="container-fluid current-route-background">
+            <div class="container">
+              <p class="form-title-text m-0">PRODUCT PAYMENT<span class="current-route-text"><span class="current-route-parent-text">SHOP /</span>   PRODUCT PAYMENT  </span></p>
+            </div>
+          </div>
+          
+          <div class="container-fluid pt-5 mt-5">
+            <div class="container">
+              <div class="row ml-0 mr-0">
+                <div class="col-0 col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 mr-0 ml-0 pr-0 pl-0 fade">
+                  <div class="card mr-0 ml-0 pr-0 pl-0 margin-card">
+                    <h1 class="card-title">Payment Tab</h1>
+                    <div class="card-body mr-5 ml-5">
+                      <p class="password-reset-text ">You have won the bid for {{model.product.name}}! 
+                      <br>
+                      In order to obtain the given item, fill in your bank details and submit the payment for the given amount of {{format-bid bid.amount}}.</p>
+                      <div class="mt-5">
+                        {{#stripe-card options=options blur="onBlur" class="account-profile-input-form-static account-profile-form-text form-background-color" as |stripeElement stripeError|}}
+                          {{#if stripeError}}
+                            <p class="validation-error-message mt-1 fade">{{stripeError.message}}</p>
+                          {{/if}}
+                        {{/stripe-card}}
+                      </div>
+
+                      <div class="mt-5 mb-5 pb-5">
+                        <button class="btn-purple account-profile-pointer" {{action 'pay'}}>Submit!</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div class="container-fluid text-center bottom-margin-300 top-margin-100">
+            <h1 class="title mb-4 mt-5">Auction</h1>
+            <h1 class="main-error-text d-none d-sm-block">404</h1>
+            <p class="additional-error-text d-none d-sm-block">Ooops! The page does not exist, Not Found</p>
+            <h1 class="main-error-text-small d-block d-sm-none">404</h1>
+            <p class="additional-error-text-small d-block d-sm-none">Ooops! The page does not exist, Not Found</p>
+            {{#link-to "home" class='error-button'}}
+              GO BACK
+            {{/link-to}}
+          </div>
+        {{/if}}
+      {{/if}}
+    {{/each}}
+  {{else}}
+    <div class="container-fluid text-center bottom-margin-300 top-margin-100">
+      <h1 class="title mb-4 mt-5">Auction</h1>
+      <h1 class="main-error-text d-none d-sm-block">404</h1>
+      <p class="additional-error-text d-none d-sm-block">Ooops! The page does not exist, Not Found</p>
+      <h1 class="main-error-text-small d-block d-sm-none">404</h1>
+      <p class="additional-error-text-small d-block d-sm-none">Ooops! The page does not exist, Not Found</p>
+      {{#link-to "home" class='error-button'}}
+        GO BACK
+      {{/link-to}}
+    </div>
+  {{/if}}
+{{else}}
+  <div class="container-fluid text-center bottom-margin-300 top-margin-100">
+    <h1 class="title mb-4 mt-5">Auction</h1>
+    <h1 class="main-error-text d-none d-sm-block">404</h1>
+    <p class="additional-error-text d-none d-sm-block">Ooops! The page does not exist, Not Found</p>
+    <h1 class="main-error-text-small d-block d-sm-none">404</h1>
+    <p class="additional-error-text-small d-block d-sm-none">Ooops! The page does not exist, Not Found</p>
+    {{#link-to "home" class='error-button'}}
+      GO BACK
+    {{/link-to}}
+  </div>
+{{/if}}

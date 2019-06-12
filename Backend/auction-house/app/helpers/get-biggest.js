@@ -7,7 +7,7 @@ export default Helper.extend({
     var highestBid = 0.00;
     
     bids.forEach((item) => {
-      if(item.amount > highestBid){
+      if(item.amount > highestBid) {
         highestBid = item.amount;
       }
     });

@@ -32,11 +32,11 @@ export default Controller.extend({
             }),
             contentType: 'application/json;charset=utf-8',
             dataType: 'json'
-          }).then(function(){
+          }).then(function() {
             _this.get('loadingSlider').endLoading();
             swal("Email Sent!", "A reset mail has been sent to your account!", "success");
             _this.transitionToRoute('home');
-          }).catch(function(){
+          }).catch(function() {
             _this.get('loadingSlider').endLoading();
             swal("Ooops!", "It would seem that mail doesn't exist. Please try again!", "error");
             _this.transitionToRoute('home');

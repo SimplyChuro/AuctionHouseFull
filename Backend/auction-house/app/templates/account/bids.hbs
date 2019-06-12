@@ -21,6 +21,10 @@
         Sales
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
       {{#link-to 'account.bids' class="account-navigation-link-active"}}
         <i class="material-icons">
           gavel
@@ -28,16 +32,16 @@
         Bids
       {{/link-to}}
 
-      <div class="d-lg-none d-xl-none">
-        <br>
-      </div>
-
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
         </i>
         Wishlist
       {{/link-to}}
+
+      <div class="d-block d-sm-none">
+        <br>
+      </div>
 
       {{#link-to 'account.settings' class="account-navigation-link"}}
         <i class="material-icons">
@@ -82,7 +86,15 @@
                     <span class="account-product-id">#{{product.id}}</span>
                   </td>
                   <td class="text-center">
-                    <span class="account-product-plain-text">{{duration product.publishDate product.expireDate}}</span>
+                    {{#if (is-less (duration product.publishDate product.expireDate) 1)}}
+                      <p class="account-product-plain-text m-0 p-0">Finished</p>
+                    {{else}}
+                      {{#if (is-less (duration product.publishDate product.expireDate) 2)}}
+                        <p class="account-product-plain-text m-0 p-0">{{duration product.publishDate product.expireDate}} Day</p>
+                      {{else}}
+                        <p class="account-product-plain-text m-0 p-0">{{duration product.publishDate product.expireDate}} Days</p>
+                      {{/if}}
+                    {{/if}}
                   </td>
                   <td class="text-center">
                     <span class="account-product-plain-text">{{format-bid bid.amount}}</span>

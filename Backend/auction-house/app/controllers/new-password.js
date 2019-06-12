@@ -25,11 +25,11 @@ export default Controller.extend({
     async reset() {
       var _this = this;
       var regex = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,64}$/);
-      if(!(isEmpty(this.get('password')))){
-        if((this.get('password').length > 3)){
-          if(regex.test(this.get('password'))){
+      if(!(isEmpty(this.get('password')))) {
+        if((this.get('password').length > 3)) {
+          if(regex.test(this.get('password'))) {
             this.set('passwordIsValid', true);
-            if(isEqual(this.get('password'), this.get('confirmPassword'))){
+            if(isEqual(this.get('password'), this.get('confirmPassword'))) {
               this.set('passwordMatches', true);
               _this.get('loadingSlider').startLoading();
               await $.ajax({
@@ -43,11 +43,11 @@ export default Controller.extend({
                 },
                 contentType: 'application/json;charset=utf-8',
                 dataType: 'json'
-              }).then(function(){
+              }).then(function() {
                 _this.get('loadingSlider').endLoading();
                 swal("Password Reset!", "You have successfully reset your password!", "success");
                 _this.transitionToRoute('login');
-              }).catch(function(){
+              }).catch(function() {
                 _this.get('loadingSlider').endLoading();
                 swal("Ooops!", "It would seem an error has occurred please try again.", "error");
                 _this.transitionToRoute('home');
@@ -70,7 +70,7 @@ export default Controller.extend({
       }
     },
 
-    clearFields: function(){
+    clearFields: function() {
       this.set('resetSuccess', null);
       this.set('resetText', null);
       this.set('passwordIsValid', null);

@@ -6,6 +6,7 @@ export default DS.Model.extend({
   zipCode: DS.attr('string'),
   phone: DS.attr('string'),
   country: DS.attr('string'),
+  paymentToken: DS.attr('string'),
   status: DS.attr('string'),
   product_id: DS.attr('number'),
   user: DS.belongsTo('user'),

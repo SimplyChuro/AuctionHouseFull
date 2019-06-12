@@ -21,6 +21,10 @@
         Sales
       {{/link-to}}
 
+      <div class="d-lg-none d-xl-none">
+        <br>
+      </div>
+
       {{#link-to 'account.bids' class="account-navigation-link"}}
         <i class="material-icons">
           gavel
@@ -28,16 +32,16 @@
         Bids
       {{/link-to}}
 
-      <div class="d-lg-none d-xl-none">
-        <br>
-      </div>
-
       {{#link-to 'account.wishlist' class="account-navigation-link"}}
         <i class="material-icons">
           card_giftcard
         </i>
         Wishlist
       {{/link-to}}
+
+      <div class="d-block d-sm-none">
+        <br>
+      </div>
 
       {{#link-to 'account.settings' class="account-navigation-link"}}
         <i class="material-icons">
@@ -89,7 +93,7 @@
                 </div>
               {{/if}}
 
-              <label class="account-profile-form-text mt-3">I am</label>
+              <label class="account-profile-form-text mt-3" for="genderInput">I am</label>
               <br>
               <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
                 <option disabled selected>Gender</option>
@@ -140,6 +144,22 @@
               {{/if}}
               <label class="account-profile-form-text mt-3">Email Address</label>
               <p class="account-profile-input-form-static account-profile-form-text cursor-not-allowed">{{model.user.email}}</p>
+              {{#if newPasswordToggled}}
+                <label class="account-profile-form-text account-profile-pointer mt-2" for="passwordInput">Password</label>
+                {{input type="password" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput"}}
+                {{#if passwordHasError}}
+                  <div class="validation-error-message fade">
+                    {{passwordErrorMessage}}
+                  </div>
+                {{/if}}   
+              {{else}}
+                <div class="mt-3 add-category-text account-profile-pointer" {{action 'toggleNewPassword'}}>
+                  <i class="material-icons">
+                    add
+                  </i>
+                  <span class="">CHANGE PASSWORD</span>
+                </div>
+              {{/if}}
             </div>
           </div>
         </div>

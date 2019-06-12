@@ -3,11 +3,18 @@ import { inject as service } from '@ember/service';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  session: service(),
+  customSession: service(),
 
-  model(){
+  model() {
     return hash({
-      user: this.store.findRecord('user', this.get('session').userID, { reload: true }),
+      user: this.store.findRecord('user', this.get('customSession').getUserID(), { reload: true }),
     })
   },
+
+  setupController(controller, model) {
+    this._super(controller, model);
+    this.controllerFor('account/settings').set('mailNotificationCheckbox', model.user.emailNotification);
+    this.controllerFor('account/settings').set('pushNotificationCheckbox', model.user.pushNotification);
+  }
+
 });

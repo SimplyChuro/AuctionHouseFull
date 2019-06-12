@@ -28,9 +28,13 @@ const Validations = buildValidations({
   ],
 
   password: [ 
-    validator('presence', true),
+    validator('presence', {
+      presence: true,
+      message: "Password can not be empty"
+    }),
     validator('length', { 
-      min: 4 
+      min: 4,
+      message: 'Password is too short (minimum is 4 characters)'
     }),
 
     validator('format', {
@@ -70,6 +74,11 @@ export default DS.Model.extend(Validations, {
   dateOfBirth: DS.attr('date'),
   phoneNumber: DS.attr('string'),
   phoneVerified: DS.attr('boolean'),
+  admin: DS.attr('boolean'),
+  emailNotification: DS.attr('boolean'),
+  pushNotification: DS.attr('boolean'),
+  new_email: DS.attr('boolean'),
+  new_password: DS.attr('boolean'),
   address: DS.belongsTo('address'),
   wishlist: DS.hasMany('wishlist'),
   bids: DS.hasMany('bid'),

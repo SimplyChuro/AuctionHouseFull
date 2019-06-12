@@ -12,7 +12,7 @@ export default Controller.extend({
   actions: {
     async reactivateUser() {
       var _this = this;
-      if(isEmpty(this.get('token'))){
+      if(isEmpty(this.get('token'))) {
         _this.transitionToRoute('home');
       } else {
         $.ajax({
@@ -23,7 +23,7 @@ export default Controller.extend({
           },
           contentType: 'application/text;charset=utf-8',
           dataType: 'text'
-        }).catch(function(){
+        }).catch(function() {
           _this.transitionToRoute('home');
         });
       }

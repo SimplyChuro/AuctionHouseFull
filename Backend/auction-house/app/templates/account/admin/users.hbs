@@ -22,6 +22,10 @@
         Categories
       {{/link-to}}
 
+      <div class="d-block d-sm-none">
+        <br>
+      </div>
+
       {{#link-to 'account.admin.users' class="account-navigation-link-active"}}
         <i class="material-icons">
           group
@@ -36,20 +40,25 @@
 <div class="container-fluid mt-5 bottom-margin-150">
   <div class="container fade">
     <div class="row mr-0 ml-0 pr-0 pl-0">
-      <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 mr-0 ml-0 pl-0 pr-0">
+      <div class="col-3 col-sm-4 col-md-5 col-lg-4 col-xl-3 mr-0 ml-0 pl-0 pr-0">
         <div class="card mr-0 ml-0 pl-0 pr-0 card-min-height-800">
           <h1 class="card-title-category-main-v2">USERS</h1>
           <div class="card-body mt-0 pt-0 mr-0 ml-0 pl-0 pr-0">  
             <div class="mt-2"></div>  
             {{#each model.users as |user|}}
-    
               {{#if (eq user.id currentUser.id)}}
                 <div {{action 'toggleDetails' user}} class="category-background-active account-profile-pointer full-width">
                   <div class="single-product-user-holder-v1 row mr-0 ml-0">
                     <div class="single-product-bidder-user-icon">
                       <img src="{{user.avatar}}" class="single-product-bid-user-avatar">
                     </div>
-                    <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                    <div class="d-block d-sm-block d-md-none">
+                      <br>
+                      <span class="sp-margin-auto">{{user.name}} {{user.surname}}</span>
+                    </div>
+                    <div class="d-none d-sm-none d-md-block sp-margin-auto">
+                      <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                    </div>
                   </div>
                 </div>
                 <br>
@@ -59,12 +68,17 @@
                     <div class="single-product-bidder-user-icon">
                       <img src="{{user.avatar}}" class="single-product-bid-user-avatar">
                     </div>
-                    <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                    <div class="d-block d-sm-block d-md-none">
+                      <br>
+                      <span class="sp-margin-auto">{{user.name}} {{user.surname}}</span>
+                    </div>
+                    <div class="d-none d-sm-none d-md-block sp-margin-auto">
+                      <span class="sp-margin-auto ml-3">{{user.name}} {{user.surname}}</span>
+                    </div>
                   </div>
                 </div>
                 <br>
               {{/if}}
-              
             {{/each}}
             <div class="row mr-0 ml-0 category-form-padding pr-3">
               {{#if (eq categoryInputEnabled true)}}
@@ -90,7 +104,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-7 col-lg-8 col-xl-9 mr-0 ml-0 pl-0 pr-0">
+      <div class="col-9 col-sm-8 col-md-7 col-lg-8 col-xl-9 mr-0 ml-0 pl-0 pr-0">
         <div class="card mr-0 ml-3 pl-0 pr-0 card-min-height-800">
           {{#if (eq currentUser null)}}
             {{#if (eq userCreateEnabled true)}}
@@ -107,26 +121,24 @@
                 <div class="mr-5 ml-5 pr-3 pl-3 mt-5">
                   <form autocomplete="off" method="POST">
                     <div class="form-group mt-4">
-                      <label class="account-profile-pointer" for="nameInput">First Name</label>
-                      {{input type="text" value=name class="account-profile-input-form-static account-profile-form-text" id="nameInput"}}
+                      <label class="account-profile-pointer" for="nameInput1">First Name</label>
+                      {{input type="text" value=name class="account-profile-input-form-static account-profile-form-text" id="nameInput1"}}
                       {{#if nameHasError}}
                         <div class="validation-error-message fade">
                           {{nameErrorMessage}}
                         </div>
                       {{/if}}
                     </div>
-                 
                     
                     <div class="form-group mt-2">
-                      <label class="account-profile-pointer" for="lastNameInput">Last Name</label>
-                      {{input type="text" value=surname class="account-profile-input-form-static account-profile-form-text" id="lastNameInput"}}
+                      <label class="account-profile-pointer" for="lastNameInput1">Last Name</label>
+                      {{input type="text" value=surname class="account-profile-input-form-static account-profile-form-text" id="lastNameInput1"}}
                       {{#if surnameHasError}}
                         <div class="validation-error-message fade">
                           {{surnameErrorMessage}}
                         </div>
                       {{/if}}
-                    </div>
-                    
+                    </div>            
                     
                     <div class="form-group mt-2">
                       <label class="account-profile-pointer" for="emailInput">Enter Email</label>
@@ -137,18 +149,16 @@
                         </div>
                       {{/if}}
                     </div>
-                    
 
                     <div class="form-group mt-2">
-                      <label class="account-profile-pointer" for="passwordInput">Password</label>
-                      {{input type="password" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput"}}
+                      <label class="account-profile-pointer" for="passwordInput2">Password</label>
+                      {{input type="password" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput2"}}
                       {{#if passwordHasError}}
                         <div class="validation-error-message fade">
                           {{passwordErrorMessage}}
                         </div>
                       {{/if}}
                     </div>
-                    
 
                     {{#if emailExistsHasError}}
                       <div class="validation-error-message fade">
@@ -160,251 +170,498 @@
                       <button class="users-profile-cancle-button mr-2" {{action "cancle"}}>CANCLE</button>
                       <button class="users-profile-save-info-button" {{action "createUser"}}>CREATE</button>
                     </div>
-                    
                   </form>
                 </div>
               {{/if}}
             {{else}}
               {{#if (eq userEditEnabled true)}}
-                <div class="mr-5 ml-5 pr-3 pl-3 mt-5">
-                  <div class="row m-0 p-0 mb-4 mr-0 ml-0">
-                    <div class="d-none d-xl-block">
-                      <div class="row mr-0 ml-0">
-                        <div class="admin-users-icon">
+                <div class="d-none d-lg-block">          
+                  <div class="mr-5 ml-5 pr-3 pl-3 mt-5">
+                    <div class="row m-0 p-0 mb-4 mr-0 ml-0">
+                      <div class="d-none d-xl-block">
+                        <div class="row mr-0 ml-0">
+                          <div class="admin-users-icon">
+                            <img src="{{currentUser.avatar}}" class="admin-users-avatar">
+                          </div>
+                          <div class="ml-5 mt-auto">
+                            <div class="mb-3">
+                              <label class="admin-upload-picture-button" for="upload-photo">UPLOAD NEW PHOTO</label>
+                              {{s3-file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
+                            </div>
+                            <div class="mb-5">
+                              <span class="admin-delete-picture-button" {{action 'deleteUserPicture'}}>REMOVE</span>
+                            </div>
+                            <p class="admin-picture-text">Image should be at least 400 x 400 px as a png or jpg file</p>
+                          </div>
+                          <div class="mt-2">
+                            {{ember-progress-bar progress=progress}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-xl-none">
+                        <div class="admin-users-icon ml-auto mr-auto">
                           <img src="{{currentUser.avatar}}" class="admin-users-avatar">
                         </div>
-                        <div class="ml-5 mt-auto">
+                        <div class="mt-2">
                           <div class="mb-3">
-                            <label class="admin-upload-picture-button" for="upload-photo">UPLOAD NEW PHOTO</label>
-                            {{s3-file-upload class="display-none" id="upload-photo" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
+                            <label class="admin-upload-picture-button" for="upload-photo-2">UPLOAD NEW PHOTO</label>
+                            {{file-upload class="display-none" id="upload-photo-2" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
                           </div>
                           <div class="mb-5">
                             <span class="admin-delete-picture-button" {{action 'deleteUserPicture'}}>REMOVE</span>
                           </div>
-                          <p class="admin-picture-text">Image should be at least 400 x 400 px as a png or jpg file</p>
                         </div>
                         <div class="mt-2">
                           {{ember-progress-bar progress=progress}}
                         </div>
                       </div>
-                    </div>
-                    <div class="d-xl-none">
-                      <div class="admin-users-icon ml-auto mr-auto">
-                        <img src="{{currentUser.avatar}}" class="admin-users-avatar">
-                      </div>
-                      <div class="mt-2">
-                        <div class="mb-3">
-                          <label class="admin-upload-picture-button" for="upload-photo-2">UPLOAD NEW PHOTO</label>
-                          {{file-upload class="display-none" id="upload-photo-2" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
-                        </div>
-                        <div class="mb-5">
-                          <span class="admin-delete-picture-button" {{action 'deleteUserPicture'}}>REMOVE</span>
-                        </div>
-                      </div>
-                      <div class="mt-2">
-                        {{ember-progress-bar progress=progress}}
-                      </div>
-                    </div>
 
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-lg-12 mr-0 ml-0 pl-0 pr-0">
-                      <div class="mt-5"></div>
-                      <div class="row p-0 m-0">
-                        <div class="account-profile-input-form-holder">
-                          <div class="mr-2">
-                            <label class="account-profile-form-text account-profile-pointer" for="nameInput">First Name</label>
-                            {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="nameInput"}}
-                            {{#if nameHasError}}
+                      <div class="col-sm-12 col-md-12 col-lg-12 col-lg-12 mr-0 ml-0 pl-0 pr-0">
+                        <div class="mt-5"></div>
+                        <div class="row p-0 m-0">
+                          <div class="account-profile-input-form-holder">
+                            <div class="mr-2">
+                              <label class="account-profile-form-text account-profile-pointer" for="nameInput2">First Name</label>
+                              {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="nameInput2"}}
+                              {{#if nameHasError}}
+                                <div class="validation-error-message mb-2 fade">
+                                  {{nameErrorMessage}}
+                                </div>
+                              {{/if}}
+                            </div>
+                          </div>
+                          <div class="account-profile-input-form-holder">
+                            <label class="account-profile-form-text account-profile-pointer" for="lastNameInput2">Last Name</label>
+                            {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="lastNameInput2"}}
+                            {{#if surnameHasError}}
                               <div class="validation-error-message mb-2 fade">
-                                {{nameErrorMessage}}
+                                {{surnameErrorMessage}}
                               </div>
                             {{/if}}
                           </div>
                         </div>
-                        <div class="account-profile-input-form-holder">
-                          <label class="account-profile-form-text account-profile-pointer" for="lastNameInput">Last Name</label>
-                          {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="lastNameInput"}}
-                          {{#if surnameHasError}}
-                            <div class="validation-error-message mb-2 fade">
-                              {{surnameErrorMessage}}
+
+                        <label class="account-profile-form-text account-profile-pointer mt-4" for="emailInput">Email</label>
+                        {{input type="string" value=email placeholder="e.g. example@example.com" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="emailInput"}}
+                        {{#if emailHasError}}
+                          <div class="validation-error-message fade">
+                            {{emailErrorMessage}}
+                          </div>
+                        {{/if}}
+
+                        {{#if newPasswordToggled}}
+                          <label class="account-profile-form-text account-profile-pointer mt-4" for="passwordInput">Password</label>
+                          {{input type="password" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput"}}
+                          {{#if passwordHasError}}
+                            <div class="validation-error-message fade">
+                              {{passwordErrorMessage}}
                             </div>
-                          {{/if}}
-                        </div>
-                      </div>
+                          {{/if}}   
+                        {{else}}
+                          <div class="mt-4 add-category-text account-profile-pointer" {{action 'toggleNewPassword'}}>
+                            <i class="material-icons">
+                              add
+                            </i>
+                            <span class="">CHANGE PASSWORD</span>
+                          </div>
+                        {{/if}}
 
-                      <!--
-
-                      <label class="account-profile-form-text account-profile-pointer mt-4" for="emailInput">Email</label>
-                      {{input type="string" value=email placeholder="e.g. example@example.com" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="emailInput"}}
-                      {{#if emailHasError}}
-                        <div class="validation-error-message fade">
-                          {{emailErrorMessage}}
-                        </div>
-                      {{/if}}
-
-                      <label class="account-profile-form-text account-profile-pointer mt-4" for="passwordInput">Password</label>
-                      {{input type="password" placeholder="e.g. StrongPassword!99" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput"}}
-                      {{#if passwordHasError}}
-                        <div class="validation-error-message fade">
-                          {{passwordErrorMessage}}
-                        </div>
-                      {{/if}}
-
-                      -->
-
-                      <div class="row p-0 m-0">
-                        <div class="account-profile-input-form-holder">
-                          <div class="mr-2">  
-                            <label class="account-profile-form-text mt-4 account-profile-pointer" for="dateInput">Date of Birth</label>
-                            <br>
-                              {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="dateInput"}}
-                            <br>
-                            {{#if dateOfBirthHasError}}
+                        <div class="row p-0 m-0">
+                          <div class="account-profile-input-form-holder">
+                            <div class="mr-2">  
+                              <label class="account-profile-form-text mt-4 account-profile-pointer" for="dateInput1">Date of Birth</label>
+                              <br>
+                                {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="dateInput1"}}
+                              <br>
+                              {{#if dateOfBirthHasError}}
+                                <div class="validation-error-message mb-2 fade">
+                                  {{dateOfBirthErrorMessage}}
+                                </div>
+                              {{/if}}
+                            </div>
+                          </div>
+                          <div class="account-profile-input-form-holder">
+                            <label class="account-profile-form-text mt-4 account-profile-pointer" for="numberInput1">Phone Number</label>
+                            {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="numberInput1"}}
+                            {{#if phoneNumberHasError}}
                               <div class="validation-error-message mb-2 fade">
-                                {{dateOfBirthErrorMessage}}
+                                {{phoneNumberErrorMessage}}
                               </div>
                             {{/if}}
                           </div>
                         </div>
-                        <div class="account-profile-input-form-holder">
-                          <label class="account-profile-form-text mt-4 account-profile-pointer" for="numberInput">Phone Number</label>
-                          {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="numberInput"}}
-                          {{#if phoneNumberHasError}}
-                            <div class="validation-error-message mb-2 fade">
-                              {{phoneNumberErrorMessage}}
-                            </div>
-                          {{/if}}
-                        </div>
-                      </div>
 
-                      <label class="account-profile-form-text mt-4">Gender</label>
-                      <br>
-                      <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
-                        <option disabled selected>Gender</option>
-                        {{#if (is-equal currentUser.gender 'male')}}
-                          <option value="male" selected>
-                            Male
-                          </option>
+                        <label class="account-profile-form-text mt-4">Gender</label>
+                        <br>
+                        <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
+                          <option disabled selected>Gender</option>
+                          {{#if (is-equal currentUser.gender 'male')}}
+                            <option value="male" selected>
+                              Male
+                            </option>
+                            {{else}}
+                            <option value="male">
+                              Male
+                            </option>
+                          {{/if}}
+                          {{#if (is-equal currentUser.gender 'female')}}
+                            <option value="female" selected>
+                              Female
+                            </option>
                           {{else}}
-                          <option value="male">
-                            Male
-                          </option>
+                            <option value="female">
+                              Female
+                            </option>
+                          {{/if}}
+                          {{#if (is-equal currentUser.gender 'other')}}
+                            <option value="other" selected>
+                              Other
+                            </option>
+                          {{else}}
+                            <option value="other">
+                              Other
+                            </option>
+                          {{/if}}
+                        </select>
+                        <br>
+                    
+                        <h1 class="account-profile-address-title mt-5 mb-4">Address</h1>
+                        <label class="account-profile-form-text account-profile-pointer" for="streetInput1">Street</label>
+                        {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="streetInput1"}}
+                        {{#if streetHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{streetErrorMessage}}
+                          </div>
                         {{/if}}
-                        {{#if (is-equal currentUser.gender 'female')}}
-                          <option value="female" selected>
-                            Female
-                          </option>
-                        {{else}}
-                          <option value="female">
-                            Female
-                          </option>
-                        {{/if}}
-                        {{#if (is-equal currentUser.gender 'other')}}
-                          <option value="other" selected>
-                            Other
-                          </option>
-                        {{else}}
-                          <option value="other">
-                            Other
-                          </option>
-                        {{/if}}
-                      </select>
-                      <br>
-                  
-                      <h1 class="account-profile-address-title mt-5 mb-4">Address</h1>
-                      <label class="account-profile-form-text account-profile-pointer" for="streetInput">Street</label>
-                      {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="streetInput"}}
-                      {{#if streetHasError}}
-                        <div class="validation-error-message mb-2 fade">
-                          {{streetErrorMessage}}
-                        </div>
-                      {{/if}}
-                      <br>
-                      <div class="row p-0 m-0">
-                        <div class="account-profile-input-form-holder">
-                          <div class="mr-2">
-                            <label class="account-profile-form-text mt-3 account-profile-pointer" for="cityInput">City</label>
+                        <br>
+                        <div class="row p-0 m-0">
+                          <div class="account-profile-input-form-holder">
+                            <div class="mr-2">
+                              <label class="account-profile-form-text mt-3 account-profile-pointer" for="cityInput1">City</label>
+                              <br>
+                              {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="cityInput1"}}
+                              {{#if cityHasError}}
+                                <div class="validation-error-message mb-2 fade">
+                                  {{cityErrorMessage}}
+                                </div>
+                              {{/if}}
+                            </div>
+                          </div>
+                          <div class="account-profile-input-form-holder">
+                            <label class="account-profile-form-text mt-3 account-profile-pointer" for="zipCodeInput1">ZipCode</label>
                             <br>
-                            {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="cityInput"}}
-                            {{#if cityHasError}}
+                            {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="zipCodeInput1"}}
+                            {{#if zipCodeHasError}}
                               <div class="validation-error-message mb-2 fade">
-                                {{cityErrorMessage}}
+                                {{zipCodeErrorMessage}}
                               </div>
                             {{/if}}
                           </div>
                         </div>
-                        <div class="account-profile-input-form-holder">
-                          <label class="account-profile-form-text mt-3 account-profile-pointer" for="zipCodeInput">ZipCode</label>
+                        <br>
+                        <label class="account-profile-form-text account-profile-pointer" for="stateInput1">State</label>
+                        {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="stateInput1"}}
+                        {{#if stateHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{stateErrorMessage}}
+                          </div>
+                        {{/if}}
+                        <br>
+                        <label class="account-profile-form-text mt-3 account-profile-pointer" for="countryInput1">Country</label>
+                        {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="countryInput1"}}
+                        {{#if countryHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{countryErrorMessage}}
+                          </div>
+                        {{/if}}
+                        <br>
+                        <label class="account-profile-form-text account-profile-pointer mt-4">Role</label>
+                        <div class="form-check">
+                          {{input type="checkbox" name="remember" checked=adminCheckbox class="account-profile-form-text form-check-input account-profile-pointer" id="admin"}}
+                          <label class="account-profile-form-text account-profile-pointer" for="admin">Admin</label>
                           <br>
-                          {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="zipCodeInput"}}
-                          {{#if zipCodeHasError}}
-                            <div class="validation-error-message mb-2 fade">
-                              {{zipCodeErrorMessage}}
-                            </div>
-                          {{/if}}
+                          {{input type="checkbox" name="remember" checked=defaultCheckbox class="account-profile-form-text form-check-input account-profile-pointer" id="default"}}
+                          <label class="account-profile-form-text account-profile-pointer" for="default">Default</label>
+                        </div>
+
+                        <div class="account-profile-save-holder row mt-5 p-0 mr-1 ml-0">
+                          <button class="users-profile-cancle-button mr-2" {{action "cancle"}}>CANCLE</button>
+                          <button class="users-profile-save-info-button" {{action "updateUser"}}>SAVE</button>
                         </div>
                       </div>
-                      <br>
-                      <label class="account-profile-form-text account-profile-pointer" for="stateInput">State</label>
-                      {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="stateInput"}}
-                      {{#if stateHasError}}
-                        <div class="validation-error-message mb-2 fade">
-                          {{stateErrorMessage}}
+                    </div>
+                  </div>
+                </div>
+                <div class="d-block d-lg-none">
+                  <div class="mr-4 ml-4 mt-5">
+                    <div class="row m-0 p-0 mb-4 mr-0 ml-0">
+                      <div class="ml-auto mr-auto">
+                        <div class="admin-users-icon ml-auto mr-auto">
+                          <img src="{{currentUser.avatar}}" class="admin-users-avatar">
                         </div>
-                      {{/if}}
-                      <br>
-                      <label class="account-profile-form-text mt-3 account-profile-pointer" for="countryInput">Country</label>
-                      {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="countryInput"}}
-                      {{#if countryHasError}}
-                        <div class="validation-error-message mb-2 fade">
-                          {{countryErrorMessage}}
+                        <div class="mt-2 text-center">
+                          <div class="mb-3">
+                            <label class="admin-upload-picture-button" for="upload-photo-3">UPLOAD NEW PHOTO</label>
+                            {{file-upload class="display-none" id="upload-photo-4" onComplete="imageUploadComplete" onProgress="imageUploadLoading"}}
+                          </div>
+                          <div class="mb-5">
+                            <span class="admin-delete-picture-button" {{action 'deleteUserPicture'}}>REMOVE</span>
+                          </div>
                         </div>
-                      {{/if}}
-                      <br>
-                      
-                      <div class="account-profile-save-holder row mt-5 p-0 mr-1 ml-0">
-                        <button class="users-profile-cancle-button mr-2" {{action "cancle"}}>CANCLE</button>
-                        <button class="users-profile-save-info-button" {{action "updateUser"}}>SAVE</button>
+                        <div class="mt-2">
+                          {{ember-progress-bar progress=progress}}
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12 col-md-12 col-lg-12 col-lg-12 mr-0 ml-0 pl-0 pr-0">
+                        <div class="mt-5"></div>
+                        
+                        <label class="account-profile-form-text account-profile-pointer" for="nameInput3">First Name</label>
+                        {{input type="string" value=name class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="nameInput3"}}
+                        {{#if nameHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{nameErrorMessage}}
+                          </div>
+                        {{/if}}
+                  
+                        <label class="account-profile-form-text account-profile-pointer mt-4" for="lastNameInput3">Last Name</label>
+                        {{input type="string" value=surname class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="lastNameInput3"}}
+                        {{#if surnameHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{surnameErrorMessage}}
+                          </div>
+                        {{/if}}
+
+                        <label class="account-profile-form-text account-profile-pointer mt-4" for="emailInput1">Email</label>
+                        {{input type="string" value=email placeholder="e.g. example@example.com" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="emailInput1"}}
+                        {{#if emailHasError}}
+                          <div class="validation-error-message fade">
+                            {{emailErrorMessage}}
+                          </div>
+                        {{/if}}
+
+
+                        {{#if newPasswordToggled}}
+                          <label class="account-profile-form-text account-profile-pointer mt-4" for="passwordInput1">Password</label>
+                          {{input type="password" autocomplete="off" value=password  class="account-profile-input-form-static account-profile-form-text" id="passwordInput1"}}
+                          {{#if passwordHasError}}
+                            <div class="validation-error-message fade">
+                              {{passwordErrorMessage}}
+                            </div>
+                          {{/if}}
+                        {{else}}
+                          <div class="mt-4 add-category-text account-profile-pointer" {{action 'toggleNewPassword'}}>
+                            <i class="material-icons">
+                              add
+                            </i>
+                            <span class="">CHANGE PASSWORD</span>
+                          </div>
+                        {{/if}}
+                            
+                        <label class="account-profile-form-text mt-4 account-profile-pointer" for="dateInput2">Date of Birth</label>
+                        <br>
+                          {{bootstrap-datepicker value=dateOfBirth placeholder=currentDatePlaceHolder autoclose=true format="dd/mm/yyyy" endDate=currentDate class="account-profile-input-form-half-static account-profile-form-text account-profile-pointer" id="dateInput2"}}
+                        <br>
+                        {{#if dateOfBirthHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{dateOfBirthErrorMessage}}
+                          </div>
+                        {{/if}}
+                        
+                        <label class="account-profile-form-text mt-4 account-profile-pointer" for="numberInput2">Phone Number</label>
+                        {{input type="string" value=phoneNumber placeholder="e.g. +53 32 512 356" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="numberInput2"}}
+                        {{#if phoneNumberHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{phoneNumberErrorMessage}}
+                          </div>
+                        {{/if}}
+
+                        <label class="account-profile-form-text mt-4">Gender</label>
+                        <br>
+                        <select onchange={{action "setSelection" value="target.value"}} class="account-profile-select account-profile-form-text account-profile-pointer">
+                          <option disabled selected>Gender</option>
+                          {{#if (is-equal currentUser.gender 'male')}}
+                            <option value="male" selected>
+                              Male
+                            </option>
+                            {{else}}
+                            <option value="male">
+                              Male
+                            </option>
+                          {{/if}}
+                          {{#if (is-equal currentUser.gender 'female')}}
+                            <option value="female" selected>
+                              Female
+                            </option>
+                          {{else}}
+                            <option value="female">
+                              Female
+                            </option>
+                          {{/if}}
+                          {{#if (is-equal currentUser.gender 'other')}}
+                            <option value="other" selected>
+                              Other
+                            </option>
+                          {{else}}
+                            <option value="other">
+                              Other
+                            </option>
+                          {{/if}}
+                        </select>
+                        <br>
+                    
+                        <h1 class="account-profile-address-title mt-5 mb-4">Address</h1>
+                        <label class="account-profile-form-text account-profile-pointer" for="streetInput2">Street</label>
+                        {{input type="string" value=street placeholder="e.g. 5th Avenue" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="streetInput2"}}
+                        {{#if streetHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{streetErrorMessage}}
+                          </div>
+                        {{/if}}
+                        <br>
+                        
+                        <label class="account-profile-form-text mt-3 account-profile-pointer" for="cityInput2">City</label>
+                        <br>
+                        {{input type="string" value=city placeholder="e.g. New York" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="cityInput2"}}
+                        {{#if cityHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{cityErrorMessage}}
+                          </div>
+                        {{/if}}
+  
+                        <label class="account-profile-form-text mt-3 account-profile-pointer" for="zipCodeInput2">ZipCode</label>
+                        <br>
+                        {{input type="string" value=zipCode placeholder="e.g. 10065" class="account-profile-input-form-half-static account-profile-form-text" autocomplete="off" id="zipCodeInput2"}}
+                        {{#if zipCodeHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{zipCodeErrorMessage}}
+                          </div>
+                        {{/if}}
+                          
+                        <br>
+                        <label class="account-profile-form-text account-profile-pointer" for="stateInput2">State</label>
+                        {{input type="string" value=state placeholder="e.g. New York" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="stateInput2"}}
+                        {{#if stateHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{stateErrorMessage}}
+                          </div>
+                        {{/if}}
+                        <br>
+                        <label class="account-profile-form-text mt-3 account-profile-pointer" for="countryInput2">Country</label>
+                        {{input type="string" value=country placeholder="e.g. USA" class="account-profile-input-form-static account-profile-form-text" autocomplete="off" id="countryInput2"}}
+                        {{#if countryHasError}}
+                          <div class="validation-error-message mb-2 fade">
+                            {{countryErrorMessage}}
+                          </div>
+                        {{/if}}
+                        <br>
+                        <label class="account-profile-form-text account-profile-pointer mt-4">Role</label>
+                        <div class="form-check">
+                          {{input type="checkbox" name="remember" checked=adminCheckbox class="account-profile-form-text form-check-input account-profile-pointer" id="admin2"}}
+                          <label class="account-profile-form-text account-profile-pointer" for="admin2">Admin</label>
+                          <br>
+                          {{input type="checkbox" name="remember" checked=defaultCheckbox class="account-profile-form-text form-check-input account-profile-pointer" id="default2"}}
+                          <label class="account-profile-form-text account-profile-pointer" for="default2">Default</label>
+                        </div>
+                        
+                        <div class="account-profile-save-holder row mt-5 p-0 mr-1 ml-0">
+                          <button class="users-profile-cancle-button mr-2" {{action "cancle"}}>CANCLE</button>
+                          <button class="users-profile-save-info-button" {{action "updateUser"}}>SAVE</button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               {{else}}
-                <div class="mr-5 ml-5 pr-3 pl-3 mt-5">
-                  <div class="mb-5">
-                    <div class="d-none d-xl-block">
-                      <span class="float-right admin-users-edit-button" {{action 'toggleUserEdit'}}>EDIT</span>
-                      <span class="float-right admin-users-edit-button mr-2" {{action 'deleteUser'}}>DELETE</span>
+                <div class="d-none d-md-block">
+                  <div class="mr-5 ml-5 pr-3 pl-3 mt-5">
+                    <div class="mb-5">
+                      <div class="d-none d-xl-block">
+                        <span class="float-right admin-users-edit-button" {{action 'toggleUserEdit'}}>EDIT</span>
+                        <span class="float-right admin-users-edit-button mr-2" {{action 'deleteUser'}}>DELETE</span>
+                      </div>
+                      <div class="admin-users-icon">
+                        <img src="{{currentUser.avatar}}" class="admin-users-avatar">
+                      </div>
                     </div>
-                    <div class="admin-users-icon">
-                      <img src="{{currentUser.avatar}}" class="admin-users-avatar">
-                    </div>
-                  </div>
-                  <div>
-                    <h1>User Info</h1>
-                    <div class="float-left mr-4">
-                      <p class="users-information-text">First Name</p>
-                      <p class="users-information-text">Last Name</p>
-                      <!-- <p class="users-information-text">Username</p> -->
-                      <p class="users-information-text">Email Address</p>
-                      <p class="users-information-text">Password</p>
-                      <!-- <p class="users-information-text">Role</p> -->
-                    </div>
-                    <div class="">
-                      <p class="users-information-text">{{currentUser.name}}</p>
-                      <p class="users-information-text">{{currentUser.surname}}</p>
-                      <!-- <p class="users-information-text"></p> -->
-                      <p class="users-information-text">{{currentUser.email}}</p>
-                      <p class="users-information-text">********</p>
-                      <!-- <p class="users-information-text">Role</p> -->
-                    </div>
-                    <div class="d-xl-none">
-                      <div class="mt-2">
-                        <span class="float-left admin-users-edit-button mr-2" {{action 'toggleUserEdit'}}>EDIT</span>
-                        <span class="float-left admin-users-edit-button" {{action 'deleteUser'}}>DELETE</span>
+                    <div>
+                      <h1>User Info</h1>
+                      <div class="float-left mr-4">
+                        <p class="users-information-text">First Name</p>
+                        <p class="users-information-text">Last Name</p>
+                        <!-- <p class="users-information-text">Username</p> -->
+                        <p class="users-information-text">Email Address</p>
+                        <p class="users-information-text">Password</p>
+                        <p class="users-information-text">Role</p>
+                      </div>
+                      <div class="">
+                        <p class="users-information-text">{{currentUser.name}}</p>
+                        <p class="users-information-text">{{currentUser.surname}}</p>
+                        <!-- <p class="users-information-text"></p> -->
+                        <p class="users-information-text">{{currentUser.email}}</p>
+                        <p class="users-information-text">********</p>
+                        <p class="users-information-text">
+                          {{#if currentUser.admin}}
+                            Admin
+                          {{else}}
+                            Default
+                          {{/if}}
+                        </p>
+                      </div>
+                      <div class="d-xl-none">
+                        <div class="mt-2">
+                          <span class="float-left admin-users-edit-button mr-2" {{action 'toggleUserEdit'}}>EDIT</span>
+                          <span class="float-left admin-users-edit-button" {{action 'deleteUser'}}>DELETE</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="d-block d-md-none">
+                  <div class="mr-4 ml-4 mt-5">
+                    <div class="mb-5">
+                      <div class="d-none d-xl-block">
+                        <span class="float-right admin-users-edit-button" {{action 'toggleUserEdit'}}>EDIT</span>
+                        <span class="float-right admin-users-edit-button mr-2" {{action 'deleteUser'}}>DELETE</span>
+                      </div>
+                      <div class="admin-users-icon">
+                        <img src="{{currentUser.avatar}}" class="admin-users-avatar">
+                      </div>
+                    </div>
+                    <div>
+                      <h1>User Info</h1>
+                      <div class="float-left mr-4">
+                        <p class="users-information-text">First Name</p>
+                        <p class="users-information-text">Last Name</p>
+                        <!-- <p class="users-information-text">Username</p> -->
+                        <p class="users-information-text">Email Address</p>
+                        <p class="users-information-text">Password</p>
+                        <p class="users-information-text">Role</p>
+                      </div>
+                      <div class="">
+                        <p class="users-information-text">{{currentUser.name}}</p>
+                        <p class="users-information-text">{{currentUser.surname}}</p>
+                        <!-- <p class="users-information-text"></p> -->
+                        <p class="users-information-text">{{currentUser.email}}</p>
+                        <p class="users-information-text">********</p>
+                        <p class="users-information-text">
+                          {{#if currentUser.admin}}
+                            Admin
+                          {{else}}
+                            Default
+                          {{/if}}
+                        </p>
+                      </div>
+                      <div class="d-xl-none">
+                        <div class="mt-2">
+                          <span class="float-left admin-users-edit-button mr-2" {{action 'toggleUserEdit'}}>EDIT</span>
+                          <span class="float-left admin-users-edit-button" {{action 'deleteUser'}}>DELETE</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               {{/if}}
             {{/if}}
           </div>

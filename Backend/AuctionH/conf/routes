@@ -12,12 +12,15 @@ POST	/api/v1/reset					controllers.UserController.sendResetMail
 POST	/api/v1/password/reset			controllers.UserController.reset
 POST	/api/v1/activate				controllers.UserController.activate
 POST	/api/v1/deactivate				controllers.UserController.deactivate
+POST	/api/v1/product/payment			controllers.UserController.productPayment
 GET 	/api/v1/validate/user/image		controllers.UserController.validate(name: String, type: String, size: Integer)
 
 
 # Login/Logout API routes
 POST	/api/v1/login					controllers.LoginController.login
 POST	/api/v1/logout					controllers.LoginController.logout
+POST	/api/v1/login/google			controllers.LoginController.googleLogin
+POST	/api/v1/login/facebook			controllers.LoginController.facebookLogin
 
 
 # Bid API routes

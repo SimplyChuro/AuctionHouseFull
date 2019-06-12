@@ -4,7 +4,7 @@ export default Controller.extend({
   selectedList: 'new',
 
   actions: {
-    setSelectedListType: function(type){
+    setSelectedListType: function(type) {
       this.set('selectedList', type);
     }
   }

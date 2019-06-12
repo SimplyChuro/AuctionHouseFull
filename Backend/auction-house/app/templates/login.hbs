@@ -6,10 +6,10 @@
 
 <div class="container-fluid pt-4">
   <div class="container">
-    <div class="row">
-      <div class="col-xs-0 col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 fade">
-        <div class="card margin-card">
+    <div class="row mr-0 ml-0 pr-0 pl-0">
+      <div class="col-0 col-sm-0 col-md-0 col-lg-2 col-xl-2"></div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 mr-0 ml-0 pr-0 pl-0 fade">
+        <div class="card mr-0 ml-0 pr-0 pl-0 margin-card">
           <h1 class="card-title">LOGIN</h1>
           <div class="card-body mr-4 ml-4">
             <form autocomplete="off">
@@ -27,16 +27,14 @@
                 {{/if}}
               </div>
               <div class="form-check mt-5">
-                {{input type="checkbox" name="remember" checked=remember class="form-check-input account-profile-pointer" id="rememberMe"}}
+                {{input type="checkbox" name="remember" checked=rememberMe class="form-check-input account-profile-pointer" id="rememberMe"}}
                 <label class="account-profile-pointer" for="rememberMe">Remember me</label>
               </div>
               <button type="submit" class="btn btn-purple mt-5" {{action "login"}}>LOGIN</button>
-              <!-- 	
-                <div class="mt-5">
-                  <button type="submit" class="btn btn-blue">LOGIN WITH FACEBOOK</button>
-                  <button type="submit" class="btn btn-red">LOGIN WITH GMAIL</button>
-                </div> 
-              -->
+              <div class="mt-5">
+                <button type="submit" class="btn btn-blue" {{action "loginFacebook"}}>LOGIN WITH FACEBOOK</button>
+                <button type="submit" class="btn btn-red" {{action "loginGmail"}}>LOGIN WITH GMAIL</button>
+              </div>
               <div class="text-center mt-5 mb-4">
                 {{#link-to "password-reset" class="nav-link"}}
                   Forgot Password?

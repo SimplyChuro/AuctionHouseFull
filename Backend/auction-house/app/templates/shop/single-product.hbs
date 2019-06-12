@@ -4,49 +4,79 @@
   </div>
 </div>
 
-{{#if (is-logged-in session.authToken)}}
-  {{#each sortedBids as |bid index|}}
-    {{#if (eq index 0)}}
-      {{#if (belongs-to-user bid.user.id)}}
-        <div class="container-fluid sp-bidder-highest-holder fade">
-          <div class="container">
-            <p class="sp-highest-bid-text mt-0">Congrats! you are the higest bider!</p>
-          </div>
-        </div>
-      {{else}}
-        {{#if (user-has-bid sortedBids)}}
-          <div class="container-fluid sp-bidder-losing-holder fade">
+{{#if (eq (duration model.product.publishDate model.product.expireDate) 0)}}
+  {{#if (is-logged-in customSession.authToken)}}
+    {{#each sortedBids as |bid index|}}
+      {{#if (eq index 0)}}
+        {{#if (belongs-to-user bid.user.id)}}
+          <div class="container-fluid sp-bidder-highest-holder fade">
             <div class="container">
-              <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give a second try!</p>
+              <p class="sp-highest-bid-text mt-0">Congratulations you've won the bid!</p>
             </div>
           </div>
+        {{else}}
+          {{#if (user-has-bid sortedBids)}}
+            <div class="container-fluid sp-bidder-losing-holder fade">
+              <div class="container">
+                <p class="sp-losing-bid-text mt-0">Sadly you lost the bid!</p>
+              </div>
+            </div>
+          {{/if}}
         {{/if}}
       {{/if}}
-    {{/if}}
-  {{/each}}
+    {{/each}}
+  {{else}}
+    <div class="container-fluid sp-bidder-highest-holder fade">
+      <div class="container">
+        <p class="sp-highest-bid-text mt-0">The given item has been sold to the highest bidder!</p>
+      </div>
+    </div>
+  {{/if}}
+{{else}}
+  {{#if (is-logged-in customSession.authToken)}}
+    {{#each sortedBids as |bid index|}}
+      {{#if (eq index 0)}}
+        {{#if (belongs-to-user bid.user.id)}}
+          <div class="container-fluid sp-bidder-highest-holder fade">
+            <div class="container">
+              <p class="sp-highest-bid-text mt-0">Congrats! you are the highest bider!</p>
+            </div>
+          </div>
+        {{else}}
+          {{#if (user-has-bid sortedBids)}}
+            <div class="container-fluid sp-bidder-losing-holder fade">
+              <div class="container">
+                <p class="sp-losing-bid-text mt-0">There are higher bids than yours. You could give it a second try!</p>
+              </div>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/each}}
+  {{/if}}
 {{/if}}
 
 <div class="container-fluid bottom-margin-150 mt-5">
   <div class="container">
-    <div class="row single-product-margin fade">
-      <div class="col-lg-5 col-xl-5">
+    <div class="row single-product-margin mr-0 ml-0 pr-0 pl-0 fade">
+      <div class="col-lg-5 col-xl-5 mr-0 ml-0 pr-0 pl-0">
         <div class="d-lg-none d-xl-none">
           <h1 class="title-text-links mb-2">{{model.product.name}}</h1>
         </div>
         {{#each model.product.pictures as |picture index|}}
           {{#if (is-main picture currentPicture index)}}
-            <div class="single-product-picture-background single-product-main-picture fade">
+            <div class="single-product-picture-background single-product-main-picture fade mr-5">
               <div class="single-product-main-image-holder">
                 <img class="single-product-main-image" src="{{picture.url}}">
               </div>
             </div>
           {{/if}}
         {{/each}}
-        <div class="row single-product-margin-small"> 
+        <div class="row single-product-margin-small pr-0 pl-0 ml-0 mr-5"> 
           {{#each model.product.pictures as |picture index|}}
             {{#unless (is-main picture currentPicture index)}}
-              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
-                <div class="single-product-picture-background single-product-side-picture m-1 p-0">	
+              <div class="col-3 col-md-3 col-lg-3 col-xl-3 p-0 m-0 account-profile-pointer" {{action 'setCurrentPicture' picture}}>
+                <div class="single-product-picture-background single-product-side-picture mr-1 p-0">	
                   <img class="single-product-secondary-image m-0 p-0" src="{{picture.url}}">
                 </div>
               </div>
@@ -54,7 +84,7 @@
           {{/each}}
         </div>
       </div>
-      <div class="col-lg-7 col-xl-7">
+      <div class="col-lg-7 col-xl-7 mr-0 ml-0 pr-0 pl-0">
         <div class="d-none d-lg-block d-xl-block">
           <h1 class="title-text-links">{{model.product.name}}</h1>
         </div>
@@ -63,16 +93,52 @@
         </div>
         <p class="single-product-price-text">Starting from - {{format-bid model.product.startingPrice}}</p>
         <div class="mt-4">
-          {{#if (is-logged-in session.authToken)}}
+          {{#if (is-logged-in customSession.authToken)}}
             <form autocomplete="off">
               <div class="row ml-0 mr-0">
                 {{input type="string" value=bidAmount class="single-product-bid-input"}}
-                <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
-                  PLACE BID 
-                  <i class="material-icons">
-                    keyboard_arrow_right
-                  </i>
-                </button>
+
+                {{#if (eq (duration model.product.publishDate model.product.expireDate) 0)}}
+                  {{#if (is-logged-in customSession.authToken)}}
+                    {{#each sortedBids as |bid index|}}
+                      {{#if (eq index 0)}}
+                        {{#if (belongs-to-user bid.user.id)}}
+                          {{#link-to "shop.product-payment" model.product.id class="single-product-featured-button"}}
+                            PROCEED TO PAYMENT 
+                            <i class="material-icons">
+                              keyboard_arrow_right
+                            </i>
+                          {{/link-to}}
+                        {{else}}
+                          {{#if (user-has-bid sortedBids)}}
+                            <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                              PLACE BID 
+                              <i class="material-icons">
+                                keyboard_arrow_right
+                              </i>
+                            </button>
+                          {{/if}}
+                        {{/if}}
+                      {{/if}}
+                    {{/each}}
+                  {{else}}
+                    <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                      PLACE BID 
+                      <i class="material-icons">
+                        keyboard_arrow_right
+                      </i>
+                    </button>
+                  {{/if}}
+
+                {{else}}
+                  <button type="submit" class="single-product-featured-button-v2" {{action "createBid" model.product.id}}>
+                    PLACE BID 
+                    <i class="material-icons">
+                      keyboard_arrow_right
+                    </i>
+                  </button>
+                {{/if}}
+
                 {{#each flashMessages.queue as |flash index|}}
                   {{#if (eq index 0)}}
                     <p class="checkmarker-v1 fade">
@@ -150,13 +216,17 @@
             {{else}}
               <p class="single-product-small-text m-0 p-0">Number of Bids: {{sortedBids.length}}</p>
             {{/if}}
-            {{#if (is-less (duration model.product.publishDate model.product.expireDate) 2)}}
-              <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Day</p>
+            {{#if (is-less (duration model.product.publishDate model.product.expireDate) 1)}}
+              <p class="single-product-small-text m-0 p-0">Time Remaining: Finished</p>
             {{else}}
-              <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Days</p>
+              {{#if (is-less (duration model.product.publishDate model.product.expireDate) 2)}}
+                <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Day</p>
+              {{else}}
+                <p class="single-product-small-text m-0 p-0">Time Remaining: {{duration model.product.publishDate model.product.expireDate}} Days</p>
+              {{/if}}
             {{/if}}
           </div>
-        {{#if (is-logged-in session.authToken)}}
+        {{#if (is-logged-in customSession.authToken)}}
           {{#unless userWishlistItem}}
             {{#unless (eq checker null)}}
               <button type="submit" class="single-product-watchlist-btn-active mt-4 fade" {{action "deleteWishlist" model.product.id}}>
@@ -199,15 +269,15 @@
         <table class="account-bids-table fade">
           <tbody>
             <tr class="account-bids-table-header row m-0 p-0">
-              <th class="account-header-text col-sm-8 col-md-8 col-lg-8 col-xl-8">Bidder</th>
-              <th class="account-header-text col-sm-2 col-md-2 col-lg-2 col-xl-2">Date</th>
-              <th class="account-header-text col-sm-2 col-md-2 col-lg-2 col-xl-2">Bid</th>
+              <th class="account-header-text col-6 col-sm-8 col-md-8 col-lg-8 col-xl-8">Bidder</th>
+              <th class="account-header-text col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">Date</th>
+              <th class="account-header-text col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">Bid</th>
             </tr>
             {{#each sortedBids as |bid index|}}
               {{#if (is-less index bidListSize)}}
                 <tr>
                   <div class="row mt-3 mb-3 ml-1 mr-0">
-                    <div class="col-sm-8 col-md-8 col-xl-8 col-lg-8 sp-margin-auto">
+                    <div class="col-6 col-sm-8 col-md-8 col-xl-8 col-lg-8 sp-margin-auto">
                       <div class="single-product-user-holder-v1 row mr-0 ml-0">
                         <div class="single-product-bidder-user-icon">
                           <img src="{{bid.user.avatar}}" class="single-product-bid-user-avatar">
@@ -215,12 +285,12 @@
                         <span class="sp-margin-auto ml-3">{{bid.user.name}} {{bid.user.surname}}</span>
                       </div>
                     </div>
-                    <div class="col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="col-3 col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
                       <div class="single-product-user-holder-v2">
                         {{format-date bid.date}}
                       </div>
                     </div>
-                    <div class="col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
+                    <div class="col-3 col-sm-2 col-md-2 col-xl-2 col-lg-2 sp-margin-auto">
                       <div class="single-product-user-holder-v3">
                         {{format-bid bid.amount}}
                       </div>

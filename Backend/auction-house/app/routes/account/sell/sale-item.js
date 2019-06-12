@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  model(params){
+  model(params) {
     return hash({
       categoryList: this.store.findAll('category'),
       saleItem: this.store.findRecord('sale', params.sale_id, { reload: true }),
@@ -32,6 +32,7 @@ export default Route.extend({
     this.controllerFor('account/sell/sale-item').set('countryInput', model.saleItem.get('country'));
     this.controllerFor('account/sell/sale-item').set('zipCodeInput', model.saleItem.get('zipCode'));
     this.controllerFor('account/sell/sale-item').set('phoneInput', model.saleItem.get('phone'));
+    this.controllerFor('account/sell/sale-item').set('token', model.saleItem.get('paymentToken'));
   },
 
   actions: { 
